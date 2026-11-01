@@ -25,6 +25,7 @@ To check:
 - [x] Draconic Tail at level 9: one strike per round on the nearest enemy in melee reach, 1d10 crushing + 1 second unconscious on a failed save vs. Breath; combat log line. One save for both effects?
 - [x] Draconic Wings at level 14: equipped in the helmet slot, bonuses applied. Still to check: the wings shown on the character, a helmet already there, after a load.
 - [ ] Acid Affinity damage bonus (opcode 332, type acid, same use as the Robe of Red Flames BDROBE05: +10, type fire): first test showed no bonus. +5% of a 4d4 breath is below 1 point and may round to 0: test at level 16-20 (+20 / +25%) on the breath, compare with a character without the kit.
+- [ ] TEST VALUE: bite acid fixed at 4 (black_dragon_disciple.tpa, NY#BDD_BITE) to read the Affinity bonus in the combat log; back to 1d4 / 2d4 afterwards.
 - [ ] Blindsense at level 10: immunity to blindness, invisible creatures seen and targetable.
 - [ ] Frightful Presence at level 18: no longer hits the disciple and his allies (projectile flag 0x40, enemies only).
 - [ ] Apotheosis at level 20: immunity to sleep and paralysis, acid immunity (5 × 20%).

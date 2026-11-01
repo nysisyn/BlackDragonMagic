@@ -380,7 +380,9 @@ BEGIN
                                   thac0 = enchant damage_bonus = enchant
                                   dice_sides = 6 dice_thrown = thrown damage_type = 1 flags = 1
                          STR_VAR icon = EVAL ~%ny_icon_bite%~ RET h = header END
-    LPF ADD_ITEM_EFFECT INT_VAR type = 99 header = h opcode = 12  target = 2 timing = 1 parameter2 = 0x10000 dicenumber = thrown dicesize = 4 END
+    // TEST VALUE: fixed 4 acid damage to check the Acid Affinity bonus in
+    // the combat log (normally dicenumber = thrown dicesize = 4)
+    LPF ADD_ITEM_EFFECT INT_VAR type = 99 header = h opcode = 12  target = 2 timing = 1 parameter1 = 4 parameter2 = 0x10000 END
     LPF ADD_ITEM_EFFECT INT_VAR type = 99 header = h opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 STR_VAR resource = ~SHACID~ END
 END
 
