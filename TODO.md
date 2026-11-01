@@ -105,7 +105,7 @@ Not done yet:
 ### Bonemelt
 - [ ] The "successful save" subspell (delayed 1 second) is blocked when the save failed.
 
-### Summon Chimera (branch chimera)
+### Manifest Heritage: Chimera (branch chimera)
 - [ ] Install (BG2:EE): the .DEBUG shows the animation id used (0xEC33 or another) and no error.
 - [ ] The chimera appears with the IWD2 animation (walk, attacks, death), right size and selection circle; sounds right (battle cry, attacks, breath, damage, death).
 - [ ] 110 HP, AC 2, THAC0 7, 3 attacks per round, 2d6+3, hits creatures needing +3 weapons; immune to fear; 75% acid resistance.
