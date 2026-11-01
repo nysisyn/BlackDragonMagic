@@ -14,10 +14,10 @@
 // Resources
 //   SPWIxxx   Ghostly Tail (added through ADD_SPELL as WIZARD_NY_GHOSTLY_TAIL)
 //   NY#GTLX   tail strike
-//   NY#GTLB   spell icon (ability / memorised, on a stone plate), NY#GTLC
-//             spellbook icon: Nysi's spectral tail artwork reduced to 32 px
-//             (source in works/ghostly_tail_icon_source; the previous
-//             Entangle-based icons are kept in works/ghostly_tail_old_icons)
+//   NY#GTLB   spell icon (ability / memorised), NY#GTLC spellbook icon: the
+//             game's Entangle icons recoloured spectral turquoise (Nysi's
+//             spectral tail artwork version kept in
+//             works/ghostly_tail_artwork_icons)
 //   NY#GTLH   hit: Smashing Wave splash (IWDEE) recoloured spectral green
 //   NY#GTLD   portrait icon (the spellbook icon reduced), in STATDESC.2DA
 /////////////////////////////////////////////////////////////////////////////

@@ -83,7 +83,7 @@ BlackDragonMagic/
 | `NY#ROTS`, `NY#ROTD`, `NY#ROTN` | Rot of Ages, its disease and nausea |
 | `NY#ROTB`, `NY#ROTC` | Rot of Ages spell icons (Nysi's artwork, source in `works/rot_of_ages_icon_source`; previous Dolorous Decay ones in `works/rot_of_ages_old_icons`) |
 | `NY#GTLS`, `NY#GTLX` | Ghostly Tail and its strike |
-| `NY#GTLB`, `NY#GTLC`, `NY#GTLD`, `NY#GTLH` | Ghostly Tail icons (Nysi's artwork, source in `works/ghostly_tail_icon_source`; previous Entangle-based ones in `works/ghostly_tail_old_icons`), portrait icon and hit animation |
+| `NY#GTLB`, `NY#GTLC`, `NY#GTLD`, `NY#GTLH` | Ghostly Tail icons (the game's Entangle icons recoloured spectral turquoise; Nysi's artwork version in `works/ghostly_tail_artwork_icons`), portrait icon and hit animation |
 | `NY#MANS`, `NY#MANT`, `NY#MANP` | Mantidrake Spike, its spikes (item) and their poison |
 | `NY#MANSB`, `NY#MANSC` | Mantidrake Spike icons, also the spikes' item icon (Nysi's artwork, source in `works/mantidrake_spike_icon_source`; previous Ice Storm based ones in `works/mantidrake_spike_old_icons`) |
 | `NY#CSPS`, `NY#CSPX` | Corrosive Spit and its blindness + delayed damage on a failed save |
