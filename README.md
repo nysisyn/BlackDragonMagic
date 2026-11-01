@@ -67,6 +67,7 @@ BlackDragonMagic/
 | `NY#BDMO1`…`NY#BDMO6` | bite (off-hand item), one per stage: 1d6 + 2 acid, then 2d6 + 2d4 acid at 13; +1 to +5 as the claws |
 | `NY#BDMT` / `NY#BDMU` | Fight with / without the Bite (innate abilities that swap themselves) |
 | `NY#BDWNI` | wings icon: the game's `IWINGS01` darkened as black dragon wings |
+| `NY#BDFPI` | Frightful Presence icon: the game's Horror icon `SPWI205B` recoloured acid yellow |
 | `NY#BDCLI` | claws icon: the game's `ISHAPE05` blackened |
 | `NY#BDMI` | bite icon, also the Fight with / without the Bite abilities: the game's `IBZPLO02` (dragon head) blackened as the claws |
 | `NY#BDTL` | Draconic Tail strike |
