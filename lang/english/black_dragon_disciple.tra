@@ -50,6 +50,8 @@ FRIGHTFUL PRESENCE: The Black Dragon Disciple radiates an aura of draconic menac
 - 19th level: Breath Weapon damage increases to 12d4, and the line grows to 30 ft. long and 10 ft. wide.
 - 20th level: Draconic Apotheosis: +1 bonus to AC and immunity to sleep and paralysis. Acid Affinity reaches its peak. Claws now deal 2d8 slashing damage and count as +5 magical weapons.
 
+- High-level abilities (Throne of Bhaal): besides the sorcerer's extra spells and Summon Dark Planetar, the Black Dragon Disciple may learn the innate abilities of an adult black dragon: Breathbloom, Wing Buffet, Insect Swarm and Plant Growth.
+
 Disadvantages:
 - Casts one fewer spell per day at each spell level.
 - Casts spells as a sorcerer one level lower (minimum 1st level). For example, he gains access to 2nd-level spells at level 5 instead of 4.
@@ -242,3 +244,30 @@ Using this ability summons the bite; it can then be dismissed at will.~
 @73 = ~Fight without the Bite
 
 The Black Dragon Disciple fights with his claws alone, which lets him benefit from Single Weapon Style. The bite can be summoned again at will.~
+
+// High-level abilities (BG2:EE and EET)
+@80 = ~Breathbloom~
+@81 = ~Breathbloom
+
+The Black Dragon Disciple exhales with the strength of an adult black dragon. A great bloom of acid bursts in a 20-ft. radius, dealing 20d10 acid damage to enemies and throwing them back; those who are not resisting are also knocked unconscious for 3 seconds. A successful save vs. Breath halves the damage and negates the other effects. Party members are not affected.
+
+Range: long
+Usable once per day.~
+@82 = ~Wing Buffet~
+@83 = ~Wing Buffet
+
+The Black Dragon Disciple beats his wings with the strength of an adult black dragon. Enemies within 20 ft. take 1d8 crushing damage and are thrown back; they must also save vs. Spell at -4 or be knocked unconscious for 3 seconds. Party members are not affected.
+
+Usable once per day.~
+@84 = ~Insect Swarm~
+@85 = ~Insect Swarm
+
+Like a black dragon, the Black Dragon Disciple calls a swarm of venomous insects, spiders and centipedes from the swamp onto his enemies, without any casting time. For 3 rounds, enemies within 20 ft. of the target take 2 points of poison damage per second and have a 100% chance of failing to cast spells. There is no saving throw. Party members are not affected.
+
+Usable once per day.~
+@86 = ~Plant Growth~
+@87 = ~Plant Growth
+
+Like a black dragon, the Black Dragon Disciple makes the swamp plants burst from the ground in a 20-ft. radius. Creatures in the area must save vs. Spell at -10 or be entangled for 1 round: they cannot move and suffer a 2-point penalty to AC. Allies are affected; the Black Dragon Disciple himself is protected by Swamp Stride.
+
+Usable once per day.~
