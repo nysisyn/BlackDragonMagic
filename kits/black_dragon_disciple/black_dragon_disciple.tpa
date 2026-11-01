@@ -342,7 +342,7 @@ END
 // the disciple fights with the claws in the main hand (fist slot) and the
 // bite in the off hand: one more attack per round (engine rule for an
 // off-hand weapon).
-// Stages: levels 6, 8, 12, 13, 16, 20. 1d6 piercing + 1d4 acid, then 2d6 +
+// Stages: levels 6, 8, 12, 13, 16, 20. 1d6 piercing + 2 acid, then 2d6 +
 // 2d4 acid from level 13 (acid: effect of the attack, with the acid splash).
 // Enchantment and to-hit/damage bonus as the claws of the same level (+1 at
 // 6, +2 at 8, +3 at 12 and 13, +4 at 16, +5 at 20).
@@ -380,7 +380,13 @@ BEGIN
                                   thac0 = enchant damage_bonus = enchant
                                   dice_sides = 6 dice_thrown = thrown damage_type = 1 flags = 1
                          STR_VAR icon = EVAL ~%ny_icon_bite%~ RET h = header END
-    LPF ADD_ITEM_EFFECT INT_VAR type = 99 header = h opcode = 12  target = 2 timing = 1 parameter2 = 0x10000 dicenumber = thrown dicesize = 4 END
+    // acid: 2 fixed damage at levels 6-12 (one die of piercing damage), 2d4
+    // from level 13
+    PATCH_IF (thrown = 1) BEGIN
+      LPF ADD_ITEM_EFFECT INT_VAR type = 99 header = h opcode = 12  target = 2 timing = 1 parameter1 = 2 parameter2 = 0x10000 END
+    END ELSE BEGIN
+      LPF ADD_ITEM_EFFECT INT_VAR type = 99 header = h opcode = 12  target = 2 timing = 1 parameter2 = 0x10000 dicenumber = 2 dicesize = 4 END
+    END
     LPF ADD_ITEM_EFFECT INT_VAR type = 99 header = h opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 STR_VAR resource = ~SHACID~ END
 END
 
