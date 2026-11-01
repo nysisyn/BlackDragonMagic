@@ -1,9 +1,9 @@
 // Noms des composants
 @1 = ~Kit : Disciple du Dragon Noir (ensorceleur)~
-@2 = ~Sorts : Acidose, Pourriture des âges et Queue spectrale (niveau 1), Épines de mantidrake et Crachat corrosif (niveau 2), Coup de queue barbelée de wyverne, Flaque de souffle du dragon noir et Boule de souffle du dragon noir (niveau 3), Souffle étourdissant du dragon noir (niveau 4), Souffle animé du dragon noir (niveau 7), Fonte-des-Os (niveau 8)~
+@2 = ~Sorts : Acidose, Pourriture des âges et Queue spectrale (niveau 1), Épines de mantidrake (niveau 2), Coup de queue barbelée de wyverne, Flaque de souffle du dragon noir et Boule de souffle du dragon noir (niveau 3), Souffle étourdissant du dragon noir (niveau 4), Souffle animé du dragon noir (niveau 7), Fonte-des-Os (niveau 8)~
 @3 = ~Ajustement : Sphère de vitriol, version 5e édition~
 
 // Messages d'installation
 @10 = ~Ce composant nécessite une Enhanced Edition.~
-@11 = ~Fonte-des-Os est un sort de niveau 8 : il n'est installé que sur BG2:EE et EET. Acidose, Pourriture des âges, Queue spectrale, Épines de mantidrake, Crachat corrosif, Coup de queue barbelée de wyverne, Flaque de souffle du dragon noir, Boule de souffle du dragon noir, Souffle étourdissant du dragon noir et Souffle animé du dragon noir ont bien été installés.~
+@11 = ~Fonte-des-Os est un sort de niveau 8 : il n'est installé que sur BG2:EE et EET. Acidose, Pourriture des âges, Queue spectrale, Épines de mantidrake, Coup de queue barbelée de wyverne, Flaque de souffle du dragon noir, Boule de souffle du dragon noir, Souffle étourdissant du dragon noir et Souffle animé du dragon noir ont bien été installés.~
 @12 = ~Sphère de vitriol est introuvable dans SPELL.IDS (WIZARD_VITRIOLIC_SPHERE). Installez d'abord IWDification, ou jouez à IWD:EE.~

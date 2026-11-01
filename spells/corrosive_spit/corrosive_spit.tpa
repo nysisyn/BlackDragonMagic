@@ -1,5 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////
-// Corrosive Spit - wizard, level 2, Conjuration
+// Corrosive Spit - no longer a learnable spell (not added to the wizard
+// spell list): only the base of the animated breath's spit (NY#ABRX, see
+// spells/animate_breath). Kept as a full spell so its values stay readable.
 //
 // Melf's Acid Arrow (SPWI211) with half its range (30 instead of 60), same
 // projectile (ARROWFLG), casting time 2.
@@ -8,8 +10,8 @@
 //     at the start of the next round
 //
 // Resources
-//   SPWIxxx   Corrosive Spit (added through ADD_SPELL as
-//             WIZARD_NY_CORROSIVE_SPIT)
+//   NY#CSPS   Corrosive Spit (copied as NY#ABRX by Black Dragon Animate
+//             Breath)
 //   NY#CSPX   blindness + delayed damage on a failed save
 //   NY#CSPB   spell icon (ability / memorised, on a stone plate), NY#CSPC
 //             spellbook icon: Nysi's acid spit artwork reduced to 32 px
@@ -43,4 +45,3 @@ CREATE ~SPL~ ~NY#CSPS~
   LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 timing = 1 parameter1 = 1 parameter2 = 1
                                savingthrow = 1 resist_dispel = 1 STR_VAR resource = ~NY#CSPX~ END
 
-ADD_SPELL ~override/NY#CSPS.spl~ 2 2 ~WIZARD_NY_CORROSIVE_SPIT~

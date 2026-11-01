@@ -70,10 +70,9 @@ Not done yet:
 - [ ] 1d4 piercing; poison 2d4 only on a failed save vs. Death at -2, poison visual on the same roll.
 - [ ] New icons (spikes artwork) for the spell and the spikes item; spikes disappear when used up; behaviour after rest / reload as Melf's Minute Meteors.
 
-### Corrosive Spit
+### Corrosive Spit (only the animated breath's spit now)
 - [ ] Acid arrow projectile, range half that of Melf's Acid Arrow; 5d4 acid on impact, magic resistance blocks it.
 - [ ] Failed save vs. Spell: blinded for 1 round and 5d4 acid at the next round, combat log line; nothing more on a successful save.
-- [ ] Icons (acid spit artwork).
 
 ### Wyvern Barbed Tail Strike
 - [ ] Melee range (range 1), casting time 0; 1d12 piercing and blood splash; magic resistance blocks it.
