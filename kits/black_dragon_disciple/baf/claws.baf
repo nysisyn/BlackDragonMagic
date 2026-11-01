@@ -1,12 +1,13 @@
-// Black Dragon Disciple: claws in the fist slot
-// The engine does not save the fist slot: after a load, the default fist
-// is back. For each party member of the kit (KIT.IDS value filled in at
-// install time) who carries none of the claws NY#BDCL1..6, put the claws
-// of their stage back (stages: levels 1, 4, 8, 12, 16, 20), and reset the
-// stage memory NY#BDDF1..6 so the block below selects the fist again: this
-// refreshes the weapon button (icon) and the 2 attacks per round.
+// Black Dragon Disciple: claws in the two weapon slots
+// The claws are created in SLOT_WEAPON0 and SLOT_WEAPON1 by the CLAB, and
+// these slots are saved. This script is only a safety net and a refresh:
+// - if a party member of the kit (KIT.IDS value filled in at install time)
+//   carries none of the claws NY#BDCL1..6, give back the claws of his stage
+//   (stages: levels 1, 4, 8, 12, 16, 20);
+// - at each new stage, select the other weapon slot then the first one, so
+//   the engine applies the new claws' equipped effects (2 attacks per round);
+// - retries if he has fewer than 2 attacks per round with his claws.
 // Continue() lets the rest of the script run.
-// Method of the Arcane Fist kit (global script restoring the fists).
 
 IF
   Kit(Player1,%ny_kit_value%)
@@ -645,13 +646,8 @@ THEN
 END
 
 
-// Claws of a new stage (level up): the engine only applies the equipped
-// effects of the fist slot (2 attacks per round) when the fist is selected
-// again, as when a weapon is put on then taken off. For a disciple fighting
-// unarmed with claws he has not used yet (stage stored per party slot in
-// NY#BDDF1..6), select a weapon slot then the fist again.
-// The retry counter NY#BDDR1..6 is reset here and when the claws are put
-// back after a load (see the retries at the end).
+// New stage: claws not used yet (stage stored per party slot in NY#BDDF1..6).
+// The retry counter NY#BDDR1..6 is reset here.
 
 IF
   Kit(Player1,%ny_kit_value%)
@@ -661,8 +657,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF1","GLOBAL",1)
     SetGlobal("NY#BDDR1","GLOBAL",0)
+    ActionOverride(Player1,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player1,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player1,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -674,8 +670,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF1","GLOBAL",2)
     SetGlobal("NY#BDDR1","GLOBAL",0)
+    ActionOverride(Player1,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player1,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player1,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -687,8 +683,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF1","GLOBAL",3)
     SetGlobal("NY#BDDR1","GLOBAL",0)
+    ActionOverride(Player1,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player1,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player1,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -700,8 +696,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF1","GLOBAL",4)
     SetGlobal("NY#BDDR1","GLOBAL",0)
+    ActionOverride(Player1,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player1,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player1,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -713,8 +709,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF1","GLOBAL",5)
     SetGlobal("NY#BDDR1","GLOBAL",0)
+    ActionOverride(Player1,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player1,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player1,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -726,8 +722,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF1","GLOBAL",6)
     SetGlobal("NY#BDDR1","GLOBAL",0)
+    ActionOverride(Player1,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player1,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player1,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -739,8 +735,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF2","GLOBAL",1)
     SetGlobal("NY#BDDR2","GLOBAL",0)
+    ActionOverride(Player2,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player2,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player2,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -752,8 +748,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF2","GLOBAL",2)
     SetGlobal("NY#BDDR2","GLOBAL",0)
+    ActionOverride(Player2,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player2,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player2,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -765,8 +761,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF2","GLOBAL",3)
     SetGlobal("NY#BDDR2","GLOBAL",0)
+    ActionOverride(Player2,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player2,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player2,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -778,8 +774,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF2","GLOBAL",4)
     SetGlobal("NY#BDDR2","GLOBAL",0)
+    ActionOverride(Player2,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player2,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player2,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -791,8 +787,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF2","GLOBAL",5)
     SetGlobal("NY#BDDR2","GLOBAL",0)
+    ActionOverride(Player2,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player2,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player2,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -804,8 +800,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF2","GLOBAL",6)
     SetGlobal("NY#BDDR2","GLOBAL",0)
+    ActionOverride(Player2,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player2,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player2,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -817,8 +813,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF3","GLOBAL",1)
     SetGlobal("NY#BDDR3","GLOBAL",0)
+    ActionOverride(Player3,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player3,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player3,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -830,8 +826,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF3","GLOBAL",2)
     SetGlobal("NY#BDDR3","GLOBAL",0)
+    ActionOverride(Player3,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player3,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player3,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -843,8 +839,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF3","GLOBAL",3)
     SetGlobal("NY#BDDR3","GLOBAL",0)
+    ActionOverride(Player3,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player3,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player3,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -856,8 +852,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF3","GLOBAL",4)
     SetGlobal("NY#BDDR3","GLOBAL",0)
+    ActionOverride(Player3,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player3,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player3,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -869,8 +865,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF3","GLOBAL",5)
     SetGlobal("NY#BDDR3","GLOBAL",0)
+    ActionOverride(Player3,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player3,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player3,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -882,8 +878,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF3","GLOBAL",6)
     SetGlobal("NY#BDDR3","GLOBAL",0)
+    ActionOverride(Player3,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player3,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player3,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -895,8 +891,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF4","GLOBAL",1)
     SetGlobal("NY#BDDR4","GLOBAL",0)
+    ActionOverride(Player4,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player4,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player4,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -908,8 +904,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF4","GLOBAL",2)
     SetGlobal("NY#BDDR4","GLOBAL",0)
+    ActionOverride(Player4,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player4,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player4,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -921,8 +917,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF4","GLOBAL",3)
     SetGlobal("NY#BDDR4","GLOBAL",0)
+    ActionOverride(Player4,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player4,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player4,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -934,8 +930,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF4","GLOBAL",4)
     SetGlobal("NY#BDDR4","GLOBAL",0)
+    ActionOverride(Player4,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player4,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player4,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -947,8 +943,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF4","GLOBAL",5)
     SetGlobal("NY#BDDR4","GLOBAL",0)
+    ActionOverride(Player4,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player4,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player4,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -960,8 +956,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF4","GLOBAL",6)
     SetGlobal("NY#BDDR4","GLOBAL",0)
+    ActionOverride(Player4,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player4,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player4,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -973,8 +969,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF5","GLOBAL",1)
     SetGlobal("NY#BDDR5","GLOBAL",0)
+    ActionOverride(Player5,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player5,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player5,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -986,8 +982,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF5","GLOBAL",2)
     SetGlobal("NY#BDDR5","GLOBAL",0)
+    ActionOverride(Player5,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player5,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player5,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -999,8 +995,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF5","GLOBAL",3)
     SetGlobal("NY#BDDR5","GLOBAL",0)
+    ActionOverride(Player5,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player5,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player5,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -1012,8 +1008,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF5","GLOBAL",4)
     SetGlobal("NY#BDDR5","GLOBAL",0)
+    ActionOverride(Player5,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player5,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player5,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -1025,8 +1021,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF5","GLOBAL",5)
     SetGlobal("NY#BDDR5","GLOBAL",0)
+    ActionOverride(Player5,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player5,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player5,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -1038,8 +1034,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF5","GLOBAL",6)
     SetGlobal("NY#BDDR5","GLOBAL",0)
+    ActionOverride(Player5,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player5,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player5,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -1051,8 +1047,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF6","GLOBAL",1)
     SetGlobal("NY#BDDR6","GLOBAL",0)
+    ActionOverride(Player6,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player6,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player6,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -1064,8 +1060,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF6","GLOBAL",2)
     SetGlobal("NY#BDDR6","GLOBAL",0)
+    ActionOverride(Player6,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player6,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player6,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -1077,8 +1073,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF6","GLOBAL",3)
     SetGlobal("NY#BDDR6","GLOBAL",0)
+    ActionOverride(Player6,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player6,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player6,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -1090,8 +1086,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF6","GLOBAL",4)
     SetGlobal("NY#BDDR6","GLOBAL",0)
+    ActionOverride(Player6,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player6,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player6,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -1103,8 +1099,8 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF6","GLOBAL",5)
     SetGlobal("NY#BDDR6","GLOBAL",0)
+    ActionOverride(Player6,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player6,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player6,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -1116,19 +1112,18 @@ THEN
   RESPONSE #100
     SetGlobal("NY#BDDF6","GLOBAL",6)
     SetGlobal("NY#BDDR6","GLOBAL",0)
+    ActionOverride(Player6,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player6,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player6,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
 
 // Retries: the one-off selection above can be lost, for instance during a
-// cutscene (start of Throne of Bhaal: the claws gave a single attack). While
-// a disciple fights unarmed with his claws (HasItemEquipedReal: the fist is
-// selected) and has fewer than 2 attacks per round, select again, at most
-// once per round and 5 times (NY#BDDR1..6, reset at each new stage and after
-// each load). The limit keeps the script from interrupting the player for
-// ever when an effect lowers the attacks (Slow...).
+// cutscene (start of Throne of Bhaal). While a disciple fights with his
+// claws and has fewer than 2 attacks per round, select again, at most once
+// per round and 5 times (NY#BDDR1..6, reset at each new stage). The limit
+// keeps the script from interrupting the player for ever when an effect
+// lowers the attacks (Slow...).
 
 IF
   Kit(Player1,%ny_kit_value%)
@@ -1139,7 +1134,6 @@ IF
   HasItemEquipedReal("NY#BDCL4",Player1)
   HasItemEquipedReal("NY#BDCL5",Player1)
   HasItemEquipedReal("NY#BDCL6",Player1)
-  !HasWeaponEquiped(Player1)
   CheckStatLT(Player1,2,NUMBEROFATTACKS)
   GlobalLT("NY#BDDR1","GLOBAL",5)
   !GlobalTimerNotExpired("NY#BDDT1","GLOBAL")
@@ -1147,8 +1141,8 @@ THEN
   RESPONSE #100
     IncrementGlobal("NY#BDDR1","GLOBAL",1)
     SetGlobalTimer("NY#BDDT1","GLOBAL",6)
+    ActionOverride(Player1,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player1,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player1,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -1161,7 +1155,6 @@ IF
   HasItemEquipedReal("NY#BDCL4",Player2)
   HasItemEquipedReal("NY#BDCL5",Player2)
   HasItemEquipedReal("NY#BDCL6",Player2)
-  !HasWeaponEquiped(Player2)
   CheckStatLT(Player2,2,NUMBEROFATTACKS)
   GlobalLT("NY#BDDR2","GLOBAL",5)
   !GlobalTimerNotExpired("NY#BDDT2","GLOBAL")
@@ -1169,8 +1162,8 @@ THEN
   RESPONSE #100
     IncrementGlobal("NY#BDDR2","GLOBAL",1)
     SetGlobalTimer("NY#BDDT2","GLOBAL",6)
+    ActionOverride(Player2,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player2,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player2,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -1183,7 +1176,6 @@ IF
   HasItemEquipedReal("NY#BDCL4",Player3)
   HasItemEquipedReal("NY#BDCL5",Player3)
   HasItemEquipedReal("NY#BDCL6",Player3)
-  !HasWeaponEquiped(Player3)
   CheckStatLT(Player3,2,NUMBEROFATTACKS)
   GlobalLT("NY#BDDR3","GLOBAL",5)
   !GlobalTimerNotExpired("NY#BDDT3","GLOBAL")
@@ -1191,8 +1183,8 @@ THEN
   RESPONSE #100
     IncrementGlobal("NY#BDDR3","GLOBAL",1)
     SetGlobalTimer("NY#BDDT3","GLOBAL",6)
+    ActionOverride(Player3,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player3,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player3,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -1205,7 +1197,6 @@ IF
   HasItemEquipedReal("NY#BDCL4",Player4)
   HasItemEquipedReal("NY#BDCL5",Player4)
   HasItemEquipedReal("NY#BDCL6",Player4)
-  !HasWeaponEquiped(Player4)
   CheckStatLT(Player4,2,NUMBEROFATTACKS)
   GlobalLT("NY#BDDR4","GLOBAL",5)
   !GlobalTimerNotExpired("NY#BDDT4","GLOBAL")
@@ -1213,8 +1204,8 @@ THEN
   RESPONSE #100
     IncrementGlobal("NY#BDDR4","GLOBAL",1)
     SetGlobalTimer("NY#BDDT4","GLOBAL",6)
+    ActionOverride(Player4,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player4,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player4,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -1227,7 +1218,6 @@ IF
   HasItemEquipedReal("NY#BDCL4",Player5)
   HasItemEquipedReal("NY#BDCL5",Player5)
   HasItemEquipedReal("NY#BDCL6",Player5)
-  !HasWeaponEquiped(Player5)
   CheckStatLT(Player5,2,NUMBEROFATTACKS)
   GlobalLT("NY#BDDR5","GLOBAL",5)
   !GlobalTimerNotExpired("NY#BDDT5","GLOBAL")
@@ -1235,8 +1225,8 @@ THEN
   RESPONSE #100
     IncrementGlobal("NY#BDDR5","GLOBAL",1)
     SetGlobalTimer("NY#BDDT5","GLOBAL",6)
+    ActionOverride(Player5,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player5,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player5,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END
 
@@ -1249,7 +1239,6 @@ IF
   HasItemEquipedReal("NY#BDCL4",Player6)
   HasItemEquipedReal("NY#BDCL5",Player6)
   HasItemEquipedReal("NY#BDCL6",Player6)
-  !HasWeaponEquiped(Player6)
   CheckStatLT(Player6,2,NUMBEROFATTACKS)
   GlobalLT("NY#BDDR6","GLOBAL",5)
   !GlobalTimerNotExpired("NY#BDDT6","GLOBAL")
@@ -1257,7 +1246,7 @@ THEN
   RESPONSE #100
     IncrementGlobal("NY#BDDR6","GLOBAL",1)
     SetGlobalTimer("NY#BDDT6","GLOBAL",6)
+    ActionOverride(Player6,SelectWeaponAbility(SLOT_WEAPON1,0))
     ActionOverride(Player6,SelectWeaponAbility(SLOT_WEAPON0,0))
-    ActionOverride(Player6,SelectWeaponAbility(SLOT_FIST,0))
     Continue()
 END

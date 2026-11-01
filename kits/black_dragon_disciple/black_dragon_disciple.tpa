@@ -12,9 +12,8 @@
 //                the sorcerer's own progression, gives the druid's THAC0
 //   NY#BDQ02..50 spell slots of a sorcerer one level lower (CLAB, one per
 //                level, each one replaces the previous one)
-//   NY#BDZ1..6   put the claws of the stage in the fist slot (CLAB, and the
-//                global script baf/claws.baf after a load)
-//   NY#BDCL1..6  claws (fist item), one per stage: levels 1, 4, 8, 12, 16, 20
+//   NY#BDZ1..6   put the claws of the stage in both weapon slots (CLAB)
+//   NY#BDCL1..6  claws (weapon item), one per stage: levels 1, 4, 8, 12, 16, 20
 //   NY#BDMZ1..6  put the bite of the stage in the off-hand slot (CLAB)
 //   NY#BDMT      Fight with the Bite / NY#BDMU  Fight without the Bite
 //   NY#BDMO1..6  bite (off-hand item), one per stage: levels 6, 8, 12, 13,
@@ -69,9 +68,7 @@ OUTER_SET ny_str_wings_off_d = RESOLVE_STR_REF (@64)
 // Icons
 // ---------------------------------------------------------------------------
 // Claws: the game's werebear claw icon (ISHAPE05), blackened as black
-// dragon scales. After a load the weapon button may show the default fist:
-// the global script selects the fist again after giving the claws back
-// (see baf/claws.baf), to refresh it.
+// dragon scales.
 COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdcli.bam~ ~override~
 OUTER_SPRINT ny_icon_claws ~NY#BDCLI~
 // Acid Breath: the game's Dragon Disciple breath icon (SPDD03B), the
@@ -286,9 +283,8 @@ COPY_EXISTING ~NY#BDL09.spl~ ~override~
 
 
 // ---------------------------------------------------------------------------
-// Draconic Claws: one item per stage, in the fist slot (see below): their
-// equipped effects (2 attacks per round) only apply when the disciple fights
-// unarmed, which is always the case since he cannot use weapons.
+// Draconic Claws: one item per stage, in both weapon slots (see below):
+// their equipped effects give 2 attacks per round.
 // Stages: levels 1, 4, 8, 12, 16, 20.
 // ---------------------------------------------------------------------------
 DEFINE_ACTION_FUNCTION NY#BDD_CLAWS
@@ -333,33 +329,40 @@ LAF NY#BDD_CLAWS INT_VAR stage = 5 name = ny_str_claws desc = ny_str_claws_d5 si
 LAF NY#BDD_CLAWS INT_VAR stage = 6 name = ny_str_claws desc = ny_str_claws_d6 sides = 8  thrown = 2 STR_VAR icon = EVAL ~%ny_icon_claws%~ END
 
 // ---------------------------------------------------------------------------
-// Claws in the fist slot
+// Claws in the two weapon slots
 //
-// NY#BDZn.SPL removes the claws of the previous stages (opcode 112) and
-// creates the claws NY#BDCLn (opcode 143, slot 10 = FIST). It is
+// NY#BDZn.SPL removes the claws of the previous stages (opcode 112, twice:
+// one copy per slot) and creates the claws NY#BDCLn in both weapon slots
+// (opcode 143, slots 35 and 36 = SLOT_WEAPON0 / SLOT_WEAPON1). It is
 // applied by the CLAB at levels 1, 4, 8, 12, 16 and 20.
-// The engine does not save the fist slot: after a load the default fist is
-// back. The global script baf/claws.baf puts the claws back (method of the
-// Arcane Fist kit). Repeating or permanent effects (opcodes 177, 272) were
-// tried first: they are kept in saved games but never brought the claws back.
+// The claws were first in the fist slot, which the engine does not save
+// (the global script had to put them back after each load, and the weapon
+// button lost its icon). The weapon slots are saved, and the disciple can
+// never hold another weapon: whichever weapon slot is selected, he fights
+// with his claws. The global script baf/claws.baf still gives them back if
+// both copies are missing, and selects the weapon slot again at each new
+// stage so the engine applies the new claws' effects (2 attacks per round).
 // ---------------------------------------------------------------------------
 OUTER_FOR (s = 1; s <= 6; ++s) BEGIN
   CREATE ~SPL~ ~NY#BDZ%s%~
     LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x200 END
     LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1 level = 1 casting_time = 0 RET h = header END
     // remove the claws of the previous stages first (opcode 112 removes
-    // equipped items): opcode 143 may not replace an item already in the slot
+    // equipped items; twice, one copy per weapon slot): opcode 143 may not
+    // replace an item already in the slot
     FOR (k = 1; k < s; ++k) BEGIN
       LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 112 target = 2 timing = 1 STR_VAR resource = EVAL ~NY#BDCL%k%~ END
+      LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 112 target = 2 timing = 1 STR_VAR resource = EVAL ~NY#BDCL%k%~ END
     END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 143 target = 2 timing = 1 parameter1 = 10 STR_VAR resource = EVAL ~NY#BDCL%s%~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 143 target = 2 timing = 1 parameter1 = 35 STR_VAR resource = EVAL ~NY#BDCL%s%~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 143 target = 2 timing = 1 parameter1 = 36 STR_VAR resource = EVAL ~NY#BDCL%s%~ END
 END
 
 
 // ---------------------------------------------------------------------------
 // Draconic Bite (from the branch "bite", tested in game): one item per
 // stage, in the off-hand slot (opcode 143, slot 9 = SHIELD) from level 6, so
-// the disciple fights with the claws in the main hand (fist slot) and the
+// the disciple fights with the claws in the main hand (weapon slot) and the
 // bite in the off hand: one more attack per round (engine rule for an
 // off-hand weapon).
 // Stages: levels 6, 8, 12, 13, 16, 20. 1d6 piercing + 2 acid, then 2d6 +

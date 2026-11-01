@@ -20,7 +20,8 @@ To check:
 - [x] Bite: two-weapon penalties lowered by Two-Weapon Style (THAC0 3 / 7 at level 16 with 2 points).
 - [x] Bite toggle: Fight without / with the Bite remove and put back the bite of the current stage; the abilities swap.
 - [ ] Bite: the claws' retry script (fewer than 2 attacks) does not fire for nothing while the bite is equipped.
-- [ ] Claws icon (blackened werebear claw) on the weapon button, at creation and **after a load** (the script selects the fist again after giving the claws back).
+- [x] Claws icon on the weapon button, and Blindsense (attacks invisible enemies), bite toggle, icons: checked.
+- [ ] **Claws in both weapon slots** (new character): both weapon buttons show the claws, 2 attacks per round with either slot, still there after a load; new claws at 4/8/12/16/20 replace both copies. What happens to the starting weapon (quarterstaff...) already in a weapon slot at creation?
 - [ ] New icons in game: breath, claws, bite (large), wings, Frightful Presence.
 - [ ] Portrait icons: Frightful Presence while the aura is on (gone when dismissed), bite while it is out, wings while spread. Wings: +2 AC.
 - [ ] Swamp Stride at level 2: immunity to Entangle, Grease, Web.
@@ -28,7 +29,7 @@ To check:
 - [x] Draconic Tail at level 9: one strike per round on the nearest enemy in melee reach, 1d10 crushing + 1 second unconscious on a failed save vs. Breath; combat log line. One save for both effects?
 - [x] Draconic Wings at level 14: equipped in the helmet slot, bonuses applied. Still to check: the wings shown on the character, a helmet already there, after a load.
 - [x] Acid Affinity damage bonus (opcode 332, type acid, as the Robe of Red Flames): bite acid 4 → 5 at level 20 (+25%), shown in the combat log as "(1 damage bonus)".
-- [ ] Blindsense at level 10: immunity to blindness, invisible creatures seen and targetable.
+- [x] Blindsense at level 10: immunity to blindness, invisible creatures seen and targetable.
 - [ ] Frightful Presence at level 18: no longer hits the disciple and his allies (projectile flag 0x40, enemies only).
 - [ ] Apotheosis at level 20: immunity to sleep and paralysis, acid immunity (5 × 20%).
 - [x] Druid THAC0: 18 at level 4, 16 at 7, 14 at 10, 12 at 13 (before Strength and weapon bonuses).
