@@ -101,7 +101,6 @@ Not done yet:
 - [ ] Spits Corrosive Spit once per round while no enemy is in melee reach, without casting animation; melee otherwise; the spit's blindness and second hit work from the creature.
 - [ ] Stays on the party's side when caught in the caster's spells (CONTROLLED, as the summoned genies); can be selected and ordered.
 - [ ] Animation SLIME_OLIVE shows (green ooze), the spit casts with the slime animation; balance of 65 HP / AC 4 / THAC0 11 against the summoned Djinni and Efreeti.
-- [ ] Placeholder icon (SPPR516 recoloured) to replace.
 
 ### Bonemelt
 - [ ] The "successful save" subspell (delayed 1 second) is blocked when the save failed.
