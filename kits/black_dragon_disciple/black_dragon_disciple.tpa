@@ -26,6 +26,7 @@
 //   NY#BDWI      the wings (helmet slot item)
 //   NY#BDFP      Frightful Presence ON  / NY#BDFQ  OFF
 //   NY#BDFPE     aura pulse (EFF)      / NY#BDFPA  pulse spell
+//   NY#BDBL, NY#BDWB, NY#BDIS, NY#BDPG   high-level abilities (hla/hla.tpa)
 //
 /////////////////////////////////////////////////////////////////////////////
 
@@ -593,6 +594,15 @@ CREATE ~SPL~ ~NY#BDFQ~
 // here (weapon proficiencies, alignments, race tables, CLASTEXT/SODCLTXT,
 // CLSRCREQ, HPCLASS, NUMWSLOT, starting equipment...) copies its row.
 // ---------------------------------------------------------------------------
+// High-level abilities (BG2:EE and EET): own table LUNYB.2DA, see
+// hla/hla.tpa. On BG:EE the Dragon Disciple's LUABBR row is copied.
+ACTION_IF GAME_IS ~bg2ee eet~ BEGIN
+  INCLUDE ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/hla.tpa~
+  OUTER_SPRINT ny_luabbr ~NYB~
+END ELSE BEGIN
+  OUTER_SPRINT ny_luabbr ~~
+END
+
 OUTER_SET ny_kit_lower = RESOLVE_STR_REF (@1)
 OUTER_SET ny_kit_mixed = RESOLVE_STR_REF (@2)
 OUTER_SET ny_kit_help  = RESOLVE_STR_REF (@3)
@@ -611,6 +621,7 @@ LAF ADD_KIT_EX
     //            STR DEX CON INT WIS CHA
     abclasrq   = ~0   0   0   9   0   9~     // sorcerer requirements
     abclsmod   = ~0   0   0   0   0   0~     // no ability modifier
+    luabbr     = EVAL ~%ny_luabbr%~           // HLA table LUNYB.2DA (BG2:EE, EET)
   RET
     ny_kit_id = kit_id
 END

@@ -79,6 +79,12 @@ BlackDragonMagic/
 | `NY#BDWG` / `NY#BDWH`, `NY#BDWI` | Draconic Wings spread / fold, and the wings (helmet slot item, copy of the game's `WINGS01` / `BDWINGS`) |
 | `NY#BDFP` / `NY#BDFQ` | Frightful Presence on / off |
 | `NY#BDFPA`, `NY#BDFPE` | aura pulse (spell + EFF) |
+| `LUNYB.2DA`, `LUABBR.2DA` | HLA table of the kit (BG2EE / EET, abbreviation `NYB`): extra spells of levels 6, 7 and 8, Summon Dark Planetar, and the 4 black dragon HLA below |
+| `NY#BDBL`, `NY#BDBLV`, `NY#BDBLA` | Breathbloom HLA (copy of `SPWI922` Dragon's Breath, acid instead of fire) and its visual (`SPDRGNBR` VVC / BAM recoloured acid yellow) |
+| `NY#BDBLB`, `NY#BDBLC` | Breathbloom icons: the former Black Dragon Breathball ones (`SPWI922` recoloured acid yellow) |
+| `NY#BDWB` | Wing Buffet HLA (copy of the black dragon's `SPIN695`, save vs. Spell at -4 instead of -10, centred on the caster) |
+| `NY#BDIS` | Insect Swarm HLA (copy of the black dragon's `SPIN689`, unchanged) |
+| `NY#BDPG` | Plant Growth HLA (copy of the black dragon's `SPIN688`, unchanged) |
 | `WEAPPROF.2DA` | kit column: 0 everywhere except Single Weapon Style (1) and Two-Weapon Style (3) |
 | all weapons (`.ITM`) | item usability effect (opcode 319) forbidding them to the kit |
 | `NY#ACDS`, `NY#ACDX` | Acidosis and its retaliation |
@@ -94,7 +100,7 @@ BlackDragonMagic/
 | `NY#WBTS`, `NY#WBTP` | Wyvern Barbed Tail Strike and its poison |
 | `NY#WBTB`, `NY#WBTC` | Wyvern Barbed Tail Strike icons: the game's `SPPR411` (skull) recoloured toxic lime green (Nysi's artwork version in `works/wyvern_tail_artwork_icons`, source in `works/wyvern_tail_icon_source`; Death Ward based ones in `works/wyvern_tail_old_icons`) |
 | `NY#BDBB`, `NY#BDBBP` | Black Dragon Breathball and its projectile |
-| `NY#BDBBB`, `NY#BDBBC` | Black Dragon Breathball icons: the game's `SPWI922` recoloured acid yellow (Nysi's artwork version in `works/breathball_artwork_icons`, source in `works/breathball_icon_source`) |
+| `NY#BDBBB`, `NY#BDBBC` | Black Dragon Breathball icons: placeholder, the game's Fireball icons `SPWI304` recoloured acid yellow (the former `SPWI922` based ones went to Breathbloom; Nysi's artwork version in `works/breathball_artwork_icons`, source in `works/breathball_icon_source`) |
 | `NY#SBBS`, `NY#SBBT` | Stunning Black Dragon Breath and its line projectile |
 | `NY#SBBB`, `NY#SBBC` | Stunning Black Dragon Breath icons: the game's `SPCL626` (dragon head) recoloured acid yellow (Nysi's artwork version in `works/stunning_breath_artwork_icons`, source in `works/stunning_breath_icon_source`) |
 | `NY#PBRS`, `NY#PBRP` | Black Dragon Pooling Breath and its projectile (Stinking Cloud's area with acid puddles) |
@@ -129,7 +135,7 @@ These points were not settled on the Trello cards:
 - **Skeletons**: only race `SKELETON` is destroyed.
 - **Acidosis**: acid burst on the caster when cast and acid splash on each attacker hit by the retaliation (BAMs from the old DragonAscendant Acidosis). Portrait icon: Beltyn's Burning Blood icon (IWDEE) recoloured in acid green, added to `STATDESC.2DA`. Spell icons: Nysi's acid drop artwork reduced to 32 px (on a stone plate for the memorised icon, source in `works/acidosis_icon_source`); the previous ones (Beltyn's Burning Blood figure, then the enlarged portrait drop in `drop/`) are kept in `works/acidosis_old_icons`. Casting again replaces the active version; the THAC0 penalty refreshes instead of stacking.
 - **Fewer spells**: one spell slot less per spell level (opcode 42, -1 on levels 1-9, applied at level 1), on top of the one-level delay. The Dragon Disciple uses `MXSPLDD.2DA`, a table the engine ties to that kit only.
-- **HLA**: still those of the Dragon Disciple (copied by ADD_KIT_EX); unique HLA to come.
+- **HLA** (BG2EE / EET): own table `LUNYB.2DA` (ADD_KIT_EX `luabbr`). Kept from the sorcerer: extra spells of levels 6, 7, 8 and Summon Dark Planetar. Removed: Energy Blades, Improved Alacrity, Dragon's Breath, Summon Planetar, Comet. Added, from the abilities of the black dragon Nizidramanii'yt (`DRAGBLAC.BCS`), as innate abilities (once per day per pick): Breathbloom (Dragon's Breath in acid, up to 3 picks), Wing Buffet, Insect Swarm, Plant Growth (up to 2 picks each). Dragon Fear left out: Frightful Presence already covers it. On BG:EE the Dragon Disciple's LUABBR row is still copied.
 - **Rot of Ages**: touch (range 1, as Vampiric Touch). One save vs. Death for the whole disease: the spell casts the disease subspell with the save (opcode 146 at the caster level, max 10). "Suffering from Rot of Ages" is a spell state set for the disease duration; the next casting checks it (opcode 326 + SPLPROT stat 0x112) before setting its own. Nausea as in the game's Stinking Cloud: unconscious for 2 rounds, not woken by damage, "Nauseated" icon. Disease: "Diseased" icon, 1 poison damage at the end of each round. Combat log lines: blinded, diseased, nauseated. Icons: Nysi's rotting cloud artwork (previously Dolorous Decay recoloured in necrotic green).
 - **Ghostly Tail**: built like Acidosis / Fire Shield. Opcode 232 on the caster, condition HPPercentLT(Myself,102) (always true, checked once per round), target NearestEnemyOf: the strike subspell flies with the range-limited projectile `NY#MELEE` (about 12 ft.), so it only reaches an enemy in melee reach; no enemy that close = no strike that round. 1d4 cold damage, no save (a save vs. Spell made it useless against creatures with good saves such as wyverns), no magic resistance, combat log line on each strike, casting time 1, 1 round per level without cap, portrait icon (spellbook icon reduced, `NY#GTLD`) for the duration. Casting again replaces the active tail.
 - **Mantidrake Spike**: built like Melf's Minute Meteors: the spell creates one spike per level in a quick slot (opcode 111); the item is `MELFMET.ITM` patched at install (1d4 piercing, +5 to hit, +2 enchantment, 3 attacks per round, dart projectile, poison 2d4 and the game's poison visual on a failed save vs. Death at -2, one roll through the subspell `NY#MANP`).

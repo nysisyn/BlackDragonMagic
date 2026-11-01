@@ -17,9 +17,11 @@
 //             WIZARD_NY_BREATHBALL)
 //   NY#BDBBP  projectile
 //   NY#BDBBB  spell icon (ability / memorised, on a stone plate), NY#BDBBC
-//             spellbook icon: the game's SPWI922 icons recoloured in the acid
-//             yellow of the kit's breath (Nysi's acid dragon artwork version
-//             in works/breathball_artwork_icons, its source in
+//             spellbook icon: placeholder, the game's Fireball icons
+//             (SPWI304B / C) recoloured in the acid yellow of the kit's
+//             breath. The former icons (SPWI922 in acid yellow) went to the
+//             kit's Breathbloom HLA. Nysi's acid dragon artwork version in
+//             works/breathball_artwork_icons, its source in
 //             works/breathball_icon_source)
 /////////////////////////////////////////////////////////////////////////////
 

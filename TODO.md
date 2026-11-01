@@ -37,7 +37,15 @@ To check:
 - [x] Start of Throne of Bhaal (cutscenes): claws and bite kept.
 
 Not done yet:
-- [ ] Wing Buffet removed from the kit (code in the branch folder `Branches\bite`, not in this repository's history): maybe a future HLA.
+
+### High-level abilities (branch hla)
+- [ ] At level-up in Throne of Bhaal the HLA list shows: extra spell 6 / 7 / 8, Summon Dark Planetar (not for good characters), Breathbloom, Wing Buffet, Insect Swarm, Plant Growth, with their names and icons; no Energy Blades, Improved Alacrity, Dragon's Breath, Summon Planetar or Comet.
+- [ ] The 4 new HLA appear as innate abilities, once per day per pick (Breathbloom up to 3 picks, the others up to 2).
+- [ ] Breathbloom: acid yellow dragon breath visual, 20d10 acid (Acid Affinity bonus applies), enemies thrown back and knocked unconscious, save vs. Breath halves and negates; party not hit.
+- [ ] Wing Buffet: centred on the disciple, enemies within 20 ft. take 1d8 and are thrown back, unconscious 3 s on a failed save at -4; party not hit.
+- [ ] Insect Swarm: enemies around the target, 2 poison damage per second and 100% spell failure for 3 rounds; party not hit.
+- [ ] Plant Growth: entangle in a 20-ft. area (save at -10), allies hit, the disciple immune (Swamp Stride).
+- [ ] French and English descriptions; Breathbloom's French name to confirm.
 
 ### Acidosis
 - [x] Icons, casting, self damage OK.
@@ -82,7 +90,7 @@ Not done yet:
 ### Black Dragon Breathball
 - [ ] Travelling green acid arrow, black dragon breath explosion at the impact, no leftover fire visual (VVC, flame ring).
 - [ ] 20 ft. area as Fireball, allies hit; 3d8 at 5th level up to 8d8 at 18th; save vs. Breath halves.
-- [ ] Icons readable at 32 px.
+- [ ] Icons readable at 32 px (placeholder: Fireball in acid yellow).
 
 ### Stunning Black Dragon Breath
 - [ ] Same line, wave, trail, splash and sound as the kit's breath; caster not hit; damage 3d8 to 8d8 by level, save vs. Breath for half.
@@ -110,6 +118,5 @@ Not done yet:
 - [ ] Green explosion colour: set `ny_vs_color` in `tweaks/vitriolic_sphere/vitriolic_sphere.tpa` (palette index to find in Near Infinity).
 
 ## Later
-- [ ] Unique Black Dragon Disciple HLA (currently the Dragon Disciple ones).
 - [ ] Custom icons (BAM) for the claws, breath, aura, wing buffet and spells.
 - [ ] Trello *Ideas* list: Swamp Lung, Ghostly Tail, Corrosive Spit, Dracosuchus Jaws, Tail Sweep.

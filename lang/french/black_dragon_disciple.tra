@@ -50,6 +50,8 @@ PRÉSENCE TERRIFIANTE : Le Disciple du Dragon Noir dégage une aura de menace dr
 - Niveau 19 : les dégâts du Souffle passent à 12d4, et la ligne atteint 9 m de long et 3 m de large.
 - Niveau 20 : Apothéose draconique : bonus de +1 à la CA et immunité au sommeil et à la paralysie. Affinité acide atteint son apogée. Les griffes infligent désormais 2d8 dégâts tranchants et comptent comme des armes magiques +5.
 
+- Capacités de haut niveau (Throne of Bhaal) : en plus des sorts supplémentaires de l'ensorceleur et de Convocation de planétaire déchu, le Disciple du Dragon Noir peut apprendre les capacités innées d'un dragon noir adulte : Breathbloom, Coup d'ailes, Nuée d'insectes et Croissance végétale.
+
 Désavantages :
 - Lance un sort de moins par jour à chaque niveau de sort.
 - Lance ses sorts comme un ensorceleur d'un niveau de moins (niveau 1 au minimum). Par exemple, il accède aux sorts du 2e niveau au niveau 5 au lieu du niveau 4.
@@ -242,3 +244,28 @@ Utiliser cette capacité fait apparaître la morsure ; elle peut ensuite être r
 @73 = ~Combattre sans la morsure
 
 Le Disciple du Dragon Noir combat avec ses griffes seules, ce qui lui permet de profiter du Style de combat à une arme. La morsure peut être rappelée à volonté.~
+
+// Capacités de haut niveau (BG2:EE et EET)
+@80 = ~Breathbloom~
+@81 = ~Breathbloom
+
+Le Disciple du Dragon Noir souffle avec la force d'un dragon noir adulte. Une immense éclosion d'acide explose dans un rayon de 6 m, infligeant 20d10 dégâts d'acide aux ennemis et les projetant en arrière ; ceux qui ne résistent pas perdent aussi connaissance pendant 3 secondes. Un jet de sauvegarde contre les souffles réussi divise les dégâts par deux et annule les autres effets. Les membres du groupe ne sont pas affectés.
+
+Portée : longue
+Utilisable une fois par jour.~
+@82 = ~Coup d'ailes~
+@83 = ~Coup d'ailes
+
+Le Disciple du Dragon Noir bat des ailes avec la force d'un dragon noir adulte. Les ennemis dans un rayon de 6 m subissent 1d8 dégâts contondants et sont projetés en arrière ; ils doivent aussi réussir un jet de sauvegarde contre les sorts à -4 sous peine de perdre connaissance pendant 3 secondes. Les membres du groupe ne sont pas affectés.
+
+Utilisable une fois par jour.~
+@84 = ~Nuée d'insectes~
+@85 = ~Nuée d'insectes
+
+Comme un dragon noir, le Disciple du Dragon Noir appelle du marais une nuée d'insectes, d'araignées et de mille-pattes venimeux sur ses ennemis, sans aucun temps d'incantation. Pendant 3 rounds, les ennemis à moins de 6 m de la cible subissent 2 points de dégâts de poison par seconde et ont 100 % de chances de rater leurs sorts. Aucun jet de sauvegarde n'est permis. Les membres du groupe ne sont pas affectés.
+
+Utilisable une fois par jour.~
+@86 = ~Croissance végétale~
+@87 = ~Croissance végétale
+
+Comme un dragon noir, le Disciple du Dragon Noir fait jaillir du sol les plantes du marais dans un rayon de 6 m. Les créatures dans la zone doivent réussir un jet de sauvegarde contre les sorts à -10 sous peine d'être entravées pendant 1 round : elles ne peuvent plus bouger et subissent un malus de 2 à la CA. Les alliés sont affectés ; le Disciple du Dragon Noir lui-même est protégé par sa Foulée des marais.~

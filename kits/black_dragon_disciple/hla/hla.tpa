@@ -1,0 +1,90 @@
+/////////////////////////////////////////////////////////////////////////////
+// Black Dragon Disciple - high-level abilities (Throne of Bhaal, BG2:EE and
+// EET only)
+//
+// The kit gets its own HLA table (LUNYB.2DA, abbreviation NYB in
+// LUABBR.2DA) instead of the sorcerer's one (LUSO1.2DA for the Dragon
+// Disciple). Kept from the sorcerer: the extra spells of levels 6, 7 and 8
+// and Summon Dark Planetar. Removed: Energy Blades, Improved Alacrity,
+// Dragon's Breath, Summon Planetar and Comet.
+// New, from the abilities of the black dragon Nizidramanii'yt (DRAGBLAC.BCS)
+// and innate (once per day, each pick gives one more use):
+//   NY#BDBL  Breathbloom: the game's Dragon's Breath (SPWI922), acid instead
+//            of fire, its dragon breath visual recoloured in the acid yellow
+//            of the kit's breath (NY#BDBLV.VVC / NY#BDBLA.BAM). Icons: the
+//            former Black Dragon Breathball ones (SPWI922 in acid yellow).
+//   NY#BDWB  Wing Buffet: the dragon's Wing Buffet (SPIN695), save vs. Spell
+//            at -4 instead of -10 against the 3 seconds of unconsciousness.
+//            Icon: the kit's wings.
+//   NY#BDIS  Insect Swarm: the dragon's Summon Insects (SPIN689), unchanged
+//            (Creeping Doom without casting time).
+//   NY#BDPG  Plant Growth: the dragon's Plant Growth (SPIN688), unchanged.
+/////////////////////////////////////////////////////////////////////////////
+
+OUTER_SET ny_str_bbloom   = RESOLVE_STR_REF (@80)
+OUTER_SET ny_str_bbloom_d = RESOLVE_STR_REF (@81)
+OUTER_SET ny_str_wbuff    = RESOLVE_STR_REF (@82)
+OUTER_SET ny_str_wbuff_d  = RESOLVE_STR_REF (@83)
+OUTER_SET ny_str_insect   = RESOLVE_STR_REF (@84)
+OUTER_SET ny_str_insect_d = RESOLVE_STR_REF (@85)
+OUTER_SET ny_str_plant    = RESOLVE_STR_REF (@86)
+OUTER_SET ny_str_plant_d  = RESOLVE_STR_REF (@87)
+
+// Icons and visual
+COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/bam/ny#bdblb.bam~ ~override~
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/bam/ny#bdblc.bam~ ~override~
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/bam/ny#bdbla.bam~ ~override~
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDBLB~ c = ~NY#BDBLC~ END   // Remastered Spell Icons
+
+COPY_EXISTING ~spdrgnbr.vvc~ ~override/NY#BDBLV.vvc~
+  WRITE_ASCII 0x08 ~NY#BDBLA~ #8
+
+// Turns a copied spell into an innate ability (type 4, every header
+// "innate") with a new name, description and icons.
+DEFINE_PATCH_FUNCTION NY#HLA_INNATE
+  INT_VAR name = 0 desc = 0
+  STR_VAR icon_b = ~~ icon_c = ~~
+BEGIN
+  WRITE_LONG  0x08 name
+  WRITE_LONG  0x0c name
+  WRITE_LONG  0x50 desc
+  WRITE_LONG  0x54 desc
+  WRITE_SHORT 0x1c 4                          // innate
+  WRITE_LONG  0x34 1                          // level
+  WRITE_ASCIIE 0x3a ~%icon_c%~ #8
+  READ_LONG  0x64 ho
+  READ_SHORT 0x68 hn
+  FOR (h = 0; h < hn; ++h) BEGIN
+    WRITE_BYTE   (ho + h * 0x28 + 0x02) 4      // location: innate
+    WRITE_ASCIIE (ho + h * 0x28 + 0x04) ~%icon_b%~ #8
+  END
+END
+
+// Breathbloom: Dragon's Breath in acid
+COPY_EXISTING ~spwi922.spl~ ~override/NY#BDBL.spl~
+  LPF NY#HLA_INNATE INT_VAR name = ny_str_bbloom desc = ny_str_bbloom_d STR_VAR icon_b = ~NY#BDBLB~ icon_c = ~NY#BDBLC~ END
+  LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 12 match_parameter2 = 0x80000 parameter2 = 0x10000 END   // fire -> acid
+  LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 215 STR_VAR resource = ~NY#BDBLV~ END
+
+// Wing Buffet
+COPY_EXISTING ~spin695.spl~ ~override/NY#BDWB.spl~
+  LPF NY#HLA_INNATE INT_VAR name = ny_str_wbuff desc = ny_str_wbuff_d STR_VAR icon_b = EVAL ~%ny_icon_wings%~ icon_c = EVAL ~%ny_icon_wings%~ END
+  LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 39 savebonus = "-4" END
+  // centred on the Black Dragon Disciple (the dragon aims it at a creature)
+  READ_LONG  0x64 ho
+  READ_SHORT 0x68 hn
+  FOR (h = 0; h < hn; ++h) BEGIN
+    WRITE_BYTE  (ho + h * 0x28 + 0x0c) 5         // target: caster
+    WRITE_SHORT (ho + h * 0x28 + 0x0e) 0         // range
+  END
+
+// Insect Swarm
+COPY_EXISTING ~spin689.spl~ ~override/NY#BDIS.spl~
+  LPF NY#HLA_INNATE INT_VAR name = ny_str_insect desc = ny_str_insect_d STR_VAR icon_b = ~SPPR717B~ icon_c = ~SPPR717C~ END
+
+// Plant Growth
+COPY_EXISTING ~spin688.spl~ ~override/NY#BDPG.spl~
+  LPF NY#HLA_INNATE INT_VAR name = ny_str_plant desc = ny_str_plant_d STR_VAR icon_b = ~SPPR105B~ icon_c = ~SPPR105C~ END
+
+// HLA table
+COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/2da/lunyb.2da~ ~override~
