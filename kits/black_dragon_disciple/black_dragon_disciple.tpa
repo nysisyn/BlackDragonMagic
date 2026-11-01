@@ -72,9 +72,10 @@ OUTER_SET ny_str_wings_off_d = RESOLVE_STR_REF (@64)
 // load the weapon button keeps the default fist picture: a custom icon would
 // only show at character creation (placeholder until a custom icon)
 OUTER_SPRINT ny_icon_claws ~FIST~
-// Acid Breath: Nysi's acid breath artwork, tilted 40 degrees and reduced to
-// 32 px on a stone plate (source in works/acid_breath_icon_source; the old
-// DragonAscendant icon is kept in works/acid_breath_old_icon)
+// Acid Breath: the game's Dragon Disciple breath icon (SPDD03B), the
+// dragon recoloured in bright acid yellow (hue 62), the stone plate kept
+// (Nysi's artwork version in works/acid_breath_artwork_icon, the old
+// DragonAscendant icon in works/acid_breath_old_icon)
 COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdbri.bam~ ~override~
 OUTER_SPRINT ny_icon_breath ~NY#BDBRI~
 // Bite: test icon, the Corrosive Spit icon recoloured in yellow (branch bite)
