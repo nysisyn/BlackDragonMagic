@@ -50,7 +50,7 @@ PRÉSENCE TERRIFIANTE : Le Disciple du Dragon Noir dégage une aura de menace dr
 - Niveau 19 : les dégâts du Souffle passent à 12d4, et la ligne atteint 9 m de long et 3 m de large.
 - Niveau 20 : Apothéose draconique : bonus de +1 à la CA et immunité au sommeil et à la paralysie. Affinité acide atteint son apogée. Les griffes infligent désormais 2d8 dégâts tranchants et comptent comme des armes magiques +5.
 
-- Capacités de haut niveau (Throne of Bhaal) : en plus des sorts supplémentaires de l'ensorceleur et de Convocation de planétaire déchu, le Disciple du Dragon Noir peut apprendre les capacités innées d'un dragon noir adulte : Breathbloom, Coup d'ailes, Nuée d'insectes et Croissance végétale.
+- Capacités de haut niveau (Throne of Bhaal) : en plus des sorts supplémentaires de l'ensorceleur et de Convocation de planétaire déchu, le Disciple du Dragon Noir peut apprendre les capacités innées d'un dragon noir adulte : Éclosion de souffle, Coup d'ailes, Nuée d'insectes et Croissance végétale.
 
 Désavantages :
 - Lance un sort de moins par jour à chaque niveau de sort.
@@ -246,8 +246,8 @@ Utiliser cette capacité fait apparaître la morsure ; elle peut ensuite être r
 Le Disciple du Dragon Noir combat avec ses griffes seules, ce qui lui permet de profiter du Style de combat à une arme. La morsure peut être rappelée à volonté.~
 
 // Capacités de haut niveau (BG2:EE et EET)
-@80 = ~Breathbloom~
-@81 = ~Breathbloom
+@80 = ~Éclosion de souffle~
+@81 = ~Éclosion de souffle
 
 Le Disciple du Dragon Noir souffle avec la force d'un dragon noir adulte. Une immense éclosion d'acide explose dans un rayon de 6 m, infligeant 20d10 dégâts d'acide aux ennemis et les projetant en arrière ; ceux qui ne résistent pas perdent aussi connaissance pendant 3 secondes. Un jet de sauvegarde contre les souffles réussi divise les dégâts par deux et annule les autres effets. Les membres du groupe ne sont pas affectés.
 
