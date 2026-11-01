@@ -16,9 +16,11 @@
 //             WIZARD_NY_WYVERN_TAIL)
 //   NY#WBTP   poison on a failed save (header = caster level step)
 //   NY#WBTB   spell icon (ability / memorised, on a stone plate), NY#WBTC
-//             spellbook icon: Nysi's barbed tail artwork reduced to 32 px
-//             (source in works/wyvern_tail_icon_source; the previous Death
-//             Ward based icons are kept in works/wyvern_tail_old_icons)
+//             spellbook icon: the game's SPPR411 icons (skull) recoloured
+//             poison green (Nysi's barbed tail artwork version in
+//             works/wyvern_tail_artwork_icons, its source in
+//             works/wyvern_tail_icon_source; Death Ward based icons in
+//             works/wyvern_tail_old_icons)
 /////////////////////////////////////////////////////////////////////////////
 
 OUTER_SET ny_str_wbt      = RESOLVE_STR_REF (@1)

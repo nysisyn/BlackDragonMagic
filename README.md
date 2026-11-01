@@ -89,7 +89,7 @@ BlackDragonMagic/
 | `NY#CSPS`, `NY#CSPX` | Corrosive Spit (not a learnable spell any more: base of the animated breath's spit `NY#ABRX`) and its blindness + delayed damage on a failed save |
 | `NY#CSPB`, `NY#CSPC` | Corrosive Spit icons (Nysi's artwork, source in `works/corrosive_spit_icon_source`) |
 | `NY#WBTS`, `NY#WBTP` | Wyvern Barbed Tail Strike and its poison |
-| `NY#WBTB`, `NY#WBTC` | Wyvern Barbed Tail Strike icons (Nysi's artwork, source in `works/wyvern_tail_icon_source`; previous Death Ward based ones in `works/wyvern_tail_old_icons`) |
+| `NY#WBTB`, `NY#WBTC` | Wyvern Barbed Tail Strike icons: the game's `SPPR411` (skull) recoloured poison green (Nysi's artwork version in `works/wyvern_tail_artwork_icons`, source in `works/wyvern_tail_icon_source`; Death Ward based ones in `works/wyvern_tail_old_icons`) |
 | `NY#BDBB`, `NY#BDBBP` | Black Dragon Breathball and its projectile |
 | `NY#BDBBB`, `NY#BDBBC` | Black Dragon Breathball icons: the game's `SPWI922` recoloured acid yellow (Nysi's artwork version in `works/breathball_artwork_icons`, source in `works/breathball_icon_source`) |
 | `NY#SBBS`, `NY#SBBT` | Stunning Black Dragon Breath and its line projectile |
