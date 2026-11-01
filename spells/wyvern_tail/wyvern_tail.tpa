@@ -17,7 +17,7 @@
 //   NY#WBTP   poison on a failed save (header = caster level step)
 //   NY#WBTB   spell icon (ability / memorised, on a stone plate), NY#WBTC
 //             spellbook icon: the game's SPPR411 icons (skull) recoloured
-//             poison green (Nysi's barbed tail artwork version in
+//             poison violet (Nysi's barbed tail artwork version in
 //             works/wyvern_tail_artwork_icons, its source in
 //             works/wyvern_tail_icon_source; Death Ward based icons in
 //             works/wyvern_tail_old_icons)
