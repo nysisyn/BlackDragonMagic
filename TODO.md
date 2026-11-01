@@ -21,7 +21,7 @@ To check:
 - [x] Bite toggle: Fight without / with the Bite remove and put back the bite of the current stage; the abilities swap.
 - [ ] Bite: the claws' retry script (fewer than 2 attacks) does not fire for nothing while the bite is equipped.
 - [x] Claws icon on the weapon button, and Blindsense (attacks invisible enemies), bite toggle, icons: checked.
-- [ ] **Claws in both weapon slots** (new character): both weapon buttons show the claws, 2 attacks per round with either slot, still there after a load; new claws at 4/8/12/16/20 replace both copies. What happens to the starting weapon (quarterstaff...) already in a weapon slot at creation?
+- [ ] **Claws in both weapon slots** (new character): both weapon buttons show the claws, 2 attacks per round with either slot, still there after a load; new claws at 4/8/12/16/20 replace both copies. The starting weapons go to the backpack (cannot be used by the kit).
 - [ ] New icons in game: breath, claws, bite (large), wings, Frightful Presence.
 - [ ] Portrait icons: Frightful Presence while the aura is on (gone when dismissed), bite while it is out, wings while spread. Wings: +2 AC.
 - [ ] Swamp Stride at level 2: immunity to Entangle, Grease, Web.
@@ -34,7 +34,7 @@ To check:
 - [ ] Apotheosis at level 20: immunity to sleep and paralysis, acid immunity (5 × 20%).
 - [x] Druid THAC0: 18 at level 4, 16 at 7, 14 at 10, 12 at 13 (before Strength and weapon bonuses).
 - [ ] Frightful Presence: the pulse (opcode 272 -> EFF) really fires and uses the disciple's level.
-- [ ] Start of Throne of Bhaal (and other cutscenes): the claws give 2 attacks again within a few rounds (retries in claws.baf), or after a reload.
+- [x] Start of Throne of Bhaal (cutscenes): claws and bite kept.
 
 Not done yet:
 - [ ] Wing Buffet removed from the kit (code in the branch folder `Branches\bite`, not in this repository's history): maybe a future HLA.
