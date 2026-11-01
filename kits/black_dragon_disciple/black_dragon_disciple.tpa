@@ -80,7 +80,8 @@ OUTER_SPRINT ny_icon_claws ~NY#BDCLI~
 // DragonAscendant icon in works/acid_breath_old_icon)
 COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdbri.bam~ ~override~
 OUTER_SPRINT ny_icon_breath ~NY#BDBRI~
-// Bite: the game's dragon head icon (IBZPLO02), blackened as the claws
+// Bite: the game's dragon head icon (IBZPLO02), blackened as the claws;
+// both cycles show its large frame (54x64), the size of the claws icon
 // (previous test icon in works/bite_old_icon)
 COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdmi.bam~ ~override~
 OUTER_SPRINT ny_icon_bite ~NY#BDMI~
