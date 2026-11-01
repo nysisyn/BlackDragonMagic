@@ -14,26 +14,26 @@ Still valid from the previous version (same code):
 To check:
 - [x] **No weapon (opcode 319)**: every weapon shown in red and refused for the kit, but still usable by the other characters. If it is the other way round (usable *only* by the kit), the parameter meaning is inverted: tell Claude.
 - [x] **Proficiencies**: at creation and at levels 7, 13 and 19, only Single Weapon Style (max 1) and Two-Weapon Style (max 3) can be raised.
-- [ ] **Spells one level lower**: 2nd-level spell slots at level 5 (not 4), 3rd-level at 7 (not 6)... and one slot less per spell level. At level 4 the disciple may pick a 2nd-level spell he cannot cast yet (spells known are not delayed).
+- [x] **Spells one level lower**: 2nd-level spell slots at level 5 (not 4), 3rd-level at 7 (not 6)... and one slot less per spell level. At level 4 the disciple may pick a 2nd-level spell he cannot cast yet (spells known are not delayed).
 - [x] Claws at levels 1, 4, 8, 12, 16, 20: 1d4, 1d6+1, 1d8+2, 1d10+3, 2d6+4, 2d8+5; old claws gone; still there after a load.
 - [x] Bite from level 6 (1d6+1 + 2 acid), replaced at 8, 12, 13 (2d6 + 2d4 acid), 16, 20; the old one gone, even if it was in the backpack.
 - [x] Bite: two-weapon penalties lowered by Two-Weapon Style (THAC0 3 / 7 at level 16 with 2 points).
 - [x] Bite toggle: Fight without / with the Bite remove and put back the bite of the current stage; the abilities swap.
-- [ ] Bite: the claws' retry script (fewer than 2 attacks) does not fire for nothing while the bite is equipped.
+- [x] Bite: the claws' retry script (fewer than 2 attacks) does not fire for nothing while the bite is equipped.
 - [x] Claws icon on the weapon button, and Blindsense (attacks invisible enemies), bite toggle, icons: checked.
-- [ ] **Claws in both weapon slots** (new character): both weapon buttons show the claws, 2 attacks per round with either slot, still there after a load; new claws at 4/8/12/16/20 replace both copies. The starting weapons go to the backpack (cannot be used by the kit).
-- [ ] New icons in game: breath, claws, bite (large), wings, Frightful Presence.
-- [ ] Portrait icons: Frightful Presence while the aura is on (gone when dismissed), bite while it is out, wings while spread. Wings: +2 AC.
-- [ ] Swamp Stride at level 2: immunity to Entangle, Grease, Web.
+- [x] **Claws in both weapon slots** (new character): both weapon buttons show the claws, 2 attacks per round with either slot, still there after a load; new claws at 4/8/12/16/20 replace both copies. The starting weapons go to the backpack (cannot be used by the kit).
+- [x] New icons in game: breath, claws, bite (large), wings, Frightful Presence.
+- [x] Portrait icons: Frightful Presence while the aura is on (gone when dismissed), bite while it is out, wings while spread. Wings: +2 AC.
+- [x] Swamp Stride at level 2: immunity to Entangle, Grease, Web.
 - [x] Acid Breath: 15 ft. long and about 5 ft. wide, 4d4; 2/day at 7, 3/day at 11, 4/day at 17 (several GA_ of the same ability in the CLAB); 30 ft. and 10 ft. wide at 19.
 - [x] Draconic Tail at level 9: one strike per round on the nearest enemy in melee reach, 1d10 crushing + 1 second unconscious on a failed save vs. Breath; combat log line. One save for both effects?
 - [x] Draconic Wings at level 14: equipped in the helmet slot, bonuses applied. Still to check: the wings shown on the character, a helmet already there, after a load.
 - [x] Acid Affinity damage bonus (opcode 332, type acid, as the Robe of Red Flames): bite acid 4 → 5 at level 20 (+25%), shown in the combat log as "(1 damage bonus)".
 - [x] Blindsense at level 10: immunity to blindness, invisible creatures seen and targetable.
-- [ ] Frightful Presence at level 18: no longer hits the disciple and his allies (projectile flag 0x40, enemies only).
-- [ ] Apotheosis at level 20: immunity to sleep and paralysis, acid immunity (5 × 20%).
+- [x] Frightful Presence at level 18: no longer hits the disciple and his allies (projectile flag 0x40, enemies only).
+- [x] Apotheosis at level 20: immunity to sleep and paralysis, acid immunity (5 × 20%).
 - [x] Druid THAC0: 18 at level 4, 16 at 7, 14 at 10, 12 at 13 (before Strength and weapon bonuses).
-- [ ] Frightful Presence: the pulse (opcode 272 -> EFF) really fires and uses the disciple's level.
+- [x] Frightful Presence: the pulse (opcode 272 -> EFF) really fires and uses the disciple's level.
 - [x] Start of Throne of Bhaal (cutscenes): claws and bite kept.
 
 Not done yet:
