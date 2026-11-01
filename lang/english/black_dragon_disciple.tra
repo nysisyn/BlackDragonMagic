@@ -22,7 +22,7 @@ BREATH WEAPON: The Black Dragon Disciple exhales a 15-ft. long, 5-ft. wide line 
 ACID AFFINITY: The black dragon's blood protects the Black Dragon Disciple from acid and makes his own acid more potent. He gains 20% acid resistance, and all acid damage he deals is increased by 5%. Both increase at levels 8, 12 and 16, up to 80% acid resistance and +20% acid damage. At level 20, he becomes immune to acid and his acid damage is increased by 25%.
 
 - 5th level: +1 bonus to AC and Constitution.
-- 6th level: Gains a bite attack, summoned as an off-hand weapon while unarmed, dealing 1d6 piercing and 1d4 acid damage. The bite counts as a magical weapon of the same enchantment as the claws.
+- 6th level: Gains a bite attack, summoned as an off-hand weapon while unarmed, dealing 1d6 piercing and 1d4 acid damage. The bite counts as a magical weapon of the same enchantment as the claws. The innate abilities Fight with the Bite and Fight without the Bite summon or dismiss it at will.
 - 7th level: May use Breath Weapon twice per day. Damage increases to 6d4.
 - 8th level: Acid Affinity improves. Claws now deal 1d8 slashing damage and count as +2 magical weapons.
 - 9th level: Gains Draconic Tail.
@@ -128,7 +128,7 @@ Counts as a +5 weapon for the purpose of hitting creatures~
 @19 = ~Draconic Bite~
 @20 = ~Draconic Bite
 
-The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bite is his off-hand weapon: it gives one more attack per round, with the usual two-weapon penalties, which Two-Weapon Style reduces. It can be put in the backpack to fight with the claws alone.
+The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bite is his off-hand weapon: it gives one more attack per round, with the usual two-weapon penalties, which Two-Weapon Style reduces. It can be dismissed with the innate ability Fight without the Bite, to fight with the claws alone.
 
 STATISTICS:
 
@@ -138,7 +138,7 @@ Speed Factor: 2
 Counts as a +1 weapon for the purpose of hitting creatures~
 @21 = ~Draconic Bite
 
-The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bite is his off-hand weapon: it gives one more attack per round, with the usual two-weapon penalties, which Two-Weapon Style reduces. It can be put in the backpack to fight with the claws alone.
+The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bite is his off-hand weapon: it gives one more attack per round, with the usual two-weapon penalties, which Two-Weapon Style reduces. It can be dismissed with the innate ability Fight without the Bite, to fight with the claws alone.
 
 STATISTICS:
 
@@ -148,7 +148,7 @@ Speed Factor: 2
 Counts as a +2 weapon for the purpose of hitting creatures~
 @22 = ~Draconic Bite
 
-The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bite is his off-hand weapon: it gives one more attack per round, with the usual two-weapon penalties, which Two-Weapon Style reduces. It can be put in the backpack to fight with the claws alone.
+The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bite is his off-hand weapon: it gives one more attack per round, with the usual two-weapon penalties, which Two-Weapon Style reduces. It can be dismissed with the innate ability Fight without the Bite, to fight with the claws alone.
 
 STATISTICS:
 
@@ -158,7 +158,7 @@ Speed Factor: 2
 Counts as a +3 weapon for the purpose of hitting creatures~
 @23 = ~Draconic Bite
 
-The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bite is his off-hand weapon: it gives one more attack per round, with the usual two-weapon penalties, which Two-Weapon Style reduces. It can be put in the backpack to fight with the claws alone.
+The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bite is his off-hand weapon: it gives one more attack per round, with the usual two-weapon penalties, which Two-Weapon Style reduces. It can be dismissed with the innate ability Fight without the Bite, to fight with the claws alone.
 
 STATISTICS:
 
@@ -168,7 +168,7 @@ Speed Factor: 2
 Counts as a +3 weapon for the purpose of hitting creatures~
 @24 = ~Draconic Bite
 
-The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bite is his off-hand weapon: it gives one more attack per round, with the usual two-weapon penalties, which Two-Weapon Style reduces. It can be put in the backpack to fight with the claws alone.
+The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bite is his off-hand weapon: it gives one more attack per round, with the usual two-weapon penalties, which Two-Weapon Style reduces. It can be dismissed with the innate ability Fight without the Bite, to fight with the claws alone.
 
 STATISTICS:
 
@@ -178,7 +178,7 @@ Speed Factor: 2
 Counts as a +4 weapon for the purpose of hitting creatures~
 @25 = ~Draconic Bite
 
-The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bite is his off-hand weapon: it gives one more attack per round, with the usual two-weapon penalties, which Two-Weapon Style reduces. It can be put in the backpack to fight with the claws alone.
+The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bite is his off-hand weapon: it gives one more attack per round, with the usual two-weapon penalties, which Two-Weapon Style reduces. It can be dismissed with the innate ability Fight without the Bite, to fight with the claws alone.
 
 STATISTICS:
 
@@ -229,3 +229,15 @@ Using this ability spreads the wings; they can then be folded at will.~
 @64 = ~Fold Draconic Wings
 
 The Black Dragon Disciple folds his wings and frees the helmet slot. They can be spread again at will.~
+
+// Fight with / without the Bite (innate abilities that swap themselves)
+@70 = ~Fight with the Bite~
+@71 = ~Fight with the Bite
+
+The Black Dragon Disciple bares his fangs: the bite takes the off hand again and gives one more attack per round, with the usual two-weapon penalties.
+
+Using this ability summons the bite; it can then be dismissed at will.~
+@72 = ~Fight without the Bite~
+@73 = ~Fight without the Bite
+
+The Black Dragon Disciple fights with his claws alone, which lets him benefit from Single Weapon Style. The bite can be summoned again at will.~

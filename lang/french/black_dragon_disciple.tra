@@ -22,7 +22,7 @@ SOUFFLE : Le Disciple du Dragon Noir exhale une ligne d'acide de 4,5 m de long e
 AFFINITÉ ACIDE : Le sang du dragon noir protège le Disciple du Dragon Noir de l'acide et rend son propre acide plus puissant. Il obtient 20 % de résistance à l'acide, et tous les dégâts d'acide qu'il inflige sont augmentés de 5 %. Les deux progressent aux niveaux 8, 12 et 16, jusqu'à 80 % de résistance et +20 % de dégâts d'acide. Au niveau 20, il devient immunisé contre l'acide et ses dégâts d'acide sont augmentés de 25 %.
 
 - Niveau 5 : bonus de +1 à la CA et à la Constitution.
-- Niveau 6 : obtient une morsure, invoquée comme arme de la main secondaire à mains nues, qui inflige 1d6 dégâts perforants et 1d4 dégâts d'acide. La morsure compte comme une arme magique du même enchantement que les griffes.
+- Niveau 6 : obtient une morsure, invoquée comme arme de la main secondaire à mains nues, qui inflige 1d6 dégâts perforants et 1d4 dégâts d'acide. La morsure compte comme une arme magique du même enchantement que les griffes. Les capacités innées Combattre avec la morsure et Combattre sans la morsure la font apparaître ou disparaître à volonté.
 - Niveau 7 : peut utiliser son Souffle deux fois par jour. Les dégâts passent à 6d4.
 - Niveau 8 : Affinité acide s'améliore. Les griffes infligent désormais 1d8 dégâts tranchants et comptent comme des armes magiques +2.
 - Niveau 9 : obtient Queue draconique.
@@ -128,7 +128,7 @@ Comptent comme une arme +5 pour toucher les créatures~
 @19 = ~Morsure draconique~
 @20 = ~Morsure draconique
 
-La mâchoire du Disciple du Dragon Noir s'est allongée en une gueule de dragon. La morsure est son arme de la main secondaire : elle donne une attaque de plus par round, avec les malus habituels du combat à deux armes, que le Style de combat à deux armes réduit. Elle peut être rangée dans le sac pour combattre avec les griffes seules.
+La mâchoire du Disciple du Dragon Noir s'est allongée en une gueule de dragon. La morsure est son arme de la main secondaire : elle donne une attaque de plus par round, avec les malus habituels du combat à deux armes, que le Style de combat à deux armes réduit. Elle peut être retirée avec la capacité innée Combattre sans la morsure, pour combattre avec les griffes seules.
 
 CARACTÉRISTIQUES :
 
@@ -138,7 +138,7 @@ Facteur de vitesse : 2
 Compte comme une arme +1 pour toucher les créatures~
 @21 = ~Morsure draconique
 
-La mâchoire du Disciple du Dragon Noir s'est allongée en une gueule de dragon. La morsure est son arme de la main secondaire : elle donne une attaque de plus par round, avec les malus habituels du combat à deux armes, que le Style de combat à deux armes réduit. Elle peut être rangée dans le sac pour combattre avec les griffes seules.
+La mâchoire du Disciple du Dragon Noir s'est allongée en une gueule de dragon. La morsure est son arme de la main secondaire : elle donne une attaque de plus par round, avec les malus habituels du combat à deux armes, que le Style de combat à deux armes réduit. Elle peut être retirée avec la capacité innée Combattre sans la morsure, pour combattre avec les griffes seules.
 
 CARACTÉRISTIQUES :
 
@@ -148,7 +148,7 @@ Facteur de vitesse : 2
 Compte comme une arme +2 pour toucher les créatures~
 @22 = ~Morsure draconique
 
-La mâchoire du Disciple du Dragon Noir s'est allongée en une gueule de dragon. La morsure est son arme de la main secondaire : elle donne une attaque de plus par round, avec les malus habituels du combat à deux armes, que le Style de combat à deux armes réduit. Elle peut être rangée dans le sac pour combattre avec les griffes seules.
+La mâchoire du Disciple du Dragon Noir s'est allongée en une gueule de dragon. La morsure est son arme de la main secondaire : elle donne une attaque de plus par round, avec les malus habituels du combat à deux armes, que le Style de combat à deux armes réduit. Elle peut être retirée avec la capacité innée Combattre sans la morsure, pour combattre avec les griffes seules.
 
 CARACTÉRISTIQUES :
 
@@ -158,7 +158,7 @@ Facteur de vitesse : 2
 Compte comme une arme +3 pour toucher les créatures~
 @23 = ~Morsure draconique
 
-La mâchoire du Disciple du Dragon Noir s'est allongée en une gueule de dragon. La morsure est son arme de la main secondaire : elle donne une attaque de plus par round, avec les malus habituels du combat à deux armes, que le Style de combat à deux armes réduit. Elle peut être rangée dans le sac pour combattre avec les griffes seules.
+La mâchoire du Disciple du Dragon Noir s'est allongée en une gueule de dragon. La morsure est son arme de la main secondaire : elle donne une attaque de plus par round, avec les malus habituels du combat à deux armes, que le Style de combat à deux armes réduit. Elle peut être retirée avec la capacité innée Combattre sans la morsure, pour combattre avec les griffes seules.
 
 CARACTÉRISTIQUES :
 
@@ -168,7 +168,7 @@ Facteur de vitesse : 2
 Compte comme une arme +3 pour toucher les créatures~
 @24 = ~Morsure draconique
 
-La mâchoire du Disciple du Dragon Noir s'est allongée en une gueule de dragon. La morsure est son arme de la main secondaire : elle donne une attaque de plus par round, avec les malus habituels du combat à deux armes, que le Style de combat à deux armes réduit. Elle peut être rangée dans le sac pour combattre avec les griffes seules.
+La mâchoire du Disciple du Dragon Noir s'est allongée en une gueule de dragon. La morsure est son arme de la main secondaire : elle donne une attaque de plus par round, avec les malus habituels du combat à deux armes, que le Style de combat à deux armes réduit. Elle peut être retirée avec la capacité innée Combattre sans la morsure, pour combattre avec les griffes seules.
 
 CARACTÉRISTIQUES :
 
@@ -178,7 +178,7 @@ Facteur de vitesse : 2
 Compte comme une arme +4 pour toucher les créatures~
 @25 = ~Morsure draconique
 
-La mâchoire du Disciple du Dragon Noir s'est allongée en une gueule de dragon. La morsure est son arme de la main secondaire : elle donne une attaque de plus par round, avec les malus habituels du combat à deux armes, que le Style de combat à deux armes réduit. Elle peut être rangée dans le sac pour combattre avec les griffes seules.
+La mâchoire du Disciple du Dragon Noir s'est allongée en une gueule de dragon. La morsure est son arme de la main secondaire : elle donne une attaque de plus par round, avec les malus habituels du combat à deux armes, que le Style de combat à deux armes réduit. Elle peut être retirée avec la capacité innée Combattre sans la morsure, pour combattre avec les griffes seules.
 
 CARACTÉRISTIQUES :
 
@@ -229,3 +229,15 @@ Utiliser cette capacité déploie les ailes ; elles peuvent ensuite être repli�
 @64 = ~Replier les ailes draconiques
 
 Le Disciple du Dragon Noir replie ses ailes et libère l'emplacement du casque. Elles peuvent être déployées à nouveau à volonté.~
+
+// Combattre avec / sans la morsure (capacités innées qui s'échangent)
+@70 = ~Combattre avec la morsure~
+@71 = ~Combattre avec la morsure
+
+Le Disciple du Dragon Noir montre les crocs : la morsure reprend la main secondaire et donne une attaque de plus par round, avec les malus habituels du combat à deux armes.
+
+Utiliser cette capacité fait apparaître la morsure ; elle peut ensuite être retirée à volonté.~
+@72 = ~Combattre sans la morsure~
+@73 = ~Combattre sans la morsure
+
+Le Disciple du Dragon Noir combat avec ses griffes seules, ce qui lui permet de profiter du Style de combat à une arme. La morsure peut être rappelée à volonté.~

@@ -16,6 +16,7 @@
 //                global script baf/claws.baf after a load)
 //   NY#BDCL1..6  claws (fist item), one per stage: levels 1, 4, 8, 12, 16, 20
 //   NY#BDMZ1..6  put the bite of the stage in the off-hand slot (CLAB)
+//   NY#BDMT      Fight with the Bite / NY#BDMU  Fight without the Bite
 //   NY#BDMO1..6  bite (off-hand item), one per stage: levels 6, 8, 12, 13,
 //                16, 20 (from the branch "bite")
 //   NY#BDTL      Draconic Tail strike (fired once per round by NY#BDL09)
@@ -47,6 +48,10 @@ OUTER_SET ny_str_bite_d4     = RESOLVE_STR_REF (@23)
 OUTER_SET ny_str_bite_d5     = RESOLVE_STR_REF (@24)
 OUTER_SET ny_str_bite_d6     = RESOLVE_STR_REF (@25)
 OUTER_SET ny_str_tail        = RESOLVE_STR_REF (@26)
+OUTER_SET ny_str_bite_on     = RESOLVE_STR_REF (@70)
+OUTER_SET ny_str_bite_on_d   = RESOLVE_STR_REF (@71)
+OUTER_SET ny_str_bite_off    = RESOLVE_STR_REF (@72)
+OUTER_SET ny_str_bite_off_d  = RESOLVE_STR_REF (@73)
 OUTER_SET ny_str_breath      = RESOLVE_STR_REF (@30)
 OUTER_SET ny_str_breath_d    = RESOLVE_STR_REF (@31)
 OUTER_SET ny_str_fear_on     = RESOLVE_STR_REF (@40)
@@ -110,6 +115,13 @@ LAF NY#CREATE_LINE_PRO INT_VAR speed = 20 width = 40 trail_delay = 2 STR_VAR new
 LAF NY#CREATE_LINE_PRO INT_VAR speed = 20 width = 80 trail_delay = 2 STR_VAR new = ~NY#BDBRU~ bam = ~NY#BDWAV~ trail = ~NY#BDWVT~ sound = ~NY#BDBRE~ workspace = EVAL ~%ny_workspace%~ RET ny_pro_breath2 = pro_id END
 // Frightful Presence: 15-ft. burst centred on the caster, no visual
 LAF NY#CLONE_AREA_PRO INT_VAR radius_ft = 15 explosion_effect = 255 STR_VAR source = ~fireball~ new = ~NY#BDFPT~ RET ny_pro_fear = pro_id END
+// enemies only (area flag 0x40, as the game's SPAR**NP projectiles; the
+// party versions SPAR**PA add 0x80): the disciple and his allies are no
+// longer hit, so no "unaffected" message on them
+COPY_EXISTING ~NY#BDFPT.pro~ ~override~
+  READ_LONG  0x200 ny_fear_flags
+  WRITE_LONG 0x200 ((ny_fear_flags BOR 0x40) BAND (BNOT 0x80))
+BUT_ONLY
 // Draconic Tail: range-limited projectile (about 12 ft., melee reach),
 // shared with Ghostly Tail and Acidosis
 LAF NY#MELEE_RANGE_PRO STR_VAR workspace = EVAL ~%ny_workspace%~ RET ny_pro_melee = pro_id END
@@ -336,12 +348,14 @@ END
 // 6, +2 at 8, +3 at 12 and 13, +4 at 16, +5 at 20).
 // The normal two-weapon penalties apply: the player lowers them with
 // Two-Weapon Style (up to 3 points, see the proficiencies below).
-// Hand-to-hand weapon (0x1c) as the claws, movable: the disciple can put it
-// in the backpack to fight with the claws alone (Single Weapon Style). The
+// Hand-to-hand weapon (0x1c) as the claws, not movable: the disciple
+// dismisses or summons it with two innate abilities that swap themselves
+// (as the wings), "Fight without the Bite" (NY#BDMU) to fight with the claws
+// alone (Single Weapon Style) and "Fight with the Bite" (NY#BDMT). The
 // off-hand slot is saved: no global script for the bite.
-// NY#BDMZn (CLAB) removes the bites of the previous stages, equipped
-// (opcode 112) or in the backpack (opcode 123), and creates the bite of the
-// stage.
+// NY#BDMZn (CLAB) removes the bites of the previous stages (opcode 112),
+// creates the bite of the stage and gives "Fight without the Bite": a new
+// stage always summons the bite.
 // ---------------------------------------------------------------------------
 DEFINE_ACTION_FUNCTION NY#BDD_BITE
   INT_VAR
@@ -353,8 +367,8 @@ BEGIN
   CREATE ~ITM~ ~NY#BDMO%stage%~
     WRITE_LONG  0x08 ny_str_bite
     WRITE_LONG  0x0c ny_str_bite
-    // movable (0x04) + flags as FIST.ITM (0x20) + magical (0x40)
-    WRITE_LONG  0x18 0x64
+    // flags as FIST.ITM (0x20) + magical (0x40), not movable
+    WRITE_LONG  0x18 0x60
     WRITE_SHORT 0x1c 0x1c                       // hand-to-hand weapon
     WRITE_EVALUATED_ASCII 0x3a ~%ny_icon_bite%~ #8
     WRITE_LONG  0x50 desc
@@ -383,10 +397,39 @@ OUTER_FOR (s = 1; s <= 6; ++s) BEGIN
     LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1 level = 1 casting_time = 0 RET h = header END
     FOR (k = 1; k < s; ++k) BEGIN
       LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 112 target = 2 timing = 1 STR_VAR resource = EVAL ~NY#BDMO%k%~ END
-      LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 123 target = 2 timing = 1 STR_VAR resource = EVAL ~NY#BDMO%k%~ END
     END
     LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 143 target = 2 timing = 1 parameter1 = 9 STR_VAR resource = EVAL ~NY#BDMO%s%~ END
+    // the bite is out: only "Fight without the Bite" (removed first so it
+    // is never given twice)
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 2 timing = 1 STR_VAR resource = ~NY#BDMT~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 2 timing = 1 STR_VAR resource = ~NY#BDMU~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 171 target = 2 timing = 1 STR_VAR resource = ~NY#BDMU~ END
 END
+
+// Fight with the Bite: one header per bite stage (the innate ability uses
+// the disciple's level), each puts the bite of that stage in the off hand
+CREATE ~SPL~ ~NY#BDMT~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_bite_on desc = ny_str_bite_on_d type = 4 level = 1 STR_VAR icon = EVAL ~%ny_icon_bite%~ END
+  FOR (s = 1; s <= 6; ++s) BEGIN
+    SET lvl = (s = 1) ? 6 : ((s = 2) ? 8 : ((s = 3) ? 12 : ((s = 4) ? 13 : ((s = 5) ? 16 : 20))))
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = lvl casting_time = 0 STR_VAR icon = EVAL ~%ny_icon_bite%~ RET h = header END
+    FOR (k = 1; k <= 6; ++k) BEGIN
+      LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 112 target = 1 timing = 1 STR_VAR resource = EVAL ~NY#BDMO%k%~ END
+    END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 143 target = 1 timing = 1 parameter1 = 9 STR_VAR resource = EVAL ~NY#BDMO%s%~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#BDMT~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 171 target = 1 timing = 1 STR_VAR resource = ~NY#BDMU~ END
+  END
+
+// Fight without the Bite: removes the bite, whatever its stage
+CREATE ~SPL~ ~NY#BDMU~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_bite_off desc = ny_str_bite_off_d type = 4 level = 1 STR_VAR icon = EVAL ~%ny_icon_bite%~ END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = 1 casting_time = 0 STR_VAR icon = EVAL ~%ny_icon_bite%~ RET h = header END
+  FOR (k = 1; k <= 6; ++k) BEGIN
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 112 target = 1 timing = 1 STR_VAR resource = EVAL ~NY#BDMO%k%~ END
+  END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#BDMU~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 171 target = 1 timing = 1 STR_VAR resource = ~NY#BDMT~ END
 
 
 // ---------------------------------------------------------------------------
