@@ -44,7 +44,7 @@ Not done yet:
 - [ ] Breathbloom: acid yellow dragon breath visual, 20d10 acid (Acid Affinity bonus applies), enemies thrown back and knocked unconscious, save vs. Breath halves and negates; party not hit.
 - [ ] Wing Buffet: centred on the disciple, enemies within 20 ft. take 1d8 and are thrown back, unconscious 3 s on a failed save at -4; party not hit.
 - [ ] Insect Swarm: enemies around the target, 2 poison damage per second and 100% spell failure for 3 rounds; party not hit.
-- [ ] Plant Growth: entangle in a 20-ft. area (save at -10), allies hit, the disciple immune (Swamp Stride).
+- [ ] Plant Growth: entangle in a 20-ft. area (save at -10), allies hit, the disciple not (one round of immunity to his own Plant Growth).
 - [ ] French and English descriptions (Breathbloom = Éclosion de souffle in French).
 
 ### Acidosis

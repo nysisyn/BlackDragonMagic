@@ -19,7 +19,8 @@
 //            Icon: the kit's wings.
 //   NY#BDIS  Insect Swarm: the dragon's Summon Insects (SPIN689), unchanged
 //            (Creeping Doom without casting time).
-//   NY#BDPG  Plant Growth: the dragon's Plant Growth (SPIN688), unchanged.
+//   NY#BDPG  Plant Growth: the dragon's Plant Growth (SPIN688); the caster is
+//            not affected.
 /////////////////////////////////////////////////////////////////////////////
 
 OUTER_SET ny_str_bbloom   = RESOLVE_STR_REF (@80)
@@ -86,6 +87,10 @@ COPY_EXISTING ~spin689.spl~ ~override/NY#BDIS.spl~
 // Plant Growth
 COPY_EXISTING ~spin688.spl~ ~override/NY#BDPG.spl~
   LPF NY#HLA_INNATE INT_VAR name = ny_str_plant desc = ny_str_plant_d STR_VAR icon_b = ~SPPR105B~ icon_c = ~SPPR105C~ END
+  // the Black Dragon Disciple is not caught by his own plants (Swamp Stride
+  // only knows the game's Entangle, Grease and Web): one round of immunity
+  // to this spell, applied to himself at the start of the casting
+  LPF ADD_SPELL_EFFECT INT_VAR opcode = 206 target = 1 timing = 0 duration = ny_round parameter1 = "-1" insert_point = 0 STR_VAR resource = ~NY#BDPG~ END
 
 // HLA table
 COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/2da/lunyb.2da~ ~override~

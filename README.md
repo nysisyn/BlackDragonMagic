@@ -84,7 +84,7 @@ BlackDragonMagic/
 | `NY#BDBLB`, `NY#BDBLC` | Breathbloom icons: the former Black Dragon Breathball ones (`SPWI922` recoloured acid yellow) |
 | `NY#BDWB` | Wing Buffet HLA (copy of the black dragon's `SPIN695`, save vs. Spell at -4 instead of -10, centred on the caster) |
 | `NY#BDIS` | Insect Swarm HLA (copy of the black dragon's `SPIN689`, unchanged) |
-| `NY#BDPG` | Plant Growth HLA (copy of the black dragon's `SPIN688`, unchanged) |
+| `NY#BDPG` | Plant Growth HLA (copy of the black dragon's `SPIN688`; one round of immunity to it on the caster, so he is not entangled) |
 | `WEAPPROF.2DA` | kit column: 0 everywhere except Single Weapon Style (1) and Two-Weapon Style (3) |
 | all weapons (`.ITM`) | item usability effect (opcode 319) forbidding them to the kit |
 | `NY#ACDS`, `NY#ACDX` | Acidosis and its retaliation |
