@@ -12,7 +12,9 @@
 //   NY#ACIDE  acid burst on the caster when cast (BAM)
 //   NY#ACID6  acid splash on the attacker (BAM)
 //   NY#ACDSD  portrait icon (Beltyn's Burning Blood icon from IWDEE,
-//             recoloured in acid green), registered in STATDESC.2DA
+//             recoloured in the acid yellow of the spell icons; the green
+//             version in works/acidosis_artwork_icons), registered in
+//             STATDESC.2DA
 //   NY#ACDSB  spell icon (ability / memorised), NY#ACDSC spellbook icon:
 //             the game's SPWI517 icons, blue recoloured in the acid yellow
 //             of the kit's breath. Nysi's acid drop artwork version kept in
