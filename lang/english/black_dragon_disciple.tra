@@ -38,7 +38,7 @@ BLINDSENSE: The Black Dragon Disciple can perceive his surroundings without rely
 - 13th level: Bite now deals 2d6 piercing damage and 2d4 acid damage.
 - 14th level: Gains Draconic Wings.
 
-DRACONIC WINGS: The Black Dragon Disciple grows a pair of draconic wings, gaining +4 movement speed and immunity to critical hits. The wings occupy the helmet slot and may be toggled on and off at will.
+DRACONIC WINGS: The Black Dragon Disciple grows a pair of draconic wings, gaining +4 movement speed, +2 AC and immunity to critical hits. The wings occupy the helmet slot and may be toggled on and off at will.
 
 - 15th level: +1 bonus to AC and Constitution.
 - 16th level: Acid Affinity improves. Claws now deal 2d6 slashing damage and count as +4 magical weapons.
@@ -219,10 +219,11 @@ Leathery wings have torn free from the back of the Black Dragon Disciple. They t
 STATISTICS:
 
 Movement: +4
+Armor Class: +2
 Immunity to critical hits~
 @62 = ~Draconic Wings
 
-The Black Dragon Disciple spreads his draconic wings, gaining +4 movement speed and immunity to critical hits. The wings occupy the helmet slot.
+The Black Dragon Disciple spreads his draconic wings, gaining +4 movement speed, +2 AC and immunity to critical hits. The wings occupy the helmet slot.
 
 Using this ability spreads the wings; they can then be folded at will.~
 @63 = ~Fold Draconic Wings~

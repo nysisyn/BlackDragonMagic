@@ -95,6 +95,16 @@ COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdwni.bam~ ~override~
 OUTER_SPRINT ny_icon_wings ~NY#BDWNI~
 
 
+// Portrait icons (STATDESC.2DA): the icons above reduced to 13 px, the bite
+// and the wings brightened to stay readable at that size
+COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdfpd.bam~ ~override~
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdmd.bam~  ~override~
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdwnd.bam~ ~override~
+LAF NY#ADD_STATDESC INT_VAR strref = ny_str_fear_on STR_VAR bam = ~NY#BDFPD~ RET ny_pd_fear  = index END
+LAF NY#ADD_STATDESC INT_VAR strref = ny_str_bite    STR_VAR bam = ~NY#BDMD~  RET ny_pd_bite  = index END
+LAF NY#ADD_STATDESC INT_VAR strref = ny_str_wings   STR_VAR bam = ~NY#BDWND~ RET ny_pd_wings = index END
+
+
 // ---------------------------------------------------------------------------
 // Spell Immunities to Frightful Presence
 // ---------------------------------------------------------------------------
@@ -386,6 +396,9 @@ BEGIN
     WRITE_EVALUATED_ASCII 0x58 ~%ny_icon_bite%~ #8
     WRITE_LONG  0x60 enchant
 
+    // portrait icon while the bite is out
+    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 142 target = 1 timing = 2 parameter2 = ny_pd_bite END
+
     LPF NY#ADD_ITM_HEADER INT_VAR attack_type = 1 id_req = 0 location = 1 target = 1 range = 1 speed = 2
                                   thac0 = enchant damage_bonus = enchant
                                   dice_sides = 6 dice_thrown = thrown damage_type = 1 flags = 1
@@ -472,7 +485,8 @@ CREATE ~SPL~ ~NY#BDBRE~
 
 // ---------------------------------------------------------------------------
 // Draconic Wings (level 14): an item in the helmet slot (opcode 143, slot 6
-// = HELMET) giving +4 movement and immunity to critical hits (item flag).
+// = HELMET) giving +4 movement, +2 AC and immunity to critical hits (item
+// flag), with a portrait icon.
 // Built on the game's wings item (WINGS01.ITM in BG2:EE, BDWINGS.ITM in
 // SoD): its paperdoll animation shows the wings on the character. Icon:
 // NY#BDWNI (see Icons). If neither exists, a plain helmet item without
@@ -513,7 +527,9 @@ COPY_EXISTING ~NY#BDWI.itm~ ~override~
   WRITE_BYTE  0x2f 0
   WRITE_LONG  0x50 ny_str_wings_d
   WRITE_LONG  0x54 ny_str_wings_d
-  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 126 target = 1 timing = 2 parameter1 = 4 parameter2 = 0 END
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 126 target = 1 timing = 2 parameter1 = 4 parameter2 = 0 END   // movement +4
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 0   target = 1 timing = 2 parameter1 = 2 parameter2 = 0 END   // AC +2
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 142 target = 1 timing = 2 parameter2 = ny_pd_wings END        // portrait icon
 
 CREATE ~SPL~ ~NY#BDWG~
   LPF NY#SPL_BASE INT_VAR name = ny_str_wings desc = ny_str_wings_on_d type = 4 level = 1 STR_VAR icon = EVAL ~%ny_icon_wings%~ END
@@ -551,6 +567,8 @@ CREATE ~SPL~ ~NY#BDFP~
   LPF NY#SPL_BASE INT_VAR name = ny_str_fear_on desc = ny_str_fear_on_d type = 4 level = 1 STR_VAR icon = EVAL ~%ny_icon_fear%~ END
   LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = 1 casting_time = 1 STR_VAR icon = EVAL ~%ny_icon_fear%~ RET h = header END
   LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 272 target = 1 timing = 1 parameter1 = ny_round parameter2 = 3 STR_VAR resource = ~NY#BDFPE~ END
+  // portrait icon while the aura is on (removed with the aura by NY#BDFQ)
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 142 target = 1 timing = 1 parameter2 = ny_pd_fear END
   LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#BDFP~ END
   LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 171 target = 1 timing = 1 STR_VAR resource = ~NY#BDFQ~ END
 

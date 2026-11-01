@@ -38,7 +38,7 @@ PERCEPTION AVEUGLE : Le Disciple du Dragon Noir perçoit ce qui l'entoure sans a
 - Niveau 13 : la morsure inflige désormais 2d6 dégâts perforants et 2d4 dégâts d'acide.
 - Niveau 14 : obtient Ailes draconiques.
 
-AILES DRACONIQUES : Une paire d'ailes draconiques pousse dans le dos du Disciple du Dragon Noir, qui gagne +4 en vitesse de déplacement et l'immunité aux coups critiques. Les ailes occupent l'emplacement du casque et peuvent être déployées ou repliées à volonté.
+AILES DRACONIQUES : Une paire d'ailes draconiques pousse dans le dos du Disciple du Dragon Noir, qui gagne +4 en vitesse de déplacement, +2 à la CA et l'immunité aux coups critiques. Les ailes occupent l'emplacement du casque et peuvent être déployées ou repliées à volonté.
 
 - Niveau 15 : bonus de +1 à la CA et à la Constitution.
 - Niveau 16 : Affinité acide s'améliore. Les griffes infligent désormais 2d6 dégâts tranchants et comptent comme des armes magiques +4.
@@ -219,10 +219,11 @@ Des ailes membraneuses ont déchiré le dos du Disciple du Dragon Noir. Elles pr
 CARACTÉRISTIQUES :
 
 Déplacement : +4
+Classe d'armure : +2
 Immunité aux coups critiques~
 @62 = ~Ailes draconiques
 
-Le Disciple du Dragon Noir déploie ses ailes draconiques, ce qui lui donne +4 en vitesse de déplacement et l'immunité aux coups critiques. Les ailes occupent l'emplacement du casque.
+Le Disciple du Dragon Noir déploie ses ailes draconiques, ce qui lui donne +4 en vitesse de déplacement, +2 à la CA et l'immunité aux coups critiques. Les ailes occupent l'emplacement du casque.
 
 Utiliser cette capacité déploie les ailes ; elles peuvent ensuite être repliées à volonté.~
 @63 = ~Replier les ailes draconiques~
