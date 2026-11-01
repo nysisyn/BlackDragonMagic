@@ -85,7 +85,7 @@ BlackDragonMagic/
 | `NY#GTLS`, `NY#GTLX` | Ghostly Tail and its strike |
 | `NY#GTLB`, `NY#GTLC`, `NY#GTLD`, `NY#GTLH` | Ghostly Tail icons (the game's Entangle icons recoloured spectral turquoise; Nysi's artwork version in `works/ghostly_tail_artwork_icons`), portrait icon and hit animation |
 | `NY#MANS`, `NY#MANT`, `NY#MANP` | Mantidrake Spike, its spikes (item) and their poison |
-| `NY#MANSB`, `NY#MANSC` | Mantidrake Spike icons, also the spikes' item icon (Nysi's artwork, source in `works/mantidrake_spike_icon_source`; previous Ice Storm based ones in `works/mantidrake_spike_old_icons`) |
+| `NY#MANSB`, `NY#MANSC` | Mantidrake Spike icons, also the spikes' item icon: the game's `SPWI616` turned 145° and recoloured poison green (Nysi's artwork version in `works/mantidrake_spike_artwork_icons`, source in `works/mantidrake_spike_icon_source`; Ice Storm based ones in `works/mantidrake_spike_old_icons`) |
 | `NY#CSPS`, `NY#CSPX` | Corrosive Spit (not a learnable spell any more: base of the animated breath's spit `NY#ABRX`) and its blindness + delayed damage on a failed save |
 | `NY#CSPB`, `NY#CSPC` | Corrosive Spit icons (Nysi's artwork, source in `works/corrosive_spit_icon_source`) |
 | `NY#WBTS`, `NY#WBTP` | Wyvern Barbed Tail Strike and its poison |

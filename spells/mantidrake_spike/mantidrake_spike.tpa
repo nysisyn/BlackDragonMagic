@@ -13,9 +13,11 @@
 //   NY#MANT   the spikes (MELFMET.ITM patched)
 //   NY#MANP   poison on a failed save
 //   NY#MANSB  spell icon (ability / memorised, on a stone plate), NY#MANSC
-//             spellbook and item icon: Nysi's spikes artwork reduced to 32 px
-//             (source in works/mantidrake_spike_icon_source; the previous
-//             Ice Storm based icons are kept in works/mantidrake_spike_old_icons)
+//             spellbook and item icon: the game's SPWI616 icons turned 145
+//             degrees and recoloured poison green (Nysi's spikes artwork
+//             version in works/mantidrake_spike_artwork_icons, its source in
+//             works/mantidrake_spike_icon_source; Ice Storm based icons in
+//             works/mantidrake_spike_old_icons)
 /////////////////////////////////////////////////////////////////////////////
 
 OUTER_SET ny_str_mant     = RESOLVE_STR_REF (@1)
