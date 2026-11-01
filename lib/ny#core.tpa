@@ -459,3 +459,31 @@ BEGIN
     COPY_EXISTING ~%c%.bam~ ~override/%b%.bam~
   END
 END
+
+
+/////////////////////////////////////////////////////////////////////////////
+// NY#HEX4 (action)
+// Returns a number as 4 uppercase hexadecimal digits, without "0x"
+// (0xEC33 -> "EC33"), for animation INI file names and ANIMATE.IDS.
+/////////////////////////////////////////////////////////////////////////////
+DEFINE_ACTION_FUNCTION NY#HEX4
+  INT_VAR
+    value = 0
+  RET
+    hex
+BEGIN
+  OUTER_SPRINT hex ~~
+  OUTER_FOR (k = 3; k >= 0; --k) BEGIN
+    OUTER_SET d = (value BLSR (k * 4)) BAND 15
+    ACTION_MATCH d WITH
+      10 BEGIN OUTER_SPRINT c ~A~ END
+      11 BEGIN OUTER_SPRINT c ~B~ END
+      12 BEGIN OUTER_SPRINT c ~C~ END
+      13 BEGIN OUTER_SPRINT c ~D~ END
+      14 BEGIN OUTER_SPRINT c ~E~ END
+      15 BEGIN OUTER_SPRINT c ~F~ END
+      DEFAULT OUTER_SPRINT c ~%d%~
+    END
+    OUTER_SPRINT hex ~%hex%%c%~
+  END
+END

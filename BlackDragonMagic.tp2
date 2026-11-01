@@ -49,8 +49,8 @@ END
 
 // New Sorcerer spells: Acidosis, Rot of Ages and Ghostly Tail (level 1), Mantidrake Spike (level 2),
 // Wyvern Barbed Tail Strike and Black Dragon Breathball (level 3),
-// Stunning Black Dragon Breath (level 4), Bonemelt (level 8)
-// Bonemelt is only installed on BG2:EE and EET.
+// Stunning Black Dragon Breath (level 4), Bonemelt and Summon Chimera (level 8)
+// Bonemelt and Summon Chimera are only installed on BG2:EE and EET.
 BEGIN @2 DESIGNATED 10
 LABEL ~BlackDragonMagic-Spells~
 REQUIRE_PREDICATE GAME_IS ~bgee bg2ee eet~ @10
@@ -98,6 +98,10 @@ ACTION_IF GAME_IS ~bg2ee eet~ BEGIN
   WITH_TRA ~%MOD_FOLDER%/lang/english/bonemelt.tra~
            ~%MOD_FOLDER%/lang/%LANGUAGE%/bonemelt.tra~ BEGIN
     INCLUDE ~%MOD_FOLDER%/spells/bonemelt/bonemelt.tpa~
+  END
+  WITH_TRA ~%MOD_FOLDER%/lang/english/summon_chimera.tra~
+           ~%MOD_FOLDER%/lang/%LANGUAGE%/summon_chimera.tra~ BEGIN
+    INCLUDE ~%MOD_FOLDER%/spells/summon_chimera/summon_chimera.tpa~
   END
 END ELSE BEGIN
   PRINT @11

@@ -1,0 +1,21 @@
+// Sort
+@1 = ~Invocation de chimère~
+@2 = ~Invocation de chimère
+(Conjuration/Convocation)
+
+Niveau : 8
+Portée : 9 m
+Durée : 1 tour + 1 round/niveau
+Temps d'incantation : 8
+Zone d'effet : spéciale
+Jet de sauvegarde : aucun
+
+Ce sort invoque une chimère qui combat pour le magicien. Contrairement aux bêtes sauvages, cette chimère porte une tête de dragon noir à côté de ses têtes de lion et de chèvre, et crache de l'acide au lieu du feu. Elle obéit au lanceur jusqu'à la fin du sort ou jusqu'à sa mort.
+
+Chimère : PV 110, CA 2, TAC0 7, 3 attaques par round avec ses crocs et ses cornes (2d6+3 dégâts perforants, arme +3). Trois fois par invocation, au plus une fois tous les 3 rounds, la tête de dragon souffle une ligne d'acide de 9 m de long et 3 m de large, qui inflige 6d8 dégâts d'acide (jet de sauvegarde contre les souffles pour la moitié). Les alliés dans la ligne sont touchés. La chimère a 75 % de résistance à l'acide et est immunisée contre la peur.~
+
+// Créature et ses armes
+@3 = ~Chimère~
+
+// Son souffle
+@4 = ~Souffle d'acide~

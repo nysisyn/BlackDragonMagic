@@ -1,0 +1,154 @@
+/////////////////////////////////////////////////////////////////////////////
+// Summon Chimera - wizard, level 8, Conjuration (BG2:EE and EET only)
+//
+// Summons a chimera whose dragon head is that of a black dragon (summoned
+// ally, 1 turn + 1 round per level). Modelled on the chimera of Icewind
+// Dale II (63CHIM / 66CHIM / 67CHIM: 110 HP, 4 attacks, 6d10 fire breath,
+// animation 0xEC33), converted to AD&D and to acid:
+//   - 110 HP, AC 2, THAC0 7, 3 attacks per round, HD 9
+//   - natural weapons NY#CHMW: 2d6 piercing, +3 weapon (+3 to hit and
+//     damage); immunity to fear while equipped
+//   - acid breath NY#CHBR: line of acid 30 ft. long and 10 ft. wide, 6d8
+//     acid, save vs. Breath for half, 3 times per summoning, every 3 rounds
+//     at most (script baf/ny#chims.baf)
+//   - 75% acid resistance
+//   - allegiance CONTROLLED (5), no experience for killing it
+// The creature is the game's summoned wyvern (WYVERNSU.CRE) changed at
+// install; the wyvern's race script is removed, its default summon script
+// (BDSUM00) is kept.
+//
+// Animation: the Icewind Dale II chimera (MCHI*.BAM, monster_icewind type),
+// with its sounds (CHIM*.WAV), registered through an animation INI file
+// (the Enhanced Editions do the same for the Icewind Dale monsters, E000.INI
+// and so on). Animation id 0xEC33 as in IWD2, or the next free one.
+//
+// Resources
+//   SPWIxxx   Summon Chimera (added through ADD_SPELL as
+//             WIZARD_NY_SUMMON_CHIMERA)
+//   NY#CHIM   the chimera (creature)
+//   NY#CHMW   its natural weapons
+//   NY#CHBR   its acid breath (innate), NY#CHBRT its line projectile
+//   NY#CHIMS  its override script (breath)
+//   NY#CHISB  spell icon (ability / memorised), NY#CHISC spellbook icon:
+//             placeholder, the game's wyvern head (IMISC52) recoloured acid
+//             yellow
+//   MCHI*.BAM, CHIM*.WAV  animation and sounds (Icewind Dale II)
+//   <id>.INI, ANIMATE.IDS NY_CHIMERA   animation registration
+/////////////////////////////////////////////////////////////////////////////
+
+OUTER_SET ny_str_chi     = RESOLVE_STR_REF (@1)
+OUTER_SET ny_str_chi_d   = RESOLVE_STR_REF (@2)
+OUTER_SET ny_str_chi_cre = RESOLVE_STR_REF (@3)
+OUTER_SET ny_str_chi_br  = RESOLVE_STR_REF (@4)
+
+COPY ~%MOD_FOLDER%/spells/summon_chimera/bam/ny#chisb.bam~ ~override~
+     ~%MOD_FOLDER%/spells/summon_chimera/bam/ny#chisc.bam~ ~override~
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#CHISB~ c = ~NY#CHISC~ END   // Remastered Spell Icons
+
+// Animation and sounds (Icewind Dale II)
+COPY ~%MOD_FOLDER%/spells/summon_chimera/anim~ ~override~
+COPY ~%MOD_FOLDER%/spells/summon_chimera/wav~ ~override~
+
+// Animation id: 0xEC33 (IWD2) if free, otherwise the next free one (no INI
+// file and no ANIMATE.IDS entry)
+OUTER_SET ny_chi_anim = "-1"
+OUTER_FOR (id = 0xec33; (id <= 0xecff) AND (ny_chi_anim < 0); ++id) BEGIN
+  LAF NY#HEX4 INT_VAR value = id RET hexstring = hex END
+  OUTER_SET used = FILE_EXISTS_IN_GAME ~%hexstring%.ini~
+  ACTION_IF (NOT used) BEGIN
+    COPY_EXISTING ~animate.ids~ ~override~
+      PATCH_IF (INDEX_BUFFER (CASE_INSENSITIVE EVALUATE_REGEXP ~^0x%hexstring%[ %TAB%]~) >= 0) BEGIN
+        SET used = 1
+      END
+    BUT_ONLY
+  END
+  ACTION_IF (NOT used) BEGIN
+    OUTER_SET ny_chi_anim = id
+    OUTER_SPRINT ny_chi_hex ~%hexstring%~
+  END
+END
+ACTION_IF (ny_chi_anim < 0) BEGIN
+  FAIL ~BlackDragonMagic: no free animation id between 0xEC33 and 0xECFF~
+END
+COPY ~%MOD_FOLDER%/spells/summon_chimera/ini/chimera.ini~ ~override/%ny_chi_hex%.ini~
+ACTION_IF (IDS_OF_SYMBOL (~animate~ ~NY_CHIMERA~) < 0) BEGIN
+  APPEND ~animate.ids~ ~0x%ny_chi_hex% NY_CHIMERA~
+END
+
+// Natural weapons: 2d6 piercing, +3; immunity to fear while equipped
+CREATE ~ITM~ ~NY#CHMW~
+  WRITE_LONG  0x08 ny_str_chi_cre
+  WRITE_LONG  0x0c ny_str_chi_cre
+  WRITE_LONG  0x18 0x60                         // not copyable, magical
+  WRITE_SHORT 0x1c 0x1c                         // hand-to-hand weapon
+  WRITE_LONG  0x60 3                            // +3 weapon
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 24 END   // panic
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 23 END   // morale failure
+  LPF NY#ADD_ITM_HEADER INT_VAR attack_type = 1 id_req = 0 location = 1 target = 1 range = 1 speed = 3
+                                thac0 = 3 damage_bonus = 3 dice_sides = 6 dice_thrown = 2 damage_type = 1 flags = 1 END
+
+// Acid breath: line 30 ft. x 10 ft., 6d8 acid, save vs. Breath for half.
+// Wave, trail, splash and sound of the kit's breath (copied again here so
+// the spell works without the kit component).
+COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdwav.bam~ ~override~
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdwvt.bam~ ~override~
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdwvh.bam~ ~override~
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/wav/ny#bdbre.wav~ ~override~
+LAF NY#CREATE_LINE_PRO INT_VAR speed = 20 width = 80 trail_delay = 2 STR_VAR new = ~NY#CHBRT~ bam = ~NY#BDWAV~ trail = ~NY#BDWVT~ sound = ~NY#BDBRE~ workspace = EVAL ~%ny_workspace%~ RET ny_pro_chibr = pro_id END
+
+CREATE ~SPL~ ~NY#CHBR~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_chi_br type = 4 level = 1 flags = 0x400 END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 4 range = 30 level = 1 casting_time = 0 projectile = ny_pro_chibr RET h = header END
+  // the wave starts on the chimera: 2 seconds of immunity to its own breath
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = 2 parameter1 = "-1" STR_VAR resource = ~NY#CHBR~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 STR_VAR resource = ~NY#BDWVH~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 0 parameter2 = 0x10000 dicenumber = 6 dicesize = 8 savingthrow = 2 special = 0x100 END
+
+COMPILE ~%MOD_FOLDER%/spells/summon_chimera/baf/ny#chims.baf~
+
+// The chimera, from the game's summoned wyvern
+COPY_EXISTING ~WYVERNSU.cre~ ~override/NY#CHIM.cre~
+  WRITE_LONG  0x08 ny_str_chi_cre
+  WRITE_LONG  0x0c ny_str_chi_cre
+  WRITE_LONG  0x14 0                            // no experience when killed
+  WRITE_SHORT 0x24 110                          // HP
+  WRITE_SHORT 0x26 110
+  WRITE_LONG  0x28 ny_chi_anim                  // IWD2 chimera
+  WRITE_SHORT 0x46 2                            // AC (natural and effective)
+  WRITE_SHORT 0x48 2
+  WRITE_BYTE  0x52 7                            // THAC0
+  WRITE_BYTE  0x53 3                            // 3 attacks per round
+  // saves: death, wands, polymorph, breath, spells (warrior 9)
+  WRITE_BYTE  0x54 8
+  WRITE_BYTE  0x55 10
+  WRITE_BYTE  0x56 9
+  WRITE_BYTE  0x57 9
+  WRITE_BYTE  0x58 11
+  // resistances: fire, cold, electricity, acid, magic, magic fire, magic
+  // cold, slashing, crushing, piercing, missile
+  FOR (o = 0x59; o <= 0x63; ++o) BEGIN WRITE_BYTE o 0 END
+  WRITE_BYTE  0x5c 75                           // acid
+  WRITE_BYTE  0x234 9                           // level (hit dice)
+  WRITE_BYTE  0x238 19                          // STR, IWD2
+  WRITE_BYTE  0x239 0
+  WRITE_BYTE  0x23a 4                           // INT
+  WRITE_BYTE  0x23b 13                          // WIS
+  WRITE_BYTE  0x23c 13                          // DEX
+  WRITE_BYTE  0x23d 17                          // CON
+  WRITE_BYTE  0x23e 10                          // CHA
+  WRITE_ASCII 0x248 ~NY#CHIMS~ #8               // override script: breath
+  WRITE_ASCII 0x258 ~~ #8                       // no wyvern race script
+  WRITE_BYTE  0x270 5                           // CONTROLLED, as summons
+  REMOVE_CRE_ITEMS
+  ADD_CRE_ITEM ~NY#CHMW~ #0 #0 #0 ~NONE~ ~WEAPON1~ EQUIP
+
+// Spell: 1 turn + 1 round per level
+CREATE ~SPL~ ~NY#CHIS~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_chi desc = ny_str_chi_d type = 1 level = 8
+                          school = 2 exclusion = 0x100 graphics = 14 STR_VAR icon = ~NY#CHISC~ END
+  FOR (lvl = 15; lvl <= 40; ++lvl) BEGIN
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 4 range = 30 level = ((lvl = 15) ? 1 : lvl) casting_time = 8 STR_VAR icon = ~NY#CHISB~ RET h = header END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 67 target = 1 timing = 0 duration = ((10 + lvl) * ny_round) STR_VAR resource = ~NY#CHIM~ END
+  END
+
+ADD_SPELL ~override/NY#CHIS.spl~ 2 8 ~WIZARD_NY_SUMMON_CHIMERA~

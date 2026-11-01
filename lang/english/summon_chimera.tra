@@ -1,0 +1,21 @@
+// Spell
+@1 = ~Summon Chimera~
+@2 = ~Summon Chimera
+(Conjuration/Summoning)
+
+Level: 8
+Range: 30 ft.
+Duration: 1 turn + 1 round/level
+Casting Time: 8
+Area of Effect: Special
+Saving Throw: None
+
+This spell summons a chimera to fight for the wizard. Unlike the beasts of the wild, this chimera bears the head of a black dragon among its lion and goat heads, and breathes acid instead of fire. It obeys the caster until the spell ends or it is slain.
+
+Chimera: HP 110, AC 2, THAC0 7, 3 attacks per round with its fangs and horns (2d6+3 piercing damage, +3 weapon). Three times per summoning, at most once every 3 rounds, the dragon head breathes a line of acid 30 ft. long and 10 ft. wide, dealing 6d8 acid damage (save vs. Breath for half). Allies in the line are affected. The chimera has 75% acid resistance and is immune to fear.~
+
+// Creature and its weapons
+@3 = ~Chimera~
+
+// Its breath
+@4 = ~Acid Breath~

@@ -1,0 +1,20 @@
+// Chimera: breathes acid at the nearest enemy it sees, 3 times per
+// summoning (LOCALS counter, reset with each new chimera) and every
+// 3 rounds at most; otherwise it attacks in melee.
+IF
+  See(NearestEnemyOf(Myself))
+  GlobalLT("NY#CHBRN","LOCALS",3)
+  !GlobalTimerNotExpired("NY#CHBRT","LOCALS")
+THEN
+  RESPONSE #100
+    IncrementGlobal("NY#CHBRN","LOCALS",1)
+    SetGlobalTimer("NY#CHBRT","LOCALS",18)
+    ReallyForceSpellRES("NY#CHBR",NearestEnemyOf(Myself))
+END
+
+IF
+  See(NearestEnemyOf(Myself))
+THEN
+  RESPONSE #100
+    AttackReevaluate(NearestEnemyOf(Myself),15)
+END

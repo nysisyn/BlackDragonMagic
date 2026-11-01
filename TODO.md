@@ -105,6 +105,14 @@ Not done yet:
 ### Bonemelt
 - [ ] The "successful save" subspell (delayed 1 second) is blocked when the save failed.
 
+### Summon Chimera (branch chimera)
+- [ ] Install (BG2:EE): the .DEBUG shows the animation id used (0xEC33 or another) and no error.
+- [ ] The chimera appears with the IWD2 animation (walk, attacks, death), right size and selection circle; sounds right (battle cry, attacks, breath, damage, death).
+- [ ] 110 HP, AC 2, THAC0 7, 3 attacks per round, 2d6+3, hits creatures needing +3 weapons; immune to fear; 75% acid resistance.
+- [ ] Acid breath: 3 times per summoning, at most every 3 rounds, at the nearest enemy; line 30 x 10 ft., 6d8 acid, save vs. Breath for half; the chimera not hurt by its own breath.
+- [ ] Controlled by the player (allegiance), stays an ally when hit by the party's area spells; disappears after 1 turn + 1 round per level.
+- [ ] Icon (placeholder: wyvern head in acid yellow).
+
 ### Vitriolic Sphere
 - [ ] Impact and delayed damage share the same saving throw; otherwise move the delayed damage to a subspell applied only on a failed save.
 - [ ] Green explosion colour: set `ny_vs_color` in `tweaks/vitriolic_sphere/vitriolic_sphere.tpa` (palette index to find in Near Infinity).
