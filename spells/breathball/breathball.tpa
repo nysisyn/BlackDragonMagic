@@ -17,8 +17,10 @@
 //             WIZARD_NY_BREATHBALL)
 //   NY#BDBBP  projectile
 //   NY#BDBBB  spell icon (ability / memorised, on a stone plate), NY#BDBBC
-//             spellbook icon: Nysi's acid dragon artwork reduced to 32 px
-//             (source image in works/breathball_icon_source)
+//             spellbook icon: the game's SPWI922 icons recoloured in the acid
+//             yellow of the kit's breath (Nysi's acid dragon artwork version
+//             in works/breathball_artwork_icons, its source in
+//             works/breathball_icon_source)
 /////////////////////////////////////////////////////////////////////////////
 
 OUTER_SET ny_str_bball   = RESOLVE_STR_REF (@1)

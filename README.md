@@ -91,7 +91,7 @@ BlackDragonMagic/
 | `NY#WBTS`, `NY#WBTP` | Wyvern Barbed Tail Strike and its poison |
 | `NY#WBTB`, `NY#WBTC` | Wyvern Barbed Tail Strike icons (Nysi's artwork, source in `works/wyvern_tail_icon_source`; previous Death Ward based ones in `works/wyvern_tail_old_icons`) |
 | `NY#BDBB`, `NY#BDBBP` | Black Dragon Breathball and its projectile |
-| `NY#BDBBB`, `NY#BDBBC` | Black Dragon Breathball icons (Nysi's artwork, source in `works/breathball_icon_source`) |
+| `NY#BDBBB`, `NY#BDBBC` | Black Dragon Breathball icons: the game's `SPWI922` recoloured acid yellow (Nysi's artwork version in `works/breathball_artwork_icons`, source in `works/breathball_icon_source`) |
 | `NY#SBBS`, `NY#SBBT` | Stunning Black Dragon Breath and its line projectile |
 | `NY#SBBB`, `NY#SBBC` | Stunning Black Dragon Breath icons (Nysi's artwork, source in `works/stunning_breath_icon_source`) |
 | `NY#PBRS`, `NY#PBRP` | Black Dragon Pooling Breath and its projectile (Stinking Cloud's area with acid puddles) |
