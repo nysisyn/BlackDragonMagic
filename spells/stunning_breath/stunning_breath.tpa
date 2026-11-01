@@ -13,8 +13,10 @@
 //             WIZARD_NY_STUNNING_BREATH)
 //   NY#SBBT   line projectile (as the kit's NY#BDBRT)
 //   NY#SBBB   spell icon (ability / memorised, on a stone plate), NY#SBBC
-//             spellbook icon: Nysi's artwork reduced to 32 px (source and
-//             transparent version in works/stunning_breath_icon_source)
+//             spellbook icon: the game's SPCL626 icons (dragon head)
+//             recoloured in the acid yellow of the kit's breath (Nysi's
+//             artwork version in works/stunning_breath_artwork_icons, its
+//             source in works/stunning_breath_icon_source)
 //   The wave, trail and splash animations and the sound are the kit's ones
 //   (kits/black_dragon_disciple/bam, wav), copied again here so the spell
 //   works without the kit component.

@@ -93,7 +93,7 @@ BlackDragonMagic/
 | `NY#BDBB`, `NY#BDBBP` | Black Dragon Breathball and its projectile |
 | `NY#BDBBB`, `NY#BDBBC` | Black Dragon Breathball icons: the game's `SPWI922` recoloured acid yellow (Nysi's artwork version in `works/breathball_artwork_icons`, source in `works/breathball_icon_source`) |
 | `NY#SBBS`, `NY#SBBT` | Stunning Black Dragon Breath and its line projectile |
-| `NY#SBBB`, `NY#SBBC` | Stunning Black Dragon Breath icons (Nysi's artwork, source in `works/stunning_breath_icon_source`) |
+| `NY#SBBB`, `NY#SBBC` | Stunning Black Dragon Breath icons: the game's `SPCL626` (dragon head) recoloured acid yellow (Nysi's artwork version in `works/stunning_breath_artwork_icons`, source in `works/stunning_breath_icon_source`) |
 | `NY#PBRS`, `NY#PBRP` | Black Dragon Pooling Breath and its projectile (Stinking Cloud's area with acid puddles) |
 | `NY#PBRD`, `NY#PBRT` | its acid puddles and travelling blob (Grease's GREASED and ACIDBLOB recoloured acid green) |
 | `NY#PBRB`, `NY#PBRC` | Black Dragon Pooling Breath icons: the game's Free Action icon (waves) recoloured in the acid yellow of the kit's breath, stone plate grey |
