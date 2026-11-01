@@ -1,0 +1,12 @@
+@1 = ~Boule de souffle du dragon noir~
+@2 = ~Boule de souffle du dragon noir
+(Évocation)
+
+Niveau : 3
+Portée : champ de vision du lanceur
+Durée : instantanée
+Temps d'incantation : 3
+Zone d'effet : rayon de 6 m
+Jet de sauvegarde : souffles, 1/2
+
+Le lanceur projette une sphère de souffle de dragon noir qui éclate en un nuage d'acide. Toute créature située à moins de 6 m du point d'impact, alliée ou ennemie, subit 3d8 points de dégâts d'acide au niveau 5, avec 1d8 de plus aux niveaux 6, 9, 12, 15 et 18 (8d8 au maximum). Un jet de sauvegarde contre les souffles réussi réduit les dégâts de moitié.~

@@ -1,0 +1,69 @@
+/////////////////////////////////////////////////////////////////////////////
+// Acidosis - wizard, level 1, Evocation
+//
+// Self damage: 15% of current HP (acid). Duration 1 turn / level.
+// Melee attackers: 1d2 acid + -3 THAC0 for 3 rounds, no save (refreshed,
+// not stacked). The THAC0 penalty is the real payload: an alternative to
+// Mage Armor.
+//
+// Resources
+//   SPWIxxx   Acidosis (added through ADD_SPELL as WIZARD_NY_ACIDOSIS)
+//   NY#ACDX   retaliation subspell, melee attackers only (projectile NY#MELEE)
+//   NY#ACIDE  acid burst on the caster when cast (BAM)
+//   NY#ACID6  acid splash on the attacker (BAM)
+//   NY#ACDSD  portrait icon (Beltyn's Burning Blood icon from IWDEE,
+//             recoloured in acid green), registered in STATDESC.2DA
+//   NY#ACDSB  spell icon (ability / memorised), NY#ACDSC spellbook icon:
+//             Nysi's acid drop artwork reduced to 32 px (on a stone plate
+//             for NY#ACDSB), source in works/acidosis_icon_source.
+//             Previous icons kept in works/acidosis_old_icons (not installed)
+/////////////////////////////////////////////////////////////////////////////
+
+OUTER_SET ny_str_acidosis   = RESOLVE_STR_REF (@1)
+OUTER_SET ny_str_acidosis_d = RESOLVE_STR_REF (@2)
+
+COPY ~%MOD_FOLDER%/spells/acidosis/bam/ny#acide.bam~ ~override~
+     ~%MOD_FOLDER%/spells/acidosis/bam/ny#acid6.bam~ ~override~
+     ~%MOD_FOLDER%/spells/acidosis/bam/ny#acdsd.bam~ ~override~
+     ~%MOD_FOLDER%/spells/acidosis/bam/ny#acdsb.bam~ ~override~
+     ~%MOD_FOLDER%/spells/acidosis/bam/ny#acdsc.bam~ ~override~
+LAF NY#ADD_STATDESC INT_VAR strref = ny_str_acidosis STR_VAR bam = ~NY#ACDSD~ RET ny_icon_acidosis = index END
+
+// Retaliation against the attacker, built like Fire Shield (SPWI403D):
+// long range so opcode 232 always casts it, and a range-limited projectile
+// (about 12 ft., NY#MELEE) that only reaches melee attackers, long weapons
+// and large creatures included. The game's RANGE07 was too short.
+LAF NY#MELEE_RANGE_PRO STR_VAR workspace = EVAL ~%ny_workspace%~ RET ny_pro_melee = pro_id END
+CREATE ~SPL~ ~NY#ACDX~
+  LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1000 level = 1 casting_time = 0 projectile = ny_pro_melee RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 321 target = 2 timing = 1 STR_VAR resource = ~NY#ACDX~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 0 parameter2 = 0x10000 dicenumber = 1 dicesize = 2 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 54  target = 2 timing = 0 duration = (3 * ny_round) parameter1 = "-3" parameter2 = 0 END
+  // feedback: acid splash on the attacker
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 STR_VAR resource = ~NY#ACID6~ END
+
+// Main spell, built in override then registered as a wizard spell
+CREATE ~SPL~ ~NY#ACDS~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_acidosis desc = ny_str_acidosis_d type = 1 level = 1
+                          school = 6 exclusion = 0x200 graphics = 15 STR_VAR icon = ~NY#ACDSC~ END
+  FOR (lvl = 1; lvl <= 30; ++lvl) BEGIN
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 5 range = 1 level = lvl casting_time = 9 STR_VAR icon = ~NY#ACDSB~ RET h = header END
+    // remove a previous casting first (no stacking)
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 321 target = 1 timing = 1 STR_VAR resource = ~NY#ACDS~ END
+    // 15% of current HP as acid damage ("reduce by percentage")
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 1 timing = 1 parameter1 = 15 parameter2 = 0x10003 END
+    // feedback: acid burst on casting, portrait icon for the duration
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 1 timing = 0 duration = 1 parameter2 = 1 STR_VAR resource = ~NY#ACIDE~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 142 target = 1 timing = 0 duration = (lvl * ny_turn) parameter2 = ny_icon_acidosis END
+    // when hit, cast the retaliation on the last hitter
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 232 target = 1 timing = 0 duration = (lvl * ny_turn) parameter1 = 1 parameter2 = 0 resist_dispel = 1 STR_VAR resource = ~NY#ACDX~ END
+  END
+
+ADD_SPELL ~override/NY#ACDS.spl~ 2 1 ~WIZARD_NY_ACIDOSIS~
+LAF RES_NUM_OF_SPELL_NAME STR_VAR spell_name = ~WIZARD_NY_ACIDOSIS~ RET ny_acidosis_res = spell_res END
+
+// self references must point to the final resref (the only 321 effects of
+// the spell are the "remove previous casting" ones)
+COPY_EXISTING ~%ny_acidosis_res%.spl~ ~override~
+  LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 321 STR_VAR resource = EVAL ~%ny_acidosis_res%~ END

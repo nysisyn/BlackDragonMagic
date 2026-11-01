@@ -1,0 +1,154 @@
+/////////////////////////////////////////////////////////////////////////////
+// Bonemelt - wizard, level 8, Alteration
+//
+// Lore: reproduction attempt of the spell of the black dracolich
+// Daurgothoth.
+//
+// Casting the spell lets the wizard choose the mutilation: it grants three
+// touch abilities (Legs / Arms / Ribcage) for 1 turn; using one removes all
+// three.
+//   - 8d8 acid, no save
+//   - save vs. Death at -2, failure: chosen mutilation for 1 hour
+//       Legs: movement x1/4, -4 AC / Arms: -4 THAC0, -4 damage /
+//       Ribcage: 2d4 acid per round
+//     skeletal undead that fail are destroyed
+//   - success: random limb at half strength for 30 minutes
+//
+// Resources
+//   SPWIxxx    Bonemelt (WIZARD_NY_BONEMELT)
+//   NY#BMLG / NY#BMAR / NY#BMRB      touch abilities
+//   NY#BMLGF / NY#BMARF / NY#BMRBF   failed-save mutilations
+//   NY#BMSUC   successful save: random limb, half strength
+//   NY#BMSK    skeletal undead destruction
+//   NY#BMRBE / NY#BMRBH              ribcage acid per round (full / half)
+/////////////////////////////////////////////////////////////////////////////
+
+OUTER_SET ny_str_bonemelt     = RESOLVE_STR_REF (@1)
+OUTER_SET ny_str_bonemelt_d   = RESOLVE_STR_REF (@2)
+OUTER_SET ny_str_bm_legs      = RESOLVE_STR_REF (@10)
+OUTER_SET ny_str_bm_legs_d    = RESOLVE_STR_REF (@11)
+OUTER_SET ny_str_bm_arms      = RESOLVE_STR_REF (@20)
+OUTER_SET ny_str_bm_arms_d    = RESOLVE_STR_REF (@21)
+OUTER_SET ny_str_bm_ribs      = RESOLVE_STR_REF (@30)
+OUTER_SET ny_str_bm_ribs_d    = RESOLVE_STR_REF (@31)
+
+OUTER_SET ny_bm_full = ny_hour
+OUTER_SET ny_bm_half = ny_hour / 2
+
+OUTER_SET ny_ids_skeleton = IDS_OF_SYMBOL (~race~ ~SKELETON~)
+LAF NY#SPLPROT_ROW STR_VAR label = ~NY#RACE!=SKELETON~ stat = ~0x10c~ value = EVAL ~%ny_ids_skeleton%~ relation = ~5~ RET ny_prot_not_skeleton = row END
+
+
+// ---------------------------------------------------------------------------
+// Ribcage acid, applied every round through opcode 272
+// ---------------------------------------------------------------------------
+LAF NY#CREATE_EFF INT_VAR opcode = 12 target = 1 parameter2 = 0x10000 dicenumber = 2 dicesize = 4 STR_VAR eff = ~NY#BMRBE~ END
+LAF NY#CREATE_EFF INT_VAR opcode = 12 target = 1 parameter2 = 0x10000 dicenumber = 1 dicesize = 4 STR_VAR eff = ~NY#BMRBH~ END
+
+
+// ---------------------------------------------------------------------------
+// Skeletal undead destruction (only skeletons are affected)
+// ---------------------------------------------------------------------------
+CREATE ~SPL~ ~NY#BMSK~
+  LPF NY#SPL_BASE INT_VAR type = 4 level = 8 flags = 0x400 END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 30 level = 1 casting_time = 0 RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 324 target = 2 duration = 1 parameter2 = ny_prot_not_skeleton STR_VAR resource = ~NY#BMSK~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 13  target = 2 timing = 1 parameter1 = 0 parameter2 = 0 END
+
+
+// ---------------------------------------------------------------------------
+// Successful save: random limb at half strength for 30 minutes
+// One shared roll: Legs 0-32, Arms 33-65, Ribcage 66-99
+// ---------------------------------------------------------------------------
+CREATE ~SPL~ ~NY#BMSUC~
+  LPF NY#SPL_BASE INT_VAR type = 4 level = 8 flags = 0x400 END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 30 level = 1 casting_time = 0 RET h = header END
+  // Legs, half: movement x5/8 (three eighths lost), -2 AC
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 176 target = 2 duration = ny_bm_half parameter1 = 62 parameter2 = 2 probability1 = 32 probability2 = 0 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 0   target = 2 duration = ny_bm_half parameter1 = "-2" parameter2 = 0 probability1 = 32 probability2 = 0 END
+  // Arms, half: -2 THAC0, -2 damage
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 54  target = 2 duration = ny_bm_half parameter1 = "-2" parameter2 = 0 probability1 = 65 probability2 = 33 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 73  target = 2 duration = ny_bm_half parameter1 = "-2" parameter2 = 0 probability1 = 65 probability2 = 33 END
+  // Ribcage, half: 1d4 acid per round
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 272 target = 2 duration = ny_bm_half parameter1 = ny_round parameter2 = 3 probability1 = 99 probability2 = 66 STR_VAR resource = ~NY#BMRBH~ END
+
+
+// ---------------------------------------------------------------------------
+// Failed save: chosen mutilation for 1 hour. The first effect protects the
+// target from the (delayed) successful-save subspell.
+// ---------------------------------------------------------------------------
+DEFINE_ACTION_FUNCTION NY#BM_FAIL
+  STR_VAR
+    resref = ~~
+BEGIN
+  CREATE ~SPL~ ~%resref%~
+    LPF NY#SPL_BASE INT_VAR type = 4 level = 8 flags = 0x400 END
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 30 level = 1 casting_time = 0 RET h = header END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 2 duration = 3 parameter1 = "-1" STR_VAR resource = ~NY#BMSUC~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 parameter2 = 1 STR_VAR resource = ~NY#BMSK~ END
+END
+
+LAF NY#BM_FAIL STR_VAR resref = ~NY#BMLGF~ END
+COPY_EXISTING ~NY#BMLGF.spl~ ~override~
+  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 176 target = 2 duration = ny_bm_full parameter1 = 25 parameter2 = 2 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 0   target = 2 duration = ny_bm_full parameter1 = "-4" parameter2 = 0 END
+
+LAF NY#BM_FAIL STR_VAR resref = ~NY#BMARF~ END
+COPY_EXISTING ~NY#BMARF.spl~ ~override~
+  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 54 target = 2 duration = ny_bm_full parameter1 = "-4" parameter2 = 0 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 73 target = 2 duration = ny_bm_full parameter1 = "-4" parameter2 = 0 END
+
+LAF NY#BM_FAIL STR_VAR resref = ~NY#BMRBF~ END
+COPY_EXISTING ~NY#BMRBF.spl~ ~override~
+  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 272 target = 2 duration = ny_bm_full parameter1 = ny_round parameter2 = 3 STR_VAR resource = ~NY#BMRBE~ END
+
+
+// ---------------------------------------------------------------------------
+// Touch abilities (one per mutilation). Using one removes all three.
+// ---------------------------------------------------------------------------
+DEFINE_ACTION_FUNCTION NY#BM_TOUCH
+  INT_VAR
+    name  = "-1"
+    desc  = "-1"
+  STR_VAR
+    resref = ~~
+    fail   = ~~
+BEGIN
+  CREATE ~SPL~ ~%resref%~
+    LPF NY#SPL_BASE INT_VAR name desc type = 4 level = 8 school = 8 flags = 0x400 graphics = 10 STR_VAR icon = ~SPWI211C~ END
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 2 level = 1 casting_time = 1 STR_VAR icon = ~SPWI211B~ RET h = header END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#BMLG~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#BMAR~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#BMRB~ END
+    // 8d8 acid, no save
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 resist_dispel = 1 parameter2 = 0x10000 dicenumber = 8 dicesize = 8 END
+    // save vs. Death at -2: the mutilation is cast only on a failed save
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 parameter2 = 1 savingthrow = 4 savebonus = "-2" STR_VAR resource = EVAL ~%fail%~ END
+    // half-strength effect, one second later (blocked if the save failed)
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 parameter2 = 1 timing = 4 duration = 1 STR_VAR resource = ~NY#BMSUC~ END
+END
+
+LAF NY#BM_TOUCH INT_VAR name = ny_str_bm_legs desc = ny_str_bm_legs_d STR_VAR resref = ~NY#BMLG~ fail = ~NY#BMLGF~ END
+LAF NY#BM_TOUCH INT_VAR name = ny_str_bm_arms desc = ny_str_bm_arms_d STR_VAR resref = ~NY#BMAR~ fail = ~NY#BMARF~ END
+LAF NY#BM_TOUCH INT_VAR name = ny_str_bm_ribs desc = ny_str_bm_ribs_d STR_VAR resref = ~NY#BMRB~ fail = ~NY#BMRBF~ END
+
+
+// ---------------------------------------------------------------------------
+// Main spell: grants the three touch abilities for 1 turn
+// ---------------------------------------------------------------------------
+CREATE ~SPL~ ~NY#BMLT~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_bonemelt desc = ny_str_bonemelt_d type = 1 level = 8
+                          school = 8 exclusion = 0x40 graphics = 10 STR_VAR icon = ~SPWI211C~ END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 5 range = 1 level = 1 casting_time = 5 STR_VAR icon = ~SPWI211B~ RET h = header END
+  // reset any pending choice, give the three choices, remove them after 1 turn
+  PATCH_FOR_EACH ny_touch IN ~NY#BMLG~ ~NY#BMAR~ ~NY#BMRB~ BEGIN
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = EVAL ~%ny_touch%~ END
+  END
+  PATCH_FOR_EACH ny_touch IN ~NY#BMLG~ ~NY#BMAR~ ~NY#BMRB~ BEGIN
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 171 target = 1 timing = 1 STR_VAR resource = EVAL ~%ny_touch%~ END
+  END
+  PATCH_FOR_EACH ny_touch IN ~NY#BMLG~ ~NY#BMAR~ ~NY#BMRB~ BEGIN
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 4 duration = ny_turn STR_VAR resource = EVAL ~%ny_touch%~ END
+  END
+
+ADD_SPELL ~override/NY#BMLT.spl~ 2 8 ~WIZARD_NY_BONEMELT~

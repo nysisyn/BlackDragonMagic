@@ -1,0 +1,38 @@
+// Sort principal
+@1 = ~Fonte-des-Os~
+@2 = ~Fonte-des-Os
+(Altération)
+
+Niveau : 8
+Portée : contact
+Durée : 1 heure (30 minutes en cas de jet de sauvegarde réussi)
+Temps d'incantation : 5
+Zone d'effet : une créature
+Jet de sauvegarde : spécial
+
+Ce sort est une tentative de reproduire le terrible sortilège de Daurgothoth, la dracoliche noire. Au moment de l'incantation, le magicien choisit la partie du corps que le sort va dissoudre, puis doit toucher sa cible dans le tour qui suit.
+
+La cible subit 8d8 dégâts d'acide (sans jet de sauvegarde), puis doit réussir un jet de sauvegarde contre la mort à -2 ou subir la mutilation choisie pendant 1 heure :
+- Jambes : vitesse de déplacement réduite des trois quarts, malus de -4 à la CA.
+- Bras : malus de -4 au TAC0 et aux jets de dégâts.
+- Cage thoracique : 2d4 dégâts d'acide par round.
+
+En cas de jet de sauvegarde réussi, un membre au hasard est touché, avec des effets réduits de moitié pendant 30 minutes. Les morts-vivants squelettiques qui ratent leur jet de sauvegarde sont détruits sur le coup.~
+
+// Jambes
+@10 = ~Fonte-des-Os : Jambes~
+@11 = ~Fonte-des-Os : Jambes
+
+Attaque de contact. 8d8 dégâts d'acide, puis jet de sauvegarde contre la mort à -2 ; en cas d'échec, la vitesse de déplacement de la cible est réduite des trois quarts et elle subit un malus de -4 à la CA pendant 1 heure. En cas de réussite, un membre au hasard est touché, avec des effets réduits de moitié pendant 30 minutes.~
+
+// Bras
+@20 = ~Fonte-des-Os : Bras~
+@21 = ~Fonte-des-Os : Bras
+
+Attaque de contact. 8d8 dégâts d'acide, puis jet de sauvegarde contre la mort à -2 ; en cas d'échec, la cible subit un malus de -4 au TAC0 et aux jets de dégâts pendant 1 heure. En cas de réussite, un membre au hasard est touché, avec des effets réduits de moitié pendant 30 minutes.~
+
+// Cage thoracique
+@30 = ~Fonte-des-Os : Cage thoracique~
+@31 = ~Fonte-des-Os : Cage thoracique
+
+Attaque de contact. 8d8 dégâts d'acide, puis jet de sauvegarde contre la mort à -2 ; en cas d'échec, la cible subit 2d4 dégâts d'acide par round pendant 1 heure. En cas de réussite, un membre au hasard est touché, avec des effets réduits de moitié pendant 30 minutes.~

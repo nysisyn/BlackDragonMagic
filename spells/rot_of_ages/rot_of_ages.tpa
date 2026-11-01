@@ -1,0 +1,78 @@
+/////////////////////////////////////////////////////////////////////////////
+// Rot of Ages - wizard, level 1, Necromancy
+//
+// Touch, magic resistance applies.
+//   - blinded for 1 round, no save
+//   - save vs. Death, failure: disease, 1 poison damage per round for
+//     1 round per caster level (max 10 rounds)
+//   - cast again on a creature still diseased that fails its save again:
+//     the new disease stacks and the target is nauseated for 2 rounds
+//     (as Stinking Cloud: unconscious, not woken by damage, "Nauseated"
+//     portrait icon)
+//   - a successful save gives no disease, so it does not count for the
+//     next casting
+//
+// Resources
+//   SPWIxxx   Rot of Ages (added through ADD_SPELL as WIZARD_NY_ROT_OF_AGES)
+//   NY#ROTD   disease, cast by the spell on a failed save (header n = n rounds)
+//   NY#ROTN   nausea
+//   NY#ROTB   spell icon (ability / memorised, on a stone plate), NY#ROTC
+//             spellbook icon: Nysi's rotting cloud artwork reduced to 32 px
+//             (source in works/rot_of_ages_icon_source; the previous
+//             Dolorous Decay icons are kept in works/rot_of_ages_old_icons)
+//   NY_ROT_OF_AGES (SPLSTATE.IDS)   "suffering from Rot of Ages"
+/////////////////////////////////////////////////////////////////////////////
+
+OUTER_SET ny_str_rot   = RESOLVE_STR_REF (@1)
+OUTER_SET ny_str_rot_d = RESOLVE_STR_REF (@2)
+OUTER_SET ny_str_rot_blind  = RESOLVE_STR_REF (@3)
+OUTER_SET ny_str_rot_sick   = RESOLVE_STR_REF (@4)
+OUTER_SET ny_str_rot_nausea = RESOLVE_STR_REF (@5)
+
+COPY ~%MOD_FOLDER%/spells/rot_of_ages/bam/ny#rotb.bam~ ~override~
+     ~%MOD_FOLDER%/spells/rot_of_ages/bam/ny#rotc.bam~ ~override~
+
+// "Suffering from Rot of Ages": spell state set by the disease, checked by
+// the next casting through a SPLPROT row (stat 0x112 = SPLSTATE.IDS)
+LAF NY#ADD_SPLSTATE STR_VAR name = ~NY_ROT_OF_AGES~ RET ny_state_rot = id END
+LAF NY#SPLPROT_ROW STR_VAR label = ~NY#ROT_OF_AGES~ stat = ~0x112~ value = EVAL ~%ny_state_rot%~ relation = ~1~ RET ny_prot_rot = row END
+
+// Nausea, as Stinking Cloud (SPWI213): unconscious, not woken by damage
+CREATE ~SPL~ ~NY#ROTN~
+  LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1 level = 1 casting_time = 0 RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 39  target = 2 timing = 0 duration = (2 * ny_round) parameter2 = 1   resist_dispel = 3 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 142 target = 2 timing = 0 duration = (2 * ny_round) parameter2 = 126 resist_dispel = 3 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 139 target = 2 timing = 1 parameter1 = ny_str_rot_nausea END   // combat log
+
+// Disease: header n (cast at level n) lasts n rounds. Each casting adds its
+// own damage, so diseases stack.
+CREATE ~SPL~ ~NY#ROTD~
+  LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+  FOR (n = 1; n <= 10; ++n) BEGIN
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1 level = n casting_time = 0 RET h = header END
+    // already diseased: nausea. Checked before this casting sets the state.
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 326 target = 2 timing = 1 parameter2 = ny_prot_rot resist_dispel = 3 STR_VAR resource = ~NY#ROTN~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 328 target = 2 timing = 0 duration = (n * ny_round) parameter2 = ny_state_rot special = 1 resist_dispel = 3 END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 142 target = 2 timing = 0 duration = (n * ny_round) parameter2 = 7 resist_dispel = 3 END   // "Diseased"
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 139 target = 2 timing = 1 parameter1 = ny_str_rot_sick END   // combat log
+    FOR (r = 1; r <= n; ++r) BEGIN   // 1 poison damage at the end of each round
+      LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12 target = 2 timing = 4 duration = (r * ny_round) parameter1 = 1 parameter2 = 0x200000 resist_dispel = 3 END
+    END
+  END
+
+// Main spell: one header per caster level up to 10
+CREATE ~SPL~ ~NY#ROTS~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_rot desc = ny_str_rot_d type = 1 level = 1 flags = 0x400
+                          school = 7 exclusion = 0x400 graphics = 9 STR_VAR icon = ~NY#ROTC~ END
+  FOR (lvl = 1; lvl <= 10; ++lvl) BEGIN
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 1 range = 1 level = lvl casting_time = 1 STR_VAR icon = ~NY#ROTB~ RET h = header END
+    // resist_dispel = 1: magic resistance applies, dispellable
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 resist_dispel = 1 STR_VAR resource = ~POISON~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 74  target = 2 timing = 0 duration = ny_round resist_dispel = 1 END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 139 target = 2 timing = 1 parameter1 = ny_str_rot_blind resist_dispel = 1 END   // combat log
+    // one save vs. Death for the whole disease (and the nausea)
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 timing = 1 parameter1 = lvl parameter2 = 1 savingthrow = 4 resist_dispel = 1 STR_VAR resource = ~NY#ROTD~ END
+  END
+
+ADD_SPELL ~override/NY#ROTS.spl~ 2 1 ~WIZARD_NY_ROT_OF_AGES~

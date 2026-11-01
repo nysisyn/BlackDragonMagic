@@ -1,0 +1,13 @@
+@1 = ~Sphère de vitriol
+(Évocation)
+
+Niveau : 4
+Portée : champ de vision du lanceur
+Durée : spéciale
+Temps d'incantation : 4
+Zone d'effet : rayon de 6 m
+Jet de sauvegarde : souffles, moitié
+
+Une sphère émeraude luminescente file vers le point choisi et éclate en une pluie d'acide brûlant. Toutes les créatures dans un rayon de 6 m, alliés compris, subissent 1d4 dégâts d'acide par niveau du lanceur, jusqu'à un maximum de 12d4 (jet de sauvegarde contre les souffles pour la moitié).
+
+Les créatures qui ratent leur jet de sauvegarde sont imprégnées d'acide et subissent 1d4 dégâts d'acide supplémentaires par tranche de 2 niveaux du lanceur (6d4 au maximum) au round suivant. Celles qui le réussissent ne subissent aucun dégât différé.~

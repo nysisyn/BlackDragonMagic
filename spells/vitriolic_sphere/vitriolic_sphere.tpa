@@ -1,0 +1,66 @@
+/////////////////////////////////////////////////////////////////////////////
+// Vitriolic Sphere - 5th edition style (validated design, 26/10/2026)
+//
+// Modifies the existing spell (IWD:EE, or IWDification on BG2:EE/EET),
+// found through SPELL.IDS (WIZARD_VITRIOLIC_SPHERE). Install after
+// IWDification and SCS.
+//
+//   School Evocation (was Conjuration), level 4, casting time 4
+//   Range: visual range (same as Fireball), 20-ft. radius, allies included
+//   Impact: 1d4 acid / level (max 12d4), save vs. Breath for half
+//   Failed save: 1d4 / 2 levels (max 6d4) more acid the following round
+//   Successful save: no delayed damage
+/////////////////////////////////////////////////////////////////////////////
+
+OUTER_SET ny_str_vs_d = RESOLVE_STR_REF (@1)
+
+LAF RES_NUM_OF_SPELL_NAME STR_VAR spell_name = ~WIZARD_VITRIOLIC_SPHERE~ RET ny_vs_res = spell_res END
+
+// Explosion colour of the cloned Fireball projectile. -1 keeps Fireball's
+// colour: put the palette index of a green here once checked in Near Infinity.
+OUTER_SET ny_vs_color = "-1"
+
+LAF NY#CLONE_AREA_PRO INT_VAR color = ny_vs_color STR_VAR source = ~fireball~ new = ~NY#VSPH~ RET ny_pro_vs = pro_id END
+
+// "Visual range of the caster": reuse Fireball's range
+OUTER_SET ny_fb_range = 30
+ACTION_IF FILE_EXISTS_IN_GAME ~spwi304.spl~ BEGIN
+  COPY_EXISTING ~spwi304.spl~ ~override~
+    READ_LONG  0x64 o
+    READ_SHORT 0x68 n
+    PATCH_IF (n > 0) BEGIN
+      READ_SHORT (o + 0x0e) ny_fb_range
+    END
+  BUT_ONLY
+END
+
+COPY_EXISTING ~%ny_vs_res%.spl~ ~override~
+  // keep the original memorised icon
+  SPRINT ny_vs_icon ~~
+  READ_LONG  0x64 o
+  READ_SHORT 0x68 n
+  PATCH_IF (n > 0) BEGIN
+    READ_ASCII (o + 0x04) ny_vs_icon (8) NULL
+  END
+
+  // rebuild from scratch
+  LPF DELETE_SPELL_HEADER INT_VAR header_type = "-1" END
+
+  WRITE_LONG  0x50 ny_str_vs_d
+  WRITE_LONG  0x1e 0x200    // Evocation: excluded for Enchanters
+  WRITE_SHORT 0x22 15       // Invocation casting graphics
+  WRITE_BYTE  0x25 6        // Invoker (Evocation)
+  WRITE_LONG  0x34 4
+
+  FOR (lvl = 1; lvl <= 12; ++lvl) BEGIN
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 4 range = ny_fb_range level = lvl casting_time = 4 projectile = ny_pro_vs
+                         STR_VAR icon = EVAL ~%ny_vs_icon%~ RET h = header END
+    // impact: 1d4 per level, save vs. Breath for half
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12 target = 2 resist_dispel = 1 parameter2 = 0x10000
+                                 dicenumber = lvl dicesize = 4 savingthrow = 2 special = 0x100 END
+    // following round: 1d4 per 2 levels, only on a failed save
+    PATCH_IF (lvl >= 2) BEGIN
+      LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12 target = 2 resist_dispel = 1 parameter2 = 0x10000
+                                   timing = 4 duration = ny_round dicenumber = (lvl / 2) dicesize = 4 savingthrow = 2 END
+    END
+  END

@@ -1,0 +1,72 @@
+/////////////////////////////////////////////////////////////////////////////
+// Black Dragon Pooling Breath - wizard, level 3, Conjuration
+//
+// The caster breathes a pool of acid on the ground in front of him. Built on
+// Stinking Cloud (SPWI213): same duration (projectile CLOUD.PRO: 1 turn, the
+// spell is applied again to the creatures in the area about once per round)
+// but the range of the kit's Acid Breath (30) and half the area (7.5-ft. radius:
+// 0x204 and 0x206, 256 -> 128). Each time: 2d6 acid damage, save vs. Breath
+// for half. Allies in the pool are hit too, not the caster (immune to the
+// spell for 1 turn, opcode 206). The caster is stunned for 2 seconds after
+// breathing (opcode 165, as the Dragon Disciple's breath SPDD03).
+//
+// Projectile NY#PBRP: Stinking Cloud's (CLOUD.PRO) with acid puddles instead
+// of the cloud:
+//   - spread animation (0x228): NY#PBRD, Grease's ground puddles (GREASED)
+//     recoloured acid green, in place of the cloud (SPCLOUDS)
+//   - travelling object: Grease's blob (ACIDBLOB) recoloured, NY#PBRT
+//   - colour gradient 86 (MPAL256: olive green to pale yellow) instead of
+//     the cloud's 191 (grey), in case the engine tints the animations
+// Grease's own puddles are drawn by its explosion effect (0x217 = 4), which
+// always uses the grey GREASED: recolouring needs our own BAM, hence the
+// spread animation.
+//
+// Resources
+//   SPWIxxx   Black Dragon Pooling Breath (added through ADD_SPELL as
+//             WIZARD_NY_POOLING_BREATH)
+//   NY#PBRP   projectile
+//   NY#PBRD   acid puddles (Grease's GREASED recoloured acid green)
+//   NY#PBRT   travelling acid blob (Grease's ACIDBLOB recoloured)
+//   NY#PBRB   spell icon (ability / memorised), NY#PBRC spellbook icon:
+//             the game's Free Action icon (SPPR403, waves) recoloured acid
+//             yellow
+/////////////////////////////////////////////////////////////////////////////
+
+OUTER_SET ny_str_pbr   = RESOLVE_STR_REF (@1)
+OUTER_SET ny_str_pbr_d = RESOLVE_STR_REF (@2)
+
+COPY ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrb.bam~ ~override~
+     ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrc.bam~ ~override~
+     ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrd.bam~ ~override~
+     ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrt.bam~ ~override~
+
+COPY_EXISTING ~cloud.pro~ ~%ny_workspace%/NY#PBRP.pro~
+  WRITE_ASCII 0x104 ~NY#PBRT~ #8                // travelling acid blob
+  WRITE_BYTE  0x124 86                          // gradient 86: acid green
+  WRITE_BYTE  0x218 86                          //   (cloud's own: 191, grey)
+  WRITE_ASCII 0x228 ~NY#PBRD~ #8                // acid puddles instead of the cloud
+  WRITE_SHORT 0x204 128                         // half Stinking Cloud's area
+  WRITE_SHORT 0x206 128
+BUT_ONLY
+ADD_PROJECTILE ~%ny_workspace%/NY#PBRP.pro~
+OUTER_SET ny_pro_pbr = IDS_OF_SYMBOL (~projectl~ ~NY#PBRP~) + 1
+
+CREATE ~SPL~ ~NY#PBRS~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_pbr desc = ny_str_pbr_d type = 1 level = 3 flags = 0x400
+                          school = 2 exclusion = 0x100 graphics = 14 STR_VAR icon = ~NY#PBRC~ END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 4 range = 30 level = 1 casting_time = 3 projectile = ny_pro_pbr STR_VAR icon = ~NY#PBRB~ RET h = header END
+  // short stun of the caster after breathing, as the Dragon Disciple's breath
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 165 target = 1 timing = 0 duration = 2 END
+  // the caster may stand next to the pool: immune to it for its duration. After
+  // the stun on purpose: if the pool applies the caster's effects again at
+  // each pulse, the immunity blocks them (no stun every round)
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = ny_turn parameter1 = "-1" STR_VAR resource = ~NY#PBRS~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 1 parameter2 = 0x10000 dicenumber = 2 dicesize = 6
+                               savingthrow = 2 special = 0x100 END
+
+ADD_SPELL ~override/NY#PBRS.spl~ 2 3 ~WIZARD_NY_POOLING_BREATH~
+LAF RES_NUM_OF_SPELL_NAME STR_VAR spell_name = ~WIZARD_NY_POOLING_BREATH~ RET ny_pbr_res = spell_res END
+
+// self reference (caster immunity) must point to the final resref
+COPY_EXISTING ~%ny_pbr_res%.spl~ ~override~
+  LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 206 STR_VAR resource = EVAL ~%ny_pbr_res%~ END

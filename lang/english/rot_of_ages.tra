@@ -1,0 +1,19 @@
+@1 = ~Rot of Ages~
+@2 = ~Rot of Ages
+(Necromancy)
+
+Level: 1
+Range: Touch
+Duration: Special
+Casting Time: 1
+Area of Effect: 1 creature
+Saving Throw: Special
+
+Upon touching the target, the caster causes a mass of rotting vegetation, flesh, and other decaying organic matter to erupt around and envelop the creature. The target is blinded for 1 round with no save. The target must then make a Saving Throw vs. Death. On a failed save, it contracts a supernatural disease that inflicts 1 point of poison damage per round for 1 round per caster level, to a maximum of 10 rounds.
+
+If Rot of Ages is cast again upon a creature already suffering from this disease and the target fails its Saving Throw again, the new infection stacks with the previous one, and the target becomes nauseated for 2 rounds. A creature that succeeds on its Saving Throw does not contract the disease and is therefore not considered to be suffering from Rot of Ages for the purpose of subsequent applications.~
+
+// Combat log
+@3 = ~Blinded by Rot of Ages~
+@4 = ~Diseased by Rot of Ages~
+@5 = ~Nauseated by Rot of Ages~

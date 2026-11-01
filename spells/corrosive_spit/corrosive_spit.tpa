@@ -1,0 +1,46 @@
+/////////////////////////////////////////////////////////////////////////////
+// Corrosive Spit - wizard, level 2, Conjuration
+//
+// Melf's Acid Arrow (SPWI211) with half its range (30 instead of 60), same
+// projectile (ARROWFLG), casting time 2.
+//   - 5d4 acid damage, no save
+//   - save vs. Spell, failure: blinded for 1 round and 5d4 more acid damage
+//     at the start of the next round
+//
+// Resources
+//   SPWIxxx   Corrosive Spit (added through ADD_SPELL as
+//             WIZARD_NY_CORROSIVE_SPIT)
+//   NY#CSPX   blindness + delayed damage on a failed save
+//   NY#CSPB   spell icon (ability / memorised, on a stone plate), NY#CSPC
+//             spellbook icon: Nysi's acid spit artwork reduced to 32 px
+//             (source in works/corrosive_spit_icon_source)
+/////////////////////////////////////////////////////////////////////////////
+
+OUTER_SET ny_str_csp      = RESOLVE_STR_REF (@1)
+OUTER_SET ny_str_csp_d    = RESOLVE_STR_REF (@2)
+OUTER_SET ny_str_csp_fail = RESOLVE_STR_REF (@3)
+
+OUTER_SET ny_pro_csp = IDS_OF_SYMBOL (~projectl~ ~ARROWFLG~) + 1
+
+COPY ~%MOD_FOLDER%/spells/corrosive_spit/bam/ny#cspb.bam~ ~override~
+     ~%MOD_FOLDER%/spells/corrosive_spit/bam/ny#cspc.bam~ ~override~
+
+// Failed save: blinded for 1 round, 5d4 acid one round later
+CREATE ~SPL~ ~NY#CSPX~
+  LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1000 level = 1 casting_time = 0 RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 74  target = 2 timing = 0 duration = 6 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 4 duration = 6 parameter2 = 0x10000 dicenumber = 5 dicesize = 4 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 139 target = 2 timing = 1 parameter1 = ny_str_csp_fail END   // combat log
+
+// Main spell
+CREATE ~SPL~ ~NY#CSPS~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_csp desc = ny_str_csp_d type = 1 level = 2 flags = 0x400
+                          school = 2 exclusion = 0x100 graphics = 14 STR_VAR icon = ~NY#CSPC~ END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 1 range = 30 level = 1 casting_time = 2 projectile = ny_pro_csp STR_VAR icon = ~NY#CSPB~ RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 1 parameter2 = 0x10000 dicenumber = 5 dicesize = 4 resist_dispel = 1 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 resist_dispel = 1 STR_VAR resource = ~SHACID~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 timing = 1 parameter1 = 1 parameter2 = 1
+                               savingthrow = 1 resist_dispel = 1 STR_VAR resource = ~NY#CSPX~ END
+
+ADD_SPELL ~override/NY#CSPS.spl~ 2 2 ~WIZARD_NY_CORROSIVE_SPIT~

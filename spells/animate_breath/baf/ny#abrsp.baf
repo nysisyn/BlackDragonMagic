@@ -1,0 +1,23 @@
+// Animated breath: spits Corrosive Spit (summon version NY#ABRX: no casting
+// animation, no casting time) at the nearest enemy it sees, at most once per
+// round, and only while that enemy is out of melee reach; otherwise it
+// attacks in melee (last block).
+IF
+  See(NearestEnemyOf(Myself))
+  !Range(NearestEnemyOf(Myself),4)
+  !GlobalTimerNotExpired("NY#ABRSPT","LOCALS")
+THEN
+  RESPONSE #100
+    SetGlobalTimer("NY#ABRSPT","LOCALS",6)
+    ReallyForceSpellRES("NY#ABRX",NearestEnemyOf(Myself))
+END
+
+// Melee. The Mustard Jelly's default script (WTASIGHT) is not used: it
+// turns the creature hostile when the party hits it (AttackedBy(GOODCUTOFF)
+// then Enemy()), for instance in the caster's own area spells.
+IF
+  See(NearestEnemyOf(Myself))
+THEN
+  RESPONSE #100
+    AttackReevaluate(NearestEnemyOf(Myself),15)
+END

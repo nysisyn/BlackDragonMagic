@@ -1,0 +1,106 @@
+BACKUP ~weidu_external/backup/BlackDragonMagic~
+AUTHOR ~Nysi - https://github.com/nysisyn/BlackDragonMagic~
+VERSION ~v0.1.0~
+
+ALWAYS
+  INCLUDE ~%MOD_FOLDER%/lib/ny#core.tpa~
+  INCLUDE ~%MOD_FOLDER%/lib/a7#add_kit_ex.tpa~   // ADD_KIT_EX by Argent77 (public domain)
+
+  // Temporary files (cloned projectiles) stay outside the mod folder
+  OUTER_SPRINT ny_workspace ~weidu_external/workspace/BlackDragonMagic~
+  MKDIR ~weidu_external~ ~weidu_external/workspace~ ~%ny_workspace%~
+
+  // Game time: 1 round = 6 s, 1 turn = 60 s, 1 hour = 300 s, 1 day = 7200 s
+  OUTER_SET ny_round = 6
+  OUTER_SET ny_turn  = 60
+  OUTER_SET ny_hour  = 300
+  OUTER_SET ny_day   = 7200
+END
+
+LANGUAGE ~English~
+         ~english~
+         ~%MOD_FOLDER%/lang/english/setup.tra~
+
+LANGUAGE ~Francais~
+         ~french~
+         ~%MOD_FOLDER%/lang/english/setup.tra~
+         ~%MOD_FOLDER%/lang/french/setup.tra~
+
+
+// Black Dragon Disciple sorcerer kit
+BEGIN @1 DESIGNATED 0
+LABEL ~BlackDragonMagic-BlackDragonDisciple~
+REQUIRE_PREDICATE GAME_IS ~bgee bg2ee eet~ @10
+WITH_TRA ~%MOD_FOLDER%/lang/english/black_dragon_disciple.tra~
+         ~%MOD_FOLDER%/lang/%LANGUAGE%/black_dragon_disciple.tra~ BEGIN
+  INCLUDE ~%MOD_FOLDER%/kits/black_dragon_disciple/black_dragon_disciple.tpa~
+END
+
+
+// New Sorcerer spells: Acidosis, Rot of Ages and Ghostly Tail (level 1), Mantidrake Spike (level 2),
+// Wyvern Barbed Tail Strike and Black Dragon Breathball (level 3),
+// Stunning Black Dragon Breath (level 4), Bonemelt (level 8)
+// Bonemelt is only installed on BG2:EE and EET.
+BEGIN @2 DESIGNATED 10
+LABEL ~BlackDragonMagic-Spells~
+REQUIRE_PREDICATE GAME_IS ~bgee bg2ee eet~ @10
+WITH_TRA ~%MOD_FOLDER%/lang/english/acidosis.tra~
+         ~%MOD_FOLDER%/lang/%LANGUAGE%/acidosis.tra~ BEGIN
+  INCLUDE ~%MOD_FOLDER%/spells/acidosis/acidosis.tpa~
+END
+WITH_TRA ~%MOD_FOLDER%/lang/english/rot_of_ages.tra~
+         ~%MOD_FOLDER%/lang/%LANGUAGE%/rot_of_ages.tra~ BEGIN
+  INCLUDE ~%MOD_FOLDER%/spells/rot_of_ages/rot_of_ages.tpa~
+END
+WITH_TRA ~%MOD_FOLDER%/lang/english/ghostly_tail.tra~
+         ~%MOD_FOLDER%/lang/%LANGUAGE%/ghostly_tail.tra~ BEGIN
+  INCLUDE ~%MOD_FOLDER%/spells/ghostly_tail/ghostly_tail.tpa~
+END
+WITH_TRA ~%MOD_FOLDER%/lang/english/mantidrake_spike.tra~
+         ~%MOD_FOLDER%/lang/%LANGUAGE%/mantidrake_spike.tra~ BEGIN
+  INCLUDE ~%MOD_FOLDER%/spells/mantidrake_spike/mantidrake_spike.tpa~
+END
+WITH_TRA ~%MOD_FOLDER%/lang/english/corrosive_spit.tra~
+         ~%MOD_FOLDER%/lang/%LANGUAGE%/corrosive_spit.tra~ BEGIN
+  INCLUDE ~%MOD_FOLDER%/spells/corrosive_spit/corrosive_spit.tpa~
+END
+WITH_TRA ~%MOD_FOLDER%/lang/english/wyvern_tail.tra~
+         ~%MOD_FOLDER%/lang/%LANGUAGE%/wyvern_tail.tra~ BEGIN
+  INCLUDE ~%MOD_FOLDER%/spells/wyvern_tail/wyvern_tail.tpa~
+END
+WITH_TRA ~%MOD_FOLDER%/lang/english/pooling_breath.tra~
+         ~%MOD_FOLDER%/lang/%LANGUAGE%/pooling_breath.tra~ BEGIN
+  INCLUDE ~%MOD_FOLDER%/spells/pooling_breath/pooling_breath.tpa~
+END
+WITH_TRA ~%MOD_FOLDER%/lang/english/breathball.tra~
+         ~%MOD_FOLDER%/lang/%LANGUAGE%/breathball.tra~ BEGIN
+  INCLUDE ~%MOD_FOLDER%/spells/breathball/breathball.tpa~
+END
+WITH_TRA ~%MOD_FOLDER%/lang/english/stunning_breath.tra~
+         ~%MOD_FOLDER%/lang/%LANGUAGE%/stunning_breath.tra~ BEGIN
+  INCLUDE ~%MOD_FOLDER%/spells/stunning_breath/stunning_breath.tpa~
+END
+WITH_TRA ~%MOD_FOLDER%/lang/english/animate_breath.tra~
+         ~%MOD_FOLDER%/lang/%LANGUAGE%/animate_breath.tra~ BEGIN
+  INCLUDE ~%MOD_FOLDER%/spells/animate_breath/animate_breath.tpa~
+END
+ACTION_IF GAME_IS ~bg2ee eet~ BEGIN
+  WITH_TRA ~%MOD_FOLDER%/lang/english/bonemelt.tra~
+           ~%MOD_FOLDER%/lang/%LANGUAGE%/bonemelt.tra~ BEGIN
+    INCLUDE ~%MOD_FOLDER%/spells/bonemelt/bonemelt.tpa~
+  END
+END ELSE BEGIN
+  PRINT @11
+END
+
+
+// Tweak: Vitriolic Sphere, 5th edition style (modifies the existing spell)
+// Install after IWDification and SCS.
+BEGIN @3 DESIGNATED 20
+LABEL ~BlackDragonMagic-Tweak-VitriolicSphere~
+REQUIRE_PREDICATE GAME_IS ~bgee bg2ee eet iwdee~ @10
+REQUIRE_PREDICATE (IDS_OF_SYMBOL (~spell~ ~WIZARD_VITRIOLIC_SPHERE~) > 0) @12
+WITH_TRA ~%MOD_FOLDER%/lang/english/vitriolic_sphere.tra~
+         ~%MOD_FOLDER%/lang/%LANGUAGE%/vitriolic_sphere.tra~ BEGIN
+  INCLUDE ~%MOD_FOLDER%/tweaks/vitriolic_sphere/vitriolic_sphere.tpa~
+END

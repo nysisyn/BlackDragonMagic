@@ -1,0 +1,231 @@
+// Kit
+@1 = ~black dragon disciple~
+@2 = ~Black Dragon Disciple~
+@3 = ~BLACK DRAGON DISCIPLE: The blood of a black dragon runs in the veins of these sorcerers. As they grow in power, the dragon within slowly takes over their body, from black claws to leathery wings.
+
+Advantages:
+- Hit Die: d6 instead of d4, and THAC0 progression of a druid.
+- 1st level: +1 bonus to AC. Gains Draconic Claws.
+
+DRACONIC CLAWS: The nails of the Black Dragon Disciple have curved into vicious claws like those of a black dragon. They deal 1d4 slashing damage and allow 2 attacks per round when fighting unarmed.
+
+- 2nd level: Gains Swamp Stride.
+
+SWAMP STRIDE: Affinity with swamp terrain allows the Black Dragon Disciple to move freely through it. He is immune to the effects of spells such as Entangle, Grease and Web.
+
+- 3rd level: May use Breath Weapon once per day.
+
+BREATH WEAPON: The Black Dragon Disciple exhales a 15-ft. long, 5-ft. wide line of acid, dealing 4d4 acid damage to all creatures in the line (save vs. Breath for half).
+
+- 4th level: Gains Acid Affinity. Claws now deal 1d6 slashing damage and count as +1 magical weapons.
+
+ACID AFFINITY: The black dragon's blood protects the Black Dragon Disciple from acid and makes his own acid more potent. He gains 20% acid resistance, and all acid damage he deals is increased by 5%. Both increase at levels 8, 12 and 16, up to 80% acid resistance and +20% acid damage. At level 20, he becomes immune to acid and his acid damage is increased by 25%.
+
+- 5th level: +1 bonus to AC and Constitution.
+- 6th level: Gains a bite attack, summoned as an off-hand weapon while unarmed, dealing 1d6 piercing and 1d4 acid damage. The bite counts as a magical weapon of the same enchantment as the claws.
+- 7th level: May use Breath Weapon twice per day. Damage increases to 6d4.
+- 8th level: Acid Affinity improves. Claws now deal 1d8 slashing damage and count as +2 magical weapons.
+- 9th level: Gains Draconic Tail.
+
+DRACONIC TAIL: The Black Dragon Disciple grows a powerful tail. Each round, one creature within 5 ft. must save vs. Breath or take 1d10 crushing damage and be knocked prone for 1 second.
+
+- 10th level: +1 bonus to AC. Gains the Blindsense passive ability.
+
+BLINDSENSE: The Black Dragon Disciple can perceive his surroundings without relying on sight. He becomes immune to blindness and can see and target invisible creatures.
+
+- 11th level: May use Breath Weapon three times per day. Damage increases to 8d4.
+- 12th level: Acid Affinity improves. Claws now deal 1d10 slashing damage and count as +3 magical weapons.
+- 13th level: Bite now deals 2d6 piercing damage and 2d4 acid damage.
+- 14th level: Gains Draconic Wings.
+
+DRACONIC WINGS: The Black Dragon Disciple grows a pair of draconic wings, gaining +4 movement speed and immunity to critical hits. The wings occupy the helmet slot and may be toggled on and off at will.
+
+- 15th level: +1 bonus to AC and Constitution.
+- 16th level: Acid Affinity improves. Claws now deal 2d6 slashing damage and count as +4 magical weapons.
+- 17th level: May use Breath Weapon four times per day. Damage increases to 10d4.
+- 18th level: Gains the innate ability Frightful Presence.
+
+FRIGHTFUL PRESENCE: The Black Dragon Disciple radiates an aura of draconic menace. Enemies of a lower level than the Black Dragon Disciple within 15 ft. must save vs. Spell or be panicked for 2 rounds. Whether it succeeds or fails, a creature then becomes immune to this aura for 24 hours. Allies are not affected. The aura may be toggled on and off at will.
+
+- 19th level: Breath Weapon damage increases to 12d4, and the line grows to 30 ft. long and 10 ft. wide.
+- 20th level: Draconic Apotheosis: +1 bonus to AC and immunity to sleep and paralysis. Acid Affinity reaches its peak. Claws now deal 2d8 slashing damage and count as +5 magical weapons.
+
+Disadvantages:
+- Casts one fewer spell per day at each spell level.
+- Casts spells as a sorcerer one level lower (minimum 1st level). For example, he gains access to 2nd-level spells at level 5 instead of 4.
+- Cannot use any weapon: the Black Dragon Disciple fights only with his claws and bite. His proficiency points may only be spent on Single Weapon Style (up to 1 point) and Two-Weapon Style (up to 3 points).
+~
+
+// Draconic Claws (item, one description per stage: levels 1, 4, 8, 12, 16, 20)
+@10 = ~Draconic Claws~
+@11 = ~Draconic Claws
+
+The nails of the Black Dragon Disciple have curved into black claws.
+
+STATISTICS:
+
+Damage: 1d4 (slashing)
+Attacks per round: 2
+Speed Factor: 2
+Not magical~
+@12 = ~Draconic Claws
+
+The claws have hardened and darkened.
+
+STATISTICS:
+
+THAC0: +1
+Damage: 1d6+1 (slashing)
+Attacks per round: 2
+Speed Factor: 2
+Counts as a +1 weapon for the purpose of hitting creatures~
+@13 = ~Draconic Claws
+
+The claws have grown longer and sharper.
+
+STATISTICS:
+
+THAC0: +2
+Damage: 1d8+2 (slashing)
+Attacks per round: 2
+Speed Factor: 2
+Counts as a +2 weapon for the purpose of hitting creatures~
+@14 = ~Draconic Claws
+
+The claws have become as hard as a dragon's.
+
+STATISTICS:
+
+THAC0: +3
+Damage: 1d10+3 (slashing)
+Attacks per round: 2
+Speed Factor: 2
+Counts as a +3 weapon for the purpose of hitting creatures~
+@15 = ~Draconic Claws
+
+The claws have grown to the size of a young dragon's.
+
+STATISTICS:
+
+THAC0: +4
+Damage: 2d6+4 (slashing)
+Attacks per round: 2
+Speed Factor: 2
+Counts as a +4 weapon for the purpose of hitting creatures~
+@16 = ~Draconic Claws
+
+The claws have become those of an adult black dragon.
+
+STATISTICS:
+
+THAC0: +5
+Damage: 2d8+5 (slashing)
+Attacks per round: 2
+Speed Factor: 2
+Counts as a +5 weapon for the purpose of hitting creatures~
+
+// Draconic Bite (off-hand item, one description per stage: levels 6, 8, 12, 13, 16, 20)
+@19 = ~Draconic Bite~
+@20 = ~Draconic Bite
+
+The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bite is his off-hand weapon: it gives one more attack per round, with the usual two-weapon penalties, which Two-Weapon Style reduces. It can be put in the backpack to fight with the claws alone.
+
+STATISTICS:
+
+THAC0: +1
+Damage: 1d6+1 (piercing) + 1d4 acid
+Speed Factor: 2
+Counts as a +1 weapon for the purpose of hitting creatures~
+@21 = ~Draconic Bite
+
+The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bite is his off-hand weapon: it gives one more attack per round, with the usual two-weapon penalties, which Two-Weapon Style reduces. It can be put in the backpack to fight with the claws alone.
+
+STATISTICS:
+
+THAC0: +2
+Damage: 1d6+2 (piercing) + 1d4 acid
+Speed Factor: 2
+Counts as a +2 weapon for the purpose of hitting creatures~
+@22 = ~Draconic Bite
+
+The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bite is his off-hand weapon: it gives one more attack per round, with the usual two-weapon penalties, which Two-Weapon Style reduces. It can be put in the backpack to fight with the claws alone.
+
+STATISTICS:
+
+THAC0: +3
+Damage: 1d6+3 (piercing) + 1d4 acid
+Speed Factor: 2
+Counts as a +3 weapon for the purpose of hitting creatures~
+@23 = ~Draconic Bite
+
+The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bite is his off-hand weapon: it gives one more attack per round, with the usual two-weapon penalties, which Two-Weapon Style reduces. It can be put in the backpack to fight with the claws alone.
+
+STATISTICS:
+
+THAC0: +3
+Damage: 2d6+3 (piercing) + 2d4 acid
+Speed Factor: 2
+Counts as a +3 weapon for the purpose of hitting creatures~
+@24 = ~Draconic Bite
+
+The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bite is his off-hand weapon: it gives one more attack per round, with the usual two-weapon penalties, which Two-Weapon Style reduces. It can be put in the backpack to fight with the claws alone.
+
+STATISTICS:
+
+THAC0: +4
+Damage: 2d6+4 (piercing) + 2d4 acid
+Speed Factor: 2
+Counts as a +4 weapon for the purpose of hitting creatures~
+@25 = ~Draconic Bite
+
+The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bite is his off-hand weapon: it gives one more attack per round, with the usual two-weapon penalties, which Two-Weapon Style reduces. It can be put in the backpack to fight with the claws alone.
+
+STATISTICS:
+
+THAC0: +5
+Damage: 2d6+5 (piercing) + 2d4 acid
+Speed Factor: 2
+Counts as a +5 weapon for the purpose of hitting creatures~
+
+// Draconic Tail (combat log line on each strike)
+@26 = ~Draconic Tail~
+
+// Acid Breath
+@30 = ~Acid Breath~
+@31 = ~Acid Breath
+
+The Black Dragon Disciple exhales a 15-ft. long, 5-ft. wide line of acid, dealing 4d4 acid damage to all creatures in the line (save vs. Breath for half). The damage increases to 6d4 at level 7, 8d4 at level 11, 10d4 at level 17 and 12d4 at level 19, when the line also grows to 30 ft. long and 10 ft. wide. Allies in the line are affected.
+
+Usable once per day, twice at level 7, three times at level 11 and four times at level 17.~
+
+// Frightful Presence
+@40 = ~Frightful Presence~
+@41 = ~Frightful Presence
+
+The Black Dragon Disciple radiates an aura of draconic menace. Enemies of a lower level than the Black Dragon Disciple within 15 ft. must save vs. Spell or be panicked for 2 rounds. Whether it succeeds or fails, a creature then becomes immune to this aura for 24 hours. Allies are not affected.
+
+Using this ability turns the aura on; it can then be dismissed at will.~
+@42 = ~Dismiss Frightful Presence~
+@43 = ~Dismiss Frightful Presence
+
+Turns off the Frightful Presence aura. It can be turned on again at will.~
+
+// Draconic Wings (helmet slot item, and the innate abilities that spread / fold them)
+@60 = ~Draconic Wings~
+@61 = ~Draconic Wings
+
+Leathery wings have torn free from the back of the Black Dragon Disciple. They take the place of a helmet.
+
+STATISTICS:
+
+Movement: +4
+Immunity to critical hits~
+@62 = ~Draconic Wings
+
+The Black Dragon Disciple spreads his draconic wings, gaining +4 movement speed and immunity to critical hits. The wings occupy the helmet slot.
+
+Using this ability spreads the wings; they can then be folded at will.~
+@63 = ~Fold Draconic Wings~
+@64 = ~Fold Draconic Wings
+
+The Black Dragon Disciple folds his wings and frees the helmet slot. They can be spread again at will.~

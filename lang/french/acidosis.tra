@@ -1,0 +1,12 @@
+@1 = ~Acidose~
+@2 = ~Acidose
+(Évocation)
+
+Niveau : 1
+Portée : 0
+Durée : 1 tour/niveau
+Temps d'incantation : 9
+Zone d'effet : le lanceur
+Jet de sauvegarde : aucun
+
+Le lanceur empoisonne volontairement son propre sang avec de l'acide. Au moment de l'incantation, il subit des dégâts d'acide égaux à 15 % de ses points de vie actuels. Pendant toute la durée du sort, toute créature qui frappe le lanceur au corps à corps subit 1d2 dégâts d'acide et un malus de -3 au TAC0 pendant 3 rounds, sans jet de sauvegarde. Le malus au TAC0 ne se cumule pas avec lui-même.~

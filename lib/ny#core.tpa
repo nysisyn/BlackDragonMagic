@@ -1,0 +1,443 @@
+/////////////////////////////////////////////////////////////////////////////
+// BlackDragonMagic - shared helpers
+//
+// Everything in this mod is built at install time from WeiDU code: no
+// binary SPL/ITM/PRO file is shipped. These helpers add the few things
+// WeiDU does not provide natively (extended headers, SPLPROT rows,
+// projectile clones, 2DA row lookups).
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// NY#ADD_SPL_HEADER (patch)
+// Appends an extended header to the SPL being patched and returns its
+// 1-based index, ready to be passed as "header" to ADD_SPELL_EFFECT.
+//   location : 2 = spell, 4 = innate ability
+//   target   : 1 = living actor, 4 = any point, 5 = caster
+/////////////////////////////////////////////////////////////////////////////
+DEFINE_PATCH_FUNCTION NY#ADD_SPL_HEADER
+  INT_VAR
+    form          = 1
+    location      = 2
+    target        = 1
+    target_count  = 0
+    range         = 30
+    level         = 1
+    casting_time  = 1
+    projectile    = 1
+  STR_VAR
+    icon          = ~~
+  RET
+    header
+BEGIN
+  READ_LONG  0x64 ext_off
+  READ_SHORT 0x68 ext_num
+  READ_LONG  0x6a fx_off
+  SET fx_total = (BUFFER_LENGTH - fx_off) / 0x30
+  SET pos = ext_off + (ext_num * 0x28)
+  INSERT_BYTES pos 0x28
+  WRITE_BYTE  pos           form
+  WRITE_SHORT (pos + 0x02)  location
+  WRITE_EVALUATED_ASCII (pos + 0x04) ~%icon%~ #8
+  WRITE_BYTE  (pos + 0x0c)  target
+  WRITE_BYTE  (pos + 0x0d)  target_count
+  WRITE_SHORT (pos + 0x0e)  range
+  WRITE_SHORT (pos + 0x10)  level
+  WRITE_SHORT (pos + 0x12)  casting_time
+  WRITE_SHORT (pos + 0x1e)  0
+  WRITE_SHORT (pos + 0x20)  fx_total
+  WRITE_SHORT (pos + 0x26)  projectile
+  WRITE_SHORT 0x68 (ext_num + 1)
+  PATCH_IF (fx_off >= pos) BEGIN
+    WRITE_LONG 0x6a (fx_off + 0x28)
+  END
+  SET header = ext_num + 1
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+// NY#ADD_ITM_HEADER (patch)
+// Appends an extended header to the ITM being patched and returns its
+// 1-based index. Add equipping effects BEFORE calling this.
+//   attack_type : 1 = melee, 3 = magical
+//   damage_type : 1 = piercing, 2 = crushing, 3 = slashing
+//   flags       : bit 0 = add strength bonus
+/////////////////////////////////////////////////////////////////////////////
+DEFINE_PATCH_FUNCTION NY#ADD_ITM_HEADER
+  INT_VAR
+    attack_type   = 1
+    id_req        = 1
+    location      = 1
+    target        = 1
+    target_count  = 0
+    range         = 1
+    speed         = 0
+    thac0         = 0
+    dice_sides    = 0
+    dice_thrown   = 0
+    damage_bonus  = 0
+    damage_type   = 0
+    charges       = 0
+    depletion     = 0
+    flags         = 0
+    projectile    = 1
+    overhand      = 34
+    backhand      = 33
+    thrust        = 33
+  STR_VAR
+    icon          = ~~
+  RET
+    header
+BEGIN
+  READ_LONG  0x64 ext_off
+  READ_SHORT 0x68 ext_num
+  READ_LONG  0x6a fx_off
+  SET fx_total = (BUFFER_LENGTH - fx_off) / 0x30
+  SET pos = ext_off + (ext_num * 0x38)
+  INSERT_BYTES pos 0x38
+  WRITE_BYTE  pos           attack_type
+  WRITE_BYTE  (pos + 0x01)  id_req
+  WRITE_BYTE  (pos + 0x02)  location
+  WRITE_EVALUATED_ASCII (pos + 0x04) ~%icon%~ #8
+  WRITE_BYTE  (pos + 0x0c)  target
+  WRITE_BYTE  (pos + 0x0d)  target_count
+  WRITE_SHORT (pos + 0x0e)  range
+  WRITE_BYTE  (pos + 0x12)  speed
+  WRITE_SHORT (pos + 0x14)  thac0
+  WRITE_BYTE  (pos + 0x16)  dice_sides
+  WRITE_BYTE  (pos + 0x18)  dice_thrown
+  WRITE_SHORT (pos + 0x1a)  damage_bonus
+  WRITE_SHORT (pos + 0x1c)  damage_type
+  WRITE_SHORT (pos + 0x1e)  0
+  WRITE_SHORT (pos + 0x20)  fx_total
+  WRITE_SHORT (pos + 0x22)  charges
+  WRITE_SHORT (pos + 0x24)  depletion
+  WRITE_LONG  (pos + 0x26)  flags
+  WRITE_SHORT (pos + 0x2a)  projectile
+  WRITE_SHORT (pos + 0x2c)  overhand
+  WRITE_SHORT (pos + 0x2e)  backhand
+  WRITE_SHORT (pos + 0x30)  thrust
+  WRITE_SHORT 0x68 (ext_num + 1)
+  PATCH_IF (fx_off >= pos) BEGIN
+    WRITE_LONG 0x6a (fx_off + 0x38)
+  END
+  SET header = ext_num + 1
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+// NY#SPL_BASE (patch)
+// Fills the main header of a freshly CREATEd SPL.
+//   type   : 1 = wizard, 4 = innate
+//   school : MSCHOOL.2DA (6 = Invoker/Evocation, 8 = Transmuter/Alteration)
+/////////////////////////////////////////////////////////////////////////////
+DEFINE_PATCH_FUNCTION NY#SPL_BASE
+  INT_VAR
+    name        = "-1"
+    desc        = "-1"
+    type        = 4
+    level       = 1
+    school      = 0
+    sectype     = 0
+    flags       = 0
+    exclusion   = 0
+    graphics    = 0
+  STR_VAR
+    icon        = ~~
+BEGIN
+  WRITE_LONG  0x08 name
+  WRITE_LONG  0x0c "-1"
+  WRITE_LONG  0x18 flags
+  WRITE_SHORT 0x1c type
+  WRITE_LONG  0x1e exclusion
+  WRITE_SHORT 0x22 graphics
+  WRITE_BYTE  0x25 school
+  WRITE_BYTE  0x27 sectype
+  WRITE_LONG  0x34 level
+  WRITE_SHORT 0x38 1
+  WRITE_EVALUATED_ASCII 0x3a ~%icon%~ #8
+  WRITE_LONG  0x50 desc
+  WRITE_LONG  0x54 "-1"
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+// NY#CREATE_EFF (action)
+// Creates an external EFF V2.0 file in override.
+/////////////////////////////////////////////////////////////////////////////
+DEFINE_ACTION_FUNCTION NY#CREATE_EFF
+  INT_VAR
+    opcode      = 0
+    target      = 2
+    power       = 0
+    parameter1  = 0
+    parameter2  = 0
+    timing      = 0
+    duration    = 0
+    dicenumber  = 0
+    dicesize    = 0
+    savingthrow = 0
+    savebonus   = 0
+    special     = 0
+    resist_dispel = 0
+    probability1  = 100
+    probability2  = 0
+  STR_VAR
+    eff         = ~~
+    resource    = ~~
+BEGIN
+  CREATE ~EFF~ ~%eff%~
+    WRITE_LONG  0x10 opcode
+    WRITE_LONG  0x14 target
+    WRITE_LONG  0x18 power
+    WRITE_LONG  0x1c parameter1
+    WRITE_LONG  0x20 parameter2
+    WRITE_SHORT 0x24 timing
+    WRITE_LONG  0x28 duration
+    WRITE_SHORT 0x2c probability1
+    WRITE_SHORT 0x2e probability2
+    WRITE_EVALUATED_ASCII 0x30 ~%resource%~ #8
+    WRITE_LONG  0x38 dicenumber
+    WRITE_LONG  0x3c dicesize
+    WRITE_LONG  0x40 savingthrow
+    WRITE_LONG  0x44 savebonus
+    WRITE_LONG  0x48 special
+    WRITE_LONG  0x5c resist_dispel
+    WRITE_LONG  0xa4 "-1"     // parent resource slot: none
+    // FirstApply internal flag. Must be 1, as in EFF files saved by Near
+    // Infinity: with 0, an EFF re-applied by the engine (opcode 177 after a
+    // reload, opcode 272) is treated as already applied and does nothing.
+    WRITE_LONG  0xcc 1
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+// NY#SPLPROT_ROW (action)
+// Returns the row index of a SPLPROT.2DA entry identified by its label,
+// appending it first if it does not exist yet. Used by opcode 324/318.
+/////////////////////////////////////////////////////////////////////////////
+DEFINE_ACTION_FUNCTION NY#SPLPROT_ROW
+  STR_VAR
+    label     = ~~
+    stat      = ~~
+    value     = ~~
+    relation  = ~~
+  RET
+    row
+BEGIN
+  OUTER_SET row = "-1"
+  COPY_EXISTING ~splprot.2da~ ~override~
+    COUNT_2DA_ROWS 4 nrows
+    FOR (r = 0; r < nrows; ++r) BEGIN
+      READ_2DA_ENTRY r 0 4 lab
+      PATCH_IF (~%lab%~ STRING_EQUAL_CASE ~%label%~) BEGIN
+        SET row = r
+      END
+    END
+  BUT_ONLY
+  ACTION_IF (row < 0) BEGIN
+    APPEND ~splprot.2da~ ~%label% %stat% %value% %relation%~
+    COPY_EXISTING ~splprot.2da~ ~override~
+      COUNT_2DA_ROWS 4 nrows
+      SET row = nrows - 1
+    BUT_ONLY
+  END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+// NY#CLONE_AREA_PRO (action)
+// Clones an existing area projectile, optionally changes its radius
+// (in feet, scaled on FIREBALL.PRO = 20 ft), cone width, explosion effect
+// and colour, registers it and returns the value to write in SPL/ITM
+// extended headers.
+/////////////////////////////////////////////////////////////////////////////
+DEFINE_ACTION_FUNCTION NY#CLONE_AREA_PRO
+  INT_VAR
+    radius_ft         = 0
+    cone_width        = 0
+    explosion_effect  = "-1"
+    color             = "-1"
+  STR_VAR
+    source            = ~~
+    new               = ~~
+    workspace         = ~weidu_external/workspace/BlackDragonMagic~
+  RET
+    pro_id
+BEGIN
+  COPY_EXISTING ~fireball.pro~ ~override~
+    READ_SHORT 0x206 fb_size
+  BUT_ONLY
+  OUTER_SET px_per_ft = fb_size / 20
+
+  COPY_EXISTING ~%source%.pro~ ~%workspace%/%new%.pro~
+    PATCH_IF (radius_ft > 0) BEGIN
+      WRITE_SHORT 0x204 (radius_ft * px_per_ft)
+      WRITE_SHORT 0x206 (radius_ft * px_per_ft)
+    END
+    PATCH_IF (cone_width > 0) BEGIN
+      WRITE_SHORT 0x224 cone_width
+    END
+    PATCH_IF (explosion_effect >= 0) BEGIN
+      WRITE_BYTE 0x217 explosion_effect
+    END
+    PATCH_IF (color >= 0) BEGIN
+      WRITE_BYTE 0x218 color
+    END
+
+  ADD_PROJECTILE ~%workspace%/%new%.pro~
+  // SPL/ITM headers store the PROJECTL.IDS value + 1
+  OUTER_SET pro_id = IDS_OF_SYMBOL (~projectl~ ~%new%~) + 1
+  ACTION_IF (pro_id < 1) BEGIN
+    FAIL ~BlackDragonMagic: projectile %new% could not be registered~
+  END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+// NY#CREATE_LINE_PRO (action)
+// Creates a travelling "line" projectile (EE only), built like Smashing Wave
+// (SWAVE.PRO, IWDEE): it moves in a straight line and hits once every
+// creature within `width` pixels of its path ("Pass target"), then stops at
+// the targeted point ("Limited path count").
+// width: proximity radius in pixels (16 px = 1 ft horizontally).
+// bam: travelling animation, `directions` orientations (9 = 16 mirrored).
+// trail: animation left behind every `trail_delay` frames (optional).
+/////////////////////////////////////////////////////////////////////////////
+DEFINE_ACTION_FUNCTION NY#CREATE_LINE_PRO
+  INT_VAR
+    speed       = 40
+    width       = 60
+    directions  = 9
+    trail_delay = 2
+  STR_VAR
+    new         = ~~
+    bam         = ~~
+    sound       = ~~
+    trail       = ~~
+    workspace   = ~weidu_external/workspace/BlackDragonMagic~
+  RET
+    pro_id
+BEGIN
+  // Start from a blank 512-byte single target projectile
+  COPY_EXISTING ~fireball.pro~ ~%workspace%/%new%.pro~
+    DELETE_BYTES 0x200 (SOURCE_SIZE - 0x200)
+    FOR (o = 0x08; o < 0x200; o += 4) BEGIN
+      WRITE_LONG o 0
+    END
+    WRITE_SHORT 0x08 2                  // single target
+    WRITE_SHORT 0x0a speed
+    WRITE_LONG  0x0c 0x04               // loop fire sound
+    WRITE_ASCIIE 0x10 ~%sound%~ #8      // fire sound
+    WRITE_SHORT 0x2a width              // w/ Pass target: proximity radius
+    WRITE_LONG  0x2c (0x02 BOR 0x20000000)   // Pass target + Limited path count
+    WRITE_LONG  0x100 0x0a              // same BAM flags as SWAVE.PRO
+    WRITE_ASCIIE 0x104 ~%bam%~ #8
+    WRITE_BYTE  0x133 directions
+    PATCH_IF (~%trail%~ STRING_COMPARE ~~) BEGIN
+      WRITE_ASCIIE 0x136 ~%trail%~ #8
+      WRITE_SHORT  0x14e trail_delay
+    END
+  BUT_ONLY
+
+  ADD_PROJECTILE ~%workspace%/%new%.pro~
+  OUTER_SET pro_id = IDS_OF_SYMBOL (~projectl~ ~%new%~) + 1
+  ACTION_IF (pro_id < 1) BEGIN
+    FAIL ~BlackDragonMagic: projectile %new% could not be registered~
+  END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+// NY#ADD_STATDESC (action)
+// Adds a portrait icon to STATDESC.2DA (EE: custom BAM in the BAM_FILE
+// column) and returns its index, to use as opcode 142 parameter2. Reuses
+// the row when the BAM is already registered (reinstall).
+/////////////////////////////////////////////////////////////////////////////
+DEFINE_ACTION_FUNCTION NY#ADD_STATDESC
+  INT_VAR
+    strref  = "-1"
+  STR_VAR
+    bam     = ~~
+  RET
+    index
+BEGIN
+  OUTER_SET index = "-1"
+  OUTER_SET last  = 0
+  COPY_EXISTING ~statdesc.2da~ ~override~
+    COUNT_2DA_ROWS 3 nrows
+    FOR (r = 0; r < nrows; ++r) BEGIN
+      READ_2DA_ENTRY r 0 3 id
+      READ_2DA_ENTRY r 2 3 file
+      PATCH_IF (IS_AN_INT id) BEGIN
+        PATCH_IF (id > last) BEGIN SET last = id END
+        PATCH_IF (~%file%~ STRING_EQUAL_CASE ~%bam%~) BEGIN SET index = id END
+      END
+    END
+  BUT_ONLY
+  ACTION_IF (index < 0) BEGIN
+    OUTER_SET index = last + 1
+    APPEND ~statdesc.2da~ ~%index% %strref% %bam%~
+  END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+// NY#ADD_SPLSTATE (action)
+// Adds a spell state to SPLSTATE.IDS (first free number) and returns it, to
+// use with opcode 328 (special = 1) and SPLPROT stat 0x112. Reuses the entry
+// when the name already exists (reinstall).
+/////////////////////////////////////////////////////////////////////////////
+DEFINE_ACTION_FUNCTION NY#ADD_SPLSTATE
+  STR_VAR
+    name  = ~~
+  RET
+    id
+BEGIN
+  OUTER_SET id = IDS_OF_SYMBOL (~splstate~ ~%name%~)
+  ACTION_IF (id < 0) BEGIN
+    COPY_EXISTING ~splstate.ids~ ~override~
+      SET id = "-1"
+      FOR (i = 0; (i < 256) AND (id < 0); ++i) BEGIN
+        PATCH_IF (INDEX_BUFFER (EVALUATE_REGEXP ~^%i%[ %TAB%]~) < 0) BEGIN
+          SET id = i
+        END
+      END
+    BUT_ONLY
+    ACTION_IF (id < 0) BEGIN
+      FAIL ~BlackDragonMagic: no free spell state left in SPLSTATE.IDS~
+    END
+    APPEND ~splstate.ids~ ~%id% %name%~
+  END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+// NY#MELEE_RANGE_PRO (action)
+// Range-limited projectile cloned from the game's RANGE10.PRO (10 ft. =
+// 85 px): a spell fired with it only reaches a target within `px` pixels.
+// The game's RANGE05/07/10 are too short for long weapons and large
+// creatures, hence this wider version. Created once, shared by the spells.
+/////////////////////////////////////////////////////////////////////////////
+DEFINE_ACTION_FUNCTION NY#MELEE_RANGE_PRO
+  INT_VAR
+    px        = 102     // about 12 ft.
+  STR_VAR
+    new       = ~NY#MELEE~
+    workspace = ~weidu_external/workspace/BlackDragonMagic~
+  RET
+    pro_id
+BEGIN
+  OUTER_SET pro_id = IDS_OF_SYMBOL (~projectl~ ~%new%~) + 1
+  ACTION_IF (pro_id < 1) BEGIN
+    COPY_EXISTING ~range10.pro~ ~%workspace%/%new%.pro~
+      WRITE_SHORT 0x204 px      // trigger radius
+      WRITE_SHORT 0x206 px      // area size
+    BUT_ONLY
+    ADD_PROJECTILE ~%workspace%/%new%.pro~
+    OUTER_SET pro_id = IDS_OF_SYMBOL (~projectl~ ~%new%~) + 1
+  END
+  ACTION_IF (pro_id < 1) BEGIN
+    FAIL ~BlackDragonMagic: projectile %new% could not be registered~
+  END
+END

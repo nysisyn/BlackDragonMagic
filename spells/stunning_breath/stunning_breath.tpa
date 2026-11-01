@@ -1,0 +1,57 @@
+/////////////////////////////////////////////////////////////////////////////
+// Stunning Black Dragon Breath - wizard, level 4, Evocation
+//
+// Same as the Black Dragon Disciple's Acid Breath: 30-ft. acid line (wave,
+// trail and splash of the kit breath), 3d8 acid, +1d8 at levels 6, 9, 12,
+// 15 and 18 (max 8d8), save vs. Breath for half, allies in the line hit,
+// the caster immune. In addition, a creature that fails its save is stunned
+// for 2 rounds. Same visuals as the kit's breath (wave, trail, green
+// splash on each creature hit), no explosion on impact.
+//
+// Resources
+//   SPWIxxx   Stunning Black Dragon Breath (added through ADD_SPELL as
+//             WIZARD_NY_STUNNING_BREATH)
+//   NY#SBBT   line projectile (as the kit's NY#BDBRT)
+//   NY#SBBB   spell icon (ability / memorised, on a stone plate), NY#SBBC
+//             spellbook icon: Nysi's artwork reduced to 32 px (source and
+//             transparent version in works/stunning_breath_icon_source)
+//   The wave, trail and splash animations and the sound are the kit's ones
+//   (kits/black_dragon_disciple/bam, wav), copied again here so the spell
+//   works without the kit component.
+/////////////////////////////////////////////////////////////////////////////
+
+OUTER_SET ny_str_sbb   = RESOLVE_STR_REF (@1)
+OUTER_SET ny_str_sbb_d = RESOLVE_STR_REF (@2)
+
+COPY ~%MOD_FOLDER%/spells/stunning_breath/bam/ny#sbbb.bam~       ~override~
+     ~%MOD_FOLDER%/spells/stunning_breath/bam/ny#sbbc.bam~       ~override~
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdwav.bam~  ~override~
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdwvt.bam~  ~override~
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdwvh.bam~  ~override~
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/wav/ny#bdbre.wav~  ~override~
+
+// Line projectile, same settings as the kit's Acid Breath
+LAF NY#CREATE_LINE_PRO INT_VAR speed = 20 width = 60 trail_delay = 2 STR_VAR new = ~NY#SBBT~ bam = ~NY#BDWAV~ trail = ~NY#BDWVT~ sound = ~NY#BDBRE~ workspace = EVAL ~%ny_workspace%~ RET ny_pro_sbb = pro_id END
+
+// Main spell: same headers as the kit's Acid Breath
+CREATE ~SPL~ ~NY#SBBS~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_sbb desc = ny_str_sbb_d type = 1 level = 4 flags = 0x400
+                          school = 6 exclusion = 0x200 graphics = 15 STR_VAR icon = ~NY#SBBC~ END
+  FOR (i = 0; i < 6; ++i) BEGIN
+    SET lvl  = (i = 0) ? 1 : (3 * i + 3)       // 1 (5th), 6, 9, 12, 15, 18
+    SET dice = 3 + i                             // 3d8 .. 8d8
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 4 range = 30 level = lvl casting_time = 1 projectile = ny_pro_sbb STR_VAR icon = ~NY#SBBB~ RET h = header END
+    // the wave starts on the caster: 2 seconds of immunity to the spell
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = 2 parameter1 = "-1" STR_VAR resource = ~NY#SBBS~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 STR_VAR resource = ~NY#BDWVH~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 0 parameter2 = 0x10000 dicenumber = dice dicesize = 8 savingthrow = 2 special = 0x100 END
+    // failed save vs. Breath: stunned 2 rounds
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 45  target = 2 timing = 0 duration = (2 * ny_round) savingthrow = 2 END
+  END
+
+ADD_SPELL ~override/NY#SBBS.spl~ 2 4 ~WIZARD_NY_STUNNING_BREATH~
+LAF RES_NUM_OF_SPELL_NAME STR_VAR spell_name = ~WIZARD_NY_STUNNING_BREATH~ RET ny_sbb_res = spell_res END
+
+// self reference (caster immunity) must point to the final resref
+COPY_EXISTING ~%ny_sbb_res%.spl~ ~override~
+  LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 206 STR_VAR resource = EVAL ~%ny_sbb_res%~ END

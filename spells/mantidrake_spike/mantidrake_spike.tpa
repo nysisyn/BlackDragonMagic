@@ -1,0 +1,80 @@
+/////////////////////////////////////////////////////////////////////////////
+// Mantidrake Spike - wizard, level 2, Alteration
+//
+// Built like Melf's Minute Meteors (SPWI325 / MELFMET.ITM): the spell puts
+// one throwing spike per caster level in a quick slot.
+//   - spike: 1d4 piercing, +5 to hit, counts as a +2 weapon, up to 3 per
+//     round, dart projectile
+//   - on a hit: save vs. Death at -2 or 2d4 poison damage
+//
+// Resources
+//   SPWIxxx   Mantidrake Spike (added through ADD_SPELL as
+//             WIZARD_NY_MANTIDRAKE_SPIKE)
+//   NY#MANT   the spikes (MELFMET.ITM patched)
+//   NY#MANP   poison on a failed save
+//   NY#MANSB  spell icon (ability / memorised, on a stone plate), NY#MANSC
+//             spellbook and item icon: Nysi's spikes artwork reduced to 32 px
+//             (source in works/mantidrake_spike_icon_source; the previous
+//             Ice Storm based icons are kept in works/mantidrake_spike_old_icons)
+/////////////////////////////////////////////////////////////////////////////
+
+OUTER_SET ny_str_mant     = RESOLVE_STR_REF (@1)
+OUTER_SET ny_str_mant_d   = RESOLVE_STR_REF (@2)
+OUTER_SET ny_str_spike    = RESOLVE_STR_REF (@3)
+OUTER_SET ny_str_spike_d  = RESOLVE_STR_REF (@4)
+
+COPY ~%MOD_FOLDER%/spells/mantidrake_spike/bam/ny#mansb.bam~ ~override~
+     ~%MOD_FOLDER%/spells/mantidrake_spike/bam/ny#mansc.bam~ ~override~
+
+OUTER_SET ny_pro_dart = IDS_OF_SYMBOL (~projectl~ ~1dart01~) + 1
+ACTION_IF (ny_pro_dart < 1) BEGIN
+  FAIL ~BlackDragonMagic: projectile 1DART01 not found~
+END
+
+// Poison on a failed save: 2d4 poison damage, poison visual
+CREATE ~SPL~ ~NY#MANP~
+  LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1000 level = 1 casting_time = 0 RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 1 parameter2 = 0x200000 dicenumber = 2 dicesize = 4 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 STR_VAR resource = ~POISON~ END
+
+// Spikes: Melf's Minute Meteors item, patched
+COPY_EXISTING ~melfmet.itm~ ~override/NY#MANT.itm~
+  WRITE_LONG  0x08 ny_str_spike
+  WRITE_LONG  0x0c ny_str_spike
+  WRITE_LONG  0x50 ny_str_spike_d
+  WRITE_LONG  0x54 ny_str_spike_d
+  WRITE_ASCII 0x3a ~NY#MANSC~ #8
+  WRITE_SHORT 0x38 40                        // stack: one spike per level
+  WRITE_LONG  0x60 2                         // counts as a +2 weapon
+  // 3 attacks per round while the spikes are in hand
+  LPF ALTER_ITEM_EFFECT INT_VAR check_headers = 0 match_opcode = 1 parameter1 = 3 parameter2 = 1 END
+  READ_LONG 0x64 ny_ab_off
+  WRITE_ASCII (ny_ab_off + 0x04) ~NY#MANSC~ #8
+  WRITE_SHORT (ny_ab_off + 0x14) 5           // +5 to hit
+  WRITE_BYTE  (ny_ab_off + 0x16) 4           // 1d4 (dice size, dice number)
+  WRITE_BYTE  (ny_ab_off + 0x18) 1
+  WRITE_SHORT (ny_ab_off + 0x1a) 0           // no damage bonus
+  WRITE_SHORT (ny_ab_off + 0x1c) 1           // piercing
+  WRITE_SHORT (ny_ab_off + 0x2a) ny_pro_dart // dart projectile
+  // meteor fire damage and visual replaced by the poison: one save vs.
+  // Death at -2, then NY#MANP (damage and visual share the same roll)
+  // (only the header effects: 215 visual and 12 fire damage; the equipped
+  // opcode 1 above is kept)
+  LPF DELETE_ITEM_EFFECT INT_VAR opcode_to_delete = 215 END
+  LPF DELETE_ITEM_EFFECT INT_VAR opcode_to_delete = 12 END
+  LPF ADD_ITEM_EFFECT INT_VAR type = 99 opcode = 146 target = 2 timing = 1 parameter1 = 1 parameter2 = 1
+                              savingthrow = 4 savebonus = "-2" STR_VAR resource = ~NY#MANP~ END
+BUT_ONLY
+
+// Main spell: one spike per level
+CREATE ~SPL~ ~NY#MANS~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_mant desc = ny_str_mant_d type = 1 level = 2
+                          school = 8 exclusion = 0x40 graphics = 10 STR_VAR icon = ~NY#MANSC~ END
+  FOR (lvl = 1; lvl <= 40; ++lvl) BEGIN
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 5 range = 1 level = lvl casting_time = 3 STR_VAR icon = ~NY#MANSB~ RET h = header END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 111 target = 1 timing = 1 parameter1 = lvl STR_VAR resource = ~NY#MANT~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 174 target = 1 timing = 1 STR_VAR resource = ~EFF_M58~ END
+  END
+
+ADD_SPELL ~override/NY#MANS.spl~ 2 2 ~WIZARD_NY_MANTIDRAKE_SPIKE~

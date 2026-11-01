@@ -1,0 +1,109 @@
+/////////////////////////////////////////////////////////////////////////////
+// Black Dragon Animate Breath - wizard, level 7, Conjuration
+//
+// The caster breathes on the ground and an ooze made of his own acid breath
+// rises and fights his enemies (summoned ally, 1 round per level, 14 rounds
+// at least).
+//
+// The creature is the game's Mustard Jelly changed at install (JELLYMU.CRE in
+// BG:EE / SoD, JELLMU.CRE in BG2:EE; same stats):
+//   - animation of the olive slime (SLIME_OLIVE, 0x7901: green, as the breath)
+//   - type Ooze (race SLIME, from the jelly), 65 HP, AC 4, THAC0 11
+//   - immune to acid; no other resistance
+//   - immune to mind-affecting effects (the jelly's RING95, kept)
+//   - two melee attacks per round: 2d8 acid damage each (weapon NY#ABRW, +2)
+//   - spits Corrosive Spit at the nearest enemy once per round while no
+//     enemy is in melee reach (script baf/ny#abrsp.baf, summon version
+//     NY#ABRX)
+//   - allegiance CONTROLLED (5), as the game's summoned Djinni and Efreeti
+//     (the Mustard Jelly is ENEMY, 255)
+//   - no default script: the jelly's WTASIGHT turns the creature hostile
+//     when the party hits it (AttackedBy(GOODCUTOFF) then Enemy()), as in
+//     the caster's area spells; NY#ABRSP does the melee too
+//   - no experience for killing it
+//
+// Resources
+//   SPWIxxx   Black Dragon Animate Breath (added through ADD_SPELL as
+//             WIZARD_NY_ANIMATE_BREATH)
+//   NY#ABRM   the animated breath (creature)
+//   NY#ABRW   its acid attack (creature weapon)
+//   NY#ABRX   its Corrosive Spit (summon version of NY#CSPS, installed
+//             before: innate, no casting animation, casting time 0)
+//   NY#ABRSP  its only script (one spit per round out of melee; melee
+//             otherwise)
+//   NY#ABRB   spell icon (ability / memorised), NY#ABRC spellbook icon:
+//             placeholder, the game's SPPR516 (wave rising from droplets)
+//             recoloured acid yellow
+//   The breath sound is the kit's one (kits/black_dragon_disciple/wav),
+//   copied again here so the spell works without the kit component.
+/////////////////////////////////////////////////////////////////////////////
+
+OUTER_SET ny_str_abr     = RESOLVE_STR_REF (@1)
+OUTER_SET ny_str_abr_d   = RESOLVE_STR_REF (@2)
+OUTER_SET ny_str_abr_cre = RESOLVE_STR_REF (@3)
+
+COPY ~%MOD_FOLDER%/spells/animate_breath/bam/ny#abrb.bam~      ~override~
+     ~%MOD_FOLDER%/spells/animate_breath/bam/ny#abrc.bam~      ~override~
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/wav/ny#bdbre.wav~ ~override~
+
+// Acid attack: no physical damage, 2d8 acid on each hit
+CREATE ~ITM~ ~NY#ABRW~
+  WRITE_LONG  0x08 ny_str_abr_cre
+  WRITE_LONG  0x0c ny_str_abr_cre
+  WRITE_LONG  0x18 0x60                         // not copyable, magical
+  WRITE_SHORT 0x1c 0x1c                         // hand-to-hand weapon
+  WRITE_LONG  0x60 2                            // +2 weapon
+  LPF NY#ADD_ITM_HEADER INT_VAR attack_type = 1 id_req = 0 location = 1 target = 1 range = 1 speed = 3 RET h = header END
+  LPF ADD_ITEM_EFFECT INT_VAR type = 99 header = h opcode = 12  target = 2 parameter2 = 0x10000 dicenumber = 2 dicesize = 8 END
+  LPF ADD_ITEM_EFFECT INT_VAR type = 99 header = h opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 STR_VAR resource = ~SHACID~ END
+
+// Summon version of Corrosive Spit (Corrosive Spit is installed before this
+// spell, in the same component): innate, no casting animation (casting
+// graphics 0) and no casting time; the script casts it with
+// ReallyForceSpellRES, which skips the casting itself.
+COPY_EXISTING ~NY#CSPS.spl~ ~override/NY#ABRX.spl~
+  WRITE_SHORT 0x1c 4                            // innate
+  WRITE_SHORT 0x22 0                            // no casting animation
+  READ_LONG  0x64 ny_ext_off
+  READ_SHORT 0x68 ny_ext_num
+  FOR (i = 0; i < ny_ext_num; ++i) BEGIN
+    WRITE_SHORT (ny_ext_off + i * 0x28 + 0x12) 0    // casting time 0
+  END
+
+COMPILE ~%MOD_FOLDER%/spells/animate_breath/baf/ny#abrsp.baf~
+
+// The animated breath, from the Mustard Jelly of the game
+ACTION_IF FILE_EXISTS_IN_GAME ~JELLYMU.cre~ BEGIN
+  OUTER_SPRINT ny_abr_jelly ~JELLYMU~           // BG:EE, SoD, EET
+END ELSE BEGIN
+  OUTER_SPRINT ny_abr_jelly ~JELLMU~            // BG2:EE
+END
+COPY_EXISTING ~%ny_abr_jelly%.cre~ ~override/NY#ABRM.cre~
+  WRITE_LONG  0x08 ny_str_abr_cre
+  WRITE_LONG  0x0c ny_str_abr_cre
+  WRITE_LONG  0x14 0                            // no experience when killed
+  WRITE_LONG  0x28 0x7901                       // SLIME_OLIVE
+  WRITE_BYTE  0x52 11                           // THAC0
+  WRITE_BYTE  0x53 2                            // 2 attacks per round
+  WRITE_ASCII 0x248 ~NY#ABRSP~ #8               // override script: spits
+  WRITE_BYTE  0x270 5                           // CONTROLLED, as summons
+  WRITE_ASCII 0x268 ~~ #8                       // no WTASIGHT (turns hostile)
+  // resistances: fire, cold, electricity, acid, magic, magic fire, magic
+  // cold, slashing, crushing, piercing, missile
+  FOR (o = 0x59; o <= 0x63; ++o) BEGIN WRITE_BYTE o 0 END
+  WRITE_BYTE  0x5c 100                          // acid immunity
+  REMOVE_CRE_ITEMS
+  ADD_CRE_ITEM ~NY#ABRW~ #0 #0 #0 ~NONE~ ~WEAPON1~ EQUIP
+  ADD_CRE_ITEM ~RING95~  #0 #0 #0 ~NONE~ ~RRING~
+
+// Spell: 1 round per level, 14 rounds at least
+CREATE ~SPL~ ~NY#ABRS~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_abr desc = ny_str_abr_d type = 1 level = 7
+                          school = 2 exclusion = 0x100 graphics = 14 STR_VAR icon = ~NY#ABRC~ END
+  FOR (lvl = 14; lvl <= 40; ++lvl) BEGIN
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 4 range = 30 level = ((lvl = 14) ? 1 : lvl) casting_time = 7 STR_VAR icon = ~NY#ABRB~ RET h = header END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 174 target = 1 timing = 1 STR_VAR resource = ~NY#BDBRE~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 67  target = 1 timing = 0 duration = (lvl * ny_round) STR_VAR resource = ~NY#ABRM~ END
+  END
+
+ADD_SPELL ~override/NY#ABRS.spl~ 2 7 ~WIZARD_NY_ANIMATE_BREATH~

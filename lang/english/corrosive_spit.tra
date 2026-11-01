@@ -1,0 +1,15 @@
+@1 = ~Corrosive Spit~
+@2 = ~Corrosive Spit
+(Conjuration)
+
+Level: 2
+Range: Short (half that of Melf's Acid Arrow)
+Duration: 1 round
+Casting Time: 2
+Area of Effect: 1 creature
+Saving Throw: Spell partial
+
+The Black Dragon Disciple spits a gob of corrosive acid at a nearby creature, dealing 5d4 acid damage. A creature that fails a save vs. Spell is blinded by the acid for 1 round and suffers another 5d4 acid damage at the start of the next round.~
+
+// Combat log
+@3 = ~Blinded by the corrosive spit~

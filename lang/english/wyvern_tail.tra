@@ -1,0 +1,22 @@
+@1 = ~Wyvern Barbed Tail Strike~
+@2 = ~Wyvern Barbed Tail Strike
+(Alteration)
+
+Level: 3
+Range: Melee
+Duration: 1 turn
+Casting Time: 0
+Area of Effect: 1 creature
+Saving Throw: Poison partial
+
+Through this spell, the Black Dragon Disciple grows a dangerous wyvern tail, or alters his own tail if he already has one, and strikes his target. The spell deals 1d12 piercing damage and the creature must save vs. Poison at -2 or suffer poison damage depending on the caster level:
+
+5th level: 4 damage, then 1 damage every 4 seconds
+7th level: 8 damage, then 1 damage every 3 seconds
+9th level: 12 damage, then 1 damage every 2 seconds
+12th level and above: 16 damage, then 1 damage every second
+
+The poison lasts 1 turn.~
+
+// Combat log
+@3 = ~Poisoned by the wyvern tail~

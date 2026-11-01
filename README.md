@@ -1,0 +1,136 @@
+# BlackDragonMagic
+
+WeiDU mod for Baldur's Gate EE / BG2EE / EET: the **Black Dragon Disciple** sorcerer kit and its acid spells.
+
+Content follows the Trello board "Nysi" (lists Redacted, Coding, Conception). Cards from the *Ideas* list are not implemented.
+
+Everything is built at install time from WeiDU code (`CREATE`, effects, headers): no binary SPL/ITM/PRO file is shipped, only animations (BAM) and sounds. To change a value, edit the `.tpa` and reinstall.
+
+## Components
+
+| # | Component | Content | Trello cards | Games |
+|---|-----------|---------|--------------|-------|
+| 0 | Kit | Black Dragon Disciple, sorcerer kit (`NY#BDD`) | level-by-level progression (kit description) | BGEE, BG2EE, EET |
+| 10 | Spells | Acidosis, wizard level 1 (`WIZARD_NY_ACIDOSIS`); Rot of Ages, wizard level 1 (`WIZARD_NY_ROT_OF_AGES`); Ghostly Tail, wizard level 1 (`WIZARD_NY_GHOSTLY_TAIL`); Mantidrake Spike, wizard level 2 (`WIZARD_NY_MANTIDRAKE_SPIKE`); Corrosive Spit, wizard level 2 (`WIZARD_NY_CORROSIVE_SPIT`); Wyvern Barbed Tail Strike, wizard level 3 (`WIZARD_NY_WYVERN_TAIL`); Black Dragon Pooling Breath, wizard level 3 (`WIZARD_NY_POOLING_BREATH`); Black Dragon Breathball, wizard level 3 (`WIZARD_NY_BREATHBALL`); Stunning Black Dragon Breath, wizard level 4 (`WIZARD_NY_STUNNING_BREATH`); Black Dragon Animate Breath, wizard level 7 (`WIZARD_NY_ANIMATE_BREATH`); Bonemelt, wizard level 8 (`WIZARD_NY_BONEMELT`, BG2EE/EET only) | Acidosis (L1), Rot of Ages (L1), Ghostly Tail (L1), Mantidrake Spike (L2), Corrosive Spit (L2), Wyvern Barbed Tail Strike (L3), Black Dragon Pooling Breath (L3), Black Dragon Breathball (L3), Stunning Black Dragon Breath (L4), Black Dragon Animate Breath (L7), Bonemelt (L8) | BGEE, BG2EE, EET |
+| 20 | Tweak | Vitriolic Sphere, 5e style (modifies the existing spell) | Vitriolic Sphere | needs IWDification or IWDEE |
+
+Install **after IWDification and SCS** (component 20 rewrites the IWDification spell).
+
+## Folder layout
+
+```
+BlackDragonMagic/
+├── BlackDragonMagic.tp2          components list only, no game logic
+├── lib/ny#core.tpa               own WeiDU functions (SPL/ITM headers, SPLPROT, projectiles, EFF, portrait icons, spell states)
+├── lib/a7#add_kit_ex.tpa         ADD_KIT_EX by Argent77 (public domain): kit registration on classic and EE games
+├── lang/<language>/
+│   ├── setup.tra                 component names, install messages
+│   └── <feature>.tra             one file per feature, loaded with WITH_TRA
+├── kits/<kit_name>/              one folder per kit
+│   ├── <kit_name>.tpa            install code for the kit and its abilities
+│   ├── 2da/                      CLAB table
+│   ├── baf/                      scripts
+│   ├── bam/                      animations
+│   └── wav/                      sounds
+├── spells/<spell_name>/          one folder per new spell
+│   ├── <spell_name>.tpa
+│   └── bam/                      animations
+├── tweaks/<tweak_name>/          one folder per change to an existing resource
+│   └── <tweak_name>.tpa
+└── works/                        kept for reference, not installed (old icons...)
+```
+
+## Conventions
+- **One feature = one folder**: its `.tpa` and every resource it installs live together.
+  Removing a feature = deleting its folder, its `.tra` files and its block in the `.tp2`.
+- **Lowercase file names** everywhere (WeiDU is case-sensitive on Linux/macOS).
+- **Resource prefix `NY#`**, max 8 characters per resource name.
+- **No inline text**: every string goes in a `.tra` file so it can be translated.
+  English is always loaded first, so a missing translation falls back to English.
+- **Tra numbering per file**: @1–@9 main texts, then blocks of 10 per sub-feature.
+- **No dead code in active files**: unfinished parts are listed in `TODO.md`.
+- **Tests and experiments stay out of the repo** (or on a git branch).
+- Backup goes to `weidu_external/backup/BlackDragonMagic`, temporary files to
+  `weidu_external/workspace/BlackDragonMagic` (outside the mod folder).
+
+## Resources created
+
+| Resource | Role |
+|----------|------|
+| `NY#BDL01`…`NY#BDL20` | level bonuses, permanent through the CLAB (only the levels that give something): AC +1 (1, 5, 10, 15, 20), Constitution +1 (5, 15), one spell slot less per spell level (1), Swamp Stride (2), Acid Affinity resistance +20% (4, 8, 12, 16, 20), Draconic Tail (9), Blindsense (10), Apotheosis immunities (20) |
+| `NY#BDTH` | +1 THAC0 at levels 4, 7, 10… 49 (CLAB): druid THAC0 progression on top of the sorcerer's |
+| `NY#BDQ02`…`NY#BDQ50` | spell slots of a sorcerer one level lower (CLAB, one per level, each replaces the previous one) |
+| `NY#BDZ1`…`NY#BDZ6` | put the claws of the stage in the fist slot (CLAB at levels 1, 4, 8, 12, 16, 20, and global script after a load) |
+| `baldur.bcs`, `bdbaldur.bcs`, `baldur25.bcs` | global script `kits/black_dragon_disciple/baf/claws.baf` added at the top: claws back after a load, fist reselected at a new stage |
+| `NY#BDCL1`…`NY#BDCL6` | claws (fist item), one per stage: 1d4 to 2d8, +0 to +5 to hit and damage (= enchantment), 2 attacks per round |
+| `NY#BDMZ1`…`NY#BDMZ6` | put the bite of the stage in the off-hand slot (CLAB at levels 6, 8, 12, 13, 16, 20) |
+| `NY#BDMO1`…`NY#BDMO6` | bite (off-hand item), one per stage: 1d6 + 1d4 acid, then 2d6 + 2d4 acid at 13; +1 to +5 as the claws |
+| `NY#BDMI` | bite icon (placeholder: the Corrosive Spit icon recoloured in yellow) |
+| `NY#BDTL` | Draconic Tail strike |
+| `NY#BDBRE` | Acid Breath (1 to 4 per day) |
+| `NY#BDWG` / `NY#BDWH`, `NY#BDWI` | Draconic Wings spread / fold, and the wings (helmet slot item) |
+| `NY#BDFP` / `NY#BDFQ` | Frightful Presence on / off |
+| `NY#BDFPA`, `NY#BDFPE` | aura pulse (spell + EFF) |
+| `WEAPPROF.2DA` | kit column: 0 everywhere except Single Weapon Style (1) and Two-Weapon Style (3) |
+| all weapons (`.ITM`) | item usability effect (opcode 319) forbidding them to the kit |
+| `NY#ACDS`, `NY#ACDX` | Acidosis and its retaliation |
+| `NY#ACIDE`, `NY#ACID6`, `NY#ACDSD`, `NY#ACDSB`, `NY#ACDSC` | Acidosis animations (casting, retaliation), portrait icon and spell icons |
+| `NY#ROTS`, `NY#ROTD`, `NY#ROTN` | Rot of Ages, its disease and nausea |
+| `NY#ROTB`, `NY#ROTC` | Rot of Ages spell icons (Nysi's artwork, source in `works/rot_of_ages_icon_source`; previous Dolorous Decay ones in `works/rot_of_ages_old_icons`) |
+| `NY#GTLS`, `NY#GTLX` | Ghostly Tail and its strike |
+| `NY#GTLB`, `NY#GTLC`, `NY#GTLD`, `NY#GTLH` | Ghostly Tail icons (Nysi's artwork, source in `works/ghostly_tail_icon_source`; previous Entangle-based ones in `works/ghostly_tail_old_icons`), portrait icon and hit animation |
+| `NY#MANS`, `NY#MANT`, `NY#MANP` | Mantidrake Spike, its spikes (item) and their poison |
+| `NY#MANSB`, `NY#MANSC` | Mantidrake Spike icons, also the spikes' item icon (Nysi's artwork, source in `works/mantidrake_spike_icon_source`; previous Ice Storm based ones in `works/mantidrake_spike_old_icons`) |
+| `NY#CSPS`, `NY#CSPX` | Corrosive Spit and its blindness + delayed damage on a failed save |
+| `NY#CSPB`, `NY#CSPC` | Corrosive Spit icons (Nysi's artwork, source in `works/corrosive_spit_icon_source`) |
+| `NY#WBTS`, `NY#WBTP` | Wyvern Barbed Tail Strike and its poison |
+| `NY#WBTB`, `NY#WBTC` | Wyvern Barbed Tail Strike icons (Nysi's artwork, source in `works/wyvern_tail_icon_source`; previous Death Ward based ones in `works/wyvern_tail_old_icons`) |
+| `NY#BDBB`, `NY#BDBBP` | Black Dragon Breathball and its projectile |
+| `NY#BDBBB`, `NY#BDBBC` | Black Dragon Breathball icons (Nysi's artwork, source in `works/breathball_icon_source`) |
+| `NY#SBBS`, `NY#SBBT` | Stunning Black Dragon Breath and its line projectile |
+| `NY#SBBB`, `NY#SBBC` | Stunning Black Dragon Breath icons (Nysi's artwork, source in `works/stunning_breath_icon_source`) |
+| `NY#PBRS`, `NY#PBRP` | Black Dragon Pooling Breath and its projectile (Stinking Cloud's area with acid puddles) |
+| `NY#PBRD`, `NY#PBRT` | its acid puddles and travelling blob (Grease's GREASED and ACIDBLOB recoloured acid green) |
+| `NY#PBRB`, `NY#PBRC` | Black Dragon Pooling Breath icons: the game's Free Action icon (waves) recoloured acid yellow |
+| `NY#ABRS`, `NY#ABRM`, `NY#ABRW` | Black Dragon Animate Breath, the animated breath (creature, from the Mustard Jelly: JELLYMU.CRE in BG:EE, JELLMU.CRE in BG2:EE) and its acid attack |
+| `NY#ABRX`, `NY#ABRSP` | the animated breath's Corrosive Spit (summon version of `NY#CSPS`, no casting animation) and its script |
+| `NY#ABRB`, `NY#ABRC` | Black Dragon Animate Breath icons: placeholder, the game's SPPR516 recoloured acid yellow |
+| `NY#MELEE` | range-limited projectile, about 12 ft. (melee reach) |
+| `NY_ROT_OF_AGES` (SPLSTATE.IDS), `NY#ROT_OF_AGES` (SPLPROT.2DA) | "suffering from Rot of Ages" state and its check |
+| `NY#BMLT`, `NY#BMLG`/`AR`/`RB`, `NY#BM*F`, `NY#BMSUC`, `NY#BMSK`, `NY#BMRBE`/`H` | Bonemelt |
+| `NY#BDBRT`, `NY#BDBRU` | Acid Breath line projectiles (built like Smashing Wave, IWDEE): 15 ft. × 5 ft., then 30 ft. × 10 ft. at level 19 |
+| `NY#BDBRI` | Acid Breath icon (Nysi's artwork, source in `works/acid_breath_icon_source`; old DragonAscendant icon in `works/acid_breath_old_icon`) |
+| `NY#BDWAV`, `NY#BDWVT`, `NY#BDWVH`, `NY#BDBRE.wav` | Acid Breath wave, trail and hit animations (Smashing Wave BAMs recoloured), breath sound |
+| `NY#BDFPT`, `NY#VSPH` | cloned projectiles |
+
+## Design choices made during implementation
+
+These points were not settled on the Trello cards:
+
+- **Claws**: they replace the fists (item created in the fist slot, opcode 143, at levels 1/4/8/12/16/20 through the CLAB). The engine does not save the fist slot, so a global script (`baf/claws.baf`, method of the Arcane Fist kit) puts the claws of the current stage back after a load. Permanent or repeating effects (opcodes 177, 272) were tried first and did not work. Their equipped effects (2 attacks per round) only apply when fighting unarmed, which is always the case since the kit cannot use weapons. At a new stage (level up) the engine does not apply the new claws' equipped effects until the fist is selected again: the same global script reselects a weapon slot then the fist once per stage (globals `NY#BDDF1`..`6`, one per party slot). Icon: default fist (`FIST`): after a load the weapon button keeps the default fist picture (opcode 143 does not equip the item), so a custom icon would only show at character creation. If that one-off selection is lost (seen at the start of Throne of Bhaal: one attack per round), retries select the fist again while the disciple fights unarmed with fewer than 2 attacks (CheckStatLT NUMBEROFATTACKS), at most once per round and 5 times (NY#BDDR1..6, reset at each stage and after each load).
+- **Bite** (from the branch `bite`, tested in game): a hand-to-hand item in the off-hand slot (opcode 143, slot 9), created by the CLAB at levels 6/8/12/13/16/20; the engine gives one more attack per round for an off-hand weapon. Acid damage and the acid splash are effects of the attack. The normal two-weapon penalties apply (the branch cancelled them; now the player lowers them with Two-Weapon Style). Movable: it can go to the backpack to fight with the claws alone (Single Weapon Style). The off-hand slot is saved, no script needed. A new stage removes the previous bites, equipped (opcode 112) or in the backpack (opcode 123).
+- **Draconic Tail**: built like Ghostly Tail, permanent (CLAB, level 9): opcode 232 once per round at the nearest enemy, with the range-limited projectile `NY#MELEE`. 1d10 crushing and 1 second unconscious, save vs. Breath. Combat log line on each strike, smashing impact visual.
+- **Draconic Wings**: an item in the helmet slot (opcode 143, slot 6): +4 movement, immunity to critical hits (item flag). Two innate abilities swap themselves (spread / fold), as Frightful Presence. The helmet slot is saved, no script needed.
+- **No weapon**: opcode 319 (item usability, EE) added at install to every weapon (categories 15-27, 29, 30, 44, 57, 69), parameter2 9 = KIT.IDS. Only the items present at install time are patched. Proficiencies: the kit column of `WEAPPROF.2DA` is set to 0 except Single Weapon Style (1) and Two-Weapon Style (3): the sorcerer's 4 points.
+- **Spell progression one level lower**: at each level N (2 to 50) the CLAB applies `NY#BDQnn`, which removes the previous one (opcode 321) and lowers each spell level by the difference between levels N and N-1 of the game's `MXSPLSRC.2DA` (read at install, opcode 42). Spells known are not delayed.
+- **Blindsense**: immunity to blindness + see invisible (opcode 193, parameter2 1), at any range, as the Dragon Disciple of the Artisan's Kitpack (no range limit there either).
+- **Breath**: real line, built like Smashing Wave (IWDEE): an acid wave travels from the disciple to the targeted point and hits once every creature within its width ("Pass target" + "Limited path count" projectile flags), leaving a trail of acid puddles; speed 20 (Smashing Wave: 40) so the line can be seen. 15 ft. long (header range) and 5 ft. wide (proximity radius 40 px), then 30 ft. and 10 ft. (80 px) at level 19. 4d4 to 12d4, save vs. Breath for half, 1 to 4 uses per day (CLAB). On casting, the disciple gets 2 seconds of immunity to his own breath (opcode 206), as in the old DragonAscendant breath. Animations: Smashing Wave BAMs (IWDEE) recoloured in acid green.
+- **Bonemelt, choosing the mutilation**: casting grants three touch abilities (Legs / Arms / Ribcage) for 1 turn; using one removes all three. Casting time set to 5.
+- **Bonemelt, half effect on a successful save**: Legs = movement 62% and -2 AC; Arms = -2 THAC0 and -2 damage; Ribcage = 1d4 acid per round.
+- **Skeletons**: only race `SKELETON` is destroyed.
+- **Acidosis**: acid burst on the caster when cast and acid splash on each attacker hit by the retaliation (BAMs from the old DragonAscendant Acidosis). Portrait icon: Beltyn's Burning Blood icon (IWDEE) recoloured in acid green, added to `STATDESC.2DA`. Spell icons: Nysi's acid drop artwork reduced to 32 px (on a stone plate for the memorised icon, source in `works/acidosis_icon_source`); the previous ones (Beltyn's Burning Blood figure, then the enlarged portrait drop in `drop/`) are kept in `works/acidosis_old_icons`. Casting again replaces the active version; the THAC0 penalty refreshes instead of stacking.
+- **Fewer spells**: one spell slot less per spell level (opcode 42, -1 on levels 1-9, applied at level 1), on top of the one-level delay. The Dragon Disciple uses `MXSPLDD.2DA`, a table the engine ties to that kit only.
+- **HLA**: still those of the Dragon Disciple (copied by ADD_KIT_EX); unique HLA to come.
+- **Rot of Ages**: touch (range 1, as Vampiric Touch). One save vs. Death for the whole disease: the spell casts the disease subspell with the save (opcode 146 at the caster level, max 10). "Suffering from Rot of Ages" is a spell state set for the disease duration; the next casting checks it (opcode 326 + SPLPROT stat 0x112) before setting its own. Nausea as in the game's Stinking Cloud: unconscious for 2 rounds, not woken by damage, "Nauseated" icon. Disease: "Diseased" icon, 1 poison damage at the end of each round. Combat log lines: blinded, diseased, nauseated. Icons: Nysi's rotting cloud artwork (previously Dolorous Decay recoloured in necrotic green).
+- **Ghostly Tail**: built like Acidosis / Fire Shield. Opcode 232 on the caster, condition HPPercentLT(Myself,102) (always true, checked once per round), target NearestEnemyOf: the strike subspell flies with the range-limited projectile `NY#MELEE` (about 12 ft.), so it only reaches an enemy in melee reach; no enemy that close = no strike that round. 1d4 cold damage, no save (a save vs. Spell made it useless against creatures with good saves such as wyverns), no magic resistance, combat log line on each strike, casting time 1, 1 round per level without cap, portrait icon (spellbook icon reduced, `NY#GTLD`) for the duration. Casting again replaces the active tail.
+- **Mantidrake Spike**: built like Melf's Minute Meteors: the spell creates one spike per level in a quick slot (opcode 111); the item is `MELFMET.ITM` patched at install (1d4 piercing, +5 to hit, +2 enchantment, 3 attacks per round, dart projectile, poison 2d4 and the game's poison visual on a failed save vs. Death at -2, one roll through the subspell `NY#MANP`).
+- **Corrosive Spit**: Melf's Acid Arrow (same projectile and acid splash, casting time 2) at half its range (30 instead of 60). 5d4 acid without save, then one save vs. Spell for the subspell `NY#CSPX` (opcode 146): blindness for 1 round and 5d4 acid one round later (opcode 12 delayed, timing 4), combat log line. No scaling with level.
+- **Wyvern Barbed Tail Strike**: melee spell, range 1 as Vampiric Touch (range 12 proved far too long), casting time 0. 1d12 piercing without save, then one save vs. Poison at -2 for the poison subspell `NY#WBTP` (opcode 146 at the step level: 1, 7, 9, 12). Poison: immediate poison damage + opcode 25 type 3 (1 damage every N seconds) for 1 turn, so it is real poison ("Poisoned" icon, cured by Neutralize Poison). Combat log line on a failed save.
+- **Black Dragon Breathball**: Acid Breath damage (3d8 at 5th level, +1d8 at 6/9/12/15/18, save vs. Breath for half) in a Fireball area. Projectile `NY#BDBBP` = FIREBALL.PRO with the travelling object of Melf's Acid Arrow (ARROWFLG.PRO BAM block and sound) and the explosion of the game's Black Dragon Breath (SPIN691 / GREEHIT.PRO: explosion effect 18, colour 67), Fireball's fire VVC and flame ring removed. Values are read from the game files at install.
+- **Stunning Black Dragon Breath**: the kit's Acid Breath as a wizard spell (same line projectile, animations, sound, damage steps, caster immunity) plus a 2-round stun on a failed save vs. Breath. Visuals identical to the kit's breath (wave, trail, green splash on each creature hit), no explosion on impact. The stun and the damage use two saving throws of the same type; if the engine rolls them separately, a creature may take half damage and still be stunned (to check).
+- **Melee reach (`NY#MELEE`)**: the game's range-limited projectiles RANGE05/07/10 were too short (a bastard sword wielder did not trigger Acidosis without standing right against the caster). `NY#MELEE` is RANGE10 widened to about 12 ft. (102 px), used by the Acidosis retaliation and the Ghostly Tail strike.
+- **Visual effects (opcode 215)**: always timing 0 with a 1-second duration. With timing 1 (permanent) the engine replays the animation each time the creature's effects are re-evaluated, for instance whenever it takes damage.
+- **Black Dragon Pooling Breath**: Stinking Cloud's duration (projectile CLOUD.PRO cloned: 1 turn, the spell is applied again about once per round), the range of the kit's Acid Breath (30) and half its area (0x204/0x206: 256 → 128, 7.5-ft. radius), with acid puddles instead of the cloud: the cloud's spread animation (0x228, SPCLOUDS) replaced by `NY#PBRD`, Grease's ground puddles (GREASED) recoloured acid green, and Grease's travelling blob recoloured (`NY#PBRT`). Grease draws its puddles through its explosion effect (0x217 = 4), which always uses the grey GREASED and ignores the projectile colour: tested, the puddle showed but grey. Each application: 2d6 acid, save vs. Breath for half; allies hit, not the caster (opcode 206 on his own spell for 1 turn, placed after the stun so a re-application at each pulse cannot stun him again). The caster is stunned 2 seconds after breathing (opcode 165, as the Dragon Disciple's breath SPDD03).
+- **Black Dragon Animate Breath**: summons one allied ooze (opcode 67) for 1 round per level, 14 rounds at least; the breath sound of the kit plays on the caster. The creature is the game's Mustard Jelly changed at install: olive slime animation, 65 HP, AC 4, THAC0 11, immune to acid (no other resistance), immune to mind-affecting effects (RING95 kept), two attacks per round with a +2 creature weapon dealing 2d8 acid and no physical damage, no experience when killed. Its override script (`baf/ny#abrsp.baf`) casts Corrosive Spit (summon version `NY#ABRX`: innate, casting graphics 0, casting time 0, cast with ReallyForceSpellRES so no casting animation) at the nearest enemy it sees, once per round (LOCALS timer), only while that enemy is out of melee reach (!Range 4); in melee the same script attacks (AttackReevaluate). The jelly's default script WTASIGHT is removed: it contains AttackedBy(GOODCUTOFF) → Enemy(), which turned the summon hostile in the caster's area spells (allegiance CONTROLLED alone did not stop it). Allegiance CONTROLLED (5), as the game's summoned genies. Balance target: the summoned Djinni and Efreeti (about 18 damage per round, innate spells).
+- **Icon colours**: acid spells and abilities are olive yellow (Acidosis, Black Dragon Breathball, Stunning Black Dragon Breath, Corrosive Spit, Black Dragon Pooling Breath, Black Dragon Animate Breath, Acid Breath), poison spells are green (Mantidrake Spike, Wyvern Barbed Tail Strike, Rot of Ages), as in BG3, so both can be told apart at a glance; Ghostly Tail (cold) stays turquoise. The artworks in `works/` keep their original colours.
+- **Icons**: Acidosis, Rot of Ages, Ghostly Tail, Mantidrake Spike, Corrosive Spit, Wyvern Barbed Tail Strike, Black Dragon Breathball and Stunning Black Dragon Breath have their own icons (game icons recoloured, from IWDEE and BG:EE); Acid Breath uses Nysi's own artwork; the other kit abilities still borrow game icons (fist…).

@@ -1,0 +1,15 @@
+@1 = ~Crachat corrosif~
+@2 = ~Crachat corrosif
+(Invocation)
+
+Niveau : 2
+Portée : courte (moitié de celle de la Flèche acide de Melf)
+Durée : 1 round
+Temps d'incantation : 2
+Zone d'effet : 1 créature
+Jet de sauvegarde : Sorts, partiel
+
+Le disciple du dragon noir crache un jet d'acide corrosif sur une créature proche et lui inflige 5d4 points de dégâts d'acide. Si la créature rate un jet de sauvegarde contre les sorts, l'acide l'aveugle pendant 1 round et lui inflige 5d4 points de dégâts d'acide supplémentaires au début du round suivant.~
+
+// Journal de combat
+@3 = ~Aveuglé par le crachat corrosif~

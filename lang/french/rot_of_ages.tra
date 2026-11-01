@@ -1,0 +1,19 @@
+@1 = ~Pourriture des âges~
+@2 = ~Pourriture des âges
+(Nécromancie)
+
+Niveau : 1
+Portée : contact
+Durée : spéciale
+Temps d'incantation : 1
+Zone d'effet : 1 créature
+Jet de sauvegarde : spécial
+
+Au contact du lanceur, une masse de végétation pourrissante, de chairs et d'autres matières organiques en décomposition jaillit autour de la cible et l'enveloppe. La cible est aveuglée pendant 1 round, sans jet de sauvegarde. Elle doit ensuite réussir un jet de sauvegarde contre la mort. En cas d'échec, elle contracte une maladie surnaturelle qui inflige 1 point de dégâts de poison par round pendant 1 round par niveau du lanceur, jusqu'à 10 rounds au maximum.
+
+Si la Pourriture des âges est lancée à nouveau sur une créature qui souffre déjà de cette maladie et que la cible rate encore son jet de sauvegarde, la nouvelle infection se cumule avec la précédente et la cible est nauséeuse pendant 2 rounds. Une créature qui réussit son jet de sauvegarde ne contracte pas la maladie : elle n'est donc pas considérée comme souffrant de la Pourriture des âges pour les lancements suivants.~
+
+// Journal de combat
+@3 = ~Aveuglé par la Pourriture des âges~
+@4 = ~Malade (Pourriture des âges)~
+@5 = ~Nauséeux (Pourriture des âges)~

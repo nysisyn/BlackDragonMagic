@@ -1,0 +1,12 @@
+@1 = ~Stunning Black Dragon Breath~
+@2 = ~Stunning Black Dragon Breath
+(Evocation)
+
+Level: 4
+Range: 30 ft.
+Duration: Special
+Casting Time: 1
+Area of Effect: 30-ft. line
+Saving Throw: Breath half
+
+The caster exhales a 30-ft. line of acid, as a black dragon. Every creature in the line suffers 3d8 points of acid damage at 5th level, increasing by 1d8 at levels 6, 9, 12, 15 and 18 (8d8 at most); a successful save vs. Breath halves the damage. A creature that fails its saving throw is also stunned for 2 rounds. Allies in the line are affected; the caster is not.~

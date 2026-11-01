@@ -1,0 +1,22 @@
+@1 = ~Coup de queue barbelée de wyverne~
+@2 = ~Coup de queue barbelée de wyverne
+(Altération)
+
+Niveau : 3
+Portée : corps à corps
+Durée : 1 tour
+Temps d'incantation : 0
+Zone d'effet : 1 créature
+Jet de sauvegarde : poison, partiel
+
+Grâce à ce sort, le Disciple du Dragon Noir se fait pousser une redoutable queue de wyverne, ou transforme la sienne s'il en possède déjà une, et frappe sa cible. Le sort inflige 1d12 dégâts perforants, et la créature doit réussir un jet de sauvegarde contre le poison à -2 ou subir des dégâts de poison selon le niveau du lanceur :
+
+Niveau 5 : 4 dégâts, puis 1 dégât toutes les 4 secondes
+Niveau 7 : 8 dégâts, puis 1 dégât toutes les 3 secondes
+Niveau 9 : 12 dégâts, puis 1 dégât toutes les 2 secondes
+Niveau 12 et plus : 16 dégâts, puis 1 dégât par seconde
+
+Le poison dure 1 tour.~
+
+// Journal de combat
+@3 = ~Empoisonné par la queue de wyverne~

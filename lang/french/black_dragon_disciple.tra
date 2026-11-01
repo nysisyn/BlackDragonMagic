@@ -1,0 +1,231 @@
+// Kit
+@1 = ~disciple du dragon noir~
+@2 = ~Disciple du Dragon Noir~
+@3 = ~DISCIPLE DU DRAGON NOIR : Le sang d'un dragon noir coule dans les veines de ces ensorceleurs. À mesure que leur puissance grandit, le dragon qui sommeille en eux prend peu à peu possession de leur corps, des griffes noires jusqu'aux ailes membraneuses.
+
+Avantages :
+- Dé de vie : d6 au lieu de d4, et progression du TAC0 d'un druide.
+- Niveau 1 : bonus de +1 à la CA. Obtient les Griffes draconiques.
+
+GRIFFES DRACONIQUES : Les ongles du Disciple du Dragon Noir se sont recourbés en griffes acérées, semblables à celles d'un dragon noir. Elles infligent 1d4 dégâts tranchants et permettent 2 attaques par round à mains nues.
+
+- Niveau 2 : obtient Foulée des marais.
+
+FOULÉE DES MARAIS : Son affinité avec les marais permet au Disciple du Dragon Noir de s'y déplacer librement. Il est immunisé contre les effets des sorts tels qu'Enchevêtrement, Graisse et Toile d'araignée.
+
+- Niveau 3 : peut utiliser son Souffle une fois par jour.
+
+SOUFFLE : Le Disciple du Dragon Noir exhale une ligne d'acide de 4,5 m de long et 1,5 m de large, qui inflige 4d4 dégâts d'acide à toutes les créatures sur son passage (jet de sauvegarde contre les souffles pour la moitié).
+
+- Niveau 4 : obtient Affinité acide. Les griffes infligent désormais 1d6 dégâts tranchants et comptent comme des armes magiques +1.
+
+AFFINITÉ ACIDE : Le sang du dragon noir protège le Disciple du Dragon Noir de l'acide et rend son propre acide plus puissant. Il obtient 20 % de résistance à l'acide, et tous les dégâts d'acide qu'il inflige sont augmentés de 5 %. Les deux progressent aux niveaux 8, 12 et 16, jusqu'à 80 % de résistance et +20 % de dégâts d'acide. Au niveau 20, il devient immunisé contre l'acide et ses dégâts d'acide sont augmentés de 25 %.
+
+- Niveau 5 : bonus de +1 à la CA et à la Constitution.
+- Niveau 6 : obtient une morsure, invoquée comme arme de la main secondaire à mains nues, qui inflige 1d6 dégâts perforants et 1d4 dégâts d'acide. La morsure compte comme une arme magique du même enchantement que les griffes.
+- Niveau 7 : peut utiliser son Souffle deux fois par jour. Les dégâts passent à 6d4.
+- Niveau 8 : Affinité acide s'améliore. Les griffes infligent désormais 1d8 dégâts tranchants et comptent comme des armes magiques +2.
+- Niveau 9 : obtient Queue draconique.
+
+QUEUE DRACONIQUE : Une puissante queue pousse au Disciple du Dragon Noir. À chaque round, une créature située à moins de 1,5 m doit réussir un jet de sauvegarde contre les souffles ou subir 1d10 dégâts contondants et être jetée au sol pendant 1 seconde.
+
+- Niveau 10 : bonus de +1 à la CA. Obtient la capacité passive Perception aveugle.
+
+PERCEPTION AVEUGLE : Le Disciple du Dragon Noir perçoit ce qui l'entoure sans avoir besoin de la vue. Il devient immunisé contre la cécité et peut voir et cibler les créatures invisibles.
+
+- Niveau 11 : peut utiliser son Souffle trois fois par jour. Les dégâts passent à 8d4.
+- Niveau 12 : Affinité acide s'améliore. Les griffes infligent désormais 1d10 dégâts tranchants et comptent comme des armes magiques +3.
+- Niveau 13 : la morsure inflige désormais 2d6 dégâts perforants et 2d4 dégâts d'acide.
+- Niveau 14 : obtient Ailes draconiques.
+
+AILES DRACONIQUES : Une paire d'ailes draconiques pousse dans le dos du Disciple du Dragon Noir, qui gagne +4 en vitesse de déplacement et l'immunité aux coups critiques. Les ailes occupent l'emplacement du casque et peuvent être déployées ou repliées à volonté.
+
+- Niveau 15 : bonus de +1 à la CA et à la Constitution.
+- Niveau 16 : Affinité acide s'améliore. Les griffes infligent désormais 2d6 dégâts tranchants et comptent comme des armes magiques +4.
+- Niveau 17 : peut utiliser son Souffle quatre fois par jour. Les dégâts passent à 10d4.
+- Niveau 18 : obtient la capacité innée Présence terrifiante.
+
+PRÉSENCE TERRIFIANTE : Le Disciple du Dragon Noir dégage une aura de menace draconique. Les ennemis de niveau inférieur au sien situés à moins de 4,5 m doivent réussir un jet de sauvegarde contre les sorts ou être paniqués pendant 2 rounds. Qu'elle réussisse ou non, une créature devient ensuite immunisée contre cette aura pendant 24 heures. Les alliés ne sont pas affectés. L'aura peut être activée ou désactivée à volonté.
+
+- Niveau 19 : les dégâts du Souffle passent à 12d4, et la ligne atteint 9 m de long et 3 m de large.
+- Niveau 20 : Apothéose draconique : bonus de +1 à la CA et immunité au sommeil et à la paralysie. Affinité acide atteint son apogée. Les griffes infligent désormais 2d8 dégâts tranchants et comptent comme des armes magiques +5.
+
+Désavantages :
+- Lance un sort de moins par jour à chaque niveau de sort.
+- Lance ses sorts comme un ensorceleur d'un niveau de moins (niveau 1 au minimum). Par exemple, il accède aux sorts du 2e niveau au niveau 5 au lieu du niveau 4.
+- Ne peut utiliser aucune arme : le Disciple du Dragon Noir ne combat qu'avec ses griffes et sa morsure. Ses points de compétence ne peuvent aller que dans le Style de combat à une arme (1 point au maximum) et le Style de combat à deux armes (3 points au maximum).
+~
+
+// Griffes draconiques (objet, une description par palier : niveaux 1, 4, 8, 12, 16, 20)
+@10 = ~Griffes draconiques~
+@11 = ~Griffes draconiques
+
+Les ongles du Disciple du Dragon Noir se sont recourbés en griffes noires.
+
+CARACTÉRISTIQUES :
+
+Dégâts : 1d4 (tranchants)
+Attaques par round : 2
+Facteur de vitesse : 2
+Non magiques~
+@12 = ~Griffes draconiques
+
+Les griffes ont durci et noirci.
+
+CARACTÉRISTIQUES :
+
+TAC0 : +1
+Dégâts : 1d6+1 (tranchants)
+Attaques par round : 2
+Facteur de vitesse : 2
+Comptent comme une arme +1 pour toucher les créatures~
+@13 = ~Griffes draconiques
+
+Les griffes se sont allongées et aiguisées.
+
+CARACTÉRISTIQUES :
+
+TAC0 : +2
+Dégâts : 1d8+2 (tranchants)
+Attaques par round : 2
+Facteur de vitesse : 2
+Comptent comme une arme +2 pour toucher les créatures~
+@14 = ~Griffes draconiques
+
+Les griffes sont devenues aussi dures que celles d'un dragon.
+
+CARACTÉRISTIQUES :
+
+TAC0 : +3
+Dégâts : 1d10+3 (tranchants)
+Attaques par round : 2
+Facteur de vitesse : 2
+Comptent comme une arme +3 pour toucher les créatures~
+@15 = ~Griffes draconiques
+
+Les griffes ont atteint la taille de celles d'un jeune dragon.
+
+CARACTÉRISTIQUES :
+
+TAC0 : +4
+Dégâts : 2d6+4 (tranchants)
+Attaques par round : 2
+Facteur de vitesse : 2
+Comptent comme une arme +4 pour toucher les créatures~
+@16 = ~Griffes draconiques
+
+Les griffes sont devenues celles d'un dragon noir adulte.
+
+CARACTÉRISTIQUES :
+
+TAC0 : +5
+Dégâts : 2d8+5 (tranchants)
+Attaques par round : 2
+Facteur de vitesse : 2
+Comptent comme une arme +5 pour toucher les créatures~
+
+// Morsure draconique (objet de la main secondaire, une description par palier : niveaux 6, 8, 12, 13, 16, 20)
+@19 = ~Morsure draconique~
+@20 = ~Morsure draconique
+
+La mâchoire du Disciple du Dragon Noir s'est allongée en une gueule de dragon. La morsure est son arme de la main secondaire : elle donne une attaque de plus par round, avec les malus habituels du combat à deux armes, que le Style de combat à deux armes réduit. Elle peut être rangée dans le sac pour combattre avec les griffes seules.
+
+CARACTÉRISTIQUES :
+
+TAC0 : +1
+Dégâts : 1d6+1 (perforants) + 1d4 acide
+Facteur de vitesse : 2
+Compte comme une arme +1 pour toucher les créatures~
+@21 = ~Morsure draconique
+
+La mâchoire du Disciple du Dragon Noir s'est allongée en une gueule de dragon. La morsure est son arme de la main secondaire : elle donne une attaque de plus par round, avec les malus habituels du combat à deux armes, que le Style de combat à deux armes réduit. Elle peut être rangée dans le sac pour combattre avec les griffes seules.
+
+CARACTÉRISTIQUES :
+
+TAC0 : +2
+Dégâts : 1d6+2 (perforants) + 1d4 acide
+Facteur de vitesse : 2
+Compte comme une arme +2 pour toucher les créatures~
+@22 = ~Morsure draconique
+
+La mâchoire du Disciple du Dragon Noir s'est allongée en une gueule de dragon. La morsure est son arme de la main secondaire : elle donne une attaque de plus par round, avec les malus habituels du combat à deux armes, que le Style de combat à deux armes réduit. Elle peut être rangée dans le sac pour combattre avec les griffes seules.
+
+CARACTÉRISTIQUES :
+
+TAC0 : +3
+Dégâts : 1d6+3 (perforants) + 1d4 acide
+Facteur de vitesse : 2
+Compte comme une arme +3 pour toucher les créatures~
+@23 = ~Morsure draconique
+
+La mâchoire du Disciple du Dragon Noir s'est allongée en une gueule de dragon. La morsure est son arme de la main secondaire : elle donne une attaque de plus par round, avec les malus habituels du combat à deux armes, que le Style de combat à deux armes réduit. Elle peut être rangée dans le sac pour combattre avec les griffes seules.
+
+CARACTÉRISTIQUES :
+
+TAC0 : +3
+Dégâts : 2d6+3 (perforants) + 2d4 acide
+Facteur de vitesse : 2
+Compte comme une arme +3 pour toucher les créatures~
+@24 = ~Morsure draconique
+
+La mâchoire du Disciple du Dragon Noir s'est allongée en une gueule de dragon. La morsure est son arme de la main secondaire : elle donne une attaque de plus par round, avec les malus habituels du combat à deux armes, que le Style de combat à deux armes réduit. Elle peut être rangée dans le sac pour combattre avec les griffes seules.
+
+CARACTÉRISTIQUES :
+
+TAC0 : +4
+Dégâts : 2d6+4 (perforants) + 2d4 acide
+Facteur de vitesse : 2
+Compte comme une arme +4 pour toucher les créatures~
+@25 = ~Morsure draconique
+
+La mâchoire du Disciple du Dragon Noir s'est allongée en une gueule de dragon. La morsure est son arme de la main secondaire : elle donne une attaque de plus par round, avec les malus habituels du combat à deux armes, que le Style de combat à deux armes réduit. Elle peut être rangée dans le sac pour combattre avec les griffes seules.
+
+CARACTÉRISTIQUES :
+
+TAC0 : +5
+Dégâts : 2d6+5 (perforants) + 2d4 acide
+Facteur de vitesse : 2
+Compte comme une arme +5 pour toucher les créatures~
+
+// Queue draconique (ligne du journal de combat à chaque coup)
+@26 = ~Queue draconique~
+
+// Souffle d'acide
+@30 = ~Souffle d'acide~
+@31 = ~Souffle d'acide
+
+Le Disciple du Dragon Noir exhale une ligne d'acide de 4,5 m de long et 1,5 m de large, qui inflige 4d4 dégâts d'acide à toutes les créatures sur son passage (jet de sauvegarde contre les souffles pour la moitié). Les dégâts passent à 6d4 au niveau 7, 8d4 au niveau 11, 10d4 au niveau 17 et 12d4 au niveau 19, où la ligne atteint aussi 9 m de long et 3 m de large. Les alliés dans la ligne sont touchés.
+
+Utilisable une fois par jour, deux fois au niveau 7, trois fois au niveau 11 et quatre fois au niveau 17.~
+
+// Présence terrifiante
+@40 = ~Présence terrifiante~
+@41 = ~Présence terrifiante
+
+Le Disciple du Dragon Noir dégage une aura de menace draconique. Les ennemis de niveau inférieur au sien situés à moins de 4,5 m doivent réussir un jet de sauvegarde contre les sorts ou être paniqués pendant 2 rounds. Qu'elle réussisse ou non, une créature devient ensuite immunisée contre cette aura pendant 24 heures. Les alliés ne sont pas affectés.
+
+Utiliser cette capacité active l'aura ; elle peut ensuite être désactivée à volonté.~
+@42 = ~Désactiver la Présence terrifiante~
+@43 = ~Désactiver la Présence terrifiante
+
+Désactive l'aura de Présence terrifiante. Elle peut être réactivée à volonté.~
+
+// Ailes draconiques (objet de l'emplacement du casque, et les capacités innées qui les déploient / replient)
+@60 = ~Ailes draconiques~
+@61 = ~Ailes draconiques
+
+Des ailes membraneuses ont déchiré le dos du Disciple du Dragon Noir. Elles prennent la place d'un casque.
+
+CARACTÉRISTIQUES :
+
+Déplacement : +4
+Immunité aux coups critiques~
+@62 = ~Ailes draconiques
+
+Le Disciple du Dragon Noir déploie ses ailes draconiques, ce qui lui donne +4 en vitesse de déplacement et l'immunité aux coups critiques. Les ailes occupent l'emplacement du casque.
+
+Utiliser cette capacité déploie les ailes ; elles peuvent ensuite être repliées à volonté.~
+@63 = ~Replier les ailes draconiques~
+@64 = ~Replier les ailes draconiques
+
+Le Disciple du Dragon Noir replie ses ailes et libère l'emplacement du casque. Elles peuvent être déployées à nouveau à volonté.~

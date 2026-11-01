@@ -1,0 +1,5 @@
+backup/
+.vs/
+*.debug
+work/
+weidu_external/

@@ -1,0 +1,59 @@
+/////////////////////////////////////////////////////////////////////////////
+// Wyvern Barbed Tail Strike - wizard, level 3, Alteration (Transmutation)
+//
+// Melee (range 1, as Vampiric Touch), casting time 0.
+//   - 1d12 piercing damage, no save
+//   - save vs. Poison at -2, failure: poison for 1 turn, by caster level
+//       up to 6th: 4 damage, then 1 every 4 seconds
+//       7th:       8 damage, then 1 every 3 seconds
+//       9th:      12 damage, then 1 every 2 seconds
+//       12th+:    16 damage, then 1 every second
+//     (opcode 25 type 3: real poison, "Poisoned" icon, cured by Neutralize
+//     Poison)
+//
+// Resources
+//   SPWIxxx   Wyvern Barbed Tail Strike (added through ADD_SPELL as
+//             WIZARD_NY_WYVERN_TAIL)
+//   NY#WBTP   poison on a failed save (header = caster level step)
+//   NY#WBTB   spell icon (ability / memorised, on a stone plate), NY#WBTC
+//             spellbook icon: Nysi's barbed tail artwork reduced to 32 px
+//             (source in works/wyvern_tail_icon_source; the previous Death
+//             Ward based icons are kept in works/wyvern_tail_old_icons)
+/////////////////////////////////////////////////////////////////////////////
+
+OUTER_SET ny_str_wbt      = RESOLVE_STR_REF (@1)
+OUTER_SET ny_str_wbt_d    = RESOLVE_STR_REF (@2)
+OUTER_SET ny_str_wbt_pois = RESOLVE_STR_REF (@3)
+
+COPY ~%MOD_FOLDER%/spells/wyvern_tail/bam/ny#wbtb.bam~ ~override~
+     ~%MOD_FOLDER%/spells/wyvern_tail/bam/ny#wbtc.bam~ ~override~
+
+// Caster level steps (header level): 1 (up to 6th), 7, 9, 12
+//   first damage = 4 / 8 / 12 / 16, then 1 every 4 / 3 / 2 / 1 seconds
+
+// Poison on a failed save, 1 turn
+CREATE ~SPL~ ~NY#WBTP~
+  LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+  PATCH_FOR_EACH lvl IN 1 7 9 12 BEGIN
+    SET first = (lvl = 1) ? 4 : ((lvl = 7) ? 8 : ((lvl = 9) ? 12 : 16))
+    SET freq  = (lvl = 1) ? 4 : ((lvl = 7) ? 3 : ((lvl = 9) ? 2 : 1))
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1000 level = lvl casting_time = 0 RET h = header END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 1 parameter1 = first parameter2 = 0x200000 END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 25  target = 2 timing = 0 duration = ny_turn parameter1 = freq parameter2 = 3 END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 139 target = 2 timing = 1 parameter1 = ny_str_wbt_pois END   // combat log
+  END
+
+// Main spell: tail strike, then one save vs. Poison at -2 for the poison
+CREATE ~SPL~ ~NY#WBTS~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_wbt desc = ny_str_wbt_d type = 1 level = 3 flags = 0x400
+                          school = 8 exclusion = 0x40 graphics = 10 STR_VAR icon = ~NY#WBTC~ END
+  PATCH_FOR_EACH lvl IN 1 7 9 12 BEGIN
+    // melee: range 1, as Vampiric Touch (12 was far too long)
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 1 range = 1 level = lvl casting_time = 0 STR_VAR icon = ~NY#WBTB~ RET h = header END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 1 parameter2 = 0x100000 dicenumber = 1 dicesize = 12 resist_dispel = 1 END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 resist_dispel = 1 STR_VAR resource = ~BLOODS~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 timing = 1 parameter1 = lvl parameter2 = 1
+                                 savingthrow = 4 savebonus = "-2" resist_dispel = 1 STR_VAR resource = ~NY#WBTP~ END
+  END
+
+ADD_SPELL ~override/NY#WBTS.spl~ 2 3 ~WIZARD_NY_WYVERN_TAIL~

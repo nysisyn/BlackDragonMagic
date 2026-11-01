@@ -1,0 +1,17 @@
+@1 = ~Souffle animé du dragon noir~
+@2 = ~Souffle animé du dragon noir
+(Invocation)
+
+Niveau : 7
+Portée : 9 m
+Durée : 1 round/niveau (14 rounds au minimum)
+Temps d'incantation : 7
+Zone d'effet : spéciale
+Jet de sauvegarde : aucun
+
+Le Disciple du Dragon Noir souffle sur le sol et fait naître une créature formée de son propre souffle d'acide, qui combat ses ennemis jusqu'à la fin du sort.
+
+Souffle animé (vase) : 65 points de vie, classe d'armure 4, TAC0 11, 2 attaques par round infligeant chacune 2d8 dégâts d'acide (compte comme une arme +2). À chaque round, tant qu'aucun ennemi n'est au contact, il lance un Crachat corrosif sur l'ennemi le plus proche. Il est immunisé contre l'acide et contre les effets mentaux.~
+
+// Nom de la créature
+@3 = ~Souffle animé~

@@ -1,0 +1,28 @@
+@1 = ~Mantidrake Spike~
+@2 = ~Mantidrake Spike
+(Alteration)
+
+Level: 2
+Range: Personal
+Duration: Special
+Casting Time: 3
+Area of Effect: Special
+Saving Throw: None
+
+The Black Dragon Disciple can throw spikes from his body as a natural throwing ranged attack. He can create a spike for each of his levels. When thrown and hitting, they deal 1d4 points of piercing damage and the target must save vs. Death at -2 or suffer 2d4 points of poison damage.
+
+The caster gains a +5 bonus to hit with the missiles, and each spike is considered to be of +2 enchantment to determine what it can hit. The wizard may discharge up to 3 missiles per round.~
+
+// Spikes (item)
+@3 = ~Mantidrake Spikes~
+@4 = ~Mantidrake Spikes
+
+Spikes grown from the caster's body, ready to be thrown.
+
+STATISTICS:
+
+Damage: 1d4 (piercing)
+Poison: save vs. Death at -2 or 2d4 poison damage
+THAC0: +5 bonus
+Attacks per round: 3
+Counts as a +2 weapon for the purpose of hitting creatures~

@@ -1,0 +1,12 @@
+@1 = ~Black Dragon Breathball~
+@2 = ~Black Dragon Breathball
+(Evocation)
+
+Level: 3
+Range: Visual range of the caster
+Duration: Instant
+Casting Time: 3
+Area of Effect: 20-ft. radius
+Saving Throw: Breath half
+
+The caster hurls a sphere of black dragon breath that bursts into a cloud of acid. Every creature within 20 ft. of the impact, friend or foe, suffers 3d8 points of acid damage at 5th level, increasing by 1d8 at levels 6, 9, 12, 15 and 18 (8d8 at most). A successful save vs. Breath halves the damage.~

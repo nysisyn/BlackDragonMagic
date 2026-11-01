@@ -1,0 +1,12 @@
+@1 = ~Souffle étourdissant du dragon noir~
+@2 = ~Souffle étourdissant du dragon noir
+(Évocation)
+
+Niveau : 4
+Portée : 9 m
+Durée : spéciale
+Temps d'incantation : 1
+Zone d'effet : ligne de 9 m
+Jet de sauvegarde : souffles, 1/2
+
+Le lanceur exhale une ligne d'acide de 9 m, comme un dragon noir. Toute créature prise dans la ligne subit 3d8 points de dégâts d'acide au niveau 5, avec 1d8 de plus aux niveaux 6, 9, 12, 15 et 18 (8d8 au maximum) ; un jet de sauvegarde contre les souffles réussi réduit les dégâts de moitié. Une créature qui rate son jet de sauvegarde est en outre étourdie pendant 2 rounds. Les alliés dans la ligne sont touchés, mais pas le lanceur.~

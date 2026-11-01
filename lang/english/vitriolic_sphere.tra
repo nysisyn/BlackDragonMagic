@@ -1,0 +1,13 @@
+@1 = ~Vitriolic Sphere
+(Evocation)
+
+Level: 4
+Range: Visual range of the caster
+Duration: Special
+Casting Time: 4
+Area of Effect: 20-ft. radius
+Saving Throw: Breath, half
+
+A glowing emerald sphere streaks toward a chosen point and bursts into a shower of searing acid. All creatures within a 20-ft. radius, allies included, suffer 1d4 points of acid damage per level of the caster, up to a maximum of 12d4 (save vs. Breath for half).
+
+Creatures that fail their save are drenched in acid and suffer 1d4 additional points of acid damage per 2 levels of the caster (maximum 6d4) on the following round. Creatures that succeed take no delayed damage.~

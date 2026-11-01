@@ -1,0 +1,12 @@
+@1 = ~Flaque de souffle du dragon noir~
+@2 = ~Flaque de souffle du dragon noir
+(Invocation)
+
+Niveau : 3
+Portée : 9 m
+Durée : 1 tour
+Temps d'incantation : 3
+Zone d'effet : rayon de 2,25 m
+Jet de sauvegarde : souffles, 1/2
+
+Le Disciple du Dragon Noir souffle sur le sol et y crée une flaque d'acide. À chaque round, toute créature qui se trouve dans la flaque, alliée ou ennemie, subit 2d6 points de dégâts d'acide ; un jet de sauvegarde réussi contre les souffles réduit les dégâts de moitié. Le lanceur ne souffre pas de sa propre flaque, mais il est étourdi pendant 2 secondes après avoir soufflé.~

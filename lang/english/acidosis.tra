@@ -1,0 +1,12 @@
+@1 = ~Acidosis~
+@2 = ~Acidosis
+(Evocation)
+
+Level: 1
+Range: 0
+Duration: 1 turn/level
+Casting Time: 9
+Area of Effect: The caster
+Saving Throw: None
+
+The caster deliberately poisons their own blood with acid. On casting, the caster suffers acid damage equal to 15% of their current hit points. For the duration of the spell, any creature striking the caster in melee suffers 1d2 points of acid damage and a -3 penalty to THAC0 for 3 rounds, with no saving throw. The THAC0 penalty does not stack with itself.~

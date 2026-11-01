@@ -1,0 +1,28 @@
+@1 = ~Épines de mantidrake~
+@2 = ~Épines de mantidrake
+(Altération)
+
+Niveau : 2
+Portée : personnelle
+Durée : spéciale
+Temps d'incantation : 3
+Zone d'effet : spéciale
+Jet de sauvegarde : aucun
+
+Le Disciple du Dragon Noir peut projeter des épines tirées de son propre corps, comme une attaque naturelle à distance. Il crée une épine par niveau. Une épine qui touche inflige 1d4 points de dégâts perforants, et la cible doit réussir un jet de sauvegarde contre la mort à -2 ou subir 2d4 points de dégâts de poison.
+
+Le lanceur bénéficie d'un bonus de +5 au toucher avec ces projectiles, et chaque épine est considérée comme une arme +2 pour déterminer ce qu'elle peut toucher. Le magicien peut lancer jusqu'à 3 épines par round.~
+
+// Épines (objet)
+@3 = ~Épines de mantidrake~
+@4 = ~Épines de mantidrake
+
+Des épines nées du corps du lanceur, prêtes à être lancées.
+
+CARACTÉRISTIQUES :
+
+Dégâts : 1d4 (perforants)
+Poison : jet de sauvegarde contre la mort à -2 ou 2d4 dégâts de poison
+TAC0 : bonus de +5
+Attaques par round : 3
+Compte comme une arme +2 pour toucher les créatures~

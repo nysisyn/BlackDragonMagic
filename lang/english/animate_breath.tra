@@ -1,0 +1,17 @@
+@1 = ~Black Dragon Animate Breath~
+@2 = ~Black Dragon Animate Breath
+(Conjuration)
+
+Level: 7
+Range: 30 ft.
+Duration: 1 round/level (14 rounds minimum)
+Casting Time: 7
+Area of Effect: Special
+Saving Throw: None
+
+The Black Dragon Disciple breathes on the ground and creates a being made of his own acid breath, which fights his enemies until the spell expires.
+
+Animated breath (ooze): 65 hit points, Armor Class 4, THAC0 11, 2 attacks per round dealing 2d8 acid damage each (counts as a +2 weapon). Each round, as long as no enemy is in melee reach, it spits Corrosive Spit at the nearest enemy. It is immune to acid and to mind-affecting effects.~
+
+// Creature name
+@3 = ~Animated Breath~

@@ -1,0 +1,38 @@
+// Main spell
+@1 = ~Bonemelt~
+@2 = ~Bonemelt
+(Alteration)
+
+Level: 8
+Range: Touch
+Duration: 1 hour (30 minutes on a successful save)
+Casting Time: 5
+Area of Effect: One creature
+Saving Throw: Special
+
+This spell is an attempt to reproduce the dreaded spell of Daurgothoth, the black dracolich. Upon casting, the wizard chooses which part of the body the spell will dissolve, then must touch the target within 1 turn.
+
+The target suffers 8d8 points of acid damage (no save), then must save vs. Death at -2 or suffer the chosen mutilation for 1 hour:
+- Legs: movement rate reduced by three quarters, -4 penalty to Armor Class.
+- Arms: -4 penalty to THAC0 and damage rolls.
+- Ribcage: 2d4 points of acid damage per round.
+
+On a successful save, a random limb is affected at half strength for 30 minutes. Skeletal undead that fail their save are destroyed instantly.~
+
+// Legs
+@10 = ~Bonemelt: Legs~
+@11 = ~Bonemelt: Legs
+
+Touch attack. 8d8 acid damage, then save vs. Death at -2 or the target's movement rate is reduced by three quarters and it suffers a -4 penalty to Armor Class for 1 hour. On a successful save, a random limb is affected at half strength for 30 minutes.~
+
+// Arms
+@20 = ~Bonemelt: Arms~
+@21 = ~Bonemelt: Arms
+
+Touch attack. 8d8 acid damage, then save vs. Death at -2 or the target suffers a -4 penalty to THAC0 and damage rolls for 1 hour. On a successful save, a random limb is affected at half strength for 30 minutes.~
+
+// Ribcage
+@30 = ~Bonemelt: Ribcage~
+@31 = ~Bonemelt: Ribcage
+
+Touch attack. 8d8 acid damage, then save vs. Death at -2 or the target suffers 2d4 acid damage per round for 1 hour. On a successful save, a random limb is affected at half strength for 30 minutes.~

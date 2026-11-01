@@ -1,0 +1,15 @@
+@1 = ~Queue spectrale~
+@2 = ~Queue spectrale
+(Évocation)
+
+Niveau : 1
+Portée : 0
+Durée : 1 round/niveau
+Temps d'incantation : 1
+Zone d'effet : le lanceur
+Jet de sauvegarde : aucun
+
+Une queue écailleuse et translucide se déploie derrière le lanceur et fouette d'elle-même les ennemis proches. Une fois par round, la queue frappe automatiquement l'ennemi le plus proche à portée de corps à corps, lui infligeant 1d4 dégâts de froid. La queue ne frappe qu'une seule cible par round. La résistance à la magie ne protège pas contre la queue.~
+
+// Journal de combat
+@3 = ~Frappé par la Queue spectrale~
