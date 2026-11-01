@@ -16,6 +16,8 @@ Everything is built at install time from WeiDU code (`CREATE`, effects, headers)
 
 Install **after IWDification and SCS** (component 20 rewrites the IWDification spell).
 
+**Remastered Spell Icons** (Renegade0): install it **before** this mod. Its spell icons have no stone plate; when it is detected (`MOD_IS_INSTALLED ~remastered_spell_icons.tp2~ ~0~`), the mod's ability / memorised icons (B, on a stone plate) are replaced by its spellbook icons (C, no plate) at install time, so they match. Installed after this mod, it does not touch the mod's icons, which keep their plate.
+
 ## Folder layout
 
 ```
@@ -67,6 +69,7 @@ BlackDragonMagic/
 | `NY#BDMO1`…`NY#BDMO6` | bite (off-hand item), one per stage: 1d6 + 2 acid, then 2d6 + 2d4 acid at 13; +1 to +5 as the claws |
 | `NY#BDMT` / `NY#BDMU` | Fight with / without the Bite (innate abilities that swap themselves) |
 | `NY#BDWNI` | wings icon: the game's `IWINGS01` darkened as black dragon wings |
+| `NY#BDBRC`, `NY#BDFPC` | breath and Frightful Presence icons without the stone plate (the game's `SPDD03C` / `SPWI205C` recoloured), used as the ability icons with Remastered Spell Icons |
 | `NY#BDFPI` | Frightful Presence icon: the game's Horror icon `SPWI205B` recoloured acid yellow |
 | `NY#BDFPD`, `NY#BDMD`, `NY#BDWND` | portrait icons (STATDESC.2DA) of Frightful Presence (aura on), the bite (out) and the wings (spread): the icons reduced to 13 px |
 | `NY#BDCLI` | claws icon: the game's `ISHAPE05` blackened |

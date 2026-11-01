@@ -441,3 +441,21 @@ BEGIN
     FAIL ~BlackDragonMagic: projectile %new% could not be registered~
   END
 END
+
+
+/////////////////////////////////////////////////////////////////////////////
+// NY#ICON_B_FROM_C (action)
+// With Remastered Spell Icons installed (ny_rsi, set in the tp2), copies the
+// spellbook icon C (no stone plate) over the ability / memorised icon B, so
+// the mod's icons match the remastered ones. Does nothing otherwise.
+// Call it after the two BAMs have been copied to override.
+/////////////////////////////////////////////////////////////////////////////
+DEFINE_ACTION_FUNCTION NY#ICON_B_FROM_C
+  STR_VAR
+    b = ~~
+    c = ~~
+BEGIN
+  ACTION_IF (ny_rsi) BEGIN
+    COPY_EXISTING ~%c%.bam~ ~override/%b%.bam~
+  END
+END

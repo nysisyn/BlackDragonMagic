@@ -76,6 +76,8 @@ OUTER_SPRINT ny_icon_claws ~NY#BDCLI~
 // (Nysi's artwork version in works/acid_breath_artwork_icon, the old
 // DragonAscendant icon in works/acid_breath_old_icon)
 COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdbri.bam~ ~override~
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdbrc.bam~ ~override~   // no plate (SPDD03C)
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDBRI~ c = ~NY#BDBRC~ END   // Remastered Spell Icons
 OUTER_SPRINT ny_icon_breath ~NY#BDBRI~
 // Bite: the game's dragon head icon (IBZPLO02), blackened as the claws;
 // both cycles show its large frame (54x64), the size of the claws icon
@@ -85,6 +87,8 @@ OUTER_SPRINT ny_icon_bite ~NY#BDMI~
 // Frightful Presence: the game's Horror icon (SPWI205B), recoloured in
 // the acid yellow of the breath
 COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdfpi.bam~ ~override~
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdfpc.bam~ ~override~   // no plate (SPWI205C)
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDFPI~ c = ~NY#BDFPC~ END   // Remastered Spell Icons
 OUTER_SPRINT ny_icon_fear ~NY#BDFPI~
 // Wings: the game's wings icon (IWINGS01) darkened as black dragon wings,
 // for the item and the spread / fold abilities

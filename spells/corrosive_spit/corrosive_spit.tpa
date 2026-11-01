@@ -26,6 +26,7 @@ OUTER_SET ny_pro_csp = IDS_OF_SYMBOL (~projectl~ ~ARROWFLG~) + 1
 
 COPY ~%MOD_FOLDER%/spells/corrosive_spit/bam/ny#cspb.bam~ ~override~
      ~%MOD_FOLDER%/spells/corrosive_spit/bam/ny#cspc.bam~ ~override~
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#CSPB~ c = ~NY#CSPC~ END   // Remastered Spell Icons
 
 // Failed save: blinded for 1 round, 5d4 acid one round later
 CREATE ~SPL~ ~NY#CSPX~

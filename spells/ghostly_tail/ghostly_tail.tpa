@@ -30,6 +30,7 @@ COPY ~%MOD_FOLDER%/spells/ghostly_tail/bam/ny#gtlb.bam~ ~override~
      ~%MOD_FOLDER%/spells/ghostly_tail/bam/ny#gtlc.bam~ ~override~
      ~%MOD_FOLDER%/spells/ghostly_tail/bam/ny#gtlh.bam~ ~override~
      ~%MOD_FOLDER%/spells/ghostly_tail/bam/ny#gtld.bam~ ~override~
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#GTLB~ c = ~NY#GTLC~ END   // Remastered Spell Icons
 LAF NY#ADD_STATDESC INT_VAR strref = ny_str_gtail STR_VAR bam = ~NY#GTLD~ RET ny_icon_gtail = index END
 
 LAF NY#MELEE_RANGE_PRO STR_VAR workspace = EVAL ~%ny_workspace%~ RET ny_pro_melee = pro_id END

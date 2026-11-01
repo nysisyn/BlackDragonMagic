@@ -45,6 +45,7 @@ OUTER_SET ny_str_abr_cre = RESOLVE_STR_REF (@3)
 COPY ~%MOD_FOLDER%/spells/animate_breath/bam/ny#abrb.bam~      ~override~
      ~%MOD_FOLDER%/spells/animate_breath/bam/ny#abrc.bam~      ~override~
      ~%MOD_FOLDER%/kits/black_dragon_disciple/wav/ny#bdbre.wav~ ~override~
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#ABRB~ c = ~NY#ABRC~ END   // Remastered Spell Icons
 
 // Acid attack: no physical damage, 2d8 acid on each hit
 CREATE ~ITM~ ~NY#ABRW~

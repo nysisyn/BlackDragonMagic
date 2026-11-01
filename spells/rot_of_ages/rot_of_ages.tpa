@@ -34,6 +34,7 @@ OUTER_SET ny_str_rot_nausea = RESOLVE_STR_REF (@5)
 
 COPY ~%MOD_FOLDER%/spells/rot_of_ages/bam/ny#rotb.bam~ ~override~
      ~%MOD_FOLDER%/spells/rot_of_ages/bam/ny#rotc.bam~ ~override~
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#ROTB~ c = ~NY#ROTC~ END   // Remastered Spell Icons
 
 // "Suffering from Rot of Ages": spell state set by the disease, checked by
 // the next casting through a SPLPROT row (stat 0x112 = SPLSTATE.IDS)

@@ -28,6 +28,7 @@ OUTER_SET ny_str_bball_d = RESOLVE_STR_REF (@2)
 
 COPY ~%MOD_FOLDER%/spells/breathball/bam/ny#bdbbb.bam~ ~override~
      ~%MOD_FOLDER%/spells/breathball/bam/ny#bdbbc.bam~ ~override~
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDBBB~ c = ~NY#BDBBC~ END   // Remastered Spell Icons
 
 // Travelling object of Melf's Acid Arrow: BAM block and fire sound
 COPY_EXISTING ~arrowflg.pro~ ~override~

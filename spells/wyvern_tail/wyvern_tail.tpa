@@ -29,6 +29,7 @@ OUTER_SET ny_str_wbt_pois = RESOLVE_STR_REF (@3)
 
 COPY ~%MOD_FOLDER%/spells/wyvern_tail/bam/ny#wbtb.bam~ ~override~
      ~%MOD_FOLDER%/spells/wyvern_tail/bam/ny#wbtc.bam~ ~override~
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#WBTB~ c = ~NY#WBTC~ END   // Remastered Spell Icons
 
 // Caster level steps (header level): 1 (up to 6th), 7, 9, 12
 //   first damage = 4 / 8 / 12 / 16, then 1 every 4 / 3 / 2 / 1 seconds

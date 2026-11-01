@@ -37,6 +37,7 @@ OUTER_SET ny_str_bm_ribs_d    = RESOLVE_STR_REF (@31)
 
 COPY ~%MOD_FOLDER%/spells/bonemelt/bam/ny#bmltb.bam~ ~override~
      ~%MOD_FOLDER%/spells/bonemelt/bam/ny#bmltc.bam~ ~override~
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BMLTB~ c = ~NY#BMLTC~ END   // Remastered Spell Icons
 
 OUTER_SET ny_bm_full = ny_hour
 OUTER_SET ny_bm_half = ny_hour / 2

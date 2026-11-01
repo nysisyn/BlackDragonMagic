@@ -31,6 +31,7 @@ COPY ~%MOD_FOLDER%/spells/stunning_breath/bam/ny#sbbb.bam~       ~override~
      ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdwvt.bam~  ~override~
      ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdwvh.bam~  ~override~
      ~%MOD_FOLDER%/kits/black_dragon_disciple/wav/ny#bdbre.wav~  ~override~
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#SBBB~ c = ~NY#SBBC~ END   // Remastered Spell Icons
 
 // Line projectile, same settings as the kit's Acid Breath
 LAF NY#CREATE_LINE_PRO INT_VAR speed = 20 width = 60 trail_delay = 2 STR_VAR new = ~NY#SBBT~ bam = ~NY#BDWAV~ trail = ~NY#BDWVT~ sound = ~NY#BDBRE~ workspace = EVAL ~%ny_workspace%~ RET ny_pro_sbb = pro_id END

@@ -39,6 +39,7 @@ COPY ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrb.bam~ ~override~
      ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrc.bam~ ~override~
      ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrd.bam~ ~override~
      ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrt.bam~ ~override~
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#PBRB~ c = ~NY#PBRC~ END   // Remastered Spell Icons
 
 COPY_EXISTING ~cloud.pro~ ~%ny_workspace%/NY#PBRP.pro~
   WRITE_ASCII 0x104 ~NY#PBRT~ #8                // travelling acid blob

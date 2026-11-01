@@ -31,6 +31,7 @@ COPY ~%MOD_FOLDER%/spells/acidosis/bam/ny#acide.bam~ ~override~
      ~%MOD_FOLDER%/spells/acidosis/bam/ny#acdsd.bam~ ~override~
      ~%MOD_FOLDER%/spells/acidosis/bam/ny#acdsb.bam~ ~override~
      ~%MOD_FOLDER%/spells/acidosis/bam/ny#acdsc.bam~ ~override~
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#ACDSB~ c = ~NY#ACDSC~ END   // Remastered Spell Icons
 LAF NY#ADD_STATDESC INT_VAR strref = ny_str_acidosis STR_VAR bam = ~NY#ACDSD~ RET ny_icon_acidosis = index END
 
 // Retaliation against the attacker, built like Fire Shield (SPWI403D):

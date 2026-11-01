@@ -15,6 +15,16 @@ ALWAYS
   OUTER_SET ny_turn  = 60
   OUTER_SET ny_hour  = 300
   OUTER_SET ny_day   = 7200
+
+  // Remastered Spell Icons (Renegade0): its spell icons have no stone plate.
+  // When it is installed before this mod, our ability / memorised icons (B,
+  // on a stone plate) are replaced by our spellbook icons (C, no plate) so
+  // they match (see NY#ICON_B_FROM_C in lib/ny#core.tpa).
+  ACTION_IF (MOD_IS_INSTALLED ~remastered_spell_icons.tp2~ ~0~) BEGIN
+    OUTER_SET ny_rsi = 1
+  END ELSE BEGIN
+    OUTER_SET ny_rsi = 0
+  END
 END
 
 LANGUAGE ~English~
