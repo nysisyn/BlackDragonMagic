@@ -80,7 +80,8 @@ OUTER_SPRINT ny_icon_claws ~NY#BDCLI~
 // DragonAscendant icon in works/acid_breath_old_icon)
 COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdbri.bam~ ~override~
 OUTER_SPRINT ny_icon_breath ~NY#BDBRI~
-// Bite: test icon, the Corrosive Spit icon recoloured in yellow (branch bite)
+// Bite: the game's dragon head icon (IBZPLO02), blackened as the claws
+// (previous test icon in works/bite_old_icon)
 COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdmi.bam~ ~override~
 OUTER_SPRINT ny_icon_bite ~NY#BDMI~
 // Wings: icon of the game's wings item (see Draconic Wings below), also
