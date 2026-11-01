@@ -14,9 +14,11 @@
 //   NY#ACDSD  portrait icon (Beltyn's Burning Blood icon from IWDEE,
 //             recoloured in acid green), registered in STATDESC.2DA
 //   NY#ACDSB  spell icon (ability / memorised), NY#ACDSC spellbook icon:
-//             Nysi's acid drop artwork reduced to 32 px (on a stone plate
-//             for NY#ACDSB), source in works/acidosis_icon_source.
-//             Previous icons kept in works/acidosis_old_icons (not installed)
+//             the game's SPWI517 icons, blue recoloured in the acid yellow
+//             of the kit's breath. Nysi's acid drop artwork version kept in
+//             works/acidosis_artwork_icons (source in
+//             works/acidosis_icon_source), older icons in
+//             works/acidosis_old_icons (not installed)
 /////////////////////////////////////////////////////////////////////////////
 
 OUTER_SET ny_str_acidosis   = RESOLVE_STR_REF (@1)

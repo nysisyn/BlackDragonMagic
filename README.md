@@ -79,7 +79,7 @@ BlackDragonMagic/
 | `WEAPPROF.2DA` | kit column: 0 everywhere except Single Weapon Style (1) and Two-Weapon Style (3) |
 | all weapons (`.ITM`) | item usability effect (opcode 319) forbidding them to the kit |
 | `NY#ACDS`, `NY#ACDX` | Acidosis and its retaliation |
-| `NY#ACIDE`, `NY#ACID6`, `NY#ACDSD`, `NY#ACDSB`, `NY#ACDSC` | Acidosis animations (casting, retaliation), portrait icon and spell icons |
+| `NY#ACIDE`, `NY#ACID6`, `NY#ACDSD`, `NY#ACDSB`, `NY#ACDSC` | Acidosis animations (casting, retaliation), portrait icon and spell icons (the game's `SPWI517` recoloured acid yellow; Nysi's artwork version in `works/acidosis_artwork_icons`) |
 | `NY#ROTS`, `NY#ROTD`, `NY#ROTN` | Rot of Ages, its disease and nausea |
 | `NY#ROTB`, `NY#ROTC` | Rot of Ages spell icons: the game's Cloudkill icons turned 90° and recoloured poison green (Nysi's artwork version in `works/rot_of_ages_artwork_icons`, source in `works/rot_of_ages_icon_source`; Dolorous Decay ones in `works/rot_of_ages_old_icons`) |
 | `NY#GTLS`, `NY#GTLX` | Ghostly Tail and its strike |
