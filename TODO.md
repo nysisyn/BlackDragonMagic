@@ -111,6 +111,7 @@ Not done yet:
 - [ ] Animation SLIME_OLIVE shows (green ooze), the spit casts with the slime animation; balance of 65 HP / AC 4 / THAC0 11 against the summoned Djinni and Efreeti.
 
 ### Bonemelt
+- [ ] Casting opens a menu with the three choices (Legs / Arms / Ribcage, names and icons); the chosen one then asks for a target and hits it (8d8 acid, save vs. Death at -2).
 - [ ] The "successful save" subspell (delayed 1 second) is blocked when the save failed.
 
 ### Manifest Heritage: Chimera (branch chimera)

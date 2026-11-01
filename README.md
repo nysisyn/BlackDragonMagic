@@ -111,8 +111,8 @@ BlackDragonMagic/
 | `NY#ABRB`, `NY#ABRC` | Black Dragon Animate Breath icons: the game's SPPR516 recoloured in the acid yellow of the kit's breath, stone plate grey |
 | `NY#MELEE` | range-limited projectile, about 12 ft. (melee reach) |
 | `NY_ROT_OF_AGES` (SPLSTATE.IDS), `NY#ROT_OF_AGES` (SPLPROT.2DA) | "suffering from Rot of Ages" state and its check |
-| `NY#BMLT`, `NY#BMLG`/`AR`/`RB`, `NY#BM*F`, `NY#BMSUC`, `NY#BMSK`, `NY#BMRBE`/`H` | Bonemelt |
-| `NY#BMLTB`, `NY#BMLTC` | Bonemelt icons (spell and touch abilities): the game's `SPCL731` (hand) recoloured acid yellow |
+| `NY#BMLT`, `NY#BMLT.2DA`, `NY#BMLG`/`AR`/`RB`, `NY#BM*F`, `NY#BMSUC`, `NY#BMSK`, `NY#BMRBE`/`H` | Bonemelt, its menu and the three touch spells |
+| `NY#BMLTB`, `NY#BMLTC` | Bonemelt icons (spell and touch spells): the game's `SPCL731` (hand) recoloured acid yellow |
 | `NY#CHIS`, `NY#CHIM`, `NY#CHMW`, `NY#CHBR`, `NY#CHBRT`, `NY#CHIMS` | Summon Chimera, the chimera (from `WYVERNSU.CRE`), its natural weapons, its acid breath and line projectile, its script |
 | `NY#CHISB`, `NY#CHISC` | Summon Chimera icons: placeholder, the game's wyvern head `IMISC52` recoloured acid yellow |
 | `MCHI*.BAM`, `CHIM*.WAV`, `EC33.INI` (or next free id), `ANIMATE.IDS` `NY_CHIMERA` | Icewind Dale II chimera animation and sounds, registered as a monster_icewind animation |
@@ -133,7 +133,7 @@ These points were not settled on the Trello cards:
 - **Spell progression one level lower**: at each level N (2 to 50) the CLAB applies `NY#BDQnn`, which removes the previous one (opcode 321) and lowers each spell level by the difference between levels N and N-1 of the game's `MXSPLSRC.2DA` (read at install, opcode 42). Spells known are not delayed.
 - **Blindsense**: immunity to blindness + see invisible (opcode 193, parameter2 1), at any range, as the Dragon Disciple of the Artisan's Kitpack (no range limit there either).
 - **Breath**: real line, built like Smashing Wave (IWDEE): an acid wave travels from the disciple to the targeted point and hits once every creature within its width ("Pass target" + "Limited path count" projectile flags), leaving a trail of acid puddles; speed 20 (Smashing Wave: 40) so the line can be seen. 15 ft. long (header range) and 5 ft. wide (proximity radius 40 px), then 30 ft. and 10 ft. (80 px) at level 19. 4d4 to 12d4, save vs. Breath for half, 1 to 4 uses per day (CLAB). On casting, the disciple gets 2 seconds of immunity to his own breath (opcode 206), as in the old DragonAscendant breath. Animations: Smashing Wave BAMs (IWDEE) recoloured in acid green.
-- **Bonemelt, choosing the mutilation**: casting grants three touch abilities (Legs / Arms / Ribcage) for 1 turn; using one removes all three. Casting time set to 5.
+- **Bonemelt, choosing the mutilation**: casting opens a menu (opcode 214 with `NY#BMLT.2DA`, as the game's Spell Immunity) listing Legs / Arms / Ribcage; the chosen touch spell is cast with 2DA type 3 (no memorisation, its own casting time of 1) and asks for a target. Casting time of the main spell: 5. (First version: three touch innate abilities for 1 turn, less handy.)
 - **Bonemelt, half effect on a successful save**: Legs = movement 62% and -2 AC; Arms = -2 THAC0 and -2 damage; Ribcage = 1d4 acid per round.
 - **Skeletons**: only race `SKELETON` is destroyed.
 - **Acidosis**: acid burst on the caster when cast and acid splash on each attacker hit by the retaliation (BAMs from the old DragonAscendant Acidosis). Portrait icon: Beltyn's Burning Blood icon (IWDEE) recoloured in acid green, added to `STATDESC.2DA`. Spell icons: Nysi's acid drop artwork reduced to 32 px (on a stone plate for the memorised icon, source in `works/acidosis_icon_source`); the previous ones (Beltyn's Burning Blood figure, then the enlarged portrait drop in `drop/`) are kept in `works/acidosis_old_icons`. Casting again replaces the active version; the THAC0 penalty refreshes instead of stacking.

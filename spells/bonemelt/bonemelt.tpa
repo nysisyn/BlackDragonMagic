@@ -4,9 +4,10 @@
 // Lore: reproduction attempt of the spell of the black dracolich
 // Daurgothoth.
 //
-// Casting the spell lets the wizard choose the mutilation: it grants three
-// touch abilities (Legs / Arms / Ribcage) for 1 turn; using one removes all
-// three.
+// Casting the spell opens a menu (opcode 214, as the game's Spell Immunity)
+// where the wizard chooses the mutilation: Legs / Arms / Ribcage. The chosen
+// touch spell is then cast (2DA type 3: no memorisation, its own casting
+// time) and asks for a target.
 //   - 8d8 acid, no save
 //   - save vs. Death at -2, failure: chosen mutilation for 1 hour
 //       Legs: movement x1/4, -4 AC / Arms: -4 THAC0, -4 damage /
@@ -16,12 +17,13 @@
 //
 // Resources
 //   SPWIxxx    Bonemelt (WIZARD_NY_BONEMELT)
-//   NY#BMLG / NY#BMAR / NY#BMRB      touch abilities
+//   NY#BMLG / NY#BMAR / NY#BMRB      touch spells (menu choices)
+//   NY#BMLT.2DA                      menu of the three choices
 //   NY#BMLGF / NY#BMARF / NY#BMRBF   failed-save mutilations
 //   NY#BMSUC   successful save: random limb, half strength
 //   NY#BMSK    skeletal undead destruction
 //   NY#BMRBE / NY#BMRBH              ribcage acid per round (full / half)
-//   NY#BMLTB   spell icon (ability / memorised, also the touch abilities),
+//   NY#BMLTB   spell icon (ability / memorised, also the touch spells),
 //              NY#BMLTC spellbook icon: the game's SPCL731 icons (hand)
 //              recoloured in the acid yellow of the kit's breath
 /////////////////////////////////////////////////////////////////////////////
@@ -111,7 +113,7 @@ COPY_EXISTING ~NY#BMRBF.spl~ ~override~
 
 
 // ---------------------------------------------------------------------------
-// Touch abilities (one per mutilation). Using one removes all three.
+// Touch spells (one per mutilation), chosen in the menu of the main spell
 // ---------------------------------------------------------------------------
 DEFINE_ACTION_FUNCTION NY#BM_TOUCH
   INT_VAR
@@ -124,9 +126,6 @@ BEGIN
   CREATE ~SPL~ ~%resref%~
     LPF NY#SPL_BASE INT_VAR name desc type = 4 level = 8 school = 8 flags = 0x400 graphics = 10 STR_VAR icon = ~NY#BMLTC~ END
     LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 2 level = 1 casting_time = 1 STR_VAR icon = ~NY#BMLTB~ RET h = header END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#BMLG~ END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#BMAR~ END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#BMRB~ END
     // 8d8 acid, no save
     LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 resist_dispel = 1 parameter2 = 0x10000 dicenumber = 8 dicesize = 8 END
     // save vs. Death at -2: the mutilation is cast only on a failed save
@@ -141,21 +140,14 @@ LAF NY#BM_TOUCH INT_VAR name = ny_str_bm_ribs desc = ny_str_bm_ribs_d STR_VAR re
 
 
 // ---------------------------------------------------------------------------
-// Main spell: grants the three touch abilities for 1 turn
+// Main spell: menu of the three mutilations (opcode 214, 2DA NY#BMLT.2DA)
 // ---------------------------------------------------------------------------
+COPY ~%MOD_FOLDER%/spells/bonemelt/2da/ny#bmlt.2da~ ~override~
+
 CREATE ~SPL~ ~NY#BMLT~
   LPF NY#SPL_BASE INT_VAR name = ny_str_bonemelt desc = ny_str_bonemelt_d type = 1 level = 8
                           school = 8 exclusion = 0x40 graphics = 10 STR_VAR icon = ~NY#BMLTC~ END
-  LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 5 range = 1 level = 1 casting_time = 5 STR_VAR icon = ~NY#BMLTB~ RET h = header END
-  // reset any pending choice, give the three choices, remove them after 1 turn
-  PATCH_FOR_EACH ny_touch IN ~NY#BMLG~ ~NY#BMAR~ ~NY#BMRB~ BEGIN
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = EVAL ~%ny_touch%~ END
-  END
-  PATCH_FOR_EACH ny_touch IN ~NY#BMLG~ ~NY#BMAR~ ~NY#BMRB~ BEGIN
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 171 target = 1 timing = 1 STR_VAR resource = EVAL ~%ny_touch%~ END
-  END
-  PATCH_FOR_EACH ny_touch IN ~NY#BMLG~ ~NY#BMAR~ ~NY#BMRB~ BEGIN
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 4 duration = ny_turn STR_VAR resource = EVAL ~%ny_touch%~ END
-  END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 7 range = 1 level = 1 casting_time = 5 STR_VAR icon = ~NY#BMLTB~ RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 214 target = 1 timing = 1 parameter2 = 0 STR_VAR resource = ~NY#BMLT~ END
 
 ADD_SPELL ~override/NY#BMLT.spl~ 2 8 ~WIZARD_NY_BONEMELT~
