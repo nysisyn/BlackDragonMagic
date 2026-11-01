@@ -13,26 +13,26 @@ Still valid from the previous version (same code):
 
 To check:
 - [ ] **No weapon (opcode 319)**: every weapon shown in red and refused for the kit, but still usable by the other characters. If it is the other way round (usable *only* by the kit), the parameter meaning is inverted: tell Claude.
-- [ ] **Proficiencies**: at creation and at levels 7, 13 and 19, only Single Weapon Style (max 1) and Two-Weapon Style (max 3) can be raised.
+- [x] **Proficiencies**: at creation and at levels 7, 13 and 19, only Single Weapon Style (max 1) and Two-Weapon Style (max 3) can be raised.
 - [ ] **Spells one level lower**: 2nd-level spell slots at level 5 (not 4), 3rd-level at 7 (not 6)... and one slot less per spell level. At level 4 the disciple may pick a 2nd-level spell he cannot cast yet (spells known are not delayed).
-- [ ] Claws at levels 1, 4, 8, 12, 16, 20: 1d4, 1d6+1, 1d8+2, 1d10+3, 2d6+4, 2d8+5; old claws gone; still there after a load.
-- [ ] Bite from level 6 (1d6+1 + 1d4 acid), replaced at 8, 12, 13 (2d6 + 2d4 acid), 16, 20; the old one gone, even if it was in the backpack.
+- [x] Claws at levels 1, 4, 8, 12, 16, 20: 1d4, 1d6+1, 1d8+2, 1d10+3, 2d6+4, 2d8+5; old claws gone; still there after a load.
+- [x] Bite from level 6 (1d6+1 + 1d4 acid), replaced at 8, 12, 13 (2d6 + 2d4 acid), 16, 20; the old one gone, even if it was in the backpack.
 - [ ] Bite: normal two-weapon penalties without Two-Weapon Style, lower with it; Single Weapon Style bonus with the bite in the backpack (do the styles apply to the claws in the fist slot?).
 - [ ] Bite: the claws' retry script (fewer than 2 attacks) does not fire for nothing while the bite is equipped.
 - [ ] Swamp Stride at level 2: immunity to Entangle, Grease, Web.
-- [ ] Acid Breath: 15 ft. long and about 5 ft. wide, 4d4; 2/day at 7, 3/day at 11, 4/day at 17 (several GA_ of the same ability in the CLAB); 30 ft. and 10 ft. wide at 19.
-- [ ] Draconic Tail at level 9: one strike per round on the nearest enemy in melee reach, 1d10 crushing + 1 second unconscious on a failed save vs. Breath; combat log line. One save for both effects?
-- [ ] Draconic Wings at level 14: the item goes in the helmet slot (what happens if a helmet is already there?), +4 movement, immunity to critical hits; spread / fold abilities swap; wings still there after a load.
+- [x] Acid Breath: 15 ft. long and about 5 ft. wide, 4d4; 2/day at 7, 3/day at 11, 4/day at 17 (several GA_ of the same ability in the CLAB); 30 ft. and 10 ft. wide at 19.
+- [x] Draconic Tail at level 9: one strike per round on the nearest enemy in melee reach, 1d10 crushing + 1 second unconscious on a failed save vs. Breath; combat log line. One save for both effects?
+- [ ] Draconic Wings at level 14: the wings show on the character (animation of `WINGS01`, or `BDWINGS` in SoD; `WINGS01B` is another version if this one looks wrong); icon in the helmet slot and on the abilities; what happens if a helmet is already there; +4 movement, immunity to critical hits; spread / fold abilities swap; wings still there after a load.
+- [ ] Acid Affinity damage bonus (opcode 332, type acid): +5% at 4, 8, 12, 16 and 20 (+25%); check the effects add up (breath, bite, acid spells).
 - [ ] Blindsense at level 10: immunity to blindness, invisible creatures seen and targetable.
 - [ ] Frightful Presence at level 18.
 - [ ] Apotheosis at level 20: immunity to sleep and paralysis, acid immunity (5 × 20%).
-- [ ] Druid THAC0: 18 at level 4, 16 at 7, 14 at 10, 12 at 13 (before Strength and weapon bonuses).
+- [x] Druid THAC0: 18 at level 4, 16 at 7, 14 at 10, 12 at 13 (before Strength and weapon bonuses).
 - [ ] Frightful Presence: the pulse (opcode 272 -> EFF) really fires and uses the disciple's level.
 - [ ] Start of Throne of Bhaal (and other cutscenes): the claws give 2 attacks again within a few rounds (retries in claws.baf), or after a reload.
 
 Not done yet:
-- [ ] **Acid Affinity damage bonus** (+5% per step, +25% at 20): use the effect of the Robe of Red Flames (SoD, gift from Edwin: +10% fire damage); find its opcode in Near Infinity.
-- [ ] Wing Buffet removed from the kit (code in the git history, before the level-by-level version): maybe a future HLA.
+- [ ] Wing Buffet removed from the kit (code in the branch folder `Branches\bite`, not in this repository's history): maybe a future HLA.
 
 ### Acidosis
 - [x] Icons, casting, self damage OK.

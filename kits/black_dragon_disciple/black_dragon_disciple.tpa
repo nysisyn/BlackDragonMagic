@@ -27,7 +27,6 @@
 //   NY#BDFP      Frightful Presence ON  / NY#BDFQ  OFF
 //   NY#BDFPE     aura pulse (EFF)      / NY#BDFPA  pulse spell
 //
-// Not done yet (see TODO.md): the Acid Affinity damage bonus.
 /////////////////////////////////////////////////////////////////////////////
 
 // ---------------------------------------------------------------------------
@@ -76,8 +75,9 @@ OUTER_SPRINT ny_icon_breath ~NY#BDBRI~
 // Bite: test icon, the Corrosive Spit icon recoloured in yellow (branch bite)
 COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdmi.bam~ ~override~
 OUTER_SPRINT ny_icon_bite ~NY#BDMI~
-// Wings: the game's Black Dragon Wing Buffet icon (SPIN695B, placeholder)
-OUTER_SPRINT ny_icon_wings ~SPIN695B~
+// Wings: icon of the game's wings item (see Draconic Wings below), also
+// used by the spread / fold abilities
+OUTER_SPRINT ny_icon_wings ~IWINGS01~
 
 
 // ---------------------------------------------------------------------------
@@ -137,12 +137,13 @@ ACTION_FOR_EACH lvl IN ~05~ ~15~ BEGIN
     LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 10 target = 1 timing = 9 parameter1 = 1 parameter2 = 0 END
 END
 
-// Acid Affinity: acid resistance +20% at levels 4, 8, 12, 16 and 20
-// (immunity at 20). The acid damage bonus (+5% per step, +25% at 20) is not
-// done yet: see TODO.md.
+// Acid Affinity: acid resistance +20% and acid damage dealt +5% (opcode
+// 332, Specific Damage Modifier, type 4 = acid) at levels 4, 8, 12, 16 and
+// 20: up to immunity and +25% at level 20.
 ACTION_FOR_EACH lvl IN ~04~ ~08~ ~12~ ~16~ ~20~ BEGIN
   COPY_EXISTING ~NY#BDL%lvl%.spl~ ~override~
-    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 27 target = 1 timing = 9 parameter1 = 20 parameter2 = 0 END
+    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 27  target = 1 timing = 9 parameter1 = 20 parameter2 = 0 END
+    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 332 target = 1 timing = 9 parameter1 = 5  parameter2 = 4 END
 END
 
 // Level 1: one spell less per day per spell level (levels 1-9, bitmask
@@ -413,21 +414,46 @@ CREATE ~SPL~ ~NY#BDBRE~
 // ---------------------------------------------------------------------------
 // Draconic Wings (level 14): an item in the helmet slot (opcode 143, slot 6
 // = HELMET) giving +4 movement and immunity to critical hits (item flag).
+// Built on the game's wings item (WINGS01.ITM in BG2:EE, BDWINGS.ITM in
+// SoD): its paperdoll animation shows the wings on the character, and its
+// icon is used for the item and the abilities. If neither exists, a plain
+// helmet item without animation.
 // The innate ability spreads them; it is then replaced by the one that
 // folds them (removes the item), and so on (ON/OFF swap themselves, as
 // Frightful Presence). The helmet slot is saved: no global script.
 // Not movable: the player removes them with the ability only.
 // ---------------------------------------------------------------------------
-CREATE ~ITM~ ~NY#BDWI~
+OUTER_SPRINT ny_wings_src ~~
+ACTION_IF FILE_EXISTS_IN_GAME ~wings01.itm~ BEGIN
+  OUTER_SPRINT ny_wings_src ~wings01~
+END ELSE ACTION_IF FILE_EXISTS_IN_GAME ~bdwings.itm~ BEGIN
+  OUTER_SPRINT ny_wings_src ~bdwings~
+END
+
+ACTION_IF (~%ny_wings_src%~ STRING_COMPARE ~~) BEGIN
+  COPY_EXISTING ~%ny_wings_src%.itm~ ~override/NY#BDWI.itm~
+    READ_ASCII 0x3a ny_icon_wings (8) NULL     // keep the source item's icon
+    LPF DELETE_ITEM_EQEFFECT INT_VAR opcode_to_delete = "-1" END
+END ELSE BEGIN
+  CREATE ~ITM~ ~NY#BDWI~
+    WRITE_SHORT 0x1c 7                          // helm
+    WRITE_EVALUATED_ASCII 0x3a ~%ny_icon_wings%~ #8
+    WRITE_EVALUATED_ASCII 0x58 ~%ny_icon_wings%~ #8
+END
+
+COPY_EXISTING ~NY#BDWI.itm~ ~override~
   WRITE_LONG  0x08 ny_str_wings
   WRITE_LONG  0x0c ny_str_wings
-  // flags as FIST.ITM (0x20) + magical (0x40) + toggle critical hits
-  WRITE_LONG  0x18 0x02000060
-  WRITE_SHORT 0x1c 7                            // helm
-  WRITE_EVALUATED_ASCII 0x3a ~%ny_icon_wings%~ #8
+  // flags: displayable (0x08, as the source item) + 0x20 + magical (0x40) +
+  // toggle critical hits; not movable (0x04 cleared)
+  WRITE_LONG  0x18 0x02000068
+  WRITE_LONG  0x1e 0                            // usable by everyone
+  WRITE_BYTE  0x29 0                            // kit usability bytes
+  WRITE_BYTE  0x2b 0
+  WRITE_BYTE  0x2d 0
+  WRITE_BYTE  0x2f 0
   WRITE_LONG  0x50 ny_str_wings_d
   WRITE_LONG  0x54 ny_str_wings_d
-  WRITE_EVALUATED_ASCII 0x58 ~%ny_icon_wings%~ #8
   LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 126 target = 1 timing = 2 parameter1 = 4 parameter2 = 0 END
 
 CREATE ~SPL~ ~NY#BDWG~
