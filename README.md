@@ -64,7 +64,7 @@ BlackDragonMagic/
 | `baldur.bcs`, `bdbaldur.bcs`, `baldur25.bcs` | global script `kits/black_dragon_disciple/baf/claws.baf` added at the top: claws back after a load, fist reselected at a new stage |
 | `NY#BDCL1`…`NY#BDCL6` | claws (fist item), one per stage: 1d4 to 2d8, +0 to +5 to hit and damage (= enchantment), 2 attacks per round |
 | `NY#BDMZ1`…`NY#BDMZ6` | put the bite of the stage in the off-hand slot (CLAB at levels 6, 8, 12, 13, 16, 20) |
-| `NY#BDMO1`…`NY#BDMO6` | bite (off-hand item), one per stage: 1d6 + 1d4 acid, then 2d6 + 2d4 acid at 13; +1 to +5 as the claws |
+| `NY#BDMO1`…`NY#BDMO6` | bite (off-hand item), one per stage: 1d6 + 2 acid, then 2d6 + 2d4 acid at 13; +1 to +5 as the claws |
 | `NY#BDMT` / `NY#BDMU` | Fight with / without the Bite (innate abilities that swap themselves) |
 | `NY#BDMI` | bite icon (placeholder: the Corrosive Spit icon recoloured in yellow) |
 | `NY#BDTL` | Draconic Tail strike |

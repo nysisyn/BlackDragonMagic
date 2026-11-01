@@ -16,7 +16,7 @@ To check:
 - [x] **Proficiencies**: at creation and at levels 7, 13 and 19, only Single Weapon Style (max 1) and Two-Weapon Style (max 3) can be raised.
 - [ ] **Spells one level lower**: 2nd-level spell slots at level 5 (not 4), 3rd-level at 7 (not 6)... and one slot less per spell level. At level 4 the disciple may pick a 2nd-level spell he cannot cast yet (spells known are not delayed).
 - [x] Claws at levels 1, 4, 8, 12, 16, 20: 1d4, 1d6+1, 1d8+2, 1d10+3, 2d6+4, 2d8+5; old claws gone; still there after a load.
-- [x] Bite from level 6 (1d6+1 + 1d4 acid), replaced at 8, 12, 13 (2d6 + 2d4 acid), 16, 20; the old one gone, even if it was in the backpack.
+- [x] Bite from level 6 (1d6+1 + 2 acid), replaced at 8, 12, 13 (2d6 + 2d4 acid), 16, 20; the old one gone, even if it was in the backpack.
 - [x] Bite: two-weapon penalties lowered by Two-Weapon Style (THAC0 3 / 7 at level 16 with 2 points).
 - [x] Bite toggle: Fight without / with the Bite remove and put back the bite of the current stage; the abilities swap.
 - [ ] Bite: the claws' retry script (fewer than 2 attacks) does not fire for nothing while the bite is equipped.

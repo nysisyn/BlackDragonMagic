@@ -22,7 +22,7 @@ BREATH WEAPON: The Black Dragon Disciple exhales a 15-ft. long, 5-ft. wide line 
 ACID AFFINITY: The black dragon's blood protects the Black Dragon Disciple from acid and makes his own acid more potent. He gains 20% acid resistance, and all acid damage he deals is increased by 5%. Both increase at levels 8, 12 and 16, up to 80% acid resistance and +20% acid damage. At level 20, he becomes immune to acid and his acid damage is increased by 25%.
 
 - 5th level: +1 bonus to AC and Constitution.
-- 6th level: Gains a bite attack, summoned as an off-hand weapon while unarmed, dealing 1d6 piercing and 1d4 acid damage. The bite counts as a magical weapon of the same enchantment as the claws. The innate abilities Fight with the Bite and Fight without the Bite summon or dismiss it at will.
+- 6th level: Gains a bite attack, summoned as an off-hand weapon while unarmed, dealing 1d6 piercing and 2 acid damage. The bite counts as a magical weapon of the same enchantment as the claws. The innate abilities Fight with the Bite and Fight without the Bite summon or dismiss it at will.
 - 7th level: May use Breath Weapon twice per day. Damage increases to 6d4.
 - 8th level: Acid Affinity improves. Claws now deal 1d8 slashing damage and count as +2 magical weapons.
 - 9th level: Gains Draconic Tail.
@@ -133,7 +133,7 @@ The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bit
 STATISTICS:
 
 THAC0: +1
-Damage: 1d6+1 (piercing) + 1d4 acid
+Damage: 1d6+1 (piercing) + 2 acid
 Speed Factor: 2
 Counts as a +1 weapon for the purpose of hitting creatures~
 @21 = ~Draconic Bite
@@ -143,7 +143,7 @@ The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bit
 STATISTICS:
 
 THAC0: +2
-Damage: 1d6+2 (piercing) + 1d4 acid
+Damage: 1d6+2 (piercing) + 2 acid
 Speed Factor: 2
 Counts as a +2 weapon for the purpose of hitting creatures~
 @22 = ~Draconic Bite
@@ -153,7 +153,7 @@ The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bit
 STATISTICS:
 
 THAC0: +3
-Damage: 1d6+3 (piercing) + 1d4 acid
+Damage: 1d6+3 (piercing) + 2 acid
 Speed Factor: 2
 Counts as a +3 weapon for the purpose of hitting creatures~
 @23 = ~Draconic Bite
