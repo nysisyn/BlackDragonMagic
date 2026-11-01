@@ -99,7 +99,7 @@ BlackDragonMagic/
 | `NY#PBRB`, `NY#PBRC` | Black Dragon Pooling Breath icons: the game's Free Action icon (waves) recoloured in the acid yellow of the kit's breath, stone plate grey |
 | `NY#ABRS`, `NY#ABRM`, `NY#ABRW` | Black Dragon Animate Breath, the animated breath (creature, from the Mustard Jelly: JELLYMU.CRE in BG:EE, JELLMU.CRE in BG2:EE) and its acid attack |
 | `NY#ABRX`, `NY#ABRSP` | the animated breath's Corrosive Spit (summon version of `NY#CSPS`, no casting animation) and its script |
-| `NY#ABRB`, `NY#ABRC` | Black Dragon Animate Breath icons: placeholder, the game's SPPR516 recoloured in the acid yellow of the kit's breath, stone plate grey |
+| `NY#ABRB`, `NY#ABRC` | Black Dragon Animate Breath icons: the game's SPPR516 recoloured in the acid yellow of the kit's breath, stone plate grey |
 | `NY#MELEE` | range-limited projectile, about 12 ft. (melee reach) |
 | `NY_ROT_OF_AGES` (SPLSTATE.IDS), `NY#ROT_OF_AGES` (SPLPROT.2DA) | "suffering from Rot of Ages" state and its check |
 | `NY#BMLT`, `NY#BMLG`/`AR`/`RB`, `NY#BM*F`, `NY#BMSUC`, `NY#BMSK`, `NY#BMRBE`/`H` | Bonemelt |

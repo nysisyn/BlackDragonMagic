@@ -32,8 +32,8 @@
 //   NY#ABRSP  its only script (one spit per round out of melee; melee
 //             otherwise)
 //   NY#ABRB   spell icon (ability / memorised), NY#ABRC spellbook icon:
-//             placeholder, the game's SPPR516 (wave rising from droplets)
-//             recoloured acid yellow
+//             the game's SPPR516 (wave rising from droplets) recoloured in
+//             the acid yellow of the kit's breath, stone plate grey
 //   The breath sound is the kit's one (kits/black_dragon_disciple/wav),
 //   copied again here so the spell works without the kit component.
 /////////////////////////////////////////////////////////////////////////////
