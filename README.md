@@ -81,7 +81,7 @@ BlackDragonMagic/
 | `NY#ACDS`, `NY#ACDX` | Acidosis and its retaliation |
 | `NY#ACIDE`, `NY#ACID6`, `NY#ACDSD`, `NY#ACDSB`, `NY#ACDSC` | Acidosis animations (casting, retaliation), portrait icon and spell icons |
 | `NY#ROTS`, `NY#ROTD`, `NY#ROTN` | Rot of Ages, its disease and nausea |
-| `NY#ROTB`, `NY#ROTC` | Rot of Ages spell icons (Nysi's artwork, source in `works/rot_of_ages_icon_source`; previous Dolorous Decay ones in `works/rot_of_ages_old_icons`) |
+| `NY#ROTB`, `NY#ROTC` | Rot of Ages spell icons: the game's Cloudkill icons turned 90° and recoloured poison green (Nysi's artwork version in `works/rot_of_ages_artwork_icons`, source in `works/rot_of_ages_icon_source`; Dolorous Decay ones in `works/rot_of_ages_old_icons`) |
 | `NY#GTLS`, `NY#GTLX` | Ghostly Tail and its strike |
 | `NY#GTLB`, `NY#GTLC`, `NY#GTLD`, `NY#GTLH` | Ghostly Tail icons (the game's Entangle icons recoloured spectral turquoise; Nysi's artwork version in `works/ghostly_tail_artwork_icons`), portrait icon and hit animation |
 | `NY#MANS`, `NY#MANT`, `NY#MANP` | Mantidrake Spike, its spikes (item) and their poison |
