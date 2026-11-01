@@ -34,6 +34,7 @@ To check:
 - [x] Apotheosis at level 20: immunity to sleep and paralysis, acid immunity (5 × 20%).
 - [x] Druid THAC0: 18 at level 4, 16 at 7, 14 at 10, 12 at 13 (before Strength and weapon bonuses).
 - [x] Frightful Presence: the pulse (opcode 272 -> EFF) really fires and uses the disciple's level.
+- [ ] Frightful Presence: no visual or sound left from Fireball (falling fireball, explosion, flame ring) when the aura pulses.
 - [x] Start of Throne of Bhaal (cutscenes): claws and bite kept.
 
 Not done yet:

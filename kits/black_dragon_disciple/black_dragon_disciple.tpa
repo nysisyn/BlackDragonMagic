@@ -140,9 +140,19 @@ LAF NY#CLONE_AREA_PRO INT_VAR radius_ft = 15 explosion_effect = 255 STR_VAR sour
 // enemies only (area flag 0x40, as the game's SPAR**NP projectiles; the
 // party versions SPAR**PA add 0x80): the disciple and his allies are no
 // longer hit, so no "unaffected" message on them
+// Nothing left of Fireball's visuals and sounds: travelling fireball and its
+// shadow, fire and explosion sounds, explosion animation (VVC), flame ring.
 COPY_EXISTING ~NY#BDFPT.pro~ ~override~
   READ_LONG  0x200 ny_fear_flags
   WRITE_LONG 0x200 ((ny_fear_flags BOR 0x40) BAND (BNOT 0x80))
+  WRITE_ASCII 0x10  ~~ #8           // fire sound
+  WRITE_ASCII 0x18  ~~ #8           // impact sound
+  WRITE_ASCII 0x104 ~~ #8           // travelling fireball
+  WRITE_ASCII 0x10c ~~ #8           // its shadow
+  WRITE_ASCII 0x208 ~~ #8           // explosion sound
+  WRITE_ASCII 0x21c ~~ #8           // fire explosion animation
+  WRITE_ASCII 0x230 ~~ #8           // flame ring
+  WRITE_LONG  0x240 0               // extended area flags of the VVC / ring
 BUT_ONLY
 // Draconic Tail: range-limited projectile (about 12 ft., melee reach),
 // shared with Ghostly Tail and Acidosis
