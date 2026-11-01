@@ -21,6 +21,9 @@
 //   NY#BMSUC   successful save: random limb, half strength
 //   NY#BMSK    skeletal undead destruction
 //   NY#BMRBE / NY#BMRBH              ribcage acid per round (full / half)
+//   NY#BMLTB   spell icon (ability / memorised, also the touch abilities),
+//              NY#BMLTC spellbook icon: the game's SPCL731 icons (hand)
+//              recoloured in the acid yellow of the kit's breath
 /////////////////////////////////////////////////////////////////////////////
 
 OUTER_SET ny_str_bonemelt     = RESOLVE_STR_REF (@1)
@@ -31,6 +34,9 @@ OUTER_SET ny_str_bm_arms      = RESOLVE_STR_REF (@20)
 OUTER_SET ny_str_bm_arms_d    = RESOLVE_STR_REF (@21)
 OUTER_SET ny_str_bm_ribs      = RESOLVE_STR_REF (@30)
 OUTER_SET ny_str_bm_ribs_d    = RESOLVE_STR_REF (@31)
+
+COPY ~%MOD_FOLDER%/spells/bonemelt/bam/ny#bmltb.bam~ ~override~
+     ~%MOD_FOLDER%/spells/bonemelt/bam/ny#bmltc.bam~ ~override~
 
 OUTER_SET ny_bm_full = ny_hour
 OUTER_SET ny_bm_half = ny_hour / 2
@@ -115,8 +121,8 @@ DEFINE_ACTION_FUNCTION NY#BM_TOUCH
     fail   = ~~
 BEGIN
   CREATE ~SPL~ ~%resref%~
-    LPF NY#SPL_BASE INT_VAR name desc type = 4 level = 8 school = 8 flags = 0x400 graphics = 10 STR_VAR icon = ~SPWI211C~ END
-    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 2 level = 1 casting_time = 1 STR_VAR icon = ~SPWI211B~ RET h = header END
+    LPF NY#SPL_BASE INT_VAR name desc type = 4 level = 8 school = 8 flags = 0x400 graphics = 10 STR_VAR icon = ~NY#BMLTC~ END
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 2 level = 1 casting_time = 1 STR_VAR icon = ~NY#BMLTB~ RET h = header END
     LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#BMLG~ END
     LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#BMAR~ END
     LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#BMRB~ END
@@ -138,8 +144,8 @@ LAF NY#BM_TOUCH INT_VAR name = ny_str_bm_ribs desc = ny_str_bm_ribs_d STR_VAR re
 // ---------------------------------------------------------------------------
 CREATE ~SPL~ ~NY#BMLT~
   LPF NY#SPL_BASE INT_VAR name = ny_str_bonemelt desc = ny_str_bonemelt_d type = 1 level = 8
-                          school = 8 exclusion = 0x40 graphics = 10 STR_VAR icon = ~SPWI211C~ END
-  LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 5 range = 1 level = 1 casting_time = 5 STR_VAR icon = ~SPWI211B~ RET h = header END
+                          school = 8 exclusion = 0x40 graphics = 10 STR_VAR icon = ~NY#BMLTC~ END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 5 range = 1 level = 1 casting_time = 5 STR_VAR icon = ~NY#BMLTB~ RET h = header END
   // reset any pending choice, give the three choices, remove them after 1 turn
   PATCH_FOR_EACH ny_touch IN ~NY#BMLG~ ~NY#BMAR~ ~NY#BMRB~ BEGIN
     LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = EVAL ~%ny_touch%~ END

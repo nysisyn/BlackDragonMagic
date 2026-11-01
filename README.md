@@ -103,6 +103,7 @@ BlackDragonMagic/
 | `NY#MELEE` | range-limited projectile, about 12 ft. (melee reach) |
 | `NY_ROT_OF_AGES` (SPLSTATE.IDS), `NY#ROT_OF_AGES` (SPLPROT.2DA) | "suffering from Rot of Ages" state and its check |
 | `NY#BMLT`, `NY#BMLG`/`AR`/`RB`, `NY#BM*F`, `NY#BMSUC`, `NY#BMSK`, `NY#BMRBE`/`H` | Bonemelt |
+| `NY#BMLTB`, `NY#BMLTC` | Bonemelt icons (spell and touch abilities): the game's `SPCL731` (hand) recoloured acid yellow |
 | `NY#BDBRT`, `NY#BDBRU` | Acid Breath line projectiles (built like Smashing Wave, IWDEE): 15 ft. × 5 ft., then 30 ft. × 10 ft. at level 19 |
 | `NY#BDBRI` | Acid Breath icon: the game's `SPDD03B` with the dragon recoloured acid yellow (Nysi's artwork version in `works/acid_breath_artwork_icon`, old DragonAscendant icon in `works/acid_breath_old_icon`) |
 | `NY#BDWAV`, `NY#BDWVT`, `NY#BDWVH`, `NY#BDBRE.wav` | Acid Breath wave, trail and hit animations (Smashing Wave BAMs recoloured), breath sound |
