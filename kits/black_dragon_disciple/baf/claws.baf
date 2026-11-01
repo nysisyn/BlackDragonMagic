@@ -2,8 +2,10 @@
 // The engine does not save the fist slot: after a load, the default fist
 // is back. For each party member of the kit (KIT.IDS value filled in at
 // install time) who carries none of the claws NY#BDCL1..6, put the claws
-// of their stage back (stages: levels 1, 4, 8, 12, 16, 20). Continue()
-// lets the rest of the script run.
+// of their stage back (stages: levels 1, 4, 8, 12, 16, 20), and reset the
+// stage memory NY#BDDF1..6 so the block below selects the fist again: this
+// refreshes the weapon button (icon) and the 2 attacks per round.
+// Continue() lets the rest of the script run.
 // Method of the Arcane Fist kit (global script restoring the fists).
 
 IF
@@ -19,6 +21,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ6",Player1)
     SetGlobal("NY#BDDR1","GLOBAL",0)
+    SetGlobal("NY#BDDF1","GLOBAL",0)
     Continue()
 END
 
@@ -36,6 +39,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ5",Player1)
     SetGlobal("NY#BDDR1","GLOBAL",0)
+    SetGlobal("NY#BDDF1","GLOBAL",0)
     Continue()
 END
 
@@ -53,6 +57,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ4",Player1)
     SetGlobal("NY#BDDR1","GLOBAL",0)
+    SetGlobal("NY#BDDF1","GLOBAL",0)
     Continue()
 END
 
@@ -70,6 +75,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ3",Player1)
     SetGlobal("NY#BDDR1","GLOBAL",0)
+    SetGlobal("NY#BDDF1","GLOBAL",0)
     Continue()
 END
 
@@ -87,6 +93,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ2",Player1)
     SetGlobal("NY#BDDR1","GLOBAL",0)
+    SetGlobal("NY#BDDF1","GLOBAL",0)
     Continue()
 END
 
@@ -103,6 +110,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ1",Player1)
     SetGlobal("NY#BDDR1","GLOBAL",0)
+    SetGlobal("NY#BDDF1","GLOBAL",0)
     Continue()
 END
 
@@ -119,6 +127,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ6",Player2)
     SetGlobal("NY#BDDR2","GLOBAL",0)
+    SetGlobal("NY#BDDF2","GLOBAL",0)
     Continue()
 END
 
@@ -136,6 +145,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ5",Player2)
     SetGlobal("NY#BDDR2","GLOBAL",0)
+    SetGlobal("NY#BDDF2","GLOBAL",0)
     Continue()
 END
 
@@ -153,6 +163,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ4",Player2)
     SetGlobal("NY#BDDR2","GLOBAL",0)
+    SetGlobal("NY#BDDF2","GLOBAL",0)
     Continue()
 END
 
@@ -170,6 +181,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ3",Player2)
     SetGlobal("NY#BDDR2","GLOBAL",0)
+    SetGlobal("NY#BDDF2","GLOBAL",0)
     Continue()
 END
 
@@ -187,6 +199,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ2",Player2)
     SetGlobal("NY#BDDR2","GLOBAL",0)
+    SetGlobal("NY#BDDF2","GLOBAL",0)
     Continue()
 END
 
@@ -203,6 +216,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ1",Player2)
     SetGlobal("NY#BDDR2","GLOBAL",0)
+    SetGlobal("NY#BDDF2","GLOBAL",0)
     Continue()
 END
 
@@ -219,6 +233,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ6",Player3)
     SetGlobal("NY#BDDR3","GLOBAL",0)
+    SetGlobal("NY#BDDF3","GLOBAL",0)
     Continue()
 END
 
@@ -236,6 +251,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ5",Player3)
     SetGlobal("NY#BDDR3","GLOBAL",0)
+    SetGlobal("NY#BDDF3","GLOBAL",0)
     Continue()
 END
 
@@ -253,6 +269,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ4",Player3)
     SetGlobal("NY#BDDR3","GLOBAL",0)
+    SetGlobal("NY#BDDF3","GLOBAL",0)
     Continue()
 END
 
@@ -270,6 +287,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ3",Player3)
     SetGlobal("NY#BDDR3","GLOBAL",0)
+    SetGlobal("NY#BDDF3","GLOBAL",0)
     Continue()
 END
 
@@ -287,6 +305,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ2",Player3)
     SetGlobal("NY#BDDR3","GLOBAL",0)
+    SetGlobal("NY#BDDF3","GLOBAL",0)
     Continue()
 END
 
@@ -303,6 +322,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ1",Player3)
     SetGlobal("NY#BDDR3","GLOBAL",0)
+    SetGlobal("NY#BDDF3","GLOBAL",0)
     Continue()
 END
 
@@ -319,6 +339,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ6",Player4)
     SetGlobal("NY#BDDR4","GLOBAL",0)
+    SetGlobal("NY#BDDF4","GLOBAL",0)
     Continue()
 END
 
@@ -336,6 +357,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ5",Player4)
     SetGlobal("NY#BDDR4","GLOBAL",0)
+    SetGlobal("NY#BDDF4","GLOBAL",0)
     Continue()
 END
 
@@ -353,6 +375,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ4",Player4)
     SetGlobal("NY#BDDR4","GLOBAL",0)
+    SetGlobal("NY#BDDF4","GLOBAL",0)
     Continue()
 END
 
@@ -370,6 +393,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ3",Player4)
     SetGlobal("NY#BDDR4","GLOBAL",0)
+    SetGlobal("NY#BDDF4","GLOBAL",0)
     Continue()
 END
 
@@ -387,6 +411,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ2",Player4)
     SetGlobal("NY#BDDR4","GLOBAL",0)
+    SetGlobal("NY#BDDF4","GLOBAL",0)
     Continue()
 END
 
@@ -403,6 +428,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ1",Player4)
     SetGlobal("NY#BDDR4","GLOBAL",0)
+    SetGlobal("NY#BDDF4","GLOBAL",0)
     Continue()
 END
 
@@ -419,6 +445,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ6",Player5)
     SetGlobal("NY#BDDR5","GLOBAL",0)
+    SetGlobal("NY#BDDF5","GLOBAL",0)
     Continue()
 END
 
@@ -436,6 +463,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ5",Player5)
     SetGlobal("NY#BDDR5","GLOBAL",0)
+    SetGlobal("NY#BDDF5","GLOBAL",0)
     Continue()
 END
 
@@ -453,6 +481,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ4",Player5)
     SetGlobal("NY#BDDR5","GLOBAL",0)
+    SetGlobal("NY#BDDF5","GLOBAL",0)
     Continue()
 END
 
@@ -470,6 +499,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ3",Player5)
     SetGlobal("NY#BDDR5","GLOBAL",0)
+    SetGlobal("NY#BDDF5","GLOBAL",0)
     Continue()
 END
 
@@ -487,6 +517,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ2",Player5)
     SetGlobal("NY#BDDR5","GLOBAL",0)
+    SetGlobal("NY#BDDF5","GLOBAL",0)
     Continue()
 END
 
@@ -503,6 +534,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ1",Player5)
     SetGlobal("NY#BDDR5","GLOBAL",0)
+    SetGlobal("NY#BDDF5","GLOBAL",0)
     Continue()
 END
 
@@ -519,6 +551,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ6",Player6)
     SetGlobal("NY#BDDR6","GLOBAL",0)
+    SetGlobal("NY#BDDF6","GLOBAL",0)
     Continue()
 END
 
@@ -536,6 +569,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ5",Player6)
     SetGlobal("NY#BDDR6","GLOBAL",0)
+    SetGlobal("NY#BDDF6","GLOBAL",0)
     Continue()
 END
 
@@ -553,6 +587,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ4",Player6)
     SetGlobal("NY#BDDR6","GLOBAL",0)
+    SetGlobal("NY#BDDF6","GLOBAL",0)
     Continue()
 END
 
@@ -570,6 +605,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ3",Player6)
     SetGlobal("NY#BDDR6","GLOBAL",0)
+    SetGlobal("NY#BDDF6","GLOBAL",0)
     Continue()
 END
 
@@ -587,6 +623,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ2",Player6)
     SetGlobal("NY#BDDR6","GLOBAL",0)
+    SetGlobal("NY#BDDF6","GLOBAL",0)
     Continue()
 END
 
@@ -603,6 +640,7 @@ THEN
   RESPONSE #100
     ApplySpellRES("NY#BDZ1",Player6)
     SetGlobal("NY#BDDR6","GLOBAL",0)
+    SetGlobal("NY#BDDF6","GLOBAL",0)
     Continue()
 END
 

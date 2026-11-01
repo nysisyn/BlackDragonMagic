@@ -68,10 +68,12 @@ OUTER_SET ny_str_wings_off_d = RESOLVE_STR_REF (@64)
 // ---------------------------------------------------------------------------
 // Icons
 // ---------------------------------------------------------------------------
-// Claws: default fist icon. Opcode 143 does not equip the claws, so after a
-// load the weapon button keeps the default fist picture: a custom icon would
-// only show at character creation (placeholder until a custom icon)
-OUTER_SPRINT ny_icon_claws ~FIST~
+// Claws: the game's werebear claw icon (ISHAPE05), blackened as black
+// dragon scales. After a load the weapon button may show the default fist:
+// the global script selects the fist again after giving the claws back
+// (see baf/claws.baf), to refresh it.
+COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdcli.bam~ ~override~
+OUTER_SPRINT ny_icon_claws ~NY#BDCLI~
 // Acid Breath: the game's Dragon Disciple breath icon (SPDD03B), the
 // dragon recoloured in bright acid yellow (hue 62), the stone plate kept
 // (Nysi's artwork version in works/acid_breath_artwork_icon, the old

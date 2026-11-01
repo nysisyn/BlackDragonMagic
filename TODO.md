@@ -20,6 +20,7 @@ To check:
 - [x] Bite: two-weapon penalties lowered by Two-Weapon Style (THAC0 3 / 7 at level 16 with 2 points).
 - [x] Bite toggle: Fight without / with the Bite remove and put back the bite of the current stage; the abilities swap.
 - [ ] Bite: the claws' retry script (fewer than 2 attacks) does not fire for nothing while the bite is equipped.
+- [ ] Claws icon (blackened werebear claw) on the weapon button, at creation and **after a load** (the script selects the fist again after giving the claws back).
 - [ ] Swamp Stride at level 2: immunity to Entangle, Grease, Web.
 - [x] Acid Breath: 15 ft. long and about 5 ft. wide, 4d4; 2/day at 7, 3/day at 11, 4/day at 17 (several GA_ of the same ability in the CLAB); 30 ft. and 10 ft. wide at 19.
 - [x] Draconic Tail at level 9: one strike per round on the nearest enemy in melee reach, 1d10 crushing + 1 second unconscious on a failed save vs. Breath; combat log line. One save for both effects?
