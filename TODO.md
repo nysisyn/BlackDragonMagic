@@ -18,14 +18,13 @@ To check:
 - [x] Claws at levels 1, 4, 8, 12, 16, 20: 1d4, 1d6+1, 1d8+2, 1d10+3, 2d6+4, 2d8+5; old claws gone; still there after a load.
 - [x] Bite from level 6 (1d6+1 + 1d4 acid), replaced at 8, 12, 13 (2d6 + 2d4 acid), 16, 20; the old one gone, even if it was in the backpack.
 - [x] Bite: two-weapon penalties lowered by Two-Weapon Style (THAC0 3 / 7 at level 16 with 2 points).
-- [ ] Bite toggle: Fight without the Bite removes it (Single Weapon Style bonus then?), Fight with the Bite puts back the bite of the current stage; the two abilities swap; a new stage summons the new bite and leaves only Fight without the Bite.
+- [x] Bite toggle: Fight without / with the Bite remove and put back the bite of the current stage; the abilities swap.
 - [ ] Bite: the claws' retry script (fewer than 2 attacks) does not fire for nothing while the bite is equipped.
 - [ ] Swamp Stride at level 2: immunity to Entangle, Grease, Web.
 - [x] Acid Breath: 15 ft. long and about 5 ft. wide, 4d4; 2/day at 7, 3/day at 11, 4/day at 17 (several GA_ of the same ability in the CLAB); 30 ft. and 10 ft. wide at 19.
 - [x] Draconic Tail at level 9: one strike per round on the nearest enemy in melee reach, 1d10 crushing + 1 second unconscious on a failed save vs. Breath; combat log line. One save for both effects?
 - [x] Draconic Wings at level 14: equipped in the helmet slot, bonuses applied. Still to check: the wings shown on the character, a helmet already there, after a load.
-- [ ] Acid Affinity damage bonus (opcode 332, type acid, same use as the Robe of Red Flames BDROBE05: +10, type fire): first test showed no bonus. +5% of a 4d4 breath is below 1 point and may round to 0: test at level 16-20 (+20 / +25%) on the breath, compare with a character without the kit.
-- [ ] TEST VALUE: bite acid fixed at 4 (black_dragon_disciple.tpa, NY#BDD_BITE) to read the Affinity bonus in the combat log; back to 1d4 / 2d4 afterwards.
+- [x] Acid Affinity damage bonus (opcode 332, type acid, as the Robe of Red Flames): bite acid 4 → 5 at level 20 (+25%), shown in the combat log as "(1 damage bonus)".
 - [ ] Blindsense at level 10: immunity to blindness, invisible creatures seen and targetable.
 - [ ] Frightful Presence at level 18: no longer hits the disciple and his allies (projectile flag 0x40, enemies only).
 - [ ] Apotheosis at level 20: immunity to sleep and paralysis, acid immunity (5 × 20%).
