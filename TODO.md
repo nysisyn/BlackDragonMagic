@@ -41,7 +41,7 @@ Not done yet:
 ### High-level abilities (branch hla)
 - [ ] At level-up in Throne of Bhaal the HLA list shows: extra spell 6 / 7 / 8, Summon Dark Planetar (not for good characters), Breathbloom, Wing Buffet, Insect Swarm, Plant Growth, with their names and icons; no Energy Blades, Improved Alacrity, Dragon's Breath, Summon Planetar or Comet.
 - [ ] The 4 new HLA appear as innate abilities, once per day per pick (Breathbloom 1 pick, the others up to 2).
-- [ ] Breathbloom: acid yellow dragon breath visual, 20d10 acid (Acid Affinity bonus applies), enemies thrown back and knocked unconscious, save vs. Breath halves and negates; party not hit.
+- [ ] Breathbloom: explosion of the game's Black Dragon Breath (as Nizidramanii'yt), no red dragon head, 20d10 acid (Acid Affinity bonus applies), enemies thrown back and knocked unconscious, save vs. Breath halves and negates; party not hit.
 - [ ] Wing Buffet: centred on the disciple, enemies within 20 ft. take 1d8 and are thrown back, unconscious 3 s on a failed save at -4; party not hit.
 - [ ] Insect Swarm: enemies around the target, 2 poison damage per second and 100% spell failure for 3 rounds; party not hit.
 - [ ] Plant Growth: entangle in a 20-ft. area (save at -10), allies hit, the disciple not (one round of immunity to his own Plant Growth).

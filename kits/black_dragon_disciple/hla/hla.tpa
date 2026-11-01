@@ -11,9 +11,10 @@
 // and innate (once per day, each pick gives one more use; Breathbloom
 // can only be picked once):
 //   NY#BDBL  Breathbloom: the game's Dragon's Breath (SPWI922), acid instead
-//            of fire, its dragon breath visual recoloured in the acid yellow
-//            of the kit's breath (NY#BDBLV.VVC / NY#BDBLA.BAM). Icons: the
-//            former Black Dragon Breathball ones (SPWI922 in acid yellow).
+//            of fire, with the explosion and sound of the black dragon's own
+//            breath (SPIN691: projectile GREEHIT, sound BLACK04) instead of
+//            the red dragon head visual. Icons: the former Black Dragon
+//            Breathball ones (SPWI922 in acid yellow).
 //   NY#BDWB  Wing Buffet: the dragon's Wing Buffet (SPIN695), save vs. Spell
 //            at -4 instead of -10 against the 3 seconds of unconsciousness.
 //            Icon: the kit's wings.
@@ -32,14 +33,24 @@ OUTER_SET ny_str_insect_d = RESOLVE_STR_REF (@85)
 OUTER_SET ny_str_plant    = RESOLVE_STR_REF (@86)
 OUTER_SET ny_str_plant_d  = RESOLVE_STR_REF (@87)
 
-// Icons and visual
+// Icons
 COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/bam/ny#bdblb.bam~ ~override~
      ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/bam/ny#bdblc.bam~ ~override~
-     ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/bam/ny#bdbla.bam~ ~override~
 LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDBLB~ c = ~NY#BDBLC~ END   // Remastered Spell Icons
 
-COPY_EXISTING ~spdrgnbr.vvc~ ~override/NY#BDBLV.vvc~
-  WRITE_ASCII 0x08 ~NY#BDBLA~ #8
+// Projectile and sound of the black dragon's breath (SPIN691)
+COPY_EXISTING ~spin691.spl~ ~override~
+  READ_LONG  0x64 ho
+  READ_SHORT (ho + 0x26) ny_bdbl_pro
+  READ_LONG  0x6a eo
+  READ_SHORT (ho + 0x1e) en                      // effects of the (only) header
+  READ_SHORT (ho + 0x20) ei
+  SPRINT ny_bdbl_snd ~BLACK04~
+  FOR (e = ei; e < ei + en; ++e) BEGIN
+    READ_SHORT (eo + e * 0x30) op
+    PATCH_IF (op = 174) BEGIN READ_ASCII (eo + e * 0x30 + 0x14) ny_bdbl_snd (8) NULL END
+  END
+BUT_ONLY
 
 // Turns a copied spell into an innate ability (type 4, every header
 // "innate") with a new name, description and icons.
@@ -66,7 +77,13 @@ END
 COPY_EXISTING ~spwi922.spl~ ~override/NY#BDBL.spl~
   LPF NY#HLA_INNATE INT_VAR name = ny_str_bbloom desc = ny_str_bbloom_d STR_VAR icon_b = ~NY#BDBLB~ icon_c = ~NY#BDBLC~ END
   LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 12 match_parameter2 = 0x80000 parameter2 = 0x10000 END   // fire -> acid
-  LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 215 STR_VAR resource = ~NY#BDBLV~ END
+  LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete = 215 END                       // red dragon head
+  LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 174 STR_VAR resource = EVAL ~%ny_bdbl_snd%~ END
+  READ_LONG  0x64 ho
+  READ_SHORT 0x68 hn
+  FOR (h = 0; h < hn; ++h) BEGIN
+    WRITE_SHORT (ho + h * 0x28 + 0x26) ny_bdbl_pro                                  // GREEHIT
+  END
 
 // Wing Buffet
 COPY_EXISTING ~spin695.spl~ ~override/NY#BDWB.spl~

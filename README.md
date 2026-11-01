@@ -80,7 +80,7 @@ BlackDragonMagic/
 | `NY#BDFP` / `NY#BDFQ` | Frightful Presence on / off |
 | `NY#BDFPA`, `NY#BDFPE` | aura pulse (spell + EFF) |
 | `LUNYB.2DA`, `LUABBR.2DA` | HLA table of the kit (BG2EE / EET, abbreviation `NYB`): extra spells of levels 6, 7 and 8, Summon Dark Planetar, and the 4 black dragon HLA below |
-| `NY#BDBL`, `NY#BDBLV`, `NY#BDBLA` | Breathbloom HLA (copy of `SPWI922` Dragon's Breath, acid instead of fire) and its visual (`SPDRGNBR` VVC / BAM recoloured acid yellow) |
+| `NY#BDBL` | Breathbloom HLA (copy of `SPWI922` Dragon's Breath, acid instead of fire, with the explosion and sound of the game's Black Dragon Breath `SPIN691`: projectile GREEHIT, sound BLACK04, no red dragon head) |
 | `NY#BDBLB`, `NY#BDBLC` | Breathbloom icons: the former Black Dragon Breathball ones (`SPWI922` recoloured acid yellow) |
 | `NY#BDWB` | Wing Buffet HLA (copy of the black dragon's `SPIN695`, save vs. Spell at -4 instead of -10, centred on the caster) |
 | `NY#BDIS` | Insect Swarm HLA (copy of the black dragon's `SPIN689`, unchanged) |
