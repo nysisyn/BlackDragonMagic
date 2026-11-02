@@ -105,6 +105,7 @@ Not done yet:
 - [ ] Icon: Free Action's waves recoloured acid yellow.
 
 ### Black Dragon Animate Breath
+- [ ] No spit / breath while the creature is asleep, unconscious, stunned, held, panicked or confused (state check before the forced cast).
 - [ ] Ooze summoned at the target point, allied, fights on its own; disappears after 1 round per level (14 rounds at least).
 - [ ] Attack: 2 per round, 2d8 acid each, no physical damage line; immune to acid.
 - [ ] Spits Corrosive Spit once per round while no enemy is in melee reach, without casting animation; melee otherwise; the spit's blindness and second hit work from the creature.
@@ -116,6 +117,7 @@ Not done yet:
 - [ ] The "successful save" subspell (delayed 1 second) is blocked when the save failed.
 
 ### Manifest Heritage: Chimera (branch chimera)
+- [ ] No spit / breath while the creature is asleep, unconscious, stunned, held, panicked or confused (state check before the forced cast).
 - [ ] Install (BG2:EE): the .DEBUG shows the animation id used (0xEC33 or another) and no error.
 - [ ] The chimera appears with the IWD2 animation (walk, attacks, death), right size and selection circle; sounds right (battle cry, attacks, breath, damage, death).
 - [ ] 110 HP, AC 2, THAC0 7, 3 attacks per round, 2d6+3, hits creatures needing +3 weapons; immune to fear; 75% acid resistance.
@@ -128,6 +130,7 @@ Not done yet:
 - [ ] Green explosion colour: set `ny_vs_color` in `tweaks/vitriolic_sphere/vitriolic_sphere.tpa` (palette index to find in Near Infinity).
 
 ### Test: hydra animation (component 900)
+- [ ] No spit / breath while the creature is asleep, unconscious, stunned, held, panicked or confused (state check before the forced cast).
 - [ ] Install: the .DEBUG prints the animation id; `CLUAConsole:CreateCreature("NY#HYDR")` creates the hydra.
 - [ ] Stand, walk, attacks, hit, death, corpse: frames in order, no jitter, feet on the ground, selection circle centred, shadow.
 - [ ] How the single facing looks when it walks up / down the screen; facing south (stand, walk): the front view, centred on its circle.

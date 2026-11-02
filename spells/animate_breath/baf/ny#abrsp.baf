@@ -1,3 +1,6 @@
+// The forced cast (ReallyForceSpellRES) ignores the creature's state, so it
+// is only tried while the creature can act (not asleep, unconscious,
+// stunned, held, panicked, confused...).
 // Animated breath: spits Corrosive Spit (summon version NY#ABRX: no casting
 // animation, no casting time) at the nearest enemy it sees, at most once per
 // round, and only while that enemy is out of melee reach; otherwise it
@@ -5,6 +8,8 @@
 IF
   See(NearestEnemyOf(Myself))
   !Range(NearestEnemyOf(Myself),4)
+  !StateCheck(Myself,CD_STATE_NOTVALID)
+  !CheckStatGT(Myself,0,HELD)
   !GlobalTimerNotExpired("NY#ABRSPT","LOCALS")
 THEN
   RESPONSE #100
