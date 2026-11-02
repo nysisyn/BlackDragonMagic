@@ -74,3 +74,76 @@ COPY_EXISTING ~WYVERNSU.cre~ ~override/NY#HYDR.cre~
   WRITE_BYTE  0x270 255                         // ENEMY
   REMOVE_CRE_ITEMS
   ADD_CRE_ITEM ~NY#HYDW~ #0 #0 #0 ~NONE~ ~WEAPON1~ EQUIP
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Summon Hydra - wizard, level 9, Conjuration (placeholder stats: those of
+// Manifest Heritage: Chimera, without the breath)
+//
+//   NY#HYDS   the summoned hydra (ally, CONTROLLED), from the summoned wyvern:
+//             110 HP, AC 2, THAC0 7, 3 attacks per round, HD 9, 75% acid
+//             resistance, no experience when killed
+//   NY#HYSW   its bites: 2d6+3 piercing, +3 weapon; immunity to fear
+//   NY#HYIS   the spell, 1 turn + 1 round per level (WIZARD_NY_SUMMON_HYDRA)
+//   NY#HYISB / NY#HYISC  icons: placeholder, the hydra's first frame reduced
+/////////////////////////////////////////////////////////////////////////////
+
+OUTER_SET ny_str_hyis   = RESOLVE_STR_REF (@2)
+OUTER_SET ny_str_hyis_d = RESOLVE_STR_REF (@3)
+
+COPY ~%MOD_FOLDER%/creatures/hydra/bam/ny#hyisb.bam~ ~override~
+     ~%MOD_FOLDER%/creatures/hydra/bam/ny#hyisc.bam~ ~override~
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#HYISB~ c = ~NY#HYISC~ END   // Remastered Spell Icons
+
+CREATE ~ITM~ ~NY#HYSW~
+  WRITE_LONG  0x08 ny_str_hydra
+  WRITE_LONG  0x0c ny_str_hydra
+  WRITE_LONG  0x18 0x60                         // not copyable, magical
+  WRITE_SHORT 0x1c 0x1c                         // hand-to-hand weapon
+  WRITE_LONG  0x60 3                            // +3 weapon
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 24 END   // panic
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 23 END   // morale failure
+  LPF NY#ADD_ITM_HEADER INT_VAR attack_type = 1 id_req = 0 location = 1 target = 1 range = 1 speed = 3
+                                thac0 = 3 damage_bonus = 3 dice_sides = 6 dice_thrown = 2 damage_type = 1 flags = 1 END
+
+COPY_EXISTING ~WYVERNSU.cre~ ~override/NY#HYDS.cre~
+  WRITE_LONG  0x08 ny_str_hydra
+  WRITE_LONG  0x0c ny_str_hydra
+  WRITE_LONG  0x14 0                            // no experience when killed
+  WRITE_SHORT 0x24 110
+  WRITE_SHORT 0x26 110
+  WRITE_LONG  0x28 ny_hyd_anim
+  WRITE_SHORT 0x46 2
+  WRITE_SHORT 0x48 2
+  WRITE_BYTE  0x52 7
+  WRITE_BYTE  0x53 3
+  WRITE_BYTE  0x54 8
+  WRITE_BYTE  0x55 10
+  WRITE_BYTE  0x56 9
+  WRITE_BYTE  0x57 9
+  WRITE_BYTE  0x58 11
+  FOR (o = 0x59; o <= 0x63; ++o) BEGIN WRITE_BYTE o 0 END
+  WRITE_BYTE  0x5c 75                           // acid
+  WRITE_BYTE  0x234 9
+  WRITE_BYTE  0x238 19
+  WRITE_BYTE  0x239 0
+  WRITE_BYTE  0x23a 4
+  WRITE_BYTE  0x23b 13
+  WRITE_BYTE  0x23c 13
+  WRITE_BYTE  0x23d 17
+  WRITE_BYTE  0x23e 10
+  WRITE_ASCII 0x248 ~~ #8                       // no override script
+  WRITE_ASCII 0x258 ~~ #8                       // no wyvern race script
+  WRITE_BYTE  0x270 5                           // CONTROLLED, as summons
+  REMOVE_CRE_ITEMS
+  ADD_CRE_ITEM ~NY#HYSW~ #0 #0 #0 ~NONE~ ~WEAPON1~ EQUIP
+
+CREATE ~SPL~ ~NY#HYIS~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_hyis desc = ny_str_hyis_d type = 1 level = 9
+                          school = 2 exclusion = 0x100 graphics = 14 STR_VAR icon = ~NY#HYISC~ END
+  FOR (lvl = 18; lvl <= 40; ++lvl) BEGIN
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 4 range = 30 level = ((lvl = 18) ? 1 : lvl) casting_time = 9 STR_VAR icon = ~NY#HYISB~ RET h = header END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 67 target = 1 timing = 0 duration = ((10 + lvl) * ny_round) STR_VAR resource = ~NY#HYDS~ END
+  END
+
+ADD_SPELL ~override/NY#HYIS.spl~ 2 9 ~WIZARD_NY_SUMMON_HYDRA~

@@ -1,1 +1,17 @@
 @1 = ~Hydre~
+
+// Convocation d'hydre (mage niveau 9)
+@2 = ~Convocation d'hydre~
+@3 = ~Convocation d'hydre
+(Conjuration/Convocation)
+
+Niveau : 9
+Portée : 9 m
+Durée : 1 tour + 1 round/niveau
+Temps d'incantation : 9
+Zone d'effet : spéciale
+Jet de sauvegarde : aucun
+
+Ce sort invoque une hydre aux multiples têtes qui combat pour le magicien. Elle obéit au lanceur jusqu'à la fin du sort ou jusqu'à sa mort.
+
+Hydre : PV 110, CA 2, TAC0 7, 3 attaques par round avec ses têtes (2d6+3 dégâts perforants, arme +3). L'hydre a 75 % de résistance à l'acide et est immunisée contre la peur.~
