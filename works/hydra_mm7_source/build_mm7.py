@@ -19,8 +19,8 @@ def slate(x,m):
     for i,j in zip(*np.nonzero(m)): y[i,j]=SWAP.get(tuple(x[i,j]),tuple(x[i,j]))
     return y
 cache={}
-def frame(r,c,mirror):
-    key=(r,c,mirror)
+def frame(r,c,mirror,breath=0):
+    key=(r,c,mirror,breath)
     if key in cache: return cache[key]
     x=cell(r,c); m=fgmask(x)
     if c>=3: x=slate(x,m)
@@ -32,6 +32,12 @@ def frame(r,c,mirror):
     sh=Image.new('L',(CELL,CELL),0)
     from PIL import ImageDraw
     w=(xs.max()-xs.min())*0.42; ImageDraw.Draw(sh).ellipse((AX-w,AY-14,AX+w,AY+6),fill=255)
+    if breath:
+        # idle breathing: body slightly stretched upwards from the feet
+        k=1+0.02*np.sin(2*np.pi*breath/BREATH_N)
+        H=round(CELL*k); st=im.resize((CELL,H),Image.LANCZOS)
+        if H>CELL: st=st.crop((0,H-CELL,CELL,H)); H=CELL
+        im=Image.new('RGBA',(CELL,CELL),(0,0,0,0)); im.paste(st,(0,CELL-H),st)
     if mirror: im=im.transpose(Image.FLIP_LEFT_RIGHT); sh=sh.transpose(Image.FLIP_LEFT_RIGHT)
     S=round(CELL*SCALE); im=im.resize((S,S),Image.LANCZOS); sh=sh.resize((S,S),Image.NEAREST)
     # crop to content
@@ -43,17 +49,24 @@ def frame(r,c,mirror):
 # IE order: 0 S, 1 SW, 2 W, 3 NW, 4 N (file XX) / 5 NE, 6 E, 7 SE (file XXE)
 DIRS=[(0,False),(1,True),(2,True),(3,True),(4,False),(3,False),(2,False),(1,False)]
 def rep(seq,n): return [c for c in seq for _ in range(n)]
-STAND=[1]*12
+BREATH_N=24
+STAND=None                                  # built per direction in cycle()
 READY=rep([1,3,4,3],3)
 ATTACK=rep(list(range(3,12))+[1],2)
 HIT=rep(list(range(12,18)),1)+[1]
 WALK=list(range(18,26))
 DEATH=list(range(3,8))                     # row 5, front only
-SEQS={'SD':STAND,'SC':READY,'WK':WALK,'A1':ATTACK,'A2':ATTACK,'A3':ATTACK,'A4':ATTACK,
+SEQS={'SD':[],'SC':READY,'WK':WALK,'A1':ATTACK,'A2':ATTACK,'A3':ATTACK,'A4':ATTACK,
       'CA':ATTACK,'SP':ATTACK,'GH':HIT,'DE':DEATH,'TW':[7,7],'SL':[7],'GU':DEATH[::-1]}
 DEATHLIKE={'DE','TW','SL','GU'}
 def cycle(s,d):
     r,mir=DIRS[d]
+    if s=='SD':
+        # slow breathing (each step shown twice), and seen from the front the
+        # sheet's own fidget (row 5, columns 9-12) once per cycle
+        out=[(r,1,mir,b) for b in range(BREATH_N) for _ in range(2)]
+        if r==0: out+=[(5,c,False,0) for c in rep([9,10,11,12,11,10,9],3)]
+        return out
     if s in DEATHLIKE: return [(5,c,mir and d in (1,2,3)) for c in SEQS[s]]
     return [(r,c,mir) for c in SEQS[s]]
 def write_bam(path,cycles):

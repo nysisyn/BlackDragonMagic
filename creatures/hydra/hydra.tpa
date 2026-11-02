@@ -10,7 +10,8 @@
 // exist only in green, recoloured with the exact palette swap read from the
 // green and slate standing frames (252 colours). Flat shadow added under the
 // feet. Scaled x0.8.
-// Sequences: SD stand, SC combat stance (heads swaying up), WK walk (8
+// Sequences: SD stand (slow breathing made by stretching the standing frame
+// up to 2%, and seen from the front the sheet's fidget once per cycle), SC combat stance (heads swaying up), WK walk (8
 // frames), A1-A4 / CA / SP attack (heads rise and strike, shown twice as
 // slow), GH hit, DE death (front view only in the sheet), TW / SL dead, GU
 // get up (death reversed).
