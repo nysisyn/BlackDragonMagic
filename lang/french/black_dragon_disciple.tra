@@ -50,7 +50,7 @@ PRÉSENCE TERRIFIANTE : Le Disciple du Dragon Noir dégage une aura de menace dr
 - Niveau 19 : les dégâts du Souffle passent à 12d4, et la ligne atteint 9 m de long et 3 m de large.
 - Niveau 20 : Apothéose draconique : bonus de +1 à la CA et immunité au sommeil et à la paralysie. Affinité acide atteint son apogée. Les griffes infligent désormais 2d8 dégâts tranchants et comptent comme des armes magiques +5.
 
-- Capacités de haut niveau (Throne of Bhaal) : en plus des sorts supplémentaires de l'ensorceleur et de Convocation de planétaire déchu, le Disciple du Dragon Noir peut apprendre les capacités innées d'un dragon noir adulte : Éclosion de souffle, Coup d'ailes, Nuée d'insectes et Croissance végétale.
+- Capacités de haut niveau (Throne of Bhaal) : en plus des sorts supplémentaires de l'ensorceleur et de Convocation de planétaire déchu, le Disciple du Dragon Noir peut apprendre les capacités innées d'un dragon noir adulte : Éclosion de souffle, Coup d'ailes, Nuée d'insectes et Croissance végétale, et invoquer une tortue-dragon noire.
 
 Désavantages :
 - Lance un sort de moins par jour à chaque niveau de sort.
@@ -269,3 +269,15 @@ Utilisable une fois par jour.~
 @87 = ~Croissance végétale
 
 Comme un dragon noir, le Disciple du Dragon Noir fait jaillir du sol les plantes du marais dans un rayon de 6 m. Les créatures dans la zone doivent réussir un jet de sauvegarde contre les sorts à -10 sous peine d'être entravées pendant 1 round : elles ne peuvent plus bouger et subissent un malus de 2 à la CA. Les alliés sont affectés, mais pas le Disciple du Dragon Noir lui-même.~
+
+// Convocation de tortue-dragon noire (capacité de haut niveau)
+@88 = ~Tortue-dragon noire~
+@89 = ~Vapeur acide~
+@90 = ~Convocation de tortue-dragon noire~
+@91 = ~Convocation de tortue-dragon noire
+
+Le Disciple du Dragon Noir appelle des profondeurs du marais une tortue-dragon noire qui combat à ses côtés pendant 1 tour + 1 round par niveau. Elle lui obéit jusqu'à la fin de la durée ou jusqu'à sa mort.
+
+Tortue-dragon noire : PV 220, CA -3, TAC0 1, 2 morsures par round (4d8+4 dégâts perforants, arme +4). Trois fois par invocation, au plus une fois tous les 3 rounds, elle souffle un nuage de vapeur acide en ligne de 12 m de long et 4,5 m de large, qui inflige 12d8 dégâts d'acide (jet de sauvegarde contre les souffles pour la moitié). Les alliés dans la ligne sont touchés. La tortue est immunisée contre l'acide, le poison et la peur.
+
+Utilisable une fois par jour.~

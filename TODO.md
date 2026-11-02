@@ -47,6 +47,7 @@ Not done yet:
 - [ ] Insect Swarm: enemies around the target, 2 poison damage per second and 100% spell failure for 3 rounds; party not hit.
 - [ ] Plant Growth: entangle in a 20-ft. area (save at -10), allies hit, the disciple not (one round of immunity to his own Plant Growth).
 - [ ] French and English descriptions (Breathbloom = Éclosion de souffle in French).
+- [ ] Summon Black Dragon Turtle (HLA): in the HLA list; the turtle appears, 8 directions, black, swims above its shadow, falls to the ground when it dies; Acid Steam line 40 x 15 ft. 3 times per summoning (not when the turtle is disabled); 2 bites; balance against Summon Dark Planetar.
 
 ### Acidosis
 - [x] Icons, casting, self damage OK.

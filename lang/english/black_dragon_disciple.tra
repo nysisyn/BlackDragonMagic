@@ -50,7 +50,7 @@ FRIGHTFUL PRESENCE: The Black Dragon Disciple radiates an aura of draconic menac
 - 19th level: Breath Weapon damage increases to 12d4, and the line grows to 30 ft. long and 10 ft. wide.
 - 20th level: Draconic Apotheosis: +1 bonus to AC and immunity to sleep and paralysis. Acid Affinity reaches its peak. Claws now deal 2d8 slashing damage and count as +5 magical weapons.
 
-- High-level abilities (Throne of Bhaal): besides the sorcerer's extra spells and Summon Dark Planetar, the Black Dragon Disciple may learn the innate abilities of an adult black dragon: Breathbloom, Wing Buffet, Insect Swarm and Plant Growth.
+- High-level abilities (Throne of Bhaal): besides the sorcerer's extra spells and Summon Dark Planetar, the Black Dragon Disciple may learn the innate abilities of an adult black dragon: Breathbloom, Wing Buffet, Insect Swarm and Plant Growth, and summon a black dragon turtle.
 
 Disadvantages:
 - Casts one fewer spell per day at each spell level.
@@ -269,5 +269,17 @@ Usable once per day.~
 @87 = ~Plant Growth
 
 Like a black dragon, the Black Dragon Disciple makes the swamp plants burst from the ground in a 20-ft. radius. Creatures in the area must save vs. Spell at -10 or be entangled for 1 round: they cannot move and suffer a 2-point penalty to AC. Allies are affected, but not the Black Dragon Disciple himself.
+
+Usable once per day.~
+
+// Summon Black Dragon Turtle (HLA)
+@88 = ~Black Dragon Turtle~
+@89 = ~Acid Steam~
+@90 = ~Summon Black Dragon Turtle~
+@91 = ~Summon Black Dragon Turtle
+
+The Black Dragon Disciple calls a black dragon turtle from the depths of the swamp to fight at his side for 1 turn + 1 round per level. It obeys him until the duration ends or it is slain.
+
+Black dragon turtle: HP 220, AC -3, THAC0 1, 2 bites per round (4d8+4 piercing damage, +4 weapon). Three times per summoning, at most once every 3 rounds, it breathes a cloud of acid steam in a line 40 ft. long and 15 ft. wide, dealing 12d8 acid damage (save vs. Breath for half). Allies in the line are affected. The turtle is immune to acid, poison and fear.
 
 Usable once per day.~

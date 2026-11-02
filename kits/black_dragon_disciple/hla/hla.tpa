@@ -109,5 +109,125 @@ COPY_EXISTING ~spin688.spl~ ~override/NY#BDPG.spl~
   // to this spell, applied to himself at the start of the casting
   LPF ADD_SPELL_EFFECT INT_VAR opcode = 206 target = 1 timing = 0 duration = ny_round parameter1 = "-1" insert_point = 0 STR_VAR resource = ~NY#BDPG~ END
 
+// ---------------------------------------------------------------------------
+// Summon Black Dragon Turtle (HLA, innate, once per day)
+//
+// Animation MDTU from the dragon turtle of Might and Magic VIII: Day of the
+// Destroyer (3DO / New World Computing, 2000; sprite sheet ripped by Cyrus
+// Annihilator), built with works/dragon_turtle_mm8_source/build_turtle.py:
+// monster_icewind type, 5 facings (west side mirrored), green scales
+// blackened, swims a little above the ground (flat shadow), falls to the
+// ground when it dies. Animation id: first free one from 0xEC50.
+//   NY#DTUR   the turtle (ally, CONTROLLED), from the summoned wyvern: 220 HP,
+//             AC -3, THAC0 1, 2 attacks per round, level 16, saves of a
+//             level 16 fighter, immune to acid, fear and poison
+//   NY#DTUW   its bite: 4d8+4 piercing, +4 weapon; carries the immunities
+//   NY#DTBR   its Acid Steam (innate): line 40 ft. long and 15 ft. wide,
+//             12d8 acid, save vs. Breath for half; 3 times per summoning,
+//             every 3 rounds at most (script NY#DTUS); NY#DTBRT projectile
+//   NY#BDDT   the HLA: 1 turn + 1 round per level
+//   NY#BDDTB / NY#BDDTC  icons: placeholder, the turtle reduced
+// ---------------------------------------------------------------------------
+OUTER_SET ny_str_dtur    = RESOLVE_STR_REF (@88)
+OUTER_SET ny_str_dtur_br = RESOLVE_STR_REF (@89)
+OUTER_SET ny_str_bddt    = RESOLVE_STR_REF (@90)
+OUTER_SET ny_str_bddt_d  = RESOLVE_STR_REF (@91)
+
+COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/bam/ny#bddtb.bam~ ~override~
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/bam/ny#bddtc.bam~ ~override~
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDDTB~ c = ~NY#BDDTC~ END   // Remastered Spell Icons
+
+COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/turtle/anim~ ~override~
+
+OUTER_SET ny_dtu_anim = "-1"
+OUTER_FOR (id = 0xec50; (id <= 0xecff) AND (ny_dtu_anim < 0); ++id) BEGIN
+  LAF NY#HEX4 INT_VAR value = id RET hexstring = hex END
+  OUTER_SET used = FILE_EXISTS_IN_GAME ~%hexstring%.ini~
+  ACTION_IF (NOT used) BEGIN
+    COPY_EXISTING ~animate.ids~ ~override~
+      PATCH_IF (INDEX_BUFFER (CASE_INSENSITIVE EVALUATE_REGEXP ~^0x%hexstring%[ %TAB%]~) >= 0) BEGIN
+        SET used = 1
+      END
+    BUT_ONLY
+  END
+  ACTION_IF (NOT used) BEGIN
+    OUTER_SET ny_dtu_anim = id
+    OUTER_SPRINT ny_dtu_hex ~%hexstring%~
+  END
+END
+ACTION_IF (ny_dtu_anim < 0) BEGIN
+  FAIL ~BlackDragonMagic: no free animation id between 0xEC50 and 0xECFF~
+END
+COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/turtle/ini/dragon_turtle.ini~ ~override/%ny_dtu_hex%.ini~
+ACTION_IF (IDS_OF_SYMBOL (~animate~ ~NY_DRAGON_TURTLE~) < 0) BEGIN
+  APPEND ~animate.ids~ ~0x%ny_dtu_hex% NY_DRAGON_TURTLE~
+END
+PRINT ~Black dragon turtle animation id: 0x%ny_dtu_hex%~
+
+// Acid Steam: line 40 ft. x 15 ft. (the kit's breath wave, wider)
+LAF NY#CREATE_LINE_PRO INT_VAR speed = 20 width = 120 trail_delay = 2 STR_VAR new = ~NY#DTBRT~ bam = ~NY#BDWAV~ trail = ~NY#BDWVT~ sound = ~NY#BDBRE~ workspace = EVAL ~%ny_workspace%~ RET ny_pro_dtbr = pro_id END
+CREATE ~SPL~ ~NY#DTBR~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_dtur_br type = 4 level = 1 flags = 0x400 END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 4 range = 40 level = 1 casting_time = 0 projectile = ny_pro_dtbr RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = 2 parameter1 = "-1" STR_VAR resource = ~NY#DTBR~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 STR_VAR resource = ~NY#BDWVH~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 0 parameter2 = 0x10000 dicenumber = 12 dicesize = 8 savingthrow = 2 special = 0x100 END
+
+COMPILE ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/turtle/baf/ny#dtus.baf~
+
+CREATE ~ITM~ ~NY#DTUW~
+  WRITE_LONG  0x08 ny_str_dtur
+  WRITE_LONG  0x0c ny_str_dtur
+  WRITE_LONG  0x18 0x60                         // not copyable, magical
+  WRITE_SHORT 0x1c 0x1c                         // hand-to-hand weapon
+  WRITE_LONG  0x60 4                            // +4 weapon
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 24 END   // panic
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 23 END   // morale failure
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 25 END   // poison
+  LPF NY#ADD_ITM_HEADER INT_VAR attack_type = 1 id_req = 0 location = 1 target = 1 range = 1 speed = 4
+                                thac0 = 0 damage_bonus = 4 dice_sides = 8 dice_thrown = 4 damage_type = 1 flags = 1 END
+
+COPY_EXISTING ~WYVERNSU.cre~ ~override/NY#DTUR.cre~
+  WRITE_LONG  0x08 ny_str_dtur
+  WRITE_LONG  0x0c ny_str_dtur
+  WRITE_LONG  0x14 0                            // no experience when killed
+  WRITE_SHORT 0x24 220                          // HP
+  WRITE_SHORT 0x26 220
+  WRITE_LONG  0x28 ny_dtu_anim
+  WRITE_SHORT 0x46 "-3"                         // AC
+  WRITE_SHORT 0x48 "-3"
+  WRITE_BYTE  0x52 1                            // THAC0
+  WRITE_BYTE  0x53 2                            // 2 attacks per round
+  // saves of a level 16 fighter: death, wands, polymorph, breath, spells
+  WRITE_BYTE  0x54 3
+  WRITE_BYTE  0x55 5
+  WRITE_BYTE  0x56 4
+  WRITE_BYTE  0x57 4
+  WRITE_BYTE  0x58 6
+  FOR (o = 0x59; o <= 0x63; ++o) BEGIN WRITE_BYTE o 0 END
+  WRITE_BYTE  0x5c 100                          // acid
+  WRITE_BYTE  0x234 16                          // level
+  WRITE_BYTE  0x238 21                          // STR
+  WRITE_BYTE  0x239 0
+  WRITE_BYTE  0x23a 10                          // INT
+  WRITE_BYTE  0x23b 13                          // WIS
+  WRITE_BYTE  0x23c 10                          // DEX
+  WRITE_BYTE  0x23d 21                          // CON
+  WRITE_BYTE  0x23e 12                          // CHA
+  WRITE_ASCII 0x248 ~NY#DTUS~ #8                // override script: Acid Steam
+  WRITE_ASCII 0x258 ~~ #8                       // no wyvern race script
+  WRITE_BYTE  0x270 5                           // CONTROLLED, as summons
+  REMOVE_CRE_ITEMS
+  ADD_CRE_ITEM ~NY#DTUW~ #0 #0 #0 ~NONE~ ~WEAPON1~ EQUIP
+
+// The HLA: innate, 1 turn + 1 round per level
+CREATE ~SPL~ ~NY#BDDT~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_bddt desc = ny_str_bddt_d type = 4 level = 1
+                          school = 2 graphics = 14 STR_VAR icon = ~NY#BDDTC~ END
+  FOR (lvl = 1; lvl <= 50; ++lvl) BEGIN
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 4 range = 30 level = lvl casting_time = 5 STR_VAR icon = ~NY#BDDTB~ RET h = header END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 67 target = 1 timing = 0 duration = ((10 + lvl) * ny_round) STR_VAR resource = ~NY#DTUR~ END
+  END
+
 // HLA table
 COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/2da/lunyb.2da~ ~override~
