@@ -13,8 +13,8 @@
 // frame shown twice, the strike held, then back to rest; CA / SP cast (heads
 // up), GH hit, DE death, TW / SL dead, GU get up (death reversed).
 //
-// Test creature NY#HYDR (hostile, from the summoned wyvern), to create
-// with the console: CLUAConsole:CreateCreature("NY#HYDR")
+// Test creature NY#HYDR (hostile copy of the summoned hydra, see below), to
+// create with the console: CLUAConsole:CreateCreature("NY#HYDR")
 /////////////////////////////////////////////////////////////////////////////
 
 OUTER_SET ny_str_hydra = RESOLVE_STR_REF (@1)
@@ -47,46 +47,18 @@ ACTION_IF (IDS_OF_SYMBOL (~animate~ ~NY_HYDRA~) < 0) BEGIN
 END
 PRINT ~Hydra animation id: 0x%ny_hyd_hex%~
 
-// Bites: 1d10 piercing, +2
-CREATE ~ITM~ ~NY#HYDW~
-  WRITE_LONG  0x08 ny_str_hydra
-  WRITE_LONG  0x0c ny_str_hydra
-  WRITE_LONG  0x18 0x60
-  WRITE_SHORT 0x1c 0x1c
-  WRITE_LONG  0x60 2
-  LPF NY#ADD_ITM_HEADER INT_VAR attack_type = 1 id_req = 0 location = 1 target = 1 range = 1 speed = 3
-                                thac0 = 2 damage_bonus = 2 dice_sides = 10 dice_thrown = 1 damage_type = 2 flags = 1 END
-
-COPY_EXISTING ~WYVERNSU.cre~ ~override/NY#HYDR.cre~
-  WRITE_LONG  0x08 ny_str_hydra
-  WRITE_LONG  0x0c ny_str_hydra
-  WRITE_LONG  0x14 2000                         // experience
-  WRITE_SHORT 0x24 90
-  WRITE_SHORT 0x26 90
-  WRITE_LONG  0x28 ny_hyd_anim
-  WRITE_SHORT 0x46 5
-  WRITE_SHORT 0x48 5
-  WRITE_BYTE  0x52 9                            // THAC0
-  WRITE_BYTE  0x53 3                            // 3 heads, 3 attacks
-  WRITE_BYTE  0x234 9
-  WRITE_ASCII 0x248 ~~ #8                       // override
-  WRITE_ASCII 0x250 ~~ #8                       // class
-  WRITE_ASCII 0x258 ~~ #8                       // race
-  WRITE_ASCII 0x260 ~~ #8                       // general
-  WRITE_ASCII 0x268 ~WTASIGHT~ #8               // default: attacks on sight
-  WRITE_BYTE  0x270 255                         // ENEMY
-  REMOVE_CRE_ITEMS
-  ADD_CRE_ITEM ~NY#HYDW~ #0 #0 #0 ~NONE~ ~WEAPON1~ EQUIP
-
-
 /////////////////////////////////////////////////////////////////////////////
-// Summon Hydra - wizard, level 9, Conjuration (placeholder stats: those of
-// Manifest Heritage: Chimera, without the breath)
+// Summon Hydra - wizard, level 9, Conjuration
 //
-//   NY#HYDS   the summoned hydra (ally, CONTROLLED), from the summoned wyvern:
-//             110 HP, AC 2, THAC0 7, 3 attacks per round, HD 9, 75% acid
-//             resistance, no experience when killed
-//   NY#HYSW   its bites: 2d6+3 piercing, +3 weapon; immunity to fear
+//   NY#HYDS   the summoned hydra (ally, CONTROLLED), from the summoned wyvern,
+//             on par with the level 9 summons: 160 HP, AC 0, THAC0 5,
+//             4 attacks per round (its heads), level 12, saves of a level 12
+//             fighter, STR 20, 50% acid resistance, immune to poison and
+//             fear, regenerates 1 HP per second as a troll; no experience
+//             when killed
+//   NY#HYSW   its bites: 2d6+4 piercing, +4 weapon (+2 to hit); carries the
+//             immunities and the regeneration (with its portrait icon)
+//   NY#HYDR   test copy, hostile, to create with the console
 //   NY#HYIS   the spell, 1 turn + 1 round per level (WIZARD_NY_SUMMON_HYDRA)
 //   NY#HYISB / NY#HYISC  icons: placeholder, the hydra's first frame reduced
 /////////////////////////////////////////////////////////////////////////////
@@ -103,43 +75,56 @@ CREATE ~ITM~ ~NY#HYSW~
   WRITE_LONG  0x0c ny_str_hydra
   WRITE_LONG  0x18 0x60                         // not copyable, magical
   WRITE_SHORT 0x1c 0x1c                         // hand-to-hand weapon
-  WRITE_LONG  0x60 3                            // +3 weapon
+  WRITE_LONG  0x60 4                            // +4 weapon
   LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 24 END   // panic
   LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 23 END   // morale failure
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 25 END   // poison
+  // regeneration as the trolls (TROLLREG.ITM): 1 HP per second
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 98  target = 1 timing = 2 parameter1 = 1 parameter2 = 2 END
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 142 target = 1 timing = 2 parameter2 = 87 END   // regeneration icon
   LPF NY#ADD_ITM_HEADER INT_VAR attack_type = 1 id_req = 0 location = 1 target = 1 range = 1 speed = 3
-                                thac0 = 3 damage_bonus = 3 dice_sides = 6 dice_thrown = 2 damage_type = 1 flags = 1 END
+                                thac0 = 2 damage_bonus = 4 dice_sides = 6 dice_thrown = 2 damage_type = 1 flags = 1 END
 
 COPY_EXISTING ~WYVERNSU.cre~ ~override/NY#HYDS.cre~
   WRITE_LONG  0x08 ny_str_hydra
   WRITE_LONG  0x0c ny_str_hydra
   WRITE_LONG  0x14 0                            // no experience when killed
-  WRITE_SHORT 0x24 110
-  WRITE_SHORT 0x26 110
+  WRITE_SHORT 0x24 160                          // HP
+  WRITE_SHORT 0x26 160
   WRITE_LONG  0x28 ny_hyd_anim
-  WRITE_SHORT 0x46 2
-  WRITE_SHORT 0x48 2
-  WRITE_BYTE  0x52 7
-  WRITE_BYTE  0x53 3
-  WRITE_BYTE  0x54 8
-  WRITE_BYTE  0x55 10
-  WRITE_BYTE  0x56 9
-  WRITE_BYTE  0x57 9
-  WRITE_BYTE  0x58 11
+  WRITE_SHORT 0x46 0                            // AC
+  WRITE_SHORT 0x48 0
+  WRITE_BYTE  0x52 5                            // THAC0
+  WRITE_BYTE  0x53 4                            // 4 attacks per round
+  // saves of a level 12 fighter: death, wands, polymorph, breath, spells
+  WRITE_BYTE  0x54 5
+  WRITE_BYTE  0x55 7
+  WRITE_BYTE  0x56 6
+  WRITE_BYTE  0x57 5
+  WRITE_BYTE  0x58 8
   FOR (o = 0x59; o <= 0x63; ++o) BEGIN WRITE_BYTE o 0 END
-  WRITE_BYTE  0x5c 75                           // acid
-  WRITE_BYTE  0x234 9
-  WRITE_BYTE  0x238 19
+  WRITE_BYTE  0x5c 50                           // acid
+  WRITE_BYTE  0x234 12                          // level
+  WRITE_BYTE  0x238 20                          // STR
   WRITE_BYTE  0x239 0
-  WRITE_BYTE  0x23a 4
-  WRITE_BYTE  0x23b 13
-  WRITE_BYTE  0x23c 13
-  WRITE_BYTE  0x23d 17
-  WRITE_BYTE  0x23e 10
+  WRITE_BYTE  0x23a 4                           // INT
+  WRITE_BYTE  0x23b 13                          // WIS
+  WRITE_BYTE  0x23c 14                          // DEX
+  WRITE_BYTE  0x23d 19                          // CON
+  WRITE_BYTE  0x23e 10                          // CHA
   WRITE_ASCII 0x248 ~~ #8                       // no override script
   WRITE_ASCII 0x258 ~~ #8                       // no wyvern race script
   WRITE_BYTE  0x270 5                           // CONTROLLED, as summons
   REMOVE_CRE_ITEMS
   ADD_CRE_ITEM ~NY#HYSW~ #0 #0 #0 ~NONE~ ~WEAPON1~ EQUIP
+
+// Test copy, hostile
+COPY_EXISTING ~NY#HYDS.cre~ ~override/NY#HYDR.cre~
+  WRITE_LONG  0x14 4000                         // experience
+  WRITE_ASCII 0x250 ~~ #8                       // class
+  WRITE_ASCII 0x260 ~~ #8                       // general
+  WRITE_ASCII 0x268 ~WTASIGHT~ #8               // default: attacks on sight
+  WRITE_BYTE  0x270 255                         // ENEMY
 
 CREATE ~SPL~ ~NY#HYIS~
   LPF NY#SPL_BASE INT_VAR name = ny_str_hyis desc = ny_str_hyis_d type = 1 level = 9

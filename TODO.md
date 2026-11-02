@@ -131,7 +131,7 @@ Not done yet:
 - [ ] Install: the .DEBUG prints the animation id; `CLUAConsole:CreateCreature("NY#HYDR")` creates the hydra.
 - [ ] Stand, walk, attacks, hit, death, corpse: frames in order, no jitter, feet on the ground, selection circle centred, shadow.
 - [ ] How the single facing looks when it walks up / down the screen; facing south (stand, walk): the front view, centred on its circle.
-- [ ] Summon Hydra (wizard level 9): learnable, summons an allied hydra for 1 turn + 1 round per level, controllable, attacks with 3 bites; placeholder stats (chimera's) and icon.
+- [ ] Summon Hydra (wizard level 9): learnable, summons an allied hydra for 1 turn + 1 round per level, controllable, 4 attacks per round, 160 HP, regenerates 1 HP per second (portrait icon); balance against the other level 9 summons; placeholder icon.
 
 ## Later
 - [ ] Custom icons (BAM) for the claws, breath, aura, wing buffet and spells.

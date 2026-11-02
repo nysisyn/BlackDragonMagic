@@ -14,4 +14,4 @@ Saving Throw: None
 
 This spell summons a many-headed hydra to fight for the wizard. It obeys the caster until the spell ends or it is slain.
 
-Hydra: HP 110, AC 2, THAC0 7, 3 attacks per round with its heads (2d6+3 piercing damage, +3 weapon). The hydra has 75% acid resistance and is immune to fear.~
+Hydra: HP 160, AC 0, THAC0 5, 4 attacks per round with its heads (2d6+4 piercing damage, +4 weapon). Like a troll, the hydra regenerates 1 hit point per second. It has 50% acid resistance and is immune to poison and fear.~
