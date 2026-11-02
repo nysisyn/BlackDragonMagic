@@ -18,7 +18,8 @@ def placed(k):
     return im,sm,round(cx*SCALE),round(cy*SCALE)
 SD=list(range(0,11)); UP=list(range(17,24)); DN=list(range(24,34)); WK=list(range(34,45))
 ST=list(range(54,61)); DE=list(range(61,67))
-SEQS={'SD':SD,'SC':SD,'WK':WK,'A1':ST+ST[-2:0:-1],'A4':DN,'CA':UP+UP[-2:0:-1],'SP':UP+UP[-2:0:-1],
+SLOW=[k for k in SD for _ in range(3)]   # idle: each frame shown 3 times (the engine plays 15 frames per second)
+SEQS={'SD':SLOW,'SC':SLOW,'WK':WK,'A1':ST+ST[-2:0:-1],'A4':DN,'CA':UP+UP[-2:0:-1],'SP':UP+UP[-2:0:-1],
       'GH':[11,12,11],'DE':DE,'TW':[66,66],'SL':[66],'GU':DE[::-1]}
 cache={}
 def get(k,mirror):
