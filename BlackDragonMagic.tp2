@@ -120,7 +120,7 @@ WITH_TRA ~%MOD_FOLDER%/lang/english/vitriolic_sphere.tra~
 END
 
 
-// Test: hydra animation (Chaos Hydra of Heroes of Might and Magic III), test
+// Test: hydra animation (hydra of Might and Magic VII), test
 // creature NY#HYDR to create with the console
 BEGIN @4 DESIGNATED 900
 LABEL ~BlackDragonMagic-Test-Hydra~

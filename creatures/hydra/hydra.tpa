@@ -1,17 +1,21 @@
 /////////////////////////////////////////////////////////////////////////////
 // Test: hydra animation (BG2:EE and EET)
 //
-// Animation MHYD built from the Chaos Hydra of Heroes of Might and Magic III
-// (3DO / New World Computing, 1999; sprite sheet ripped by Cyrus
-// Annihilator) with works/hydra_source/build.py: monster_icewind type
-// (MHYD<seq>.BAM: S, SW, W, NW, N / MHYD<seq>E.BAM: NE, E, SE). The art has
-// one facing only (east); the west side is mirrored. Facing south, stand and
-// walk use a still front view (13th sprite of the sheet).
-// Sequences: SD stand, SC combat stance (heads rising, sprites 14-17 back
-// and forth), WK walk, A1 / A4 attack (heads lunging forward), A2 attack
-// (heads striking low), A3 attack (heads striking from above): every attack
-// frame shown twice, the strike held, then back to rest; CA / SP cast (heads
-// up), GH hit, DE death, TW / SL dead, GU get up (death reversed).
+// Animation MHYD built from the hydra of Might and Magic VII: For Blood and
+// Honor (3DO / New World Computing, 1999; sprite sheet ripped by Cyrus
+// Annihilator) with works/hydra_mm7_source/build_mm7.py: monster_icewind
+// type (MHYD<seq>.BAM: S, SW, W, NW, N / MHYD<seq>E.BAM: NE, E, SE). The
+// sheet has 5 facings (front, front 3/4, profile, back 3/4, back), the west
+// side is mirrored: 8 real directions. Slate grey variant: the animations
+// exist only in green, recoloured with the exact palette swap read from the
+// green and slate standing frames (252 colours). Flat shadow added under the
+// feet. Scaled x0.8.
+// Sequences: SD stand, SC combat stance (heads swaying up), WK walk (8
+// frames), A1-A4 / CA / SP attack (heads rise and strike, shown twice as
+// slow), GH hit, DE death (front view only in the sheet), TW / SL dead, GU
+// get up (death reversed).
+// The first version (Chaos Hydra of Heroes of Might and Magic III, one
+// facing only) is kept in works/hydra_homm3_source.
 //
 // Test creature NY#HYDR (hostile copy of the summoned hydra, see below), to
 // create with the console: CLUAConsole:CreateCreature("NY#HYDR")

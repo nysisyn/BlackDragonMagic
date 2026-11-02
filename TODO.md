@@ -133,7 +133,7 @@ Not done yet:
 - [ ] No spit / breath while the creature is asleep, unconscious, stunned, held, panicked or confused (state check before the forced cast).
 - [ ] Install: the .DEBUG prints the animation id; `CLUAConsole:CreateCreature("NY#HYDR")` creates the hydra.
 - [ ] Stand, walk, attacks, hit, death, corpse: frames in order, no jitter, feet on the ground, selection circle centred, shadow.
-- [ ] How the single facing looks when it walks up / down the screen; facing south (stand, walk): the front view, centred on its circle.
+- [ ] Might and Magic VII version: the 8 directions (front, 3/4, profile, back), slate grey everywhere (no green left), death seen from the front whatever the direction.
 - [ ] Summon Hydra (wizard level 9): learnable, summons an allied hydra for 1 turn + 1 round per level, controllable, 4 attacks per round, 160 HP, regenerates 1 HP per second (portrait icon); balance against the other level 9 summons; placeholder icon.
 - [ ] Hydra's Corrosive Spit: acid blob projectile, only out of melee reach, once per round at most, 5d4 acid then blindness + 5d4 on a failed save; melee otherwise.
 
