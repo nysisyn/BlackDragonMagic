@@ -1,0 +1,8 @@
+// Dracockatrix: attacks the nearest enemy it sees (the base creature's own
+// scripts are removed: the Mustard Jelly's WTASIGHT turns summons hostile).
+IF
+  See(NearestEnemyOf(Myself))
+THEN
+  RESPONSE #100
+    AttackReevaluate(NearestEnemyOf(Myself),15)
+END

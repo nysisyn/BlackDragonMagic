@@ -1,0 +1,18 @@
+// Sort
+@1 = ~Convocation de dracocatrix~
+@2 = ~Convocation de dracocatrix
+(Conjuration/Convocation)
+
+Niveau : 2
+Portée : 9 m
+Durée : 3 rounds + 1 round/niveau
+Temps d'incantation : 2
+Zone d'effet : spéciale
+Jet de sauvegarde : aucun
+
+Ce sort invoque une dracocatrix, petit hybride féroce d'une cocatrix et d'un dragon noir, qui combat pour le magicien. Elle obéit au lanceur jusqu'à la fin du sort ou jusqu'à sa mort.
+
+Dracocatrix : PV 24, CA 5, TAC0 15, 1 morsure par round (1d4 dégâts perforants et 1d4 dégâts d'acide). Une créature mordue doit réussir un jet de sauvegarde contre la pétrification/métamorphose sous peine d'être ralentie pendant 2 rounds, sa chair se raidissant. La dracocatrix a 50 % de résistance à l'acide.~
+
+// Créature et sa morsure
+@3 = ~Dracocatrix~

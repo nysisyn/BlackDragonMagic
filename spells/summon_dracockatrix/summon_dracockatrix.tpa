@@ -1,0 +1,125 @@
+/////////////////////////////////////////////////////////////////////////////
+// Summon Dracockatrix - wizard, level 2, Conjuration
+//
+// Summons a dracockatrix, a small cockatrice / black dragon hybrid, for
+// 3 rounds + 1 round per level.
+//   - HP 24, AC 5, THAC0 15, 1 bite per round, level 4, 50% acid resistance
+//   - bite NY#DCKW: 1d4 piercing + 1d4 acid; save vs. Petrification /
+//     Polymorph or slowed for 2 rounds (its flesh stiffens, a weak echo of
+//     the cockatrice's petrifying touch)
+//   - allegiance CONTROLLED (5), no experience for killing it
+//
+// Animation MDCK built from the thunder lizard of Might and Magic VIII: Day
+// of the Destroyer (3DO / New World Computing, 2000; sprite sheet ripped by
+// Cyrus Annihilator) with works/dracockatrix_mm8_source/build_dracockatrix.py:
+// monster_icewind type, 5 facings (west side mirrored), half the original
+// size, recoloured as a black dragon (scales black, frill dark maroon),
+// slow breathing when idle. Basilisk sounds. Animation id: first free one
+// from 0xEC60 (NY_DRACOCKATRIX in ANIMATE.IDS).
+//
+// Resources
+//   SPWIxxx   Summon Dracockatrix (WIZARD_NY_SUMMON_DRACOCKATRIX)
+//   NY#DCK    the creature, from the game's Mustard Jelly (as the animated
+//             breath), NY#DCKW its bite, NY#DCKAI its script
+//   NY#DCKB / NY#DCKC  icons: placeholder, the creature reduced
+/////////////////////////////////////////////////////////////////////////////
+
+OUTER_SET ny_str_dck     = RESOLVE_STR_REF (@1)
+OUTER_SET ny_str_dck_d   = RESOLVE_STR_REF (@2)
+OUTER_SET ny_str_dck_cre = RESOLVE_STR_REF (@3)
+
+COPY ~%MOD_FOLDER%/spells/summon_dracockatrix/bam/ny#dckb.bam~ ~override~
+     ~%MOD_FOLDER%/spells/summon_dracockatrix/bam/ny#dckc.bam~ ~override~
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#DCKB~ c = ~NY#DCKC~ END   // Remastered Spell Icons
+
+COPY ~%MOD_FOLDER%/spells/summon_dracockatrix/anim~ ~override~
+
+OUTER_SET ny_dck_anim = "-1"
+OUTER_FOR (id = 0xec60; (id <= 0xecff) AND (ny_dck_anim < 0); ++id) BEGIN
+  LAF NY#HEX4 INT_VAR value = id RET hexstring = hex END
+  OUTER_SET used = FILE_EXISTS_IN_GAME ~%hexstring%.ini~
+  ACTION_IF (NOT used) BEGIN
+    COPY_EXISTING ~animate.ids~ ~override~
+      PATCH_IF (INDEX_BUFFER (CASE_INSENSITIVE EVALUATE_REGEXP ~^0x%hexstring%[ %TAB%]~) >= 0) BEGIN
+        SET used = 1
+      END
+    BUT_ONLY
+  END
+  ACTION_IF (NOT used) BEGIN
+    OUTER_SET ny_dck_anim = id
+    OUTER_SPRINT ny_dck_hex ~%hexstring%~
+  END
+END
+ACTION_IF (ny_dck_anim < 0) BEGIN
+  FAIL ~BlackDragonMagic: no free animation id between 0xEC60 and 0xECFF~
+END
+COPY ~%MOD_FOLDER%/spells/summon_dracockatrix/ini/dracockatrix.ini~ ~override/%ny_dck_hex%.ini~
+ACTION_IF (IDS_OF_SYMBOL (~animate~ ~NY_DRACOCKATRIX~) < 0) BEGIN
+  APPEND ~animate.ids~ ~0x%ny_dck_hex% NY_DRACOCKATRIX~
+END
+PRINT ~Dracockatrix animation id: 0x%ny_dck_hex%~
+
+// Bite: 1d4 piercing + 1d4 acid, save vs. Polymorph or slowed 2 rounds
+CREATE ~ITM~ ~NY#DCKW~
+  WRITE_LONG  0x08 ny_str_dck_cre
+  WRITE_LONG  0x0c ny_str_dck_cre
+  WRITE_LONG  0x18 0x60                         // not copyable, magical
+  WRITE_SHORT 0x1c 0x1c                         // hand-to-hand weapon
+  LPF NY#ADD_ITM_HEADER INT_VAR attack_type = 1 id_req = 0 location = 1 target = 1 range = 1 speed = 2
+                                thac0 = 0 damage_bonus = 0 dice_sides = 4 dice_thrown = 1 damage_type = 1 flags = 1 END
+  LPF ADD_ITEM_EFFECT INT_VAR type = 1 opcode = 12 target = 2 timing = 1 parameter2 = 0x10000 dicenumber = 1 dicesize = 4 END
+  LPF ADD_ITEM_EFFECT INT_VAR type = 1 opcode = 40 target = 2 timing = 0 duration = (2 * ny_round) savingthrow = 0x10 END
+
+COMPILE ~%MOD_FOLDER%/spells/summon_dracockatrix/baf/ny#dckai.baf~
+
+ACTION_IF FILE_EXISTS_IN_GAME ~JELLYMU.cre~ BEGIN
+  OUTER_SPRINT ny_dck_base ~JELLYMU~            // BG:EE, SoD, EET
+END ELSE BEGIN
+  OUTER_SPRINT ny_dck_base ~JELLMU~             // BG2:EE
+END
+COPY_EXISTING ~%ny_dck_base%.cre~ ~override/NY#DCK.cre~
+  WRITE_LONG  0x08 ny_str_dck_cre
+  WRITE_LONG  0x0c ny_str_dck_cre
+  WRITE_LONG  0x14 0                            // no experience when killed
+  WRITE_SHORT 0x24 24                           // HP
+  WRITE_SHORT 0x26 24
+  WRITE_LONG  0x28 ny_dck_anim
+  WRITE_SHORT 0x46 5                            // AC
+  WRITE_SHORT 0x48 5
+  WRITE_BYTE  0x52 15                           // THAC0
+  WRITE_BYTE  0x53 1                            // 1 attack per round
+  // saves of a level 4 fighter: death, wands, polymorph, breath, spells
+  WRITE_BYTE  0x54 13
+  WRITE_BYTE  0x55 15
+  WRITE_BYTE  0x56 14
+  WRITE_BYTE  0x57 16
+  WRITE_BYTE  0x58 16
+  FOR (o = 0x59; o <= 0x63; ++o) BEGIN WRITE_BYTE o 0 END
+  WRITE_BYTE  0x5c 50                           // acid
+  WRITE_BYTE  0x234 4                           // level
+  WRITE_BYTE  0x238 12                          // STR
+  WRITE_BYTE  0x239 0
+  WRITE_BYTE  0x23a 2                           // INT
+  WRITE_BYTE  0x23b 10                          // WIS
+  WRITE_BYTE  0x23c 15                          // DEX
+  WRITE_BYTE  0x23d 12                          // CON
+  WRITE_BYTE  0x23e 6                           // CHA
+  WRITE_ASCII 0x248 ~NY#DCKAI~ #8               // override script: melee
+  WRITE_ASCII 0x250 ~~ #8
+  WRITE_ASCII 0x258 ~~ #8
+  WRITE_ASCII 0x260 ~~ #8
+  WRITE_ASCII 0x268 ~~ #8                       // no WTASIGHT (turns hostile)
+  WRITE_BYTE  0x270 5                           // CONTROLLED, as summons
+  REMOVE_CRE_ITEMS
+  ADD_CRE_ITEM ~NY#DCKW~ #0 #0 #0 ~NONE~ ~WEAPON1~ EQUIP
+
+// Spell: 3 rounds + 1 round per level
+CREATE ~SPL~ ~NY#DCKS~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_dck desc = ny_str_dck_d type = 1 level = 2
+                          school = 2 exclusion = 0x100 graphics = 14 STR_VAR icon = ~NY#DCKC~ END
+  FOR (lvl = 3; lvl <= 40; ++lvl) BEGIN
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 4 range = 30 level = ((lvl = 3) ? 1 : lvl) casting_time = 2 STR_VAR icon = ~NY#DCKB~ RET h = header END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 67 target = 1 timing = 0 duration = ((3 + lvl) * ny_round) STR_VAR resource = ~NY#DCK~ END
+  END
+
+ADD_SPELL ~override/NY#DCKS.spl~ 2 2 ~WIZARD_NY_SUMMON_DRACOCKATRIX~

@@ -84,6 +84,12 @@ Not done yet:
 - [ ] Acid arrow projectile, range half that of Melf's Acid Arrow; 5d4 acid on impact, magic resistance blocks it.
 - [ ] Failed save vs. Spell: blinded for 1 round and 5d4 acid at the next round, combat log line; nothing more on a successful save.
 
+### Summon Dracockatrix
+- [ ] Install on BG:EE and BG2:EE: the .DEBUG prints the animation id; the spell is learnable at level 2.
+- [ ] Small black creature (half the thunder lizard), 8 directions, idle breathing, frill display in combat stance, run, attacks, death; basilisk sounds.
+- [ ] Bite: 1d4 + 1d4 acid, slowed 2 rounds on a failed save vs. Polymorph; stays an ally (no WTASIGHT).
+- [ ] JPEG source: check the edges for cyan fringes (a PNG of the sheet would be cleaner).
+
 ### Wyvern Barbed Tail Strike
 - [ ] Melee range (range 1), casting time 0; 1d12 piercing and blood splash; magic resistance blocks it.
 - [ ] Failed save vs. Poison at -2: immediate damage + 1 every N seconds for 1 turn by level (5th: 4 / 4 s, 7th: 8 / 3 s, 9th: 12 / 2 s, 12th: 16 / 1 s), "Poisoned" icon, combat log line; cured by Neutralize Poison.

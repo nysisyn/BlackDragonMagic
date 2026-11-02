@@ -1,0 +1,18 @@
+// Spell
+@1 = ~Summon Dracockatrix~
+@2 = ~Summon Dracockatrix
+(Conjuration/Summoning)
+
+Level: 2
+Range: 30 ft.
+Duration: 3 rounds + 1 round/level
+Casting Time: 2
+Area of Effect: Special
+Saving Throw: None
+
+This spell summons a dracockatrix, a small and vicious hybrid of a cockatrice and a black dragon, to fight for the wizard. It obeys the caster until the spell ends or it is slain.
+
+Dracockatrix: HP 24, AC 5, THAC0 15, 1 bite per round (1d4 piercing damage and 1d4 acid damage). A creature bitten must save vs. Petrification/Polymorph or be slowed for 2 rounds as its flesh stiffens. The dracockatrix has 50% acid resistance.~
+
+// Creature and its bite
+@3 = ~Dracockatrix~
