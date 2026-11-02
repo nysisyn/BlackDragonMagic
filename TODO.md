@@ -132,6 +132,7 @@ Not done yet:
 - [ ] Stand, walk, attacks, hit, death, corpse: frames in order, no jitter, feet on the ground, selection circle centred, shadow.
 - [ ] How the single facing looks when it walks up / down the screen; facing south (stand, walk): the front view, centred on its circle.
 - [ ] Summon Hydra (wizard level 9): learnable, summons an allied hydra for 1 turn + 1 round per level, controllable, 4 attacks per round, 160 HP, regenerates 1 HP per second (portrait icon); balance against the other level 9 summons; placeholder icon.
+- [ ] Hydra's Corrosive Spit: acid blob projectile, only out of melee reach, once per round at most, 5d4 acid then blindness + 5d4 on a failed save; melee otherwise.
 
 ## Later
 - [ ] Custom icons (BAM) for the claws, breath, aura, wing buffet and spells.

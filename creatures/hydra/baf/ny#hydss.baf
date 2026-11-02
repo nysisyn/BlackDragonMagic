@@ -1,0 +1,20 @@
+// Hydra: spits Corrosive Spit (NY#HYSP, projectile ACIDBLOB) at the nearest
+// enemy it sees, at most once per round, and only while that enemy is out of
+// melee reach; otherwise it attacks in melee (as the animated breath of
+// Black Dragon Animate Breath).
+IF
+  See(NearestEnemyOf(Myself))
+  !Range(NearestEnemyOf(Myself),4)
+  !GlobalTimerNotExpired("NY#HYSPT","LOCALS")
+THEN
+  RESPONSE #100
+    SetGlobalTimer("NY#HYSPT","LOCALS",6)
+    ReallyForceSpellRES("NY#HYSP",NearestEnemyOf(Myself))
+END
+
+IF
+  See(NearestEnemyOf(Myself))
+THEN
+  RESPONSE #100
+    AttackReevaluate(NearestEnemyOf(Myself),15)
+END

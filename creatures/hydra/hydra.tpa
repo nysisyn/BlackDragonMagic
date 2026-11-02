@@ -56,6 +56,8 @@ PRINT ~Hydra animation id: 0x%ny_hyd_hex%~
 //             fighter, STR 20, 50% acid resistance, immune to poison and
 //             fear, regenerates 1 HP per second as a troll; no experience
 //             when killed
+//   NY#HYSP   its Corrosive Spit (projectile ACIDBLOB), NY#HYSX failed save,
+//   NY#HYDSS  its override script (spit at range, melee otherwise)
 //   NY#HYSW   its bites: 2d6+4 piercing, +4 weapon (+2 to hit); carries the
 //             immunities and the regeneration (with its portrait icon)
 //   NY#HYDR   test copy, hostile, to create with the console
@@ -69,6 +71,32 @@ OUTER_SET ny_str_hyis_d = RESOLVE_STR_REF (@3)
 COPY ~%MOD_FOLDER%/creatures/hydra/bam/ny#hyisb.bam~ ~override~
      ~%MOD_FOLDER%/creatures/hydra/bam/ny#hyisc.bam~ ~override~
 LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#HYISB~ c = ~NY#HYISC~ END   // Remastered Spell Icons
+
+// Corrosive Spit of the hydra: the animated breath's spit (spells/
+// corrosive_spit, NY#ABRX), rebuilt here so this component stands alone,
+// with the game's acid blob projectile (ACIDBLOB) instead of Melf's arrow:
+// 5d4 acid; save vs. Spell or blinded 1 round and 5d4 acid more next round.
+// Innate, no casting animation or time (ReallyForceSpellRES in its script).
+OUTER_SET ny_str_hysp      = RESOLVE_STR_REF (@4)
+OUTER_SET ny_str_hysp_fail = RESOLVE_STR_REF (@5)
+OUTER_SET ny_pro_hysp = IDS_OF_SYMBOL (~projectl~ ~ACIDBLOB~) + 1
+
+CREATE ~SPL~ ~NY#HYSX~
+  LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1000 level = 1 casting_time = 0 RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 74  target = 2 timing = 0 duration = 6 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 4 duration = 6 parameter2 = 0x10000 dicenumber = 5 dicesize = 4 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 139 target = 2 timing = 1 parameter1 = ny_str_hysp_fail END   // combat log
+
+CREATE ~SPL~ ~NY#HYSP~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_hysp type = 4 level = 1 flags = 0x400 school = 2 graphics = 0 END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 30 level = 1 casting_time = 0 projectile = ny_pro_hysp RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 1 parameter2 = 0x10000 dicenumber = 5 dicesize = 4 resist_dispel = 1 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 resist_dispel = 1 STR_VAR resource = ~SHACID~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 timing = 1 parameter1 = 1 parameter2 = 1
+                               savingthrow = 1 resist_dispel = 1 STR_VAR resource = ~NY#HYSX~ END
+
+COMPILE ~%MOD_FOLDER%/creatures/hydra/baf/ny#hydss.baf~
 
 CREATE ~ITM~ ~NY#HYSW~
   WRITE_LONG  0x08 ny_str_hydra
@@ -112,7 +140,7 @@ COPY_EXISTING ~WYVERNSU.cre~ ~override/NY#HYDS.cre~
   WRITE_BYTE  0x23c 14                          // DEX
   WRITE_BYTE  0x23d 19                          // CON
   WRITE_BYTE  0x23e 10                          // CHA
-  WRITE_ASCII 0x248 ~~ #8                       // no override script
+  WRITE_ASCII 0x248 ~NY#HYDSS~ #8               // override script: Corrosive Spit
   WRITE_ASCII 0x258 ~~ #8                       // no wyvern race script
   WRITE_BYTE  0x270 5                           // CONTROLLED, as summons
   REMOVE_CRE_ITEMS

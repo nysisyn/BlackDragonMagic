@@ -14,4 +14,10 @@ Jet de sauvegarde : aucun
 
 Ce sort invoque une hydre aux multiples têtes qui combat pour le magicien. Elle obéit au lanceur jusqu'à la fin du sort ou jusqu'à sa mort.
 
-Hydre : PV 160, CA 0, TAC0 5, 4 attaques par round avec ses têtes (2d6+4 dégâts perforants, arme +4). Comme un troll, l'hydre régénère 1 point de vie par seconde. Elle a 50 % de résistance à l'acide et est immunisée contre le poison et la peur.~
+Hydre : PV 160, CA 0, TAC0 5, 4 attaques par round avec ses têtes (2d6+4 dégâts perforants, arme +4). Comme un troll, l'hydre régénère 1 point de vie par seconde. Elle a 50 % de résistance à l'acide et est immunisée contre le poison et la peur.
+
+Hors de portée de mêlée, au plus une fois par round, l'hydre crache une boule d'acide corrosif sur un ennemi : 5d4 dégâts d'acide ; une créature qui rate un jet de sauvegarde contre les sorts est aveuglée pendant 1 round et subit 5d4 dégâts d'acide supplémentaires au début du round suivant.~
+
+// Its Corrosive Spit
+@4 = ~Crachat corrosif~
+@5 = ~Aveuglé par le crachat corrosif~
