@@ -1,0 +1,76 @@
+/////////////////////////////////////////////////////////////////////////////
+// Test: hydra animation (BG2:EE and EET)
+//
+// Animation MHYD built from the Chaos Hydra of Heroes of Might and Magic III
+// (3DO / New World Computing, 1999; sprite sheet ripped by Cyrus
+// Annihilator) with works/hydra_source/build.py: monster_icewind type
+// (MHYD<seq>.BAM: S, SW, W, NW, N / MHYD<seq>E.BAM: NE, E, SE). The art has
+// one facing only (east); the west side is mirrored.
+// Sequences: SD / SC stand, WK walk, A1 attack (heads forward), A4 attack
+// (heads low), CA / SP cast (heads up), GH hit, DE death, TW / SL dead, GU
+// get up (death reversed).
+//
+// Test creature NY#HYDR (hostile, from the summoned wyvern), to create
+// with the console: CLUAConsole:CreateCreature("NY#HYDR")
+/////////////////////////////////////////////////////////////////////////////
+
+OUTER_SET ny_str_hydra = RESOLVE_STR_REF (@1)
+
+COPY ~%MOD_FOLDER%/creatures/hydra/anim~ ~override~
+
+// Animation id: first free one from 0xEC40 (no INI file, no ANIMATE.IDS entry)
+OUTER_SET ny_hyd_anim = "-1"
+OUTER_FOR (id = 0xec40; (id <= 0xecff) AND (ny_hyd_anim < 0); ++id) BEGIN
+  LAF NY#HEX4 INT_VAR value = id RET hexstring = hex END
+  OUTER_SET used = FILE_EXISTS_IN_GAME ~%hexstring%.ini~
+  ACTION_IF (NOT used) BEGIN
+    COPY_EXISTING ~animate.ids~ ~override~
+      PATCH_IF (INDEX_BUFFER (CASE_INSENSITIVE EVALUATE_REGEXP ~^0x%hexstring%[ %TAB%]~) >= 0) BEGIN
+        SET used = 1
+      END
+    BUT_ONLY
+  END
+  ACTION_IF (NOT used) BEGIN
+    OUTER_SET ny_hyd_anim = id
+    OUTER_SPRINT ny_hyd_hex ~%hexstring%~
+  END
+END
+ACTION_IF (ny_hyd_anim < 0) BEGIN
+  FAIL ~BlackDragonMagic: no free animation id between 0xEC40 and 0xECFF~
+END
+COPY ~%MOD_FOLDER%/creatures/hydra/ini/hydra.ini~ ~override/%ny_hyd_hex%.ini~
+ACTION_IF (IDS_OF_SYMBOL (~animate~ ~NY_HYDRA~) < 0) BEGIN
+  APPEND ~animate.ids~ ~0x%ny_hyd_hex% NY_HYDRA~
+END
+PRINT ~Hydra animation id: 0x%ny_hyd_hex%~
+
+// Bites: 1d10 piercing, +2
+CREATE ~ITM~ ~NY#HYDW~
+  WRITE_LONG  0x08 ny_str_hydra
+  WRITE_LONG  0x0c ny_str_hydra
+  WRITE_LONG  0x18 0x60
+  WRITE_SHORT 0x1c 0x1c
+  WRITE_LONG  0x60 2
+  LPF NY#ADD_ITM_HEADER INT_VAR attack_type = 1 id_req = 0 location = 1 target = 1 range = 1 speed = 3
+                                thac0 = 2 damage_bonus = 2 dice_sides = 10 dice_thrown = 1 damage_type = 2 flags = 1 END
+
+COPY_EXISTING ~WYVERNSU.cre~ ~override/NY#HYDR.cre~
+  WRITE_LONG  0x08 ny_str_hydra
+  WRITE_LONG  0x0c ny_str_hydra
+  WRITE_LONG  0x14 2000                         // experience
+  WRITE_SHORT 0x24 90
+  WRITE_SHORT 0x26 90
+  WRITE_LONG  0x28 ny_hyd_anim
+  WRITE_SHORT 0x46 5
+  WRITE_SHORT 0x48 5
+  WRITE_BYTE  0x52 9                            // THAC0
+  WRITE_BYTE  0x53 3                            // 3 heads, 3 attacks
+  WRITE_BYTE  0x234 9
+  WRITE_ASCII 0x248 ~~ #8                       // override
+  WRITE_ASCII 0x250 ~~ #8                       // class
+  WRITE_ASCII 0x258 ~~ #8                       // race
+  WRITE_ASCII 0x260 ~~ #8                       // general
+  WRITE_ASCII 0x268 ~WTASIGHT~ #8               // default: attacks on sight
+  WRITE_BYTE  0x270 255                         // ENEMY
+  REMOVE_CRE_ITEMS
+  ADD_CRE_ITEM ~NY#HYDW~ #0 #0 #0 ~NONE~ ~WEAPON1~ EQUIP

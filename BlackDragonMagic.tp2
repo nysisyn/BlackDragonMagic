@@ -118,3 +118,14 @@ WITH_TRA ~%MOD_FOLDER%/lang/english/vitriolic_sphere.tra~
          ~%MOD_FOLDER%/lang/%LANGUAGE%/vitriolic_sphere.tra~ BEGIN
   INCLUDE ~%MOD_FOLDER%/tweaks/vitriolic_sphere/vitriolic_sphere.tpa~
 END
+
+
+// Test: hydra animation (Chaos Hydra of Heroes of Might and Magic III), test
+// creature NY#HYDR to create with the console
+BEGIN @4 DESIGNATED 900
+LABEL ~BlackDragonMagic-Test-Hydra~
+REQUIRE_PREDICATE GAME_IS ~bg2ee eet~ @13
+WITH_TRA ~%MOD_FOLDER%/lang/english/hydra.tra~
+         ~%MOD_FOLDER%/lang/%LANGUAGE%/hydra.tra~ BEGIN
+  INCLUDE ~%MOD_FOLDER%/creatures/hydra/hydra.tpa~
+END

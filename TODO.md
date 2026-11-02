@@ -127,6 +127,11 @@ Not done yet:
 - [ ] Impact and delayed damage share the same saving throw; otherwise move the delayed damage to a subspell applied only on a failed save.
 - [ ] Green explosion colour: set `ny_vs_color` in `tweaks/vitriolic_sphere/vitriolic_sphere.tpa` (palette index to find in Near Infinity).
 
+### Test: hydra animation (component 900)
+- [ ] Install: the .DEBUG prints the animation id; `CLUAConsole:CreateCreature("NY#HYDR")` creates the hydra.
+- [ ] Stand, walk, attacks, hit, death, corpse: frames in order, no jitter, feet on the ground, selection circle centred, shadow.
+- [ ] How the single facing looks when it walks up / down the screen.
+
 ## Later
 - [ ] Custom icons (BAM) for the claws, breath, aura, wing buffet and spells.
 - [ ] Trello *Ideas* list: Swamp Lung, Ghostly Tail, Corrosive Spit, Dracosuchus Jaws, Tail Sweep.
