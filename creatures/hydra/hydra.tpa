@@ -7,7 +7,8 @@
 // (MHYD<seq>.BAM: S, SW, W, NW, N / MHYD<seq>E.BAM: NE, E, SE). The art has
 // one facing only (east); the west side is mirrored. Facing south, stand and
 // walk use a still front view (13th sprite of the sheet).
-// Sequences: SD / SC stand, WK walk, A1 attack (heads forward), A4 attack
+// Sequences: SD stand, SC combat stance (heads rising, sprites 14-17 back
+// and forth), WK walk, A1 attack (heads forward), A4 attack
 // (heads low), CA / SP cast (heads up), GH hit, DE death, TW / SL dead, GU
 // get up (death reversed).
 //
