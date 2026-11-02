@@ -48,6 +48,7 @@ Not done yet:
 - [ ] Plant Growth: entangle in a 20-ft. area (save at -10), allies hit, the disciple not (one round of immunity to his own Plant Growth).
 - [ ] French and English descriptions (Breathbloom = Éclosion de souffle in French).
 - [ ] Summon Black Dragon Turtle (HLA): in the HLA list; the turtle appears, 8 directions, black, lies on its circle (no longer floating), also when dead; Acid Steam line 40 x 15 ft. 3 times per summoning (not when the turtle is disabled); 2 bites; balance against Summon Dark Planetar.
+- [ ] Summon Black Draco-Sphinx (HLA): in the HLA list; 8 directions (no mirroring), idle breathing, paw raised in combat stance, walk, attack (paw, roar lunge), stagger when hit, death; Roar once when it first sees enemies (panic 2 rounds, save vs. Spell at -2, enemies only); Acid Breath twice; panther sounds.
 
 ### Acidosis
 - [x] Icons, casting, self damage OK.

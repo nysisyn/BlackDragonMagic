@@ -50,7 +50,7 @@ PRÉSENCE TERRIFIANTE : Le Disciple du Dragon Noir dégage une aura de menace dr
 - Niveau 19 : les dégâts du Souffle passent à 12d4, et la ligne atteint 9 m de long et 3 m de large.
 - Niveau 20 : Apothéose draconique : bonus de +1 à la CA et immunité au sommeil et à la paralysie. Affinité acide atteint son apogée. Les griffes infligent désormais 2d8 dégâts tranchants et comptent comme des armes magiques +5.
 
-- Capacités de haut niveau (Throne of Bhaal) : en plus des sorts supplémentaires de l'ensorceleur et de Convocation de planétaire déchu, le Disciple du Dragon Noir peut apprendre les capacités innées d'un dragon noir adulte : Éclosion de souffle, Coup d'ailes, Nuée d'insectes et Croissance végétale, et invoquer une tortue-dragon noire.
+- Capacités de haut niveau (Throne of Bhaal) : en plus des sorts supplémentaires de l'ensorceleur et de Convocation de planétaire déchu, le Disciple du Dragon Noir peut apprendre les capacités innées d'un dragon noir adulte : Éclosion de souffle, Coup d'ailes, Nuée d'insectes et Croissance végétale ; il peut aussi invoquer une tortue-dragon noire ou un draco-sphinx noir.
 
 Désavantages :
 - Lance un sort de moins par jour à chaque niveau de sort.
@@ -279,5 +279,18 @@ Comme un dragon noir, le Disciple du Dragon Noir fait jaillir du sol les plantes
 Le Disciple du Dragon Noir appelle des profondeurs du marais une tortue-dragon noire qui combat à ses côtés pendant 1 tour + 1 round par niveau. Elle lui obéit jusqu'à la fin de la durée ou jusqu'à sa mort.
 
 Tortue-dragon noire : PV 220, CA -3, TAC0 1, 2 morsures par round (4d8+4 dégâts perforants, arme +4). Trois fois par invocation, au plus une fois tous les 3 rounds, elle souffle un nuage de vapeur acide en ligne de 12 m de long et 4,5 m de large, qui inflige 12d8 dégâts d'acide (jet de sauvegarde contre les souffles pour la moitié). Les alliés dans la ligne sont touchés. La tortue est immunisée contre l'acide, le poison et la peur.
+
+Utilisable une fois par jour.~
+
+// Convocation de draco-sphinx noir (capacité de haut niveau)
+@92 = ~Draco-sphinx noir~
+@93 = ~Rugissement~
+@94 = ~Souffle d'acide~
+@95 = ~Convocation de draco-sphinx noir~
+@96 = ~Convocation de draco-sphinx noir
+
+Le Disciple du Dragon Noir appelle un draco-sphinx noir, un lion ailé portant les cornes et l'acide d'un dragon noir, qui combat à ses côtés pendant 1 tour + 1 round par niveau. Il lui obéit jusqu'à la fin de la durée ou jusqu'à sa mort.
+
+Draco-sphinx noir : PV 200, CA -2, TAC0 2, 3 attaques par round avec ses griffes et ses crocs (2d8+4 dégâts tranchants, arme +4). Lorsqu'il aperçoit des ennemis pour la première fois, il rugit : les ennemis à moins de 9 m doivent réussir un jet de sauvegarde contre les sorts à -2 sous peine de fuir, paniqués, pendant 2 rounds. Deux fois par invocation, au plus une fois tous les 3 rounds, il souffle une ligne d'acide de 12 m de long et 3 m de large, qui inflige 10d8 dégâts d'acide (jet de sauvegarde contre les souffles pour la moitié). Les alliés dans la ligne sont touchés, pas par le rugissement. Le draco-sphinx est immunisé contre l'acide, le poison et la peur.
 
 Utilisable une fois par jour.~

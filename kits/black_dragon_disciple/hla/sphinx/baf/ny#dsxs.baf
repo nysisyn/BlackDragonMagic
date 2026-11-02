@@ -1,0 +1,37 @@
+// The forced cast (ReallyForceSpellRES) ignores the creature's state, so it
+// is only tried while the creature can act (not asleep, unconscious,
+// stunned, held, panicked, confused...).
+// Black draco-sphinx: roars once when it first sees enemies, then breathes
+// acid twice per summoning (every 3 rounds at most); otherwise it attacks
+// in melee.
+IF
+  See(NearestEnemyOf(Myself))
+  Global("NY#DSXRO","LOCALS",0)
+  !StateCheck(Myself,CD_STATE_NOTVALID)
+  !CheckStatGT(Myself,0,HELD)
+THEN
+  RESPONSE #100
+    SetGlobal("NY#DSXRO","LOCALS",1)
+    SetGlobalTimer("NY#DSXBT","LOCALS",6)
+    ReallyForceSpellRES("NY#DSXRR",Myself)
+END
+
+IF
+  See(NearestEnemyOf(Myself))
+  GlobalLT("NY#DSXBN","LOCALS",2)
+  !StateCheck(Myself,CD_STATE_NOTVALID)
+  !CheckStatGT(Myself,0,HELD)
+  !GlobalTimerNotExpired("NY#DSXBT","LOCALS")
+THEN
+  RESPONSE #100
+    IncrementGlobal("NY#DSXBN","LOCALS",1)
+    SetGlobalTimer("NY#DSXBT","LOCALS",18)
+    ReallyForceSpellRES("NY#DSXBR",NearestEnemyOf(Myself))
+END
+
+IF
+  See(NearestEnemyOf(Myself))
+THEN
+  RESPONSE #100
+    AttackReevaluate(NearestEnemyOf(Myself),15)
+END
