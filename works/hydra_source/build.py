@@ -24,7 +24,16 @@ ST=list(range(54,61)); DE=list(range(61,67))
 SLOW=[k for k in SD for _ in range(3)]   # idle: each frame shown 3 times (the engine plays 15 frames per second)
 RISE=[13,14,15,16,15,14]   # heads rising and falling back (ping-pong loop)
 READY=[k for k in RISE for _ in range(3)]   # combat stance, slowed as the idle
-SEQS={'SD':SLOW,'SC':READY,'WK':WK,'A1':ST+ST[-2:0:-1],'A4':DN,'CA':UP+UP[-2:0:-1],'SP':UP+UP[-2:0:-1],
+def slow(seq,n=2,hold=()):
+    out=[]
+    for k in seq: out+=[k]*(n*2 if k in hold else n)
+    return out
+# attacks: every frame shown twice (heavier strikes), the strike frame held,
+# then back to the rest pose. Four attack files so the engine always finds one.
+ATK_FWD=slow(ST+[54],hold={57})            # heads lunging forward
+ATK_LOW=slow(DN,hold={27})                 # heads striking low (ends at rest)
+ATK_UP=slow(UP+UP[-2::-1],hold={23})       # heads rising and striking down from above
+SEQS={'SD':SLOW,'SC':READY,'WK':WK,'A1':ATK_FWD,'A2':ATK_LOW,'A3':ATK_UP,'A4':ATK_FWD,'CA':UP+UP[-2:0:-1],'SP':UP+UP[-2:0:-1],
       'GH':[11,11,11,0],'DE':DE,'TW':[66,66],'SL':[66],'GU':DE[::-1]}
 cache={}
 def get(k,mirror):

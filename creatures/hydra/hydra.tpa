@@ -8,9 +8,10 @@
 // one facing only (east); the west side is mirrored. Facing south, stand and
 // walk use a still front view (13th sprite of the sheet).
 // Sequences: SD stand, SC combat stance (heads rising, sprites 14-17 back
-// and forth), WK walk, A1 attack (heads forward), A4 attack
-// (heads low), CA / SP cast (heads up), GH hit, DE death, TW / SL dead, GU
-// get up (death reversed).
+// and forth), WK walk, A1 / A4 attack (heads lunging forward), A2 attack
+// (heads striking low), A3 attack (heads striking from above): every attack
+// frame shown twice, the strike held, then back to rest; CA / SP cast (heads
+// up), GH hit, DE death, TW / SL dead, GU get up (death reversed).
 //
 // Test creature NY#HYDR (hostile, from the summoned wyvern), to create
 // with the console: CLUAConsole:CreateCreature("NY#HYDR")
