@@ -5,7 +5,7 @@ import sys,struct,zlib,os
 import numpy as np
 from PIL import Image
 SHEET=sys.argv[1]; OUT=sys.argv[2]
-SCALE=0.75; CELL=256; AX,AY=128,240         # anchor (ground): a little under the swimming body
+SCALE=0.75; CELL=256; AX,AY=128,205         # anchor (ground): under the shell, the lower flippers touch it
 A=np.array(Image.open(SHEET).convert('RGB')).astype(np.int32)
 def cell(r,c): return A[r*CELL:(r+1)*CELL,c*CELL:(c+1)*CELL]
 def fgmask(x): return ~(((x[...,1]-x[...,0])>70)&((x[...,2]-x[...,0])>70)&(x[...,1]>150))   # cyan and its blends

@@ -116,7 +116,8 @@ COPY_EXISTING ~spin688.spl~ ~override/NY#BDPG.spl~
 // Destroyer (3DO / New World Computing, 2000; sprite sheet ripped by Cyrus
 // Annihilator), built with works/dragon_turtle_mm8_source/build_turtle.py:
 // monster_icewind type, 5 facings (west side mirrored), green scales
-// blackened, swims a little above the ground (flat shadow), falls to the
+// blackened, rests on the ground (shell above it, lower flippers touching
+// it; flat shadow), falls to the
 // ground when it dies. Animation id: first free one from 0xEC50.
 //   NY#DTUR   the turtle (ally, CONTROLLED), from the summoned wyvern: 220 HP,
 //             AC -3, THAC0 1, 2 attacks per round, level 16, saves of a
