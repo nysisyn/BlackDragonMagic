@@ -3,12 +3,15 @@ import sys,struct,json,os
 sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
 from extract import *
 from PIL import Image
-OUT=sys.argv[1]; SCALE=1.25
+OUT=sys.argv[1] if len(sys.argv)>1 else None; SCALE=1.25
+FRONT={12}   # 13th sprite of the sheet: the hydra almost facing the screen
 reg={int(k):v for k,v in json.load(open('reg.json')).items()}
 rc,_,_,_=frame(REF); BASE=107; AXR=43
 def placed(k):
     cm,sh,a,off=frame(k); dx,_=reg[k]
-    ys,_=np.nonzero(cm); dy=BASE-ys.max()            # feet on the ground line
+    ys,xs=np.nonzero(cm); dy=BASE-ys.max()           # feet on the ground line
+    if k in FRONT:                                    # front view: centre of the feet under the anchor
+        sel=ys>=ys.max()-25; dx=round(AXR-xs[sel].mean())
     t=np.zeros_like(a); t[cm]=a[cm]; t[...,3]=np.where(cm,255,0)
     s=np.zeros(cm.shape,np.uint8); s[sh&~cm]=255
     cx,cy=AXR-dx,BASE-dy
@@ -20,7 +23,7 @@ SD=list(range(0,11)); UP=list(range(17,24)); DN=list(range(24,34)); WK=list(rang
 ST=list(range(54,61)); DE=list(range(61,67))
 SLOW=[k for k in SD for _ in range(3)]   # idle: each frame shown 3 times (the engine plays 15 frames per second)
 SEQS={'SD':SLOW,'SC':SLOW,'WK':WK,'A1':ST+ST[-2:0:-1],'A4':DN,'CA':UP+UP[-2:0:-1],'SP':UP+UP[-2:0:-1],
-      'GH':[11,12,11],'DE':DE,'TW':[66,66],'SL':[66],'GU':DE[::-1]}
+      'GH':[11,11,11,0],'DE':DE,'TW':[66,66],'SL':[66],'GU':DE[::-1]}
 cache={}
 def get(k,mirror):
     if (k,mirror) not in cache:
@@ -62,8 +65,12 @@ def write_bam(path,cycles):
     out=hdr+fb+cb+pal+b''.join(struct.pack('<H',i) for i in lut)+blob
     open(path,'wb').write(out)
 # directions: 0 S,1 SW,2 W,3 NW,4 N | E file: 5 NE,6 E,7 SE. The art faces east.
-for s,ks in SEQS.items():
+SOUTH={'SD','SC','WK'}   # facing south: the front view (a still frame) instead of the profile
+def main():
+  for s,ks in SEQS.items():
     orig=[(k,False) for k in ks]; mir=[(k,True) for k in ks]
-    write_bam(f'{OUT}/mhyd{s.lower()}.bam',[orig,mir,mir,mir,mir])
+    south=[(12,False)]*len(ks) if s in SOUTH else orig
+    write_bam(f'{OUT}/mhyd{s.lower()}.bam',[south,mir,mir,mir,mir])
     write_bam(f'{OUT}/mhyd{s.lower()}e.bam',[[],[],[],[],[],orig,orig,orig])
-print('ok',len(cache))
+  print('ok',len(cache))
+if OUT: main()
