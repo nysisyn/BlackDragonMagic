@@ -85,6 +85,12 @@ Not done yet:
 - [ ] Acid arrow projectile, range half that of Melf's Acid Arrow; 5d4 acid on impact, magic resistance blocks it.
 - [ ] Failed save vs. Spell: blinded for 1 round and 5d4 acid at the next round, combat log line; nothing more on a successful save.
 
+### Summon Black Mantidrake
+- [ ] Install on BG:EE and BG2:EE: the .DEBUG prints the animation id; the spell is learnable at level 5.
+- [ ] 8 directions (no mirroring), idle, walk, pounce attack, stagger, death; panther sounds (on BG:EE too?).
+- [ ] Spike volley: only while no enemy is in melee reach, hits every enemy within 30 ft. (acid splash), not the allies, once every 2 rounds; melee otherwise; not while disabled.
+- [ ] Walks through Entangle and Web; immune to acid.
+
 ### Summon Gorgon
 - [ ] Install on BG:EE and BG2:EE: the .DEBUG prints the animation id; the spell is learnable at level 5.
 - [ ] Dark iron bull, 8 directions, idle breathing, pawing in combat stance, walk, gore attacks, death; sounds (basilisk for now: a bull would fit better).

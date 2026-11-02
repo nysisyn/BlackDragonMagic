@@ -1,0 +1,156 @@
+/////////////////////////////////////////////////////////////////////////////
+// Summon Black Mantidrake - wizard, level 5, Conjuration
+//
+// Summons a black mantidrake (a manticore of the black dragon's brood, skull
+// faced, with a tail of spikes) for 1 round per level.
+//   - HP 55, AC 3, THAC0 12, 2 claw attacks per round (1d8+1, +1 weapon),
+//     level 7; immune to acid, Entangle and Web (as Swamp Stride)
+//   - while no enemy is in melee reach, it throws a volley of corrosive tail
+//     spikes at every enemy within 30 ft., once every 2 rounds (NY#MTDV):
+//     1d6 missile + 2d4 acid, save vs. Breath for half; otherwise it fights
+//     in melee (script NY#MTDAI)
+//   - allegiance CONTROLLED (5), no experience for killing it
+//
+// Animation MMTD built from four sheets of a black mantidrake (idle, walk,
+// attack, death; 8 drawn directions, 6 frames each, cells of 181 px;
+// works/mantidrake_source/build_mantidrake.py, the extraction shared with
+// the draco-sphinx). A fifth sheet (idle1.png) is not used: its directions
+// do not match the others. Panther sounds. Animation id: first free one from
+// 0xEC90 (NY_MANTIDRAKE in ANIMATE.IDS).
+//
+// Resources
+//   SPWIxxx   Summon Black Mantidrake (WIZARD_NY_SUMMON_MANTIDRAKE)
+//   NY#MTD    the creature, from the game's Mustard Jelly (as the animated
+//             breath), NY#MTDW its claws (immunities as equipped effects)
+//   NY#MTDV   the spike volley, NY#MTDVT its area (30 ft., enemies only,
+//             no visual; acid splash on the creatures hit)
+//   NY#MTDAI  its script
+//   NY#MTDB / NY#MTDC  icons: placeholder, the creature reduced
+/////////////////////////////////////////////////////////////////////////////
+
+OUTER_SET ny_str_mtd     = RESOLVE_STR_REF (@1)
+OUTER_SET ny_str_mtd_d   = RESOLVE_STR_REF (@2)
+OUTER_SET ny_str_mtd_cre = RESOLVE_STR_REF (@3)
+OUTER_SET ny_str_mtd_v   = RESOLVE_STR_REF (@4)
+
+COPY ~%MOD_FOLDER%/spells/summon_mantidrake/bam/ny#mtdb.bam~ ~override~
+     ~%MOD_FOLDER%/spells/summon_mantidrake/bam/ny#mtdc.bam~ ~override~
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#MTDB~ c = ~NY#MTDC~ END   // Remastered Spell Icons
+
+COPY ~%MOD_FOLDER%/spells/summon_mantidrake/anim~ ~override~
+
+OUTER_SET ny_mtd_anim = "-1"
+OUTER_FOR (id = 0xec90; (id <= 0xecff) AND (ny_mtd_anim < 0); ++id) BEGIN
+  LAF NY#HEX4 INT_VAR value = id RET hexstring = hex END
+  OUTER_SET used = FILE_EXISTS_IN_GAME ~%hexstring%.ini~
+  ACTION_IF (NOT used) BEGIN
+    COPY_EXISTING ~animate.ids~ ~override~
+      PATCH_IF (INDEX_BUFFER (CASE_INSENSITIVE EVALUATE_REGEXP ~^0x%hexstring%[ %TAB%]~) >= 0) BEGIN
+        SET used = 1
+      END
+    BUT_ONLY
+  END
+  ACTION_IF (NOT used) BEGIN
+    OUTER_SET ny_mtd_anim = id
+    OUTER_SPRINT ny_mtd_hex ~%hexstring%~
+  END
+END
+ACTION_IF (ny_mtd_anim < 0) BEGIN
+  FAIL ~BlackDragonMagic: no free animation id between 0xEC90 and 0xECFF~
+END
+COPY ~%MOD_FOLDER%/spells/summon_mantidrake/ini/mantidrake.ini~ ~override/%ny_mtd_hex%.ini~
+ACTION_IF (IDS_OF_SYMBOL (~animate~ ~NY_MANTIDRAKE~) < 0) BEGIN
+  APPEND ~animate.ids~ ~0x%ny_mtd_hex% NY_MANTIDRAKE~
+END
+PRINT ~Mantidrake animation id: 0x%ny_mtd_hex%~
+
+// Spike volley: 30 ft. around the mantidrake, enemies only, no visual
+LAF NY#CLONE_AREA_PRO INT_VAR radius_ft = 30 explosion_effect = 255 STR_VAR source = ~fireball~ new = ~NY#MTDVT~ RET ny_pro_mtdv = pro_id END
+COPY_EXISTING ~NY#MTDVT.pro~ ~override~
+  READ_LONG  0x200 ny_mtd_flags
+  WRITE_LONG 0x200 ((ny_mtd_flags BOR 0x40) BAND (BNOT 0x80))   // enemies only
+  WRITE_ASCII 0x10  ~~ #8                       // Fireball's sounds and visuals off
+  WRITE_ASCII 0x18  ~~ #8
+  WRITE_ASCII 0x104 ~~ #8
+  WRITE_ASCII 0x10c ~~ #8
+  WRITE_ASCII 0x208 ~~ #8
+  WRITE_ASCII 0x21c ~~ #8
+  WRITE_ASCII 0x230 ~~ #8
+  WRITE_LONG  0x240 0
+BUT_ONLY
+
+CREATE ~SPL~ ~NY#MTDV~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_mtd_v type = 4 level = 1 flags = 0x400 END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = 1 casting_time = 0 projectile = ny_pro_mtdv RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 174 target = 1 timing = 1 STR_VAR resource = ~EFF_M21~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 0 parameter2 = 0x800000 dicenumber = 1 dicesize = 6 savingthrow = 2 special = 0x100 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 0 parameter2 = 0x10000 dicenumber = 2 dicesize = 4 savingthrow = 2 special = 0x100 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 STR_VAR resource = ~SHACID~ END
+
+COMPILE ~%MOD_FOLDER%/spells/summon_mantidrake/baf/ny#mtdai.baf~
+
+// Claws: 1d8+1 slashing, +1; immune to Entangle and Web while equipped
+CREATE ~ITM~ ~NY#MTDW~
+  WRITE_LONG  0x08 ny_str_mtd_cre
+  WRITE_LONG  0x0c ny_str_mtd_cre
+  WRITE_LONG  0x18 0x60                         // not copyable, magical
+  WRITE_SHORT 0x1c 0x1c                         // hand-to-hand weapon
+  WRITE_LONG  0x60 1                            // +1 weapon
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 206 target = 1 timing = 2 parameter1 = "-1" STR_VAR resource = ~SPPR105~ END   // Entangle
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 206 target = 1 timing = 2 parameter1 = "-1" STR_VAR resource = ~SPWI215~ END   // Web
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 157 END   // web state from other sources
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 154 END   // entangle from other sources
+  LPF NY#ADD_ITM_HEADER INT_VAR attack_type = 1 id_req = 0 location = 1 target = 1 range = 1 speed = 3
+                                thac0 = 0 damage_bonus = 1 dice_sides = 8 dice_thrown = 1 damage_type = 3 flags = 1 END
+
+ACTION_IF FILE_EXISTS_IN_GAME ~JELLYMU.cre~ BEGIN
+  OUTER_SPRINT ny_mtd_base ~JELLYMU~            // BG:EE, SoD, EET
+END ELSE BEGIN
+  OUTER_SPRINT ny_mtd_base ~JELLMU~             // BG2:EE
+END
+COPY_EXISTING ~%ny_mtd_base%.cre~ ~override/NY#MTD.cre~
+  WRITE_LONG  0x08 ny_str_mtd_cre
+  WRITE_LONG  0x0c ny_str_mtd_cre
+  WRITE_LONG  0x14 0                            // no experience when killed
+  WRITE_SHORT 0x24 55                           // HP
+  WRITE_SHORT 0x26 55
+  WRITE_LONG  0x28 ny_mtd_anim
+  WRITE_SHORT 0x46 3                            // AC
+  WRITE_SHORT 0x48 3
+  WRITE_BYTE  0x52 12                           // THAC0
+  WRITE_BYTE  0x53 2                            // 2 attacks per round
+  // saves of a level 7 fighter: death, wands, polymorph, breath, spells
+  WRITE_BYTE  0x54 10
+  WRITE_BYTE  0x55 12
+  WRITE_BYTE  0x56 11
+  WRITE_BYTE  0x57 12
+  WRITE_BYTE  0x58 13
+  FOR (o = 0x59; o <= 0x63; ++o) BEGIN WRITE_BYTE o 0 END
+  WRITE_BYTE  0x5c 100                          // acid
+  WRITE_BYTE  0x234 7                           // level
+  WRITE_BYTE  0x238 17                          // STR
+  WRITE_BYTE  0x239 0
+  WRITE_BYTE  0x23a 6                           // INT
+  WRITE_BYTE  0x23b 12                          // WIS
+  WRITE_BYTE  0x23c 15                          // DEX
+  WRITE_BYTE  0x23d 16                          // CON
+  WRITE_BYTE  0x23e 8                           // CHA
+  WRITE_ASCII 0x248 ~NY#MTDAI~ #8               // override script: volley, melee
+  WRITE_ASCII 0x250 ~~ #8
+  WRITE_ASCII 0x258 ~~ #8
+  WRITE_ASCII 0x260 ~~ #8
+  WRITE_ASCII 0x268 ~~ #8                       // no WTASIGHT (turns hostile)
+  WRITE_BYTE  0x270 5                           // CONTROLLED, as summons
+  REMOVE_CRE_ITEMS
+  ADD_CRE_ITEM ~NY#MTDW~ #0 #0 #0 ~NONE~ ~WEAPON1~ EQUIP
+
+// Spell: 1 round per level
+CREATE ~SPL~ ~NY#MTDS~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_mtd desc = ny_str_mtd_d type = 1 level = 5
+                          school = 2 exclusion = 0x100 graphics = 14 STR_VAR icon = ~NY#MTDC~ END
+  FOR (lvl = 9; lvl <= 40; ++lvl) BEGIN
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 4 range = 30 level = ((lvl = 9) ? 1 : lvl) casting_time = 5 STR_VAR icon = ~NY#MTDB~ RET h = header END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 67 target = 1 timing = 0 duration = (lvl * ny_round) STR_VAR resource = ~NY#MTD~ END
+  END
+
+ADD_SPELL ~override/NY#MTDS.spl~ 2 5 ~WIZARD_NY_SUMMON_MANTIDRAKE~

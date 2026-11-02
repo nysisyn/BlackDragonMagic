@@ -1,0 +1,19 @@
+// Spell
+@1 = ~Summon Black Mantidrake~
+@2 = ~Summon Black Mantidrake
+(Conjuration/Summoning)
+
+Level: 5
+Range: 30 ft.
+Duration: 1 round/level
+Casting Time: 5
+Area of Effect: Special
+Saving Throw: None
+
+This spell summons a black mantidrake, a skull-faced manticore of the black dragon's brood, to fight for the wizard. It obeys the caster until the spell ends or it is slain.
+
+Black mantidrake: HP 55, AC 3, THAC0 12, 2 claw attacks per round (1d8+1 slashing damage, +1 weapon). As long as no enemy is within reach of its claws, it throws a volley of corrosive tail spikes at every enemy within 30 ft., at most once every 2 rounds: 1d6 missile damage and 2d4 acid damage (save vs. Breath for half). Allies are not hit. It is immune to acid and moves freely through Entangle and Web.~
+
+// Creature and its volley
+@3 = ~Black Mantidrake~
+@4 = ~Corrosive Spikes~
