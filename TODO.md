@@ -84,6 +84,12 @@ Not done yet:
 - [ ] Acid arrow projectile, range half that of Melf's Acid Arrow; 5d4 acid on impact, magic resistance blocks it.
 - [ ] Failed save vs. Spell: blinded for 1 round and 5d4 acid at the next round, combat log line; nothing more on a successful save.
 
+### Summon Gorgon
+- [ ] Install on BG:EE and BG2:EE: the .DEBUG prints the animation id; the spell is learnable at level 5.
+- [ ] Dark iron bull, 8 directions, idle breathing, pawing in combat stance, walk, gore attacks, death; sounds (basilisk for now: a bull would fit better).
+- [ ] Petrifying breath once per summoning: 30-ft. cone, enemies only, held 2 rounds on a failed save vs. Petrification, stone shards; not while disabled.
+- [ ] Stays an ally (no WTASIGHT); 1 round per level.
+
 ### Summon Dracockatrix
 - [ ] Install on BG:EE and BG2:EE: the .DEBUG prints the animation id; the spell is learnable at level 2.
 - [ ] Small black creature (half the thunder lizard), 8 directions, idle breathing, frill display in combat stance, run, attacks, death; basilisk sounds.

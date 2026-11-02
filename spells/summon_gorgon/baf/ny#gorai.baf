@@ -1,0 +1,22 @@
+// The forced cast (ReallyForceSpellRES) ignores the creature's state, so it
+// is only tried while the creature can act (not asleep, unconscious,
+// stunned, held, panicked, confused...).
+// Gorgon: breathes its petrifying breath at the nearest enemy it sees, once
+// per summoning (LOCALS counter); otherwise it gores in melee.
+IF
+  See(NearestEnemyOf(Myself))
+  GlobalLT("NY#GORBN","LOCALS",1)
+  !StateCheck(Myself,CD_STATE_NOTVALID)
+  !CheckStatGT(Myself,0,HELD)
+THEN
+  RESPONSE #100
+    IncrementGlobal("NY#GORBN","LOCALS",1)
+    ReallyForceSpellRES("NY#GORBR",NearestEnemyOf(Myself))
+END
+
+IF
+  See(NearestEnemyOf(Myself))
+THEN
+  RESPONSE #100
+    AttackReevaluate(NearestEnemyOf(Myself),15)
+END

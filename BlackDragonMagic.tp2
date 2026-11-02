@@ -94,6 +94,10 @@ WITH_TRA ~%MOD_FOLDER%/lang/english/animate_breath.tra~
          ~%MOD_FOLDER%/lang/%LANGUAGE%/animate_breath.tra~ BEGIN
   INCLUDE ~%MOD_FOLDER%/spells/animate_breath/animate_breath.tpa~
 END
+WITH_TRA ~%MOD_FOLDER%/lang/english/summon_gorgon.tra~
+         ~%MOD_FOLDER%/lang/%LANGUAGE%/summon_gorgon.tra~ BEGIN
+  INCLUDE ~%MOD_FOLDER%/spells/summon_gorgon/summon_gorgon.tpa~
+END
 WITH_TRA ~%MOD_FOLDER%/lang/english/summon_dracockatrix.tra~
          ~%MOD_FOLDER%/lang/%LANGUAGE%/summon_dracockatrix.tra~ BEGIN
   INCLUDE ~%MOD_FOLDER%/spells/summon_dracockatrix/summon_dracockatrix.tpa~

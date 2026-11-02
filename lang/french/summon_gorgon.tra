@@ -1,0 +1,19 @@
+// Sort
+@1 = ~Invocation de gorgone~
+@2 = ~Invocation de gorgone
+(Conjuration/Convocation)
+
+Niveau : 5
+Portée : 9 m
+Durée : 1 round/niveau
+Temps d'incantation : 5
+Zone d'effet : spéciale
+Jet de sauvegarde : aucun
+
+Ce sort invoque une gorgone, un grand taureau couvert d'écailles de fer sombre, qui combat pour le magicien. Elle obéit au lanceur jusqu'à la fin du sort ou jusqu'à sa mort.
+
+Gorgone : PV 60, CA 2, TAC0 11, 1 coup de cornes par round (2d6+2 dégâts perforants, arme +2). Une fois par invocation, la gorgone souffle une vapeur pétrifiante en cône de 9 m devant elle : les ennemis pris dedans doivent réussir un jet de sauvegarde contre la pétrification/métamorphose sous peine d'être immobilisés pendant 2 rounds, leur chair se changeant en pierre. Les alliés ne sont pas affectés. La gorgone est immunisée contre la pétrification et la peur.~
+
+// Créature et son souffle
+@3 = ~Gorgone~
+@4 = ~Souffle pétrifiant~

@@ -1,0 +1,19 @@
+// Spell
+@1 = ~Summon Gorgon~
+@2 = ~Summon Gorgon
+(Conjuration/Summoning)
+
+Level: 5
+Range: 30 ft.
+Duration: 1 round/level
+Casting Time: 5
+Area of Effect: Special
+Saving Throw: None
+
+This spell summons a gorgon, a great bull covered in dark iron scales, to fight for the wizard. It obeys the caster until the spell ends or it is slain.
+
+Gorgon: HP 60, AC 2, THAC0 11, 1 gore per round (2d6+2 piercing damage, +2 weapon). Once per summoning, the gorgon breathes a petrifying vapour in a 30-ft. cone in front of it: enemies caught in it must save vs. Petrification/Polymorph or be held for 2 rounds as their flesh turns to stone. Allies are not affected. The gorgon is immune to petrification and fear.~
+
+// Creature and its breath
+@3 = ~Gorgon~
+@4 = ~Petrifying Breath~

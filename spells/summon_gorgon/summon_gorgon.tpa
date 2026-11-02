@@ -1,0 +1,148 @@
+/////////////////////////////////////////////////////////////////////////////
+// Summon Gorgon - wizard, level 5, Conjuration
+//
+// Summons a gorgon, a bull of dark iron scales, for 1 round per level.
+//   - HP 60, AC 2, THAC0 11, 1 gore per round (2d6+2, +2 weapon), level 8,
+//     immune to petrification and fear
+//   - petrifying breath NY#GORBR, once per summoning: cone 30 ft. in front of
+//     it, enemies only; save vs. Petrification/Polymorph or held for
+//     2 rounds as the flesh turns to stone (a level 5 echo of the gorgon's
+//     true petrification)
+//   - allegiance CONTROLLED (5), no experience for killing it
+//
+// Animation MGOR built from the gorgon of Might and Magic VIII: Day of the
+// Destroyer (3DO / New World Computing, 2000; sprite sheet ripped by Cyrus
+// Annihilator) with works/gorgon_mm8_source/build_gorgon.py: monster_icewind
+// type, 5 facings (west side mirrored), dark iron variant (the animations
+// exist only in green on the sheet: recoloured with a colour table learnt
+// from the green and dark standing frames of the same pose), slow breathing
+// when idle, pawing the ground in combat stance. Basilisk sounds. Animation
+// id: first free one from 0xEC70 (NY_GORGON in ANIMATE.IDS).
+//
+// Resources
+//   SPWIxxx   Summon Gorgon (WIZARD_NY_SUMMON_GORGON)
+//   NY#GOR    the creature, from the game's Mustard Jelly (as the animated
+//             breath), NY#GORW its horns, NY#GORAI its script
+//   NY#GORBR  petrifying breath, NY#GORBT its cone (Cone of Cold without
+//             the cold), stone shards on the creatures hit
+//   NY#GORB / NY#GORC  icons: placeholder, the creature reduced
+/////////////////////////////////////////////////////////////////////////////
+
+OUTER_SET ny_str_gor     = RESOLVE_STR_REF (@1)
+OUTER_SET ny_str_gor_d   = RESOLVE_STR_REF (@2)
+OUTER_SET ny_str_gor_cre = RESOLVE_STR_REF (@3)
+OUTER_SET ny_str_gor_br  = RESOLVE_STR_REF (@4)
+
+COPY ~%MOD_FOLDER%/spells/summon_gorgon/bam/ny#gorb.bam~ ~override~
+     ~%MOD_FOLDER%/spells/summon_gorgon/bam/ny#gorc.bam~ ~override~
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#GORB~ c = ~NY#GORC~ END   // Remastered Spell Icons
+
+COPY ~%MOD_FOLDER%/spells/summon_gorgon/anim~ ~override~
+
+OUTER_SET ny_gor_anim = "-1"
+OUTER_FOR (id = 0xec70; (id <= 0xecff) AND (ny_gor_anim < 0); ++id) BEGIN
+  LAF NY#HEX4 INT_VAR value = id RET hexstring = hex END
+  OUTER_SET used = FILE_EXISTS_IN_GAME ~%hexstring%.ini~
+  ACTION_IF (NOT used) BEGIN
+    COPY_EXISTING ~animate.ids~ ~override~
+      PATCH_IF (INDEX_BUFFER (CASE_INSENSITIVE EVALUATE_REGEXP ~^0x%hexstring%[ %TAB%]~) >= 0) BEGIN
+        SET used = 1
+      END
+    BUT_ONLY
+  END
+  ACTION_IF (NOT used) BEGIN
+    OUTER_SET ny_gor_anim = id
+    OUTER_SPRINT ny_gor_hex ~%hexstring%~
+  END
+END
+ACTION_IF (ny_gor_anim < 0) BEGIN
+  FAIL ~BlackDragonMagic: no free animation id between 0xEC70 and 0xECFF~
+END
+COPY ~%MOD_FOLDER%/spells/summon_gorgon/ini/gorgon.ini~ ~override/%ny_gor_hex%.ini~
+ACTION_IF (IDS_OF_SYMBOL (~animate~ ~NY_GORGON~) < 0) BEGIN
+  APPEND ~animate.ids~ ~0x%ny_gor_hex% NY_GORGON~
+END
+PRINT ~Gorgon animation id: 0x%ny_gor_hex%~
+
+// Petrifying breath: cone 30 ft., enemies only (Cone of Cold without the cold)
+LAF NY#CLONE_AREA_PRO INT_VAR radius_ft = 30 explosion_effect = 255 STR_VAR source = ~conecold~ new = ~NY#GORBT~ RET ny_pro_gorbr = pro_id END
+COPY_EXISTING ~NY#GORBT.pro~ ~override~
+  READ_LONG  0x200 ny_gor_flags
+  WRITE_LONG 0x200 ((ny_gor_flags BOR 0x40) BAND (BNOT 0x80))   // enemies only
+  WRITE_ASCII 0x10 ~~ #8                        // no cold sound
+BUT_ONLY
+
+CREATE ~SPL~ ~NY#GORBR~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_gor_br type = 4 level = 1 flags = 0x400 END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 30 level = 1 casting_time = 0 projectile = ny_pro_gorbr RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 174 target = 1 timing = 1 STR_VAR resource = ~EFF_M21~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 175 target = 2 timing = 0 duration = (2 * ny_round) parameter2 = 2 savingthrow = 0x10 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 142 target = 2 timing = 0 duration = (2 * ny_round) parameter2 = 13 savingthrow = 0x10 END
+  PATCH_IF FILE_EXISTS_IN_GAME ~spstones.vvc~ BEGIN   // stone shards (Stoneskin's)
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 savingthrow = 0x10 STR_VAR resource = ~SPSTONES~ END
+  END
+
+COMPILE ~%MOD_FOLDER%/spells/summon_gorgon/baf/ny#gorai.baf~
+
+CREATE ~ITM~ ~NY#GORW~
+  WRITE_LONG  0x08 ny_str_gor_cre
+  WRITE_LONG  0x0c ny_str_gor_cre
+  WRITE_LONG  0x18 0x60                         // not copyable, magical
+  WRITE_SHORT 0x1c 0x1c                         // hand-to-hand weapon
+  WRITE_LONG  0x60 2                            // +2 weapon
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 134 END  // petrification
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 24 END   // panic
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 23 END   // morale failure
+  LPF NY#ADD_ITM_HEADER INT_VAR attack_type = 1 id_req = 0 location = 1 target = 1 range = 1 speed = 4
+                                thac0 = 0 damage_bonus = 2 dice_sides = 6 dice_thrown = 2 damage_type = 1 flags = 1 END
+
+ACTION_IF FILE_EXISTS_IN_GAME ~JELLYMU.cre~ BEGIN
+  OUTER_SPRINT ny_gor_base ~JELLYMU~            // BG:EE, SoD, EET
+END ELSE BEGIN
+  OUTER_SPRINT ny_gor_base ~JELLMU~             // BG2:EE
+END
+COPY_EXISTING ~%ny_gor_base%.cre~ ~override/NY#GOR.cre~
+  WRITE_LONG  0x08 ny_str_gor_cre
+  WRITE_LONG  0x0c ny_str_gor_cre
+  WRITE_LONG  0x14 0                            // no experience when killed
+  WRITE_SHORT 0x24 60                           // HP
+  WRITE_SHORT 0x26 60
+  WRITE_LONG  0x28 ny_gor_anim
+  WRITE_SHORT 0x46 2                            // AC
+  WRITE_SHORT 0x48 2
+  WRITE_BYTE  0x52 11                           // THAC0
+  WRITE_BYTE  0x53 1                            // 1 attack per round
+  // saves of a level 8 fighter: death, wands, polymorph, breath, spells
+  WRITE_BYTE  0x54 10
+  WRITE_BYTE  0x55 12
+  WRITE_BYTE  0x56 11
+  WRITE_BYTE  0x57 12
+  WRITE_BYTE  0x58 13
+  FOR (o = 0x59; o <= 0x63; ++o) BEGIN WRITE_BYTE o 0 END
+  WRITE_BYTE  0x234 8                           // level
+  WRITE_BYTE  0x238 18                          // STR
+  WRITE_BYTE  0x239 0
+  WRITE_BYTE  0x23a 2                           // INT
+  WRITE_BYTE  0x23b 12                          // WIS
+  WRITE_BYTE  0x23c 10                          // DEX
+  WRITE_BYTE  0x23d 18                          // CON
+  WRITE_BYTE  0x23e 6                           // CHA
+  WRITE_ASCII 0x248 ~NY#GORAI~ #8               // override script: breath, melee
+  WRITE_ASCII 0x250 ~~ #8
+  WRITE_ASCII 0x258 ~~ #8
+  WRITE_ASCII 0x260 ~~ #8
+  WRITE_ASCII 0x268 ~~ #8                       // no WTASIGHT (turns hostile)
+  WRITE_BYTE  0x270 5                           // CONTROLLED, as summons
+  REMOVE_CRE_ITEMS
+  ADD_CRE_ITEM ~NY#GORW~ #0 #0 #0 ~NONE~ ~WEAPON1~ EQUIP
+
+// Spell: 1 round per level
+CREATE ~SPL~ ~NY#GORS~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_gor desc = ny_str_gor_d type = 1 level = 5
+                          school = 2 exclusion = 0x100 graphics = 14 STR_VAR icon = ~NY#GORC~ END
+  FOR (lvl = 9; lvl <= 40; ++lvl) BEGIN
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 4 range = 30 level = ((lvl = 9) ? 1 : lvl) casting_time = 5 STR_VAR icon = ~NY#GORB~ RET h = header END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 67 target = 1 timing = 0 duration = (lvl * ny_round) STR_VAR resource = ~NY#GOR~ END
+  END
+
+ADD_SPELL ~override/NY#GORS.spl~ 2 5 ~WIZARD_NY_SUMMON_GORGON~
