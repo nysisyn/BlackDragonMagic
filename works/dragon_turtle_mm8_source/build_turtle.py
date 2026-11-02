@@ -5,7 +5,7 @@ import sys,struct,zlib,os
 import numpy as np
 from PIL import Image
 SHEET=sys.argv[1]; OUT=sys.argv[2]
-SCALE=0.75; CELL=256; AX,AY=128,205         # anchor (ground): under the shell, the lower flippers touch it
+SCALE=0.75; CELL=256; AX,AY=128,178         # anchor (ground): the middle of the body, a flat creature lies on its circle
 A=np.array(Image.open(SHEET).convert('RGB')).astype(np.int32)
 def cell(r,c): return A[r*CELL:(r+1)*CELL,c*CELL:(c+1)*CELL]
 def fgmask(x): return ~(((x[...,1]-x[...,0])>70)&((x[...,2]-x[...,0])>70)&(x[...,1]>150))   # cyan and its blends
@@ -50,8 +50,8 @@ def frame(r,c,mirror,breath=0):
     bb=Image.fromarray(np.maximum(np.array(im)[...,3],np.array(sh))).getbbox()
     im=im.crop(bb); sh=sh.crop(bb)
     ax=(AX if not mirror else CELL-1-AX)*SCALE-bb[0]; ay=AY*SCALE-bb[1]
-    if c in GROUND:                           # dying / dead: falls to the ground
-        ay-= (AY-4-ys.max())*SCALE
+    if c in GROUND:                           # dying / dead: lies on its circle, as the living body
+        ay=(ys.mean()+8)*SCALE-bb[1]
     cache[key]=(im,sh,round(ax),round(ay)); return cache[key]
 # facings: rows 0 front, 1 front 3/4 (to the right), 2 profile (right), 3 back 3/4, 4 back
 # IE order: 0 S, 1 SW, 2 W, 3 NW, 4 N (file XX) / 5 NE, 6 E, 7 SE (file XXE)
