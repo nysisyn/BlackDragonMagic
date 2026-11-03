@@ -13,7 +13,8 @@
 //   NY#BDQ02..50 spell slots of a sorcerer one level lower (CLAB, one per
 //                level, each one replaces the previous one)
 //   NY#BDZ1..6   put the claws of the stage in both weapon slots (CLAB)
-//   NY#BDCL1..6  claws (weapon item), one per stage: levels 1, 4, 8, 12, 16, 20
+//   NY#BDCL1..6  claws (weapon item), one per stage: levels 1, 4, 8, 12, 16, 20;
+//                the level 20 ones give the final form (animation MBDA)
 //   NY#BDMZ1..6  put the bite of the stage in the off-hand slot (CLAB)
 //   NY#BDMT      Fight with the Bite / NY#BDMU  Fight without the Bite
 //   NY#BDMO1..6  bite (off-hand item), one per stage: levels 6, 8, 12, 13,
@@ -342,6 +343,43 @@ LAF NY#BDD_CLAWS INT_VAR stage = 3 name = ny_str_claws desc = ny_str_claws_d3 si
 LAF NY#BDD_CLAWS INT_VAR stage = 4 name = ny_str_claws desc = ny_str_claws_d4 sides = 10 thrown = 1 STR_VAR icon = EVAL ~%ny_icon_claws%~ END
 LAF NY#BDD_CLAWS INT_VAR stage = 5 name = ny_str_claws desc = ny_str_claws_d5 sides = 6  thrown = 2 STR_VAR icon = EVAL ~%ny_icon_claws%~ END
 LAF NY#BDD_CLAWS INT_VAR stage = 6 name = ny_str_claws desc = ny_str_claws_d6 sides = 8  thrown = 2 STR_VAR icon = EVAL ~%ny_icon_claws%~ END
+
+// ---------------------------------------------------------------------------
+// Final form: Nysi's avatar of the fully evolved Black Dragon Disciple
+// (animation MBDA, 8 drawn directions: idle, walk, claws, tail, cast, wings,
+// crouch, death; works/final_form_avatar_source/build_avatar.py). The level
+// 20 claws carry it (opcode 53 while equipped): the disciple takes this form
+// at Draconic Apotheosis, and gets his own back if the claws are removed.
+// Equipment is not drawn on a creature animation (as with shapeshifting).
+// Animation id: first free one from 0xECA0 (NY_BDD_FINAL_FORM).
+// ---------------------------------------------------------------------------
+COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/avatar/anim~ ~override~
+OUTER_SET ny_bda_anim = "-1"
+OUTER_FOR (id = 0xeca0; (id <= 0xecff) AND (ny_bda_anim < 0); ++id) BEGIN
+  LAF NY#HEX4 INT_VAR value = id RET hexstring = hex END
+  OUTER_SET used = FILE_EXISTS_IN_GAME ~%hexstring%.ini~
+  ACTION_IF (NOT used) BEGIN
+    COPY_EXISTING ~animate.ids~ ~override~
+      PATCH_IF (INDEX_BUFFER (CASE_INSENSITIVE EVALUATE_REGEXP ~^0x%hexstring%[ %TAB%]~) >= 0) BEGIN
+        SET used = 1
+      END
+    BUT_ONLY
+  END
+  ACTION_IF (NOT used) BEGIN
+    OUTER_SET ny_bda_anim = id
+    OUTER_SPRINT ny_bda_hex ~%hexstring%~
+  END
+END
+ACTION_IF (ny_bda_anim < 0) BEGIN
+  FAIL ~BlackDragonMagic: no free animation id between 0xECA0 and 0xECFF~
+END
+COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/avatar/ini/final_form.ini~ ~override/%ny_bda_hex%.ini~
+ACTION_IF (IDS_OF_SYMBOL (~animate~ ~NY_BDD_FINAL_FORM~) < 0) BEGIN
+  APPEND ~animate.ids~ ~0x%ny_bda_hex% NY_BDD_FINAL_FORM~
+END
+PRINT ~Black Dragon Disciple final form animation id: 0x%ny_bda_hex%~
+COPY_EXISTING ~NY#BDCL6.itm~ ~override~
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 53 target = 1 timing = 2 parameter1 = ny_bda_anim parameter2 = 0 END
 
 // ---------------------------------------------------------------------------
 // Claws in the two weapon slots

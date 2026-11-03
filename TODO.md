@@ -39,6 +39,11 @@ To check:
 
 Not done yet:
 
+### Final form (level 20)
+- [ ] At level 20 (claws NY#BDCL6) the disciple takes the avatar animation; 8 directions; idle, walk, claw and tail attacks, casting (hands raised), powers (wings spread), hit, death.
+- [ ] Back to his own animation if the claws are removed; ToB cutscenes, dialogues, resting, saving and loading keep the form.
+- [ ] The character's own sound set still plays; selection circle and size look right.
+
 ### High-level abilities (branch hla)
 - [ ] At level-up in Throne of Bhaal the HLA list shows: extra spell 6 / 7 / 8, Summon Dark Planetar (not for good characters), Breathbloom, Wing Buffet, Insect Swarm, Plant Growth, with their names and icons; no Energy Blades, Improved Alacrity, Dragon's Breath, Summon Planetar or Comet.
 - [ ] The 4 new HLA appear as innate abilities, once per day per pick (Breathbloom 1 pick, the others up to 2).
