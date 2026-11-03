@@ -1,8 +1,9 @@
 """Builds the IWD-style (monster_icewind, E000) animation MBDA of the Black
-Dragon Disciple's final form (Nysi's own avatar) from the V3 sheets: idle,
-walk, claw, tail, cast, wings, hit, death; 8 rows = 8 drawn directions
-(front, front-right, right, back-right, back, back-left, left, front-left),
-8 frames per row. Usage: build_avatar.py v3 <out dir>"""
+Dragon Disciple's final form (Nysi's own avatar) from the V4 FULL sheets:
+idle, walk, cast, wings, claw, claw2, tail, buffet, hit, death; 8 rows = 8
+drawn directions, 8 frames per row.
+Attacks: A1 claw, A2 double claw, A3 tail, A4 wing buffet.
+Usage: build_avatar.py v4_full <out dir>"""
 import sys,struct,zlib,os
 import numpy as np
 from PIL import Image,ImageDraw,ImageFilter
@@ -10,8 +11,12 @@ sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
 from extract import frames,frames_rows
 SRC=sys.argv[1]; OUT=sys.argv[2] if len(sys.argv)>2 else None
 SCALE=0.50                                      # 0.72 reduced by 30%
-F={n:frames(os.path.join(SRC,n+'.png')) for n in ('idle','walk','claw','tail','cast','hit','death')}
-F['wings']=frames_rows(os.path.join(SRC,'wings.png'))   # spread wings touch side by side
+SHEETS=[n for n in ('idle','walk','cast','wings','claw','claw2','tail','buffet','hit','death') if os.path.exists(os.path.join(SRC,n+'.png'))]
+F={}
+for n in SHEETS:
+    f=frames(os.path.join(SRC,n+'.png'))
+    if len(set(c for r,c in f))!=8: f=frames_rows(os.path.join(SRC,n+'.png'))   # sprites touching side by side
+    F[n]=f
 # horizontal anchor of each sheet row: where the feet stand (bottom of the sprite)
 def feet(m):
     ys,xs=np.nonzero(m); low=ys>=ys.max()-max(4,(ys.max()-ys.min())//10)
@@ -21,19 +26,21 @@ for n in F:
     for r in range(8):
         XR[(n,r)]=float(np.median([F[n][(r,c)][2][0]+feet(F[n][(r,c)][1]) for c in range(3)]))
 cache={}
-def frame(sheet,r,c,breath=0):
-    key=(sheet,r,c,breath)
+def frame(sheet,r,c,breath=0,flip=False):
+    key=(sheet,r,c,breath,flip)
     if key in cache: return cache[key]
     rgb,m,(X0,Y0)=F[sheet][(r,c)]
     h,w=m.shape
     rgba=np.zeros((h,w,4),np.uint8); rgba[...,:3]=rgb; rgba[...,3]=np.where(m,255,0)
     im=Image.fromarray(rgba)
+    if flip: im=im.transpose(Image.FLIP_LEFT_RIGHT)
     if breath:
         k=1+0.02*np.sin(2*np.pi*breath/BREATH_N); H=round(h*k)
         st=im.resize((w,H),Image.LANCZOS); im=Image.new('RGBA',(w,H),(0,0,0,0)); im.paste(st,(0,0),st); h=H
     # AI sheets do not keep a regular grid: each frame is anchored on its own
     # feet, except while falling (death), anchored where the feet stood
-    cx=XR[(sheet,r)]-X0 if sheet=='death' else feet(m); cy=h-2                                   # feet on the ground
+    cx=XR[(sheet,r)]-X0 if sheet=='death' else feet(m); cy=h-2
+    if flip: cx=w-cx                                   # feet on the ground
     # canvas with room for the shadow
     pad=20; can=Image.new('RGBA',(w+2*pad,h+pad),(0,0,0,0)); can.paste(im,(pad,0),im)
     sh=Image.new('L',can.size,0); sw=max(18,w*0.33)
@@ -46,7 +53,9 @@ def frame(sheet,r,c,breath=0):
     im=im.crop(bb); sh=sh.crop(bb)
     cache[key]=(im,sh,round((pad+cx)*SCALE-bb[0]),round(cy*SCALE-bb[1])); return cache[key]
 # IE directions 0 S,1 SW,2 W,3 NW,4 N,5 NE,6 E,7 SE -> sheet rows (front, SE, E, NE, back, NW, W, SW)
-ROW=[0,7,6,5,4,3,2,1]
+# V4 sheets: row 1 faces front-left and row 7 front-right (swapped), and row 6
+# (left profile) faces right like row 2: the left profile is row 2 mirrored.
+ROW=[(0,0),(1,0),(2,1),(5,0),(4,0),(3,0),(2,0),(7,0)]
 BREATH_N=24
 def rep(seq,n): return [x for x in seq for _ in range(n)]
 IDLE=list(range(8))+list(range(6,0,-1))                       # back and forth, loops smoothly
@@ -54,18 +63,20 @@ SEQS={
  'SD':[('idle',c) for c in rep(IDLE,3)],                      # calm: shoulders and arms only
  'SC':[('idle',c) for c in rep(IDLE,2)],
  'WK':[('walk',c) for c in range(8)],
- 'A1':[('claw',c) for c in rep(range(8),2)],                  # claws
- 'A2':[('tail',c) for c in rep(range(8),2)],                  # tail swipe
+ 'A1':[('claw',c) for c in rep(range(8),2)],
+ 'A2':[('claw2',c) for c in rep(range(8),2)],
+ 'A3':[('tail',c) for c in rep(range(8),2)],
+ 'A4':[('buffet',c) for c in rep(range(8),2)],
  'CA':[('cast',c) for c in rep(range(8),2)],                  # hands raised
  'SP':[('wings',c) for c in rep(range(8),2)],                 # wings spread (powers)
  'GH':[('hit',c) for c in range(8)],                           # hit recoil
  'DE':[('death',c) for c in rep(range(8),2)],
  'TW':[('death',7)]*2,'SL':[('death',7)],
  'GU':[('death',c) for c in rep(range(7,-1,-1),2)]}
-SEQS['A3']=SEQS['A1']; SEQS['A4']=SEQS['A2']
+
 def cycle(s,d):
-    r=ROW[d]
-    return [(sh,r,c,0) for sh,c in SEQS[s]]
+    r,fl=ROW[d]
+    return [(sh,r,c,0,fl) for sh,c in SEQS[s]]
 def write_bam(path,cycles):
     uniq=[];idx={}
     for cy in cycles:
