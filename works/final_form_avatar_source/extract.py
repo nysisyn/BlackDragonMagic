@@ -46,5 +46,37 @@ def frames(n):
         for r,m in enumerate(blobs):
             m=ndimage.binary_erosion(m)                  # 1 px of background blend off
             ys2,xs2=np.nonzero(m); Y0,Y1,X0,X1=ys2.min(),ys2.max()+1,xs2.min(),xs2.max()+1
-            out[(r,c)]=(A[Y0:Y1,x0+X0:x0+X1],m[Y0:Y1,X0:X1],(X0,Y0))
+            out[(r,c)]=(A[Y0:Y1,x0+X0:x0+X1],m[Y0:Y1,X0:X1],(x0+X0-c*A.shape[1]/len(groups),Y0))   # x from the cell's left edge
+    return out
+
+def frames_rows(n,ncol=8):
+    """Sheets whose sprites touch side by side (spread wings) but whose rows
+    are separate: each row band is cut between two sprites at the column with
+    the fewest sprite pixels, searched between the two expected cell centres."""
+    A,fg=load(n); out={}
+    p=fg.any(1); r=np.diff(np.concatenate([[0],p.astype(int),[0]]))
+    bands=[(a,b) for a,b in zip(np.nonzero(r==1)[0],np.nonzero(r==-1)[0]) if b-a>40]
+    assert len(bands)==8,len(bands)
+    W=A.shape[1]; cw=W/ncol
+    for ri,(y0,y1) in enumerate(bands):
+        band=fg[y0:y1]; cnt=band.sum(0)
+        cuts=[0]
+        for c in range(ncol-1):
+            lo=int(cw*(c+0.75)); hi=int(cw*(c+1.25))
+            cuts.append(lo+int(np.argmin(cnt[lo:hi])))
+        cuts.append(W)
+        for c in range(ncol):
+            x0=cuts[c]; strip=band[:,x0:cuts[c+1]]
+            lab,k=ndimage.label(ndimage.binary_dilation(strip,iterations=1)); lab=lab*strip
+            sizes=ndimage.sum(strip,lab,range(1,k+1))
+            big=int(np.argmax(sizes))+1; cb=np.array(np.nonzero(lab==big)).mean(1)
+            m=np.zeros_like(strip)
+            for i in range(1,k+1):
+                mi=lab==i
+                xs=np.nonzero(mi)[1]
+                edge=xs.min()==0 or xs.max()==strip.shape[1]-1   # a neighbour's clipped wing tip
+                if i==big or (not edge and np.linalg.norm(np.array(np.nonzero(mi)).mean(1)-cb)<90): m|=mi
+            m=ndimage.binary_erosion(m)
+            ys2,xs2=np.nonzero(m); Y0,Y1,X0,X1=ys2.min(),ys2.max()+1,xs2.min(),xs2.max()+1
+            out[(ri,c)]=(A[y0+Y0:y0+Y1,x0+X0:x0+X1],m[Y0:Y1,X0:X1],(x0+X0-c*cw,Y0))
     return out

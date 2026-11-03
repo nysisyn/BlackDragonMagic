@@ -1,22 +1,25 @@
 """Builds the IWD-style (monster_icewind, E000) animation MBDA of the Black
-Dragon Disciple's final form (Nysi's own avatar) from eight sheets: idle,
-walk, claw, tail, cast, wings, crouch, death; 8 rows = 8 drawn directions,
-7 or 8 frames per row (columns found from the picture itself)."""
+Dragon Disciple's final form (Nysi's own avatar) from the V3 sheets: idle,
+walk, claw, tail, cast, wings, hit, death; 8 rows = 8 drawn directions
+(front, front-right, right, back-right, back, back-left, left, front-left),
+8 frames per row. Usage: build_avatar.py v3 <out dir>"""
 import sys,struct,zlib,os
 import numpy as np
-from PIL import Image,ImageDraw
+from PIL import Image,ImageDraw,ImageFilter
 sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
-from extract import frames
+from extract import frames,frames_rows
 SRC=sys.argv[1]; OUT=sys.argv[2] if len(sys.argv)>2 else None
 SCALE=0.50                                      # 0.72 reduced by 30%
-F={n:frames(os.path.join(SRC,n+'.png')) for n in ('idle','walk','claw','tail','cast','wings','crouch','death')}
-# horizontal anchor of each row: where the body stands in the walk frames
+F={n:frames(os.path.join(SRC,n+'.png')) for n in ('idle','walk','claw','tail','cast','hit','death')}
+F['wings']=frames_rows(os.path.join(SRC,'wings.png'))   # spread wings touch side by side
+# horizontal anchor of each sheet row: where the feet stand (bottom of the sprite)
+def feet(m):
+    ys,xs=np.nonzero(m); low=ys>=ys.max()-max(4,(ys.max()-ys.min())//10)
+    return xs[low].mean()
 XR={}
-for r in range(8):
-    xs=[]
-    for c in range(7):
-        rgb,m,(X0,Y0)=F['idle'][(r,c)]; xs.append(X0+np.nonzero(m)[1].mean())
-    XR[r]=float(np.median(xs))
+for n in F:
+    for r in range(8):
+        XR[(n,r)]=float(np.median([F[n][(r,c)][2][0]+feet(F[n][(r,c)][1]) for c in range(3)]))
 cache={}
 def frame(sheet,r,c,breath=0):
     key=(sheet,r,c,breath)
@@ -28,13 +31,17 @@ def frame(sheet,r,c,breath=0):
     if breath:
         k=1+0.02*np.sin(2*np.pi*breath/BREATH_N); H=round(h*k)
         st=im.resize((w,H),Image.LANCZOS); im=Image.new('RGBA',(w,H),(0,0,0,0)); im.paste(st,(0,0),st); h=H
-    cx=XR[r]-X0; cy=h-2                                   # feet on the ground
+    # AI sheets do not keep a regular grid: each frame is anchored on its own
+    # feet, except while falling (death), anchored where the feet stood
+    cx=XR[(sheet,r)]-X0 if sheet=='death' else feet(m); cy=h-2                                   # feet on the ground
     # canvas with room for the shadow
     pad=20; can=Image.new('RGBA',(w+2*pad,h+pad),(0,0,0,0)); can.paste(im,(pad,0),im)
     sh=Image.new('L',can.size,0); sw=max(18,w*0.33)
     ImageDraw.Draw(sh).ellipse((pad+cx-sw,cy-7,pad+cx+sw,cy+6),fill=255)
     S=(round(can.width*SCALE),round(can.height*SCALE))
     im=can.resize(S,Image.LANCZOS); sh=sh.resize(S,Image.NEAREST)
+    # readability at small size: light sharpening of the colours only
+    a=im.getchannel('A'); im=im.convert('RGB').filter(ImageFilter.UnsharpMask(radius=1.2,percent=70,threshold=2)); im.putalpha(a)
     bb=Image.fromarray(np.maximum(np.array(im)[...,3],np.array(sh))).getbbox()
     im=im.crop(bb); sh=sh.crop(bb)
     cache[key]=(im,sh,round((pad+cx)*SCALE-bb[0]),round(cy*SCALE-bb[1])); return cache[key]
@@ -42,23 +49,22 @@ def frame(sheet,r,c,breath=0):
 ROW=[0,7,6,5,4,3,2,1]
 BREATH_N=24
 def rep(seq,n): return [x for x in seq for _ in range(n)]
+IDLE=list(range(8))+list(range(6,0,-1))                       # back and forth, loops smoothly
 SEQS={
- 'SD':None,
- 'SC':[('crouch',c) for c in rep([0,1,2,3,3,2,1,0],2)],      # crouched, snarling
+ 'SD':[('idle',c) for c in rep(IDLE,3)],                      # calm: shoulders and arms only
+ 'SC':[('idle',c) for c in rep(IDLE,2)],
  'WK':[('walk',c) for c in range(8)],
  'A1':[('claw',c) for c in rep(range(8),2)],                  # claws
  'A2':[('tail',c) for c in rep(range(8),2)],                  # tail swipe
  'CA':[('cast',c) for c in rep(range(8),2)],                  # hands raised
  'SP':[('wings',c) for c in rep(range(8),2)],                 # wings spread (powers)
- 'GH':[('crouch',c) for c in [1,2,2,1]],                      # flinch
+ 'GH':[('hit',c) for c in range(8)],                           # hit recoil
  'DE':[('death',c) for c in rep(range(8),2)],
  'TW':[('death',7)]*2,'SL':[('death',7)],
  'GU':[('death',c) for c in rep(range(7,-1,-1),2)]}
 SEQS['A3']=SEQS['A1']; SEQS['A4']=SEQS['A2']
 def cycle(s,d):
     r=ROW[d]
-    if s=='SD':     # the idle sheet moves too much: its first frame, slow breathing
-        return [('idle',r,0,b) for b in range(BREATH_N) for _ in range(2)]
     return [(sh,r,c,0) for sh,c in SEQS[s]]
 def write_bam(path,cycles):
     uniq=[];idx={}
