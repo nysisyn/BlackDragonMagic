@@ -39,9 +39,9 @@ To check:
 
 Not done yet:
 
-### Final form (level 20)
-- [ ] At level 20 (claws NY#BDCL6) the disciple takes the avatar animation; 8 directions; idle, walk, claw and tail attacks, casting (hands raised), powers (wings spread), hit, death.
-- [ ] Back to his own animation if the claws are removed; ToB cutscenes, dialogues, resting, saving and loading keep the form.
+### Final form (wings)
+- [ ] With the wings spread (NY#BDWI, from level 14) the disciple takes the avatar animation; 8 directions; idle, walk, claw and tail attacks, casting (hands raised), powers (wings spread), hit, death.
+- [ ] Back to his own animation when he folds the wings; ToB cutscenes, dialogues, resting, saving and loading keep the form.
 - [ ] The character's own sound set still plays; selection circle and size look right.
 
 ### High-level abilities (branch hla)

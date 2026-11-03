@@ -38,7 +38,7 @@ PERCEPTION AVEUGLE : Le Disciple du Dragon Noir perçoit ce qui l'entoure sans a
 - Niveau 13 : la morsure inflige désormais 2d6 dégâts perforants et 2d4 dégâts d'acide.
 - Niveau 14 : obtient Ailes draconiques.
 
-AILES DRACONIQUES : Une paire d'ailes draconiques pousse dans le dos du Disciple du Dragon Noir, qui gagne +4 en vitesse de déplacement, +2 à la CA et l'immunité aux coups critiques. Les ailes occupent l'emplacement du casque et peuvent être déployées ou repliées à volonté.
+AILES DRACONIQUES : Une paire d'ailes draconiques pousse dans le dos du Disciple du Dragon Noir, qui gagne +4 en vitesse de déplacement, +2 à la CA et l'immunité aux coups critiques. Déployées, elles révèlent sa véritable forme draconique. Les ailes occupent l'emplacement du casque et peuvent être déployées ou repliées à volonté.
 
 - Niveau 15 : bonus de +1 à la CA et à la Constitution.
 - Niveau 16 : Affinité acide s'améliore. Les griffes infligent désormais 2d6 dégâts tranchants et comptent comme des armes magiques +4.
@@ -48,7 +48,7 @@ AILES DRACONIQUES : Une paire d'ailes draconiques pousse dans le dos du Disciple
 PRÉSENCE TERRIFIANTE : Le Disciple du Dragon Noir dégage une aura de menace draconique. Les ennemis de niveau inférieur au sien situés à moins de 4,5 m doivent réussir un jet de sauvegarde contre les sorts ou être paniqués pendant 2 rounds. Qu'elle réussisse ou non, une créature devient ensuite immunisée contre cette aura pendant 24 heures. Les alliés ne sont pas affectés. L'aura peut être activée ou désactivée à volonté.
 
 - Niveau 19 : les dégâts du Souffle passent à 12d4, et la ligne atteint 9 m de long et 3 m de large.
-- Niveau 20 : Apothéose draconique : bonus de +1 à la CA et immunité au sommeil et à la paralysie. Affinité acide atteint son apogée. Les griffes infligent désormais 2d8 dégâts tranchants et comptent comme des armes magiques +5. Le Disciple du Dragon Noir prend sa forme draconique finale.
+- Niveau 20 : Apothéose draconique : bonus de +1 à la CA et immunité au sommeil et à la paralysie. Affinité acide atteint son apogée. Les griffes infligent désormais 2d8 dégâts tranchants et comptent comme des armes magiques +5.
 
 - Capacités de haut niveau (Throne of Bhaal) : en plus des sorts supplémentaires de l'ensorceleur et de Convocation de planétaire déchu, le Disciple du Dragon Noir peut apprendre les capacités innées d'un dragon noir adulte : Éclosion de souffle, Coup d'ailes, Nuée d'insectes et Croissance végétale ; il peut aussi invoquer une tortue-dragon noire ou un draco-sphinx noir.
 
@@ -116,7 +116,7 @@ Facteur de vitesse : 2
 Comptent comme une arme +4 pour toucher les créatures~
 @16 = ~Griffes draconiques
 
-Les griffes sont devenues celles d'un dragon noir adulte, et le Disciple du Dragon Noir a pris sa forme draconique finale.
+Les griffes sont devenues celles d'un dragon noir adulte.
 
 CARACTÉRISTIQUES :
 
@@ -216,7 +216,7 @@ Désactive l'aura de Présence terrifiante. Elle peut être réactivée à volon
 @60 = ~Ailes draconiques~
 @61 = ~Ailes draconiques
 
-Des ailes membraneuses ont déchiré le dos du Disciple du Dragon Noir. Elles prennent la place d'un casque.
+Des ailes membraneuses ont déchiré le dos du Disciple du Dragon Noir. Elles prennent la place d'un casque. Déployées, elles révèlent sa véritable forme draconique.
 
 CARACTÉRISTIQUES :
 
@@ -225,7 +225,7 @@ Classe d'armure : +2
 Immunité aux coups critiques~
 @62 = ~Ailes draconiques
 
-Le Disciple du Dragon Noir déploie ses ailes draconiques, ce qui lui donne +4 en vitesse de déplacement, +2 à la CA et l'immunité aux coups critiques. Les ailes occupent l'emplacement du casque.
+Le Disciple du Dragon Noir déploie ses ailes draconiques, ce qui lui donne +4 en vitesse de déplacement, +2 à la CA et l'immunité aux coups critiques, et révèle sa véritable forme draconique. Les ailes occupent l'emplacement du casque.
 
 Utiliser cette capacité déploie les ailes ; elles peuvent ensuite être repliées à volonté.~
 @63 = ~Replier les ailes draconiques~

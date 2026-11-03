@@ -13,8 +13,7 @@
 //   NY#BDQ02..50 spell slots of a sorcerer one level lower (CLAB, one per
 //                level, each one replaces the previous one)
 //   NY#BDZ1..6   put the claws of the stage in both weapon slots (CLAB)
-//   NY#BDCL1..6  claws (weapon item), one per stage: levels 1, 4, 8, 12, 16, 20;
-//                the level 20 ones give the final form (animation MBDA)
+//   NY#BDCL1..6  claws (weapon item), one per stage: levels 1, 4, 8, 12, 16, 20
 //   NY#BDMZ1..6  put the bite of the stage in the off-hand slot (CLAB)
 //   NY#BDMT      Fight with the Bite / NY#BDMU  Fight without the Bite
 //   NY#BDMO1..6  bite (off-hand item), one per stage: levels 6, 8, 12, 13,
@@ -24,7 +23,8 @@
 //   NY#BDBRT     Acid Breath line, 15 ft. long and 5 ft. wide
 //   NY#BDBRU     Acid Breath line, 30 ft. long and 10 ft. wide (level 19)
 //   NY#BDWG      Draconic Wings ON  / NY#BDWH  OFF
-//   NY#BDWI      the wings (helmet slot item)
+//   NY#BDWI      the wings (helmet slot item); spread, they give the final
+//                form (animation MBDA)
 //   NY#BDFP      Frightful Presence ON  / NY#BDFQ  OFF
 //   NY#BDFPE     aura pulse (EFF)      / NY#BDFPA  pulse spell
 //   NY#BDBL, NY#BDWB, NY#BDIS, NY#BDPG   high-level abilities (hla/hla.tpa)
@@ -347,9 +347,10 @@ LAF NY#BDD_CLAWS INT_VAR stage = 6 name = ny_str_claws desc = ny_str_claws_d6 si
 // ---------------------------------------------------------------------------
 // Final form: Nysi's avatar of the fully evolved Black Dragon Disciple
 // (animation MBDA, 8 drawn directions: idle, walk, claws, tail, cast, wings,
-// crouch, death; works/final_form_avatar_source/build_avatar.py). The level
-// 20 claws carry it (opcode 53 while equipped): the disciple takes this form
-// at Draconic Apotheosis, and gets his own back if the claws are removed.
+// crouch, death; works/final_form_avatar_source/build_avatar.py). The wings
+// carry it (opcode 53 while equipped, see NY#BDWI below): the disciple takes
+// this form when he spreads his wings and gets his own back when he folds
+// them.
 // Equipment is not drawn on a creature animation (as with shapeshifting).
 // Animation id: first free one from 0xECA0 (NY_BDD_FINAL_FORM).
 // ---------------------------------------------------------------------------
@@ -378,8 +379,6 @@ ACTION_IF (IDS_OF_SYMBOL (~animate~ ~NY_BDD_FINAL_FORM~) < 0) BEGIN
   APPEND ~animate.ids~ ~0x%ny_bda_hex% NY_BDD_FINAL_FORM~
 END
 PRINT ~Black Dragon Disciple final form animation id: 0x%ny_bda_hex%~
-COPY_EXISTING ~NY#BDCL6.itm~ ~override~
-  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 53 target = 1 timing = 2 parameter1 = ny_bda_anim parameter2 = 0 END
 
 // ---------------------------------------------------------------------------
 // Claws in the two weapon slots
@@ -586,6 +585,7 @@ COPY_EXISTING ~NY#BDWI.itm~ ~override~
   LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 126 target = 1 timing = 2 parameter1 = 4 parameter2 = 0 END   // movement +4
   LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 0   target = 1 timing = 2 parameter1 = 2 parameter2 = 0 END   // AC +2
   LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 142 target = 1 timing = 2 parameter2 = ny_pd_wings END        // portrait icon
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 53  target = 1 timing = 2 parameter1 = ny_bda_anim parameter2 = 0 END   // final form (avatar)
 
 CREATE ~SPL~ ~NY#BDWG~
   LPF NY#SPL_BASE INT_VAR name = ny_str_wings desc = ny_str_wings_on_d type = 4 level = 1 STR_VAR icon = EVAL ~%ny_icon_wings%~ END
