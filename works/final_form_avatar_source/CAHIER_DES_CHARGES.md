@@ -1,27 +1,22 @@
 # Cahier des charges – Planches de sprites du Disciple du Dragon Noir
 
-Version 1 – mod BlackDragonMagic (Baldur's Gate II : Enhanced Edition, EET)
+Mod BlackDragonMagic – Baldur's Gate II : Enhanced Edition
 
 ---
 
-## 0. Utilisation de ce document
+## 0. Ta mission
 
-**Pour l'auteur du mod.**
-1. Au début d'une conversation ChatGPT, joins ce fichier et les images de
-   référence (section 3).
-2. Écris : « Lis ce cahier des charges. Ne génère rien pour l'instant, confirme
-   simplement que tu l'as compris. »
-3. Demande ensuite une planche à la fois, avec son identifiant et sa variante,
-   par exemple « Génère la planche CLAW2, variante C ».
-4. Contrôle chaque planche avec la section 9 avant de la convertir.
-
-**Pour ChatGPT.**
-- Ce document décrit des planches de sprites destinées à un jeu vidéo.
-- Pour chaque demande, génère **une seule image** correspondant **exactement** à
-  la fiche de la planche demandée (section 7), en respectant toutes les règles
-  des sections 2 à 6.
-- Si une règle ne peut pas être respectée, dis-le plutôt que de l'ignorer.
-- Ne génère pas plusieurs planches dans une seule image.
+- Tu génères des planches de sprites pour un personnage de jeu vidéo.
+- À chaque demande, je te donne l'identifiant d'une planche (section 7) et une
+  variante (section 8). Tu génères alors **une seule image**, qui correspond
+  **exactement** à la fiche de cette planche et respecte toutes les règles des
+  sections 2 à 6.
+- Ne génère qu'une planche par image et par demande.
+- Si une règle ne peut pas être respectée, dis-le avant de générer plutôt que de
+  l'ignorer.
+- Avant de livrer, vérifie la planche avec la section 9.
+- Quand tu reçois ce document pour la première fois, ne génère rien : confirme
+  simplement que tu l'as compris.
 
 ---
 
@@ -74,9 +69,8 @@ du bronze, **jamais** d'un éclaircissement des matières.
 
 ## 3. Images de référence
 
-À joindre au début de la conversation :
-- `v3/idle.png` : le personnage, ses couleurs, l'ordre des directions ;
-- `v3/walk.png` : le personnage en mouvement.
+Des planches déjà validées sont jointes à la conversation. Elles montrent le
+personnage, ses couleurs et l'ordre des directions.
 
 Le design, les proportions et les couleurs de ces images font foi. En cas de
 contradiction entre le texte et une référence, **la référence l'emporte** pour
@@ -242,10 +236,10 @@ Règles communes :
 
 ## 8. Variantes (stades d'évolution)
 
-Le personnage se transforme avec les niveaux. On demande la variante avec la
-planche, par exemple « planche WALK, variante A ».
+Le personnage se transforme avec les niveaux. Chaque demande précise la
+variante, par exemple « planche WALK, variante A ».
 
-| Variante | Niveaux | Description | Planches à ne pas générer |
+| Variante | Niveaux | Description | Planches qui n'existent pas |
 |---|---|---|---|
 | A | 1 à 8 | ni ailes ni queue, totalement absentes (pas de moignons) | WINGS, TAIL, BUFFET |
 | B | 9 à 13 | queue, sans ailes (pas de moignons) | WINGS, BUFFET |
@@ -259,7 +253,7 @@ sur la planche.
 
 ## 9. Critères d'acceptation
 
-Une planche est acceptée si :
+Une planche n'est acceptée que si :
 - [ ] il y a 8 lignes × 8 colonnes régulières, une seule animation ;
 - [ ] le fond est cyan uni partout, sans ombre, sol, texte ni grille ;
 - [ ] aucun sprite ne touche son voisin, ailes et queue comprises ;
@@ -274,29 +268,3 @@ Une planche est acceptée si :
       direction d'attaque ;
 - [ ] pour une attaque, la première et la dernière image sont la même pose de
       repos.
-
----
-
-## 10. Annexe technique (pour l'auteur du mod)
-
-**Fichiers.** Planches enregistrées dans `works/final_form_avatar_source/vN/`
-sous les noms ci-dessous.
-
-**Conversion.**
-`python3 build_avatar.py vN ../../kits/black_dragon_disciple/avatar/anim`
-
-| Fichier | Planche | Animation du jeu |
-|---|---|---|
-| `idle.png` | IDLE | SD (debout), SC (prêt au combat) |
-| `walk.png` | WALK | WK |
-| `cast.png` | CAST | CA |
-| `wings.png` | WINGS | SP |
-| `claw.png` | CLAW | A1 |
-| `claw2.png` | CLAW2 | A2 |
-| `tail.png` | TAIL | A3 |
-| `buffet.png` | BUFFET | A4 |
-| `hit.png` | HIT | GH |
-| `death.png` | DEATH | DE, puis TW/SL (au sol) et GU (relevé) |
-
-**Planches absentes d'une variante.** Elles sont remplacées par une autre
-attaque à la conversion.
