@@ -12,7 +12,7 @@ Jet de sauvegarde : aucun
 
 Ce sort invoque un mantidrake noir, une manticore à face de crâne issue de la lignée du dragon noir, qui combat pour le magicien. Il obéit au lanceur jusqu'à la fin du sort ou jusqu'à sa mort.
 
-Mantidrake noir : PV 55, CA 3, TAC0 12, 2 attaques de griffes par round (1d8+1 dégâts tranchants, arme +1). Tant qu'aucun ennemi n'est à portée de ses griffes, il projette une volée de piques caudales corrosives sur tous les ennemis à moins de 9 m, au plus une fois tous les 2 rounds : 1d6 dégâts de projectile et 2d4 dégâts d'acide (jet de sauvegarde contre les souffles pour la moitié). Les alliés ne sont pas touchés. Il est immunisé contre l'acide et se déplace librement dans l'Enchevêtrement et la Toile d'araignée.~
+Mantidrake noir : PV 55, CA 3, TAC0 12, 2 attaques de griffes par round (1d8+1 dégâts tranchants, arme +1). Tant qu'aucun ennemi n'est à portée de ses griffes, il projette une pique caudale corrosive sur chaque ennemi qu'il voit à moins de 9 m (dix au plus), au plus une fois tous les 2 rounds ; chaque pique inflige 1d6 dégâts de projectile et 2d4 dégâts d'acide (jet de sauvegarde contre les souffles pour la moitié). Les alliés ne sont pas touchés. Il est immunisé contre l'acide et se déplace librement dans l'Enchevêtrement et la Toile d'araignée.~
 
 // Créature et sa volée
 @3 = ~Mantidrake noir~

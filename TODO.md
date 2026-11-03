@@ -88,7 +88,7 @@ Not done yet:
 ### Summon Black Mantidrake
 - [ ] Install on BG:EE and BG2:EE: the .DEBUG prints the animation id; the spell is learnable at level 5.
 - [ ] 8 directions (no mirroring), idle, walk, pounce attack, stagger, death; panther sounds (on BG:EE too?).
-- [ ] Spike volley: only while no enemy is in melee reach, hits every enemy within 30 ft. (acid splash), not the allies, once every 2 rounds; melee otherwise; not while disabled.
+- [ ] Spikes: one dart flies to each enemy in reach (up to ten, chained forced casts with Continue()), only while no enemy is in melee reach, once every 2 rounds; acid splash on each; melee otherwise; not while disabled.
 - [ ] Walks through Entangle and Web; immune to acid.
 
 ### Summon Gorgon

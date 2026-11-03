@@ -5,10 +5,10 @@
 // faced, with a tail of spikes) for 1 round per level.
 //   - HP 55, AC 3, THAC0 12, 2 claw attacks per round (1d8+1, +1 weapon),
 //     level 7; immune to acid, Entangle and Web (as Swamp Stride)
-//   - while no enemy is in melee reach, it throws a volley of corrosive tail
-//     spikes at every enemy within 30 ft., once every 2 rounds (NY#MTDV):
-//     1d6 missile + 2d4 acid, save vs. Breath for half; otherwise it fights
-//     in melee (script NY#MTDAI)
+//   - while no enemy is in melee reach, it throws one corrosive tail spike
+//     at each enemy it sees within reach (up to ten), once every 2 rounds
+//     (NY#MTDV, a travelling dart each): 1d6 missile + 2d4 acid, save vs.
+//     Breath for half; otherwise it fights in melee (script NY#MTDAI)
 //   - allegiance CONTROLLED (5), no experience for killing it
 //
 // Animation MMTD built from four sheets of a black mantidrake (idle, walk,
@@ -22,8 +22,8 @@
 //   SPWIxxx   Summon Black Mantidrake (WIZARD_NY_SUMMON_MANTIDRAKE)
 //   NY#MTD    the creature, from the game's Mustard Jelly (as the animated
 //             breath), NY#MTDW its claws (immunities as equipped effects)
-//   NY#MTDV   the spike volley, NY#MTDVT its area (30 ft., enemies only,
-//             no visual; acid splash on the creatures hit)
+//   NY#MTDV   one corrosive spike (projectile 1DART01, acid splash on the
+//             creature hit), thrown once per enemy by the script
 //   NY#MTDAI  its script
 //   NY#MTDB / NY#MTDC  icons: placeholder, the creature reduced
 /////////////////////////////////////////////////////////////////////////////
@@ -64,25 +64,16 @@ ACTION_IF (IDS_OF_SYMBOL (~animate~ ~NY_MANTIDRAKE~) < 0) BEGIN
 END
 PRINT ~Mantidrake animation id: 0x%ny_mtd_hex%~
 
-// Spike volley: 30 ft. around the mantidrake, enemies only, no visual
-LAF NY#CLONE_AREA_PRO INT_VAR radius_ft = 30 explosion_effect = 255 STR_VAR source = ~fireball~ new = ~NY#MTDVT~ RET ny_pro_mtdv = pro_id END
-COPY_EXISTING ~NY#MTDVT.pro~ ~override~
-  READ_LONG  0x200 ny_mtd_flags
-  WRITE_LONG 0x200 ((ny_mtd_flags BOR 0x40) BAND (BNOT 0x80))   // enemies only
-  WRITE_ASCII 0x10  ~~ #8                       // Fireball's sounds and visuals off
-  WRITE_ASCII 0x18  ~~ #8
-  WRITE_ASCII 0x104 ~~ #8
-  WRITE_ASCII 0x10c ~~ #8
-  WRITE_ASCII 0x208 ~~ #8
-  WRITE_ASCII 0x21c ~~ #8
-  WRITE_ASCII 0x230 ~~ #8
-  WRITE_LONG  0x240 0
-BUT_ONLY
+// Corrosive spike: one travelling dart (the projectile of Mantidrake Spike,
+// 1DART01) per enemy, thrown by the script at each enemy in reach
+OUTER_SET ny_pro_mtdv = IDS_OF_SYMBOL (~projectl~ ~1dart01~) + 1
+ACTION_IF (ny_pro_mtdv < 1) BEGIN
+  FAIL ~BlackDragonMagic: projectile 1DART01 not found~
+END
 
 CREATE ~SPL~ ~NY#MTDV~
   LPF NY#SPL_BASE INT_VAR name = ny_str_mtd_v type = 4 level = 1 flags = 0x400 END
-  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = 1 casting_time = 0 projectile = ny_pro_mtdv RET h = header END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 174 target = 1 timing = 1 STR_VAR resource = ~EFF_M21~ END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 30 level = 1 casting_time = 0 projectile = ny_pro_mtdv RET h = header END
   LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 0 parameter2 = 0x800000 dicenumber = 1 dicesize = 6 savingthrow = 2 special = 0x100 END
   LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 0 parameter2 = 0x10000 dicenumber = 2 dicesize = 4 savingthrow = 2 special = 0x100 END
   LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 STR_VAR resource = ~SHACID~ END

@@ -1,9 +1,152 @@
 // The forced cast (ReallyForceSpellRES) ignores the creature's state, so it
 // is only tried while the creature can act (not asleep, unconscious,
 // stunned, held, panicked, confused...).
-// Black mantidrake: while no enemy is in melee reach, it throws a volley of
-// corrosive tail spikes at every enemy around it, once every 2 rounds;
-// otherwise it fights in melee.
+// Black mantidrake: while no enemy is in melee reach, it throws one
+// corrosive tail spike (NY#MTDV, travelling dart) at each enemy it sees
+// within reach - up to the ten nearest - once every 2 rounds. Each block
+// adds its throw and Continue()s to the next one; the last block starts the
+// timer. Otherwise it fights in melee.
+
+IF
+  See(NearestEnemyOf(Myself))
+  Range(NearestEnemyOf(Myself),20)
+  !Range(NearestEnemyOf(Myself),4)
+  Range(NearestEnemyOf(Myself),20)
+  !StateCheck(Myself,CD_STATE_NOTVALID)
+  !CheckStatGT(Myself,0,HELD)
+  !GlobalTimerNotExpired("NY#MTDVT","LOCALS")
+THEN
+  RESPONSE #100
+    ReallyForceSpellRES("NY#MTDV",NearestEnemyOf(Myself))
+    Continue()
+END
+
+IF
+  See(SecondNearestEnemyOf(Myself))
+  Range(SecondNearestEnemyOf(Myself),20)
+  !Range(NearestEnemyOf(Myself),4)
+  Range(NearestEnemyOf(Myself),20)
+  !StateCheck(Myself,CD_STATE_NOTVALID)
+  !CheckStatGT(Myself,0,HELD)
+  !GlobalTimerNotExpired("NY#MTDVT","LOCALS")
+THEN
+  RESPONSE #100
+    ReallyForceSpellRES("NY#MTDV",SecondNearestEnemyOf(Myself))
+    Continue()
+END
+
+IF
+  See(ThirdNearestEnemyOf(Myself))
+  Range(ThirdNearestEnemyOf(Myself),20)
+  !Range(NearestEnemyOf(Myself),4)
+  Range(NearestEnemyOf(Myself),20)
+  !StateCheck(Myself,CD_STATE_NOTVALID)
+  !CheckStatGT(Myself,0,HELD)
+  !GlobalTimerNotExpired("NY#MTDVT","LOCALS")
+THEN
+  RESPONSE #100
+    ReallyForceSpellRES("NY#MTDV",ThirdNearestEnemyOf(Myself))
+    Continue()
+END
+
+IF
+  See(FourthNearestEnemyOf(Myself))
+  Range(FourthNearestEnemyOf(Myself),20)
+  !Range(NearestEnemyOf(Myself),4)
+  Range(NearestEnemyOf(Myself),20)
+  !StateCheck(Myself,CD_STATE_NOTVALID)
+  !CheckStatGT(Myself,0,HELD)
+  !GlobalTimerNotExpired("NY#MTDVT","LOCALS")
+THEN
+  RESPONSE #100
+    ReallyForceSpellRES("NY#MTDV",FourthNearestEnemyOf(Myself))
+    Continue()
+END
+
+IF
+  See(FifthNearestEnemyOf(Myself))
+  Range(FifthNearestEnemyOf(Myself),20)
+  !Range(NearestEnemyOf(Myself),4)
+  Range(NearestEnemyOf(Myself),20)
+  !StateCheck(Myself,CD_STATE_NOTVALID)
+  !CheckStatGT(Myself,0,HELD)
+  !GlobalTimerNotExpired("NY#MTDVT","LOCALS")
+THEN
+  RESPONSE #100
+    ReallyForceSpellRES("NY#MTDV",FifthNearestEnemyOf(Myself))
+    Continue()
+END
+
+IF
+  See(SixthNearestEnemyOf(Myself))
+  Range(SixthNearestEnemyOf(Myself),20)
+  !Range(NearestEnemyOf(Myself),4)
+  Range(NearestEnemyOf(Myself),20)
+  !StateCheck(Myself,CD_STATE_NOTVALID)
+  !CheckStatGT(Myself,0,HELD)
+  !GlobalTimerNotExpired("NY#MTDVT","LOCALS")
+THEN
+  RESPONSE #100
+    ReallyForceSpellRES("NY#MTDV",SixthNearestEnemyOf(Myself))
+    Continue()
+END
+
+IF
+  See(SeventhNearestEnemyOf(Myself))
+  Range(SeventhNearestEnemyOf(Myself),20)
+  !Range(NearestEnemyOf(Myself),4)
+  Range(NearestEnemyOf(Myself),20)
+  !StateCheck(Myself,CD_STATE_NOTVALID)
+  !CheckStatGT(Myself,0,HELD)
+  !GlobalTimerNotExpired("NY#MTDVT","LOCALS")
+THEN
+  RESPONSE #100
+    ReallyForceSpellRES("NY#MTDV",SeventhNearestEnemyOf(Myself))
+    Continue()
+END
+
+IF
+  See(EighthNearestEnemyOf(Myself))
+  Range(EighthNearestEnemyOf(Myself),20)
+  !Range(NearestEnemyOf(Myself),4)
+  Range(NearestEnemyOf(Myself),20)
+  !StateCheck(Myself,CD_STATE_NOTVALID)
+  !CheckStatGT(Myself,0,HELD)
+  !GlobalTimerNotExpired("NY#MTDVT","LOCALS")
+THEN
+  RESPONSE #100
+    ReallyForceSpellRES("NY#MTDV",EighthNearestEnemyOf(Myself))
+    Continue()
+END
+
+IF
+  See(NinthNearestEnemyOf(Myself))
+  Range(NinthNearestEnemyOf(Myself),20)
+  !Range(NearestEnemyOf(Myself),4)
+  Range(NearestEnemyOf(Myself),20)
+  !StateCheck(Myself,CD_STATE_NOTVALID)
+  !CheckStatGT(Myself,0,HELD)
+  !GlobalTimerNotExpired("NY#MTDVT","LOCALS")
+THEN
+  RESPONSE #100
+    ReallyForceSpellRES("NY#MTDV",NinthNearestEnemyOf(Myself))
+    Continue()
+END
+
+IF
+  See(TenthNearestEnemyOf(Myself))
+  Range(TenthNearestEnemyOf(Myself),20)
+  !Range(NearestEnemyOf(Myself),4)
+  Range(NearestEnemyOf(Myself),20)
+  !StateCheck(Myself,CD_STATE_NOTVALID)
+  !CheckStatGT(Myself,0,HELD)
+  !GlobalTimerNotExpired("NY#MTDVT","LOCALS")
+THEN
+  RESPONSE #100
+    ReallyForceSpellRES("NY#MTDV",TenthNearestEnemyOf(Myself))
+    Continue()
+END
+
 IF
   See(NearestEnemyOf(Myself))
   !Range(NearestEnemyOf(Myself),4)
@@ -14,7 +157,6 @@ IF
 THEN
   RESPONSE #100
     SetGlobalTimer("NY#MTDVT","LOCALS",12)
-    ReallyForceSpellRES("NY#MTDV",Myself)
 END
 
 IF
