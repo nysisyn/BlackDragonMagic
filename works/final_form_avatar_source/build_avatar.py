@@ -21,6 +21,39 @@ for n in SHEETS:
 def feet(m):
     ys,xs=np.nonzero(m); low=ys>=ys.max()-max(4,(ys.max()-ys.min())//10)
     return xs[low].mean()
+# Frames of one row are not drawn at exactly the same place: in every sheet
+# where the feet stay planted, each frame is registered on a reference frame
+# of its row by matching the legs (lowest 40 % of the body), shift searched
+# pixel by pixel; walk (legs moving) and death (falling) use their own feet.
+REG_REF={'idle':1}
+REG_SKIP=('walk','death')
+def legs_mask(m,X0,Y0,H):
+    ys,xs=np.nonzero(m); top=ys.max()-int((ys.max()-ys.min())*0.4)
+    sel=ys>=top; return set(zip((ys[sel]+Y0).tolist(),(xs[sel]+X0).tolist()))
+REG={}
+def anchor(sheet,r,c):
+    """(x,y) of the ground point in cell coordinates"""
+    if (sheet,r,c) in REG: return REG[(sheet,r,c)]
+    rgb,m,(X0,Y0)=F[sheet][(r,c)]; X0=int(round(X0))
+    rc=REG_REF.get(sheet,0)
+    if sheet in REG_SKIP or c==rc:
+        a=(X0+feet(m),Y0+m.shape[0])
+    else:
+        ax,ay=anchor(sheet,r,rc)
+        _,mr,(RX,RY)=F[sheet][(r,rc)]
+        ref=np.zeros((400,400),bool); cur=np.zeros((400,400),bool)
+        def put(A,mm,x,y):
+            ys,xs=np.nonzero(mm); top=ys.max()-int((ys.max()-ys.min())*0.4); k=ys>=top
+            A[ys[k]+y-int(RY)+120,xs[k]+x-int(round(RX))+120]=True
+        put(ref,mr,int(round(RX)),int(RY)); put(cur,m,X0,int(Y0))
+        best=(-1,0,0)
+        for dy in range(-8,9):
+            sh_y=np.roll(ref,dy,0)
+            for dx in range(-16,17):
+                v=(np.roll(sh_y,dx,1)&cur).sum()
+                if v>best[0]: best=(v,dx,dy)
+        a=(ax+best[1],ay+best[2])
+    REG[(sheet,r,c)]=a; return a
 XR={}
 for n in F:
     for r in range(8):
@@ -39,7 +72,9 @@ def frame(sheet,r,c,breath=0,flip=False):
         st=im.resize((w,H),Image.LANCZOS); im=Image.new('RGBA',(w,H),(0,0,0,0)); im.paste(st,(0,0),st); h=H
     # AI sheets do not keep a regular grid: each frame is anchored on its own
     # feet, except while falling (death), anchored where the feet stood
-    cx=XR[(sheet,r)]-X0 if sheet=='death' else feet(m); cy=h-2
+    if sheet=='death': cx=XR[(sheet,r)]-X0; cy=h-2
+    else:
+        ax,ay=anchor(sheet,r,c); cx=ax-int(round(X0)); cy=ay-Y0-2+(h-m.shape[0])
     if flip: cx=w-cx                                   # feet on the ground
     # canvas with room for the shadow
     pad=20; can=Image.new('RGBA',(w+2*pad,h+pad),(0,0,0,0)); can.paste(im,(pad,0),im)
@@ -58,7 +93,7 @@ def frame(sheet,r,c,breath=0,flip=False):
 ROW=[(0,0),(1,0),(2,1),(5,0),(4,0),(3,0),(2,0),(7,0)]
 BREATH_N=24
 def rep(seq,n): return [x for x in seq for _ in range(n)]
-IDLE=list(range(8))+list(range(6,0,-1))                       # back and forth, loops smoothly
+IDLE=list(range(1,8))+list(range(6,1,-1))                     # back and forth, loops smoothly (frame 0 differs)
 SEQS={
  'SD':[('idle',c) for c in rep(IDLE,3)],                      # calm: shoulders and arms only
  'SC':[('idle',c) for c in rep(IDLE,2)],
@@ -74,8 +109,29 @@ SEQS={
  'TW':[('death',7)]*2,'SL':[('death',7)],
  'GU':[('death',c) for c in rep(range(7,-1,-1),2)]}
 
+# The AI idle frames are not drawn consistently (the silhouette changes by
+# 10-20 % from one frame to the next), which reads as wobbling in game.
+# SD: the most typical frame of the row (smallest total difference to the
+# others) with a slow breathing; SC: the three most alike frames, back and forth.
+import itertools
+def silhouettes(sheet,r,fl):
+    out=[]
+    for c in range(8):
+        im,_,cx,cy=frame(sheet,r,c,0,fl); A=np.zeros((200,200),bool)
+        a=np.array(im)[...,3]>128; A[160-cy:160-cy+a.shape[0],100-cx:100-cx+a.shape[1]]=a; out.append(A)
+    return out
+def diff(a,b): return 1-(a&b).sum()/(a|b).sum()
+def idle_frames(r,fl):
+    C=silhouettes('idle',r,fl)
+    med=min(range(8),key=lambda i:sum(diff(C[i],C[j]) for j in range(8)))
+    tri=min(itertools.combinations(range(8),3),key=lambda t:max(diff(C[a],C[b]) for a,b in itertools.combinations(t,2)))
+    return med,tri
 def cycle(s,d):
     r,fl=ROW[d]
+    if s in ('SD','SC'):
+        med,tri=idle_frames(r,fl)
+        if s=='SD': return [('idle',r,med,b,fl) for b in range(BREATH_N) for _ in range(2)]
+        a,b,c=tri; return [('idle',r,x,0,fl) for x in rep([a,b,c,b],4)]
     return [(sh,r,c,0,fl) for sh,c in SEQS[s]]
 def write_bam(path,cycles):
     uniq=[];idx={}
