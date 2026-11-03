@@ -346,7 +346,8 @@ LAF NY#BDD_CLAWS INT_VAR stage = 6 name = ny_str_claws desc = ny_str_claws_d6 si
 
 // ---------------------------------------------------------------------------
 // Final form: Nysi's avatar of the fully evolved Black Dragon Disciple
-// (animation MBDA, 8 drawn directions: idle, walk, claws, tail, cast, wings,
+// (animation MBDA, scaled x0.5, 8 drawn directions: idle (still frame with
+// slow breathing), walk, claws, tail, cast, wings,
 // crouch, death; works/final_form_avatar_source/build_avatar.py). The wings
 // carry it (opcode 53 while equipped, see NY#BDWI below): the disciple takes
 // this form when he spreads his wings and gets his own back when he folds

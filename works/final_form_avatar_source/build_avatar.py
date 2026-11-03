@@ -8,7 +8,7 @@ from PIL import Image,ImageDraw
 sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
 from extract import frames
 SRC=sys.argv[1]; OUT=sys.argv[2] if len(sys.argv)>2 else None
-SCALE=0.72
+SCALE=0.50                                      # 0.72 reduced by 30%
 F={n:frames(os.path.join(SRC,n+'.png')) for n in ('idle','walk','claw','tail','cast','wings','crouch','death')}
 # horizontal anchor of each row: where the body stands in the walk frames
 XR={}
@@ -57,8 +57,8 @@ SEQS={
 SEQS['A3']=SEQS['A1']; SEQS['A4']=SEQS['A2']
 def cycle(s,d):
     r=ROW[d]
-    if s=='SD':     # its own idle (7 frames), slowed, there and back
-        return [('idle',r,c,0) for c in rep([0,1,2,3,4,5,6,5,4,3,2,1],2)]
+    if s=='SD':     # the idle sheet moves too much: its first frame, slow breathing
+        return [('idle',r,0,b) for b in range(BREATH_N) for _ in range(2)]
     return [(sh,r,c,0) for sh,c in SEQS[s]]
 def write_bam(path,cycles):
     uniq=[];idx={}
