@@ -58,6 +58,17 @@ LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#PBRB~  c = ~NY#PBRC~  END
 
 
 // ---------------------------------------------------------------------------
+// Acid Mastery: the breath lowers the targets' AC by 2 for 2 rounds, not
+// cumulative (the previous one is removed first)
+// ---------------------------------------------------------------------------
+CREATE ~SPL~ ~NY#TAMR~
+  LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1000 level = 1 casting_time = 0 RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 321 target = 2 timing = 1 STR_VAR resource = ~NY#TAMR~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 0   target = 2 timing = 0 duration = (2 * ny_round) parameter1 = "-2" parameter2 = 0 END
+
+
+// ---------------------------------------------------------------------------
 // Projectiles
 // ---------------------------------------------------------------------------
 COPY_EXISTING ~greehit.pro~ ~override~

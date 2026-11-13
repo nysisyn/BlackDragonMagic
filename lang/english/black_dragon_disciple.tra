@@ -30,7 +30,7 @@ Black claws grow on both hands of the Black Dragon Disciple. He gains two claw a
 
 Each successful attack has a 20% chance to provoke a bite, dealing 1d6 piercing and 1d4 acid damage.
 
-The innate abilities Retract Claws and Extend Claws dismiss or summon them at will. The claws take the first weapon slot and the shield slot.
+He gains the innate abilities Extend Claws and Retract Claws to summon or dismiss them at will. The claws take the first weapon slot and the shield slot; after a level-up, extend them again to get the claws of the new level.
 
 This draconic transformation takes effect as soon as it is learned, then leaves the spellbook: its effects are permanent, persist through death and cannot be dispelled.~
 
@@ -173,7 +173,7 @@ Range: Personal
 Duration: Permanent
 Casting Time: 1
 
-The acid of the Black Dragon Disciple eats through armor. He gains 50% acid resistance. The acid of his breath and of his bite reduces the target's Armor Class by 2 for 2 rounds.
+The acid of the Black Dragon Disciple eats through armor. He gains 50% acid resistance. The acid of his breath reduces the targets' Armor Class by 2 for 2 rounds.
 
 This draconic transformation takes effect as soon as it is learned, then leaves the spellbook: its effects are permanent, persist through death and cannot be dispelled.~
 
@@ -272,7 +272,7 @@ No two-weapon penalty~
 @202 = ~Extend Claws~
 @203 = ~Extend Claws
 
-The Black Dragon Disciple extends his claws: they take the first weapon slot and the shield slot. They can be retracted at will.~
+The Black Dragon Disciple extends his claws: they take the first weapon slot and the shield slot, with the strength of his current level. They can be retracted at will.~
 @204 = ~Retract Claws~
 @205 = ~Retract Claws
 

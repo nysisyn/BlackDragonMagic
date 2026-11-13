@@ -10,14 +10,15 @@ Kit:
 - [ ] The 18 transformations in the spell list at level-up (levels 1 to 9), names, descriptions and amber icons in English and French.
 - [ ] Learning one at level-up: its effects at once (global script), then it leaves the spellbook (opcode 172 on a sorcerer's known spell); no spell slot lost; another sorcerer learning it: nothing happens.
 - [ ] Next level-up after a transformation: the engine must not give back the spell choice (it would make the transformations free).
-- [ ] Level markers at 10, 15, 20, 25: Dragon Scale +1 AC at 10 and 15, Resilience +2 CON at 15, Might +2 STR at 15, claws +2 to +5; a transformation taken after these levels gives the steps at once.
+- [ ] Level markers at 10 and 15 (global script): Dragon Scale +1 AC at 10 and 15, Resilience +2 CON at 15, Might +2 STR at 15; a transformation taken after these levels gives the steps at once; a character created at a high level (ToB) gets them right away.
+- [ ] Transformations picked at character creation applied as soon as the game starts.
 
 Transformations:
-- [ ] Claw & Bite: claws in the first weapon slot and the shield slot (a few seconds after casting: candidate chain), 2 attacks, no two-weapon penalty, +4 THAC0, bite 20% per hit (1d6 + 1d4 acid, combat log); Retract / Extend Claws; a weapon already in the first slot: what happens to it.
+- [ ] Claw & Bite: Extend Claws given; claws in the first weapon slot and the shield slot, 2 attacks, no two-weapon penalty, +4 THAC0, bite 20% per hit (1d6 + 1d4 acid, combat log); Retract / Extend; stage of the level (+2 at 10...); a weapon already in the first slot: what happens to it.
 - [ ] Dragon Scale, Draconic Resilience (skull in the helmet slot, critical hits ignored; a helmet already there?), Draconic Might, Apotheosis: values on the record sheet.
 - [ ] Breath Weapon: line, 4d4 / 6d4 / 8d4, ignores magic resistance; gone after use, back 10 rounds later (+ about 8 seconds of choice); after a load during the recharge.
 - [ ] Meta-breath: menu line / ball / pool, shared charge, recharges 6 / 10 / 8; taken without Breath Weapon: the menu anyway.
-- [ ] Breath Mastery: dice doubled, recharges 2 rounds shorter; Acid Mastery: AC -2 for 2 rounds on the breath and bite targets, not cumulative.
+- [ ] Breath Mastery: dice doubled, recharges 2 rounds shorter; Acid Mastery: AC -2 for 2 rounds on the breath targets, not cumulative.
 - [ ] Draconic Tail: one strike per round, 2d6 + 1 second prone on a failed save vs. Breath.
 - [ ] Swamp Stride: poison, Grease, Entangle, Web, Stinking Cloud, Spike Growth.
 - [ ] Acidosis: 50% acid resistance, +20% acid damage, 1d2 acid to attackers below 50% health only.
@@ -142,7 +143,7 @@ Transformations:
 - [ ] Draconic Transformations, own spell list: a G3 library giving the kit its own spell list, so the other sorcerers no longer see the transformations (they already do nothing for them).
 - [ ] Draconic Transformations, icons: the amber placeholders replaced by real icons (one shape per transformation).
 - [ ] Breath recharge lost if the disciple dies while it recharges (the delayed opcode 146 dies with him): give it back at rest or on resurrection.
-- [ ] Acid Mastery: AC reduction only on the mod's own acid (breaths, bite); the game's acid spells (Melf's Acid Arrow, Vitriolic Sphere...) would need a check of the caster.
+- [ ] Acid Mastery: AC reduction only on the breaths; the bite (cast by an item) and the game's acid spells (Melf's Acid Arrow, Vitriolic Sphere...) would need a check of the caster.
 - [ ] Corrupt Water: the rain (visual) and grey-blue water instead of the recoloured acid puddles.
 - [ ] Call Ancestor: a real Half Black Dragon Spirit (Icewind Dale's MDH1 half-dragon animation) instead of the renamed planetar.
 - [ ] Darkness: a darkness visual.

@@ -2,31 +2,32 @@
 // Draconic Transformations
 //
 // Wizard spells of levels 1 to 9 (ADD_SPELL, WIZARD_NY_T_<CODE>) the Black
-// Dragon Disciple learns instead of a spell. He does not cast them: as soon
-// as one is in his spellbook, a global script (HaveKnownSpellRES, added at
-// the top of BALDUR.BCS, BDBALDUR.BCS and BALDUR25.BCS) makes him cast it
-// on himself (NY#T<code>A, opcode 146), and the transformation removes
-// itself from the spellbook (opcode 172): its cost is the spell he did not
-// learn. Every one is built the same way (NY#T_BEGIN / NY#T_END):
+// Dragon Disciple learns instead of a spell; its cost is the spell he did
+// not learn. Cast by hand, the spell does nothing. As soon as it is in the
+// spellbook of a party member of the kit, a global script (Kit,
+// HaveKnownSpellRES; added at the top of BALDUR.BCS, BDBALDUR.BCS and
+// BALDUR25.BCS) applies NY#T<code>A: he casts its effects NY#T<code>E on
+// himself (opcode 146, at once). Every one is built the same way
+// (NY#T_BEGIN / NY#T_END):
 //   - nothing happens a second time (opcode 324, spell state of the
 //     transformation already set)
-//   - everything else is in NY#T<code>E, applied only to a Black Dragon
-//     Disciple (opcode 326 on the kit's spell state NY_BDD_KIT, set by the
-//     CLAB at level 1: the KIT stat is not compared reliably):
-//     - spell state NY_BDD_<CODE> (opcode 328, permanent): the
-//       transformation is known to the level steps and to the other
-//       transformations
-//     - removed from the spellbook (opcode 172)
-//     - then its own effects, all permanent (timing 9: they persist through
-//       death and cannot be dispelled)
+//   - spell state NY_BDD_<CODE> (opcode 328, permanent): the transformation
+//     is known to the level steps and to the other transformations
+//   - its own effects, all permanent (timing 9: they persist through death
+//     and cannot be dispelled)
+//   - removal from the spellbook (opcode 172)
+// The kit is checked by the script only: neither the KIT stat (SPLPROT.2DA)
+// nor a spell state set by the CLAB at level 1 worked for a character
+// created at a high level.
 //
-// Level steps: the CLAB applies NY#BDM10/15/20/25 at levels 10, 15, 20 and
-// 25. Each sets a level marker (spell state NY_BDD_LV<lv>) and applies the
+// Level steps: the global script applies NY#BDN10 / NY#BDN15 (the disciple
+// casts NY#BDM10 / NY#BDM15 on himself) once he has reached level 10 / 15.
+// Each sets a level marker (spell state NY_BDD_LV<lv>) and applies the
 // steps of the transformations already taken (opcode 326 on their state).
 // A transformation taken later applies at once the steps of the markers
 // already set: the same step spells NY#V<xx><lv>.
 //
-// Choices between several versions (claws stage and acid, breath forms)
+// Choices between several versions (breath forms)
 // are made by "candidate" chains (NY#T_CANDIDATE): the most specific
 // candidate first; the first one whose conditions are all true blocks the
 // following ones (opcode 206) and gives its version.
@@ -59,9 +60,9 @@ END
 // ---------------------------------------------------------------------------
 // Spell states and their SPLPROT rows
 // ---------------------------------------------------------------------------
-// one state for the kit itself, one per transformation and per level
-// marker; $ny_has(<code>) is the SPLPROT row "has the state"
-ACTION_FOR_EACH code IN KIT CLB SCL BRW RES TAL SWS ACD BDM MIG MBR BLS AMS WNG MAJ FPR GBD APO BMS LV10 LV15 LV20 LV25 BEGIN
+// one state per transformation and per level marker; $ny_has(<code>) is
+// the SPLPROT row "has the state"
+ACTION_FOR_EACH code IN CLB SCL BRW RES TAL SWS ACD BDM MIG MBR BLS AMS WNG MAJ FPR GBD APO BMS LV10 LV15 BEGIN
   LAF NY#ADD_SPLSTATE STR_VAR name = EVAL ~NY_BDD_%code%~ RET st = id END
   OUTER_SET $ny_state(~%code%~) = st
   LAF NY#SPLPROT_ROW STR_VAR label = EVAL ~NY#HAS_%code%~ stat = ~0x112~ value = EVAL ~%st%~ relation = ~1~ RET row END
@@ -69,16 +70,11 @@ ACTION_FOR_EACH code IN KIT CLB SCL BRW RES TAL SWS ACD BDM MIG MBR BLS AMS WNG 
 END
 
 
-// the kit's state, set at level 1 by the CLAB (NY#BDL01)
-COPY_EXISTING ~NY#BDL01.spl~ ~override~
-  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 328 target = 1 timing = 9 parameter2 = $ny_state(~KIT~) special = 1 END
-
-
 // ---------------------------------------------------------------------------
 // NY#T_BEGIN (action): creates NY#T<code>.SPL, the transformation of the
-// given spell level, and NY#T<code>E.SPL with its common effects. The
-// caller adds its own effects to NY#T<code>E (header 1), then calls
-// NY#T_END.
+// given spell level (the spell learned; cast by hand it does nothing), and
+// NY#T<code>E.SPL with its common effects. The caller adds its own effects
+// to NY#T<code>E (header 1), then calls NY#T_END.
 // ---------------------------------------------------------------------------
 DEFINE_ACTION_FUNCTION NY#T_BEGIN
   INT_VAR
@@ -90,19 +86,18 @@ DEFINE_ACTION_FUNCTION NY#T_BEGIN
 BEGIN
   CREATE ~SPL~ ~NY#T%code%~
     LPF NY#SPL_BASE INT_VAR name desc type = 1 level school = 8 graphics = 10 STR_VAR icon = EVAL ~NY#T%code%C~ END
-    LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 5 range = 1 level = 1 casting_time = 1 STR_VAR icon = EVAL ~NY#T%code%B~ RET h = header END
-    // resource of opcode 324: the final resref, written by NY#T_END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 324 target = 1 duration = 1 parameter2 = $ny_has(~%code%~) STR_VAR resource = EVAL ~NY#T%code%~ END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 326 target = 1 timing = 1 parameter2 = $ny_has(~KIT~) STR_VAR resource = EVAL ~NY#T%code%E~ END
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 5 range = 1 level = 1 casting_time = 1 STR_VAR icon = EVAL ~NY#T%code%B~ END
   LAF NY#T_SELF_SPL STR_VAR resref = EVAL ~NY#T%code%E~ END
   COPY_EXISTING ~NY#T%code%E.spl~ ~override~
+    // a second time: nothing
+    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 324 target = 1 duration = 1 parameter2 = $ny_has(~%code%~) STR_VAR resource = EVAL ~NY#T%code%E~ END
     LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 328 target = 1 timing = 9 parameter2 = $ny_state(~%code%~) special = 1 END
 END
 
 // NY#T_END (action): adds the transformation to the wizard spells, points
-// its opcode 324 and the removal from the spellbook to the final resref,
-// and creates NY#T<code>A, applied by the global script: the disciple casts
-// the transformation on himself (opcode 146, at once).
+// the removal from the spellbook to the final resref, and creates
+// NY#T<code>A, applied by the global script: the disciple casts the
+// effects NY#T<code>E on himself (opcode 146, at once).
 DEFINE_ACTION_FUNCTION NY#T_END
   INT_VAR
     level = 1
@@ -113,14 +108,12 @@ DEFINE_ACTION_FUNCTION NY#T_END
 BEGIN
   ADD_SPELL ~override/NY#T%code%.spl~ 2 level ~WIZARD_NY_T_%code%~
   LAF RES_NUM_OF_SPELL_NAME STR_VAR spell_name = EVAL ~WIZARD_NY_T_%code%~ RET res = spell_res END
-  COPY_EXISTING ~%res%.spl~ ~override~
-    LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = EVAL ~%res%~ END
   COPY_EXISTING ~NY#T%code%E.spl~ ~override~
     LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 172 target = 1 timing = 1 STR_VAR resource = EVAL ~%res%~ END
   CREATE ~SPL~ ~NY#T%code%A~
     LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
     LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1000 level = 1 casting_time = 0 RET h = header END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 timing = 1 parameter2 = 1 STR_VAR resource = EVAL ~%res%~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 timing = 1 parameter2 = 1 STR_VAR resource = EVAL ~NY#T%code%E~ END
 END
 
 
@@ -181,19 +174,24 @@ END
 
 // ---------------------------------------------------------------------------
 // Level step spells (applied by the level markers and by the
-// transformations taken later)
+// transformations taken later); each removes itself first (opcode 321), so
+// it never counts twice
 // ---------------------------------------------------------------------------
 LAF NY#T_SELF_SPL STR_VAR resref = ~NY#VSC10~ END   // Dragon Scale: AC +1
 COPY_EXISTING ~NY#VSC10.spl~ ~override~
+  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 321 target = 1 timing = 1 STR_VAR resource = ~NY#VSC10~ END
   LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 0 target = 1 timing = 9 parameter1 = 1 parameter2 = 0 END
 LAF NY#T_SELF_SPL STR_VAR resref = ~NY#VSC15~ END   // Dragon Scale: AC +1
 COPY_EXISTING ~NY#VSC15.spl~ ~override~
+  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 321 target = 1 timing = 1 STR_VAR resource = ~NY#VSC15~ END
   LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 0 target = 1 timing = 9 parameter1 = 1 parameter2 = 0 END
 LAF NY#T_SELF_SPL STR_VAR resref = ~NY#VRE15~ END   // Draconic Resilience: CON +2
 COPY_EXISTING ~NY#VRE15.spl~ ~override~
+  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 321 target = 1 timing = 1 STR_VAR resource = ~NY#VRE15~ END
   LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 10 target = 1 timing = 9 parameter1 = 2 parameter2 = 0 END
 LAF NY#T_SELF_SPL STR_VAR resref = ~NY#VMI15~ END   // Draconic Might: STR +2
 COPY_EXISTING ~NY#VMI15.spl~ ~override~
+  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 321 target = 1 timing = 1 STR_VAR resource = ~NY#VMI15~ END
   LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 44 target = 1 timing = 9 parameter1 = 2 parameter2 = 0 END
 
 
@@ -206,21 +204,21 @@ INCLUDE ~%MOD_FOLDER%/kits/black_dragon_disciple/transformations/granted_spells.
 
 
 // ---------------------------------------------------------------------------
-// Level markers (CLAB): levels 10, 15, 20 and 25
+// Level markers: levels 10 and 15 (global script, wrappers NY#BDN<lv>)
 // ---------------------------------------------------------------------------
-ACTION_FOR_EACH lv IN 10 15 20 25 BEGIN
+ACTION_FOR_EACH lv IN 10 15 BEGIN
   LAF NY#T_SELF_SPL STR_VAR resref = EVAL ~NY#BDM%lv%~ END
   COPY_EXISTING ~NY#BDM%lv%.spl~ ~override~
     LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 328 target = 1 timing = 9 parameter2 = $ny_state(~LV%lv%~) special = 1 END
-    // new claws stage (the claws choose their stage from the markers)
-    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 326 target = 1 timing = 1 parameter2 = $ny_has(~CLB~) STR_VAR resource = ~NY#KCRT~ END
-    PATCH_IF (lv = 10 OR lv = 15) BEGIN
-      LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 326 target = 1 timing = 1 parameter2 = $ny_has(~SCL~) STR_VAR resource = EVAL ~NY#VSC%lv%~ END
-    END
+    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 326 target = 1 timing = 1 parameter2 = $ny_has(~SCL~) STR_VAR resource = EVAL ~NY#VSC%lv%~ END
     PATCH_IF (lv = 15) BEGIN
       LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 326 target = 1 timing = 1 parameter2 = $ny_has(~RES~) STR_VAR resource = ~NY#VRE15~ END
       LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 326 target = 1 timing = 1 parameter2 = $ny_has(~MIG~) STR_VAR resource = ~NY#VMI15~ END
     END
+  CREATE ~SPL~ ~NY#BDN%lv%~
+    LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1000 level = 1 casting_time = 0 RET h = header END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 timing = 1 parameter2 = 1 STR_VAR resource = EVAL ~NY#BDM%lv%~ END
 END
 
 
@@ -435,9 +433,9 @@ ACTION_FOR_EACH code IN CLB SCL BRW RES TAL SWS ACD BDM MIG MBR BLS AMS WNG MAJ 
 
   COPY_EXISTING ~NY#T%code%E.spl~ ~override~
     PATCH_MATCH ~%code%~ WITH
-      // Claw & Bite: claws of the level's stage (see claws.tpa)
+      // Claw & Bite: Extend Claws (see claws.tpa)
       ~CLB~ BEGIN
-        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 146 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#KCRT~ END
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 171 target = 1 timing = 1 STR_VAR resource = ~NY#TCLE~ END
       END
       // Dragon Scale: AC +3, +1 at levels 10 and 15
       ~SCL~ BEGIN
@@ -497,12 +495,11 @@ ACTION_FOR_EACH code IN CLB SCL BRW RES TAL SWS ACD BDM MIG MBR BLS AMS WNG MAJ 
         LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 193 target = 1 timing = 9 parameter2 = 1 END
         LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 262 target = 1 timing = 9 parameter1 = 2 parameter2 = 0 END
       END
-      // Acid Mastery: 50% acid resistance; the breath and the claws are
-      // chosen again (their acid versions)
+      // Acid Mastery: 50% acid resistance; the breath is chosen again (its
+      // acid versions)
       ~AMS~ BEGIN
         LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 27  target = 1 timing = 9 parameter1 = 50 parameter2 = 0 END
         LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 146 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#KBRF~ END
-        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 326 target = 1 timing = 1 parameter2 = $ny_has(~CLB~) STR_VAR resource = ~NY#KCRT~ END
       END
       // Dragon Wings: movement +4, Wing Buffet
       ~WNG~ BEGIN
@@ -546,7 +543,8 @@ END
 
 // ---------------------------------------------------------------------------
 // Global script: a transformation in a disciple's spellbook (party members
-// 1 to 6) is applied at once (NY#T<code>A). Added at the top of the main
+// 1 to 6) is applied at once (NY#T<code>A); level markers at levels 10 and
+// 15 (NY#BDN<lv>). Added at the top of the main
 // game scripts, with Continue() in each block.
 // ---------------------------------------------------------------------------
 OUTER_SET ny_kit_ids = IDS_OF_SYMBOL (~kit~ ~NY#BDD~)
@@ -563,6 +561,22 @@ ACTION_FOR_EACH code IN CLB SCL BRW RES TAL SWS ACD BDM MIG MBR BLS AMS WNG MAJ 
 THEN
   RESPONSE #100
     ApplySpellRES("NY#T%code%A",Player%p%)
+    Continue()
+END
+~
+  END
+END
+// level markers, once the level is reached
+ACTION_FOR_EACH lv IN 10 15 BEGIN
+  OUTER_SET lgt = lv - 1
+  OUTER_FOR (p = 1; p <= 6; ++p) BEGIN
+    APPEND_OUTER ~%ny_workspace%/ny#tlearn.baf~ ~IF
+  Kit(Player%p%,%ny_kit_ids%)
+  LevelGT(Player%p%,%lgt%)
+  !CheckSpellState(Player%p%,NY_BDD_LV%lv%)
+THEN
+  RESPONSE #100
+    ApplySpellRES("NY#BDN%lv%",Player%p%)
     Continue()
 END
 ~
