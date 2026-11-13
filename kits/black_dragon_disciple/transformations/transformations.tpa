@@ -2,8 +2,12 @@
 // Draconic Transformations
 //
 // Wizard spells of levels 1 to 9 (ADD_SPELL, WIZARD_NY_T_<CODE>) the Black
-// Dragon Disciple learns instead of a spell. Every one is built the same
-// way (NY#T_BEGIN / NY#T_END):
+// Dragon Disciple learns instead of a spell. He does not cast them: as soon
+// as one is in his spellbook, a global script (HaveKnownSpellRES, added at
+// the top of BALDUR.BCS, BDBALDUR.BCS and BALDUR25.BCS) makes him cast it
+// on himself (NY#T<code>A, opcode 146), and the transformation removes
+// itself from the spellbook (opcode 172): its cost is the spell he did not
+// learn. Every one is built the same way (NY#T_BEGIN / NY#T_END):
 //   - nothing happens a second time (opcode 324, spell state of the
 //     transformation already set)
 //   - everything else is in NY#T<code>E, applied only to a Black Dragon
@@ -12,7 +16,7 @@
 //     - spell state NY_BDD_<CODE> (opcode 328, permanent): the
 //       transformation is known to the level steps and to the other
 //       transformations
-//     - one spell slot of its level less, for good (opcode 42)
+//     - removed from the spellbook (opcode 172)
 //     - then its own effects, all permanent (timing 9: they persist through
 //       death and cannot be dispelled)
 //
@@ -93,11 +97,12 @@ BEGIN
   LAF NY#T_SELF_SPL STR_VAR resref = EVAL ~NY#T%code%E~ END
   COPY_EXISTING ~NY#T%code%E.spl~ ~override~
     LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 328 target = 1 timing = 9 parameter2 = $ny_state(~%code%~) special = 1 END
-    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 42  target = 1 timing = 9 parameter1 = "-1" parameter2 = (1 BLSL (level - 1)) END
 END
 
-// NY#T_END (action): adds the transformation to the wizard spells and points
-// its opcodes 324 to the final resref.
+// NY#T_END (action): adds the transformation to the wizard spells, points
+// its opcode 324 and the removal from the spellbook to the final resref,
+// and creates NY#T<code>A, applied by the global script: the disciple casts
+// the transformation on himself (opcode 146, at once).
 DEFINE_ACTION_FUNCTION NY#T_END
   INT_VAR
     level = 1
@@ -110,6 +115,12 @@ BEGIN
   LAF RES_NUM_OF_SPELL_NAME STR_VAR spell_name = EVAL ~WIZARD_NY_T_%code%~ RET res = spell_res END
   COPY_EXISTING ~%res%.spl~ ~override~
     LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = EVAL ~%res%~ END
+  COPY_EXISTING ~NY#T%code%E.spl~ ~override~
+    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 172 target = 1 timing = 1 STR_VAR resource = EVAL ~%res%~ END
+  CREATE ~SPL~ ~NY#T%code%A~
+    LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1000 level = 1 casting_time = 0 RET h = header END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 timing = 1 parameter2 = 1 STR_VAR resource = EVAL ~%res%~ END
 END
 
 
@@ -530,4 +541,35 @@ ACTION_FOR_EACH code IN CLB SCL BRW RES TAL SWS ACD BDM MIG MBR BLS AMS WNG MAJ 
   BUT_ONLY
 
   LAF NY#T_END INT_VAR level = lv STR_VAR code END
+END
+
+
+// ---------------------------------------------------------------------------
+// Global script: a transformation in a disciple's spellbook (party members
+// 1 to 6) is applied at once (NY#T<code>A). Added at the top of the main
+// game scripts, with Continue() in each block.
+// ---------------------------------------------------------------------------
+OUTER_SET ny_kit_ids = IDS_OF_SYMBOL (~kit~ ~NY#BDD~)
+<<<<<<<< .../ny-inline/ny#tlearn.baf
+// Black Dragon Disciple: Draconic Transformations applied when learned
+>>>>>>>>
+COPY ~.../ny-inline/ny#tlearn.baf~ ~%ny_workspace%/ny#tlearn.baf~
+ACTION_FOR_EACH code IN CLB SCL BRW RES TAL SWS ACD BDM MIG MBR BLS AMS WNG MAJ FPR GBD APO BMS BEGIN
+  LAF RES_NUM_OF_SPELL_NAME STR_VAR spell_name = EVAL ~WIZARD_NY_T_%code%~ RET res = spell_res END
+  OUTER_FOR (p = 1; p <= 6; ++p) BEGIN
+    APPEND_OUTER ~%ny_workspace%/ny#tlearn.baf~ ~IF
+  Kit(Player%p%,%ny_kit_ids%)
+  TriggerOverride(Player%p%,HaveKnownSpellRES("%res%"))
+THEN
+  RESPONSE #100
+    ApplySpellRES("NY#T%code%A",Player%p%)
+    Continue()
+END
+~
+  END
+END
+ACTION_FOR_EACH ny_script IN ~baldur~ ~bdbaldur~ ~baldur25~ BEGIN
+  ACTION_IF FILE_EXISTS_IN_GAME ~%ny_script%.bcs~ BEGIN
+    EXTEND_TOP ~%ny_script%.bcs~ ~%ny_workspace%/ny#tlearn.baf~
+  END
 END

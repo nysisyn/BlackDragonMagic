@@ -7,11 +7,10 @@ Advantages:
 - Hit Die: d6 instead of d4.
 - May select unique Draconic Transformation when gaining new level, at the cost of learning a new spell.
 
-DRACONIC TRANSFORMATIONS: The transformations appear among the spells the Black Dragon Disciple can learn. Cast once, a transformation changes him permanently; its effects persist through death and cannot be dispelled. Effects that grow with level keep growing after the transformation, and a transformation taken late grants at once the steps already reached.
+DRACONIC TRANSFORMATIONS: The transformations appear among the spells the Black Dragon Disciple can learn. A transformation takes effect as soon as it is learned, then leaves the spellbook; it changes him permanently, through death, and cannot be dispelled. Effects that grow with level keep growing after the transformation, and a transformation taken late grants at once the steps already reached.
 
 Disadvantages:
-- One spell slot less per spell level.
-- Each Draconic Transformation permanently removes one spell slot of its level.~
+- One spell slot less per spell level.~
 
 
 // ---------------------------------------------------------------------------
@@ -33,7 +32,7 @@ Each successful attack has a 20% chance to provoke a bite, dealing 1d6 piercing 
 
 The innate abilities Retract Claws and Extend Claws dismiss or summon them at will. The claws take the first weapon slot and the shield slot.
 
-This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+This draconic transformation takes effect as soon as it is learned, then leaves the spellbook: its effects are permanent, persist through death and cannot be dispelled.~
 
 @102 = ~Dragon Scale~
 @103 = ~Dragon Scale
@@ -46,7 +45,7 @@ Casting Time: 1
 
 Black scales cover the skin of the Black Dragon Disciple. He gains a permanent +3 bonus to Armor Class, +4 at level 10 and +5 at level 15.
 
-This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+This draconic transformation takes effect as soon as it is learned, then leaves the spellbook: its effects are permanent, persist through death and cannot be dispelled.~
 
 @104 = ~Breath Weapon~
 @105 = ~Breath Weapon
@@ -59,7 +58,7 @@ Casting Time: 1
 
 The Black Dragon Disciple gains a new innate ability, Black Dragon Breath: a line of acid dealing 4d4 acid damage, 6d4 from level 7 and 8d4 from level 10 (save vs. Breath for half). The breath ignores magic resistance. Once used, it recharges in 10 rounds.
 
-This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+This draconic transformation takes effect as soon as it is learned, then leaves the spellbook: its effects are permanent, persist through death and cannot be dispelled.~
 
 @106 = ~Draconic Resilience~
 @107 = ~Draconic Resilience
@@ -72,7 +71,7 @@ Casting Time: 1
 
 The body of the Black Dragon Disciple hardens like a dragon's. He gains +2 Constitution, +4 from level 15, and immunity to critical hits. The resilient skull takes the helmet slot.
 
-This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+This draconic transformation takes effect as soon as it is learned, then leaves the spellbook: its effects are permanent, persist through death and cannot be dispelled.~
 
 @108 = ~Draconic Tail~
 @109 = ~Draconic Tail
@@ -85,7 +84,7 @@ Casting Time: 1
 
 The Black Dragon Disciple grows a powerful tail. Once per round, a hostile creature in close range takes 2d6 crushing damage and is knocked prone for 1 second if it fails a save vs. Breath.
 
-This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+This draconic transformation takes effect as soon as it is learned, then leaves the spellbook: its effects are permanent, persist through death and cannot be dispelled.~
 
 @110 = ~Swamp Stride~
 @111 = ~Swamp Stride
@@ -98,7 +97,7 @@ Casting Time: 1
 
 The Black Dragon Disciple moves through swamps and their poisons like a black dragon. He becomes immune to poison, and to Grease, Entangle, Web, Stinking Cloud and Spike Growth.
 
-This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+This draconic transformation takes effect as soon as it is learned, then leaves the spellbook: its effects are permanent, persist through death and cannot be dispelled.~
 
 @112 = ~Acidosis~
 @113 = ~Acidosis
@@ -111,7 +110,7 @@ Casting Time: 1
 
 The blood of the Black Dragon Disciple turns to acid. He gains 50% acid resistance and deals 20% more acid damage. Below 50% health, he deals 1d2 acid damage to his attackers.
 
-This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+This draconic transformation takes effect as soon as it is learned, then leaves the spellbook: its effects are permanent, persist through death and cannot be dispelled.~
 
 @114 = ~Black Dragon Magic~
 @115 = ~Black Dragon Magic
@@ -124,7 +123,7 @@ Casting Time: 1
 
 The Black Dragon Disciple learns 3 lower-level spells normally unavailable to sorcerers: Entangle, Darkness and Summon Insect.
 
-This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+This draconic transformation takes effect as soon as it is learned, then leaves the spellbook: its effects are permanent, persist through death and cannot be dispelled.~
 
 @116 = ~Draconic Might~
 @117 = ~Draconic Might
@@ -137,7 +136,7 @@ Casting Time: 1
 
 The strength of a dragon fills the Black Dragon Disciple. He gains +2 Strength, +4 from level 15, and immunity to paralysis and sleep.
 
-This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+This draconic transformation takes effect as soon as it is learned, then leaves the spellbook: its effects are permanent, persist through death and cannot be dispelled.~
 
 @118 = ~Meta-breath~
 @119 = ~Meta-breath
@@ -150,7 +149,7 @@ Casting Time: 1
 
 The Black Dragon Disciple learns to shape his breath. Black Dragon Breath now offers three forms: the line, Breath Ball and Breath Pool. All of them share the same charge. Recharge: line 6 rounds, Breath Pool 8 rounds, Breath Ball 10 rounds.
 
-This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+This draconic transformation takes effect as soon as it is learned, then leaves the spellbook: its effects are permanent, persist through death and cannot be dispelled.~
 
 @120 = ~Blindsense~
 @121 = ~Blindsense
@@ -163,7 +162,7 @@ Casting Time: 1
 
 The Black Dragon Disciple perceives his surroundings without relying on sight. He becomes immune to blindness, can see and attack invisible enemies, and his vision range slightly increases.
 
-This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+This draconic transformation takes effect as soon as it is learned, then leaves the spellbook: its effects are permanent, persist through death and cannot be dispelled.~
 
 @122 = ~Acid Mastery~
 @123 = ~Acid Mastery
@@ -176,7 +175,7 @@ Casting Time: 1
 
 The acid of the Black Dragon Disciple eats through armor. He gains 50% acid resistance. The acid of his breath and of his bite reduces the target's Armor Class by 2 for 2 rounds.
 
-This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+This draconic transformation takes effect as soon as it is learned, then leaves the spellbook: its effects are permanent, persist through death and cannot be dispelled.~
 
 @124 = ~Dragon Wings~
 @125 = ~Dragon Wings
@@ -189,7 +188,7 @@ Casting Time: 1
 
 Leathery wings tear through the back of the Black Dragon Disciple. He gains +4 movement speed and the innate ability Wing Buffet, usable at will and recharging in 4 rounds.
 
-This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+This draconic transformation takes effect as soon as it is learned, then leaves the spellbook: its effects are permanent, persist through death and cannot be dispelled.~
 
 @126 = ~Draconic Majesty~
 @127 = ~Draconic Majesty
@@ -202,7 +201,7 @@ Casting Time: 1
 
 The Black Dragon Disciple carries the presence of an ancient wyrm. He gains +2 Charisma, +2 Intelligence and +50 Lore, and may use Charm Reptile 3 times per day.
 
-This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+This draconic transformation takes effect as soon as it is learned, then leaves the spellbook: its effects are permanent, persist through death and cannot be dispelled.~
 
 @128 = ~Frightful Presence~
 @129 = ~Frightful Presence
@@ -215,7 +214,7 @@ Casting Time: 1
 
 The Black Dragon Disciple gains the innate ability Frightful Presence, an aura of draconic menace he turns on or off at will.
 
-This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+This draconic transformation takes effect as soon as it is learned, then leaves the spellbook: its effects are permanent, persist through death and cannot be dispelled.~
 
 @130 = ~Greater Black Dragon Magic~
 @131 = ~Greater Black Dragon Magic
@@ -228,7 +227,7 @@ Casting Time: 1
 
 The Black Dragon Disciple learns 3 lower-level spells normally unavailable to sorcerers: Corrupt Water, Insect Plague and Dolorous Decay.
 
-This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+This draconic transformation takes effect as soon as it is learned, then leaves the spellbook: its effects are permanent, persist through death and cannot be dispelled.~
 
 @132 = ~Dragon Apotheosis~
 @133 = ~Dragon Apotheosis
@@ -241,7 +240,7 @@ Casting Time: 1
 
 The Black Dragon Disciple becomes one with the dragon within. He gains +2 Constitution, +2 Strength, +2 Charisma and +4 Armor Class.
 
-This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+This draconic transformation takes effect as soon as it is learned, then leaves the spellbook: its effects are permanent, persist through death and cannot be dispelled.~
 
 @134 = ~Breath Mastery~
 @135 = ~Breath Mastery
@@ -254,7 +253,7 @@ Casting Time: 1
 
 The breath of the Black Dragon Disciple reaches its full strength. The damage dice of all his breaths are doubled (8d4, 12d4, 16d4) and all their recharge times are 2 rounds shorter.
 
-This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+This draconic transformation takes effect as soon as it is learned, then leaves the spellbook: its effects are permanent, persist through death and cannot be dispelled.~
 
 
 // ---------------------------------------------------------------------------

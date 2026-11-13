@@ -8,8 +8,8 @@ Rebuilt from scratch: **new character needed**. Not tested in game yet; checked 
 Kit:
 - [ ] Plain sorcerer: d6, one spell slot less per spell level, no claws, no breath, no AC bonus at level 1.
 - [ ] The 18 transformations in the spell list at level-up (levels 1 to 9), names, descriptions and amber icons in English and French.
-- [ ] Casting one: its effects, one slot of its level gone for good (also after a rest, a load, a level-up); cast again: nothing; another sorcerer casting it: nothing (and no slot lost).
-- [ ] Slot already at 0 for that level (opcode 42 at -1): what happens.
+- [ ] Learning one at level-up: its effects at once (global script), then it leaves the spellbook (opcode 172 on a sorcerer's known spell); no spell slot lost; another sorcerer learning it: nothing happens.
+- [ ] Next level-up after a transformation: the engine must not give back the spell choice (it would make the transformations free).
 - [ ] Level markers at 10, 15, 20, 25: Dragon Scale +1 AC at 10 and 15, Resilience +2 CON at 15, Might +2 STR at 15, claws +2 to +5; a transformation taken after these levels gives the steps at once.
 
 Transformations:
