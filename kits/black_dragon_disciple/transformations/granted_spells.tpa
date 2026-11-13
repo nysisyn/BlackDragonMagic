@@ -253,11 +253,12 @@ END
 // ---------------------------------------------------------------------------
 // Swampy Lake - level 9: a swamp of three overlapping zones, 30-ft. radius
 // each, for about 1 turn (area projectiles applying their spell again about
-// once per round). The caster is immune to all three.
-//   NY#TGSL  the lake (projectile NY#TGLP: CLOUD.PRO with Grease's puddles
-//            GREASED scattered over it): 4d6 acid, save vs. Breath for half;
-//            save vs. Death or poisoned for 1 round. It casts the two others
-//            where it lands (opcode 148).
+// once per round).
+//   NY#TGSL  the lake (projectile NY#TGLP: CLOUD.PRO with Grease's surface,
+//            as Corrupt Water's pool): NY#TGLA on the creatures, 4d6 acid,
+//            save vs. Breath for half; save vs. Death or poisoned for 1
+//            round. It casts the roots where it lands (opcode 148), and the
+//            roots cast the insects (one opcode 148 per spell).
 //   NY#TGLR  the roots (projectile NY#TGLRP: Entangle's, 30-ft. radius):
 //            NY#TGLE on the creatures, Entangle's effects (NY#TGEN, the
 //            Black Dragon Magic copy) with their own save vs. Spell
@@ -265,8 +266,9 @@ END
 //            30-ft. radius, with the swarm of Summon Insects' missile
 //            INSEC1, SPIPLARI, scattered over it): save vs. Spell or
 //            NY#TGLI, Summon Insects' effects (NY#TGSI) on the creature
-// The three zones scatter their animations at random (extended area flags:
-// random speed, start scattered, repeat scattering).
+// The roots and the insects scatter their animations at random (extended
+// area flags: random speed, start scattered, repeat scattering); Grease's
+// surface is an explosion effect, it cannot be scattered.
 // NY#TGLE and NY#TGLI first remove themselves (opcode 321): applied again
 // each round, they do not pile up. A zone whose source spell is missing is
 // left out.
@@ -280,10 +282,6 @@ OUTER_SET ny_str_slake_d = RESOLVE_STR_REF (@267)
 COPY_EXISTING ~NY#TGCP.pro~ ~%ny_workspace%/NY#TGLP.pro~
   WRITE_SHORT 0x204 (30 * ny_px_per_ft)
   WRITE_SHORT 0x206 (30 * ny_px_per_ft)
-  // Grease's puddles (GREASED) scattered at random instead of its surface
-  WRITE_BYTE  0x217 0xfe
-  WRITE_ASCII 0x228 ~GREASED~ #8
-  WRITE_LONG  0x240 (THIS BOR ny_random_scatter)
 ADD_PROJECTILE ~%ny_workspace%/NY#TGLP.pro~
 OUTER_SET ny_pro_slake = IDS_OF_SYMBOL (~projectl~ ~NY#TGLP~) + 1
 
@@ -372,21 +370,38 @@ END
 LAF NY#TGL_ZONE INT_VAR save = 0 STR_VAR source = ~NY#TGEN~ zone = ~NY#TGLR~ effect = ~NY#TGLE~ RET ny_slake_roots = ok END
 LAF NY#TGL_ZONE INT_VAR save = 1 STR_VAR source = ~NY#TGSI~ zone = ~NY#TGLS~ effect = ~NY#TGLI~ RET ny_slake_insects = ok END
 
-CREATE ~SPL~ ~NY#TGSL~
-  LPF NY#SPL_BASE INT_VAR name = ny_str_slake desc = ny_str_slake_d type = 1 level = 9 school = 2 graphics = 14 STR_VAR icon = ~NY#PBRC~ END
-  LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 4 range = 30 level = 1 casting_time = 9 projectile = ny_pro_slake STR_VAR icon = ~NY#PBRB~ RET h = header END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = ny_turn parameter1 = "-1" STR_VAR resource = ~NY#TGSL~ END
-  PATCH_IF ny_slake_roots BEGIN
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = ny_turn parameter1 = "-1" STR_VAR resource = ~NY#TGLR~ END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 148 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#TGLR~ END
-  END
-  PATCH_IF ny_slake_insects BEGIN
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = ny_turn parameter1 = "-1" STR_VAR resource = ~NY#TGLS~ END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 148 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#TGLS~ END
-  END
+// the lake's effects on the creatures (NY#TGLA, cast on them at each pulse)
+CREATE ~SPL~ ~NY#TGLA~
+  LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1000 level = 1 casting_time = 0 RET h = header END
   LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 1 parameter2 = 0x10000 dicenumber = 4 dicesize = 6
                                savingthrow = 2 special = 0x100 resist_dispel = 1 END
   LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 25  target = 2 timing = 0 duration = ny_round parameter1 = 1 parameter2 = 0 savingthrow = 4 resist_dispel = 1 END
+
+// The caster is made immune to the effects spells (NY#TGLA, NY#TGLE,
+// NY#TGLI), not to the zones: an immunity to a spell also blocks its
+// effects on the caster himself, here the opcode 148 casting the next zone.
+CREATE ~SPL~ ~NY#TGSL~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_slake desc = ny_str_slake_d type = 1 level = 9 school = 2 graphics = 14 STR_VAR icon = ~NY#PBRC~ END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 4 range = 30 level = 1 casting_time = 9 projectile = ny_pro_slake STR_VAR icon = ~NY#PBRB~ RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = ny_turn parameter1 = "-1" STR_VAR resource = ~NY#TGLA~ END
+  PATCH_IF ny_slake_roots BEGIN
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = ny_turn parameter1 = "-1" STR_VAR resource = ~NY#TGLE~ END
+  END
+  PATCH_IF ny_slake_insects BEGIN
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = ny_turn parameter1 = "-1" STR_VAR resource = ~NY#TGLI~ END
+  END
+  // the chain: lake -> roots -> insects
+  PATCH_IF ny_slake_roots BEGIN
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 148 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#TGLR~ END
+  END ELSE PATCH_IF ny_slake_insects BEGIN
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 148 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#TGLS~ END
+  END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 timing = 1 parameter2 = 1 resist_dispel = 1 STR_VAR resource = ~NY#TGLA~ END
+ACTION_IF ny_slake_roots AND ny_slake_insects BEGIN
+  COPY_EXISTING ~NY#TGLR.spl~ ~override~
+    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 148 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#TGLS~ END
+END
 OUTER_SPRINT $ny_hms(~%ny_hms_n%~) ~NY#TGSL~
 OUTER_SET ny_hms_n += 1
 

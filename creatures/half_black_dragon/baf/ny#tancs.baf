@@ -1,0 +1,9 @@
+// Half Black Dragon Spirit: attacks the nearest enemy of the party in sight
+// (default script: the player's orders come first)
+IF
+  See(NearestEnemyOf(Myself))
+  ActionListEmpty()
+THEN
+  RESPONSE #100
+    Attack(NearestEnemyOf(Myself))
+END

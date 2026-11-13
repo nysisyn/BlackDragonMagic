@@ -13,6 +13,7 @@
 //   NY#TANC  the spirit: level 18 fighter, 150 HP, AC 0, THAC0 3, 2 attacks
 //            per round, STR 20, immune to acid and poison, no fear; Blur
 //            (opcode 65) for its ghostly look; no experience when killed
+//   NY#TANCS its script (default slot): attacks the nearest enemy in sight
 //   NY#TANW  its Ancestral Greatsword: two-handed sword +3, 1d10 slashing
 //            + 2d6 acid; carries Blur and the immunities
 /////////////////////////////////////////////////////////////////////////////
@@ -21,6 +22,7 @@ OUTER_SET ny_str_tanw   = RESOLVE_STR_REF (@271)
 OUTER_SET ny_str_tanw_d = RESOLVE_STR_REF (@272)
 
 COPY ~%MOD_FOLDER%/creatures/half_black_dragon/anim~ ~override~
+COMPILE ~%MOD_FOLDER%/creatures/half_black_dragon/baf/ny#tancs.baf~
 ACTION_FOR_EACH snd IN hdrag01a hdrag01b hdrag02a hdrag03a hdrag03b hdrag04a hdrag04b hdrag05a hdrag05b
                        hdrag06a hdrag06b hdrag07a hdrag08a hdrag08b hdrag09a hdrag09b hdrag09c hdrag09d BEGIN
   ACTION_IF NOT FILE_EXISTS_IN_GAME ~%snd%.wav~ BEGIN
@@ -86,15 +88,14 @@ COPY_EXISTING ~%ny_planetar%.cre~ ~override/NY#TANC.cre~
   WRITE_BYTE  0x23d 19                          // CON
   WRITE_BYTE  0x23e 16                          // CHA
   WRITE_LONG  0x244 0                           // no kit
-  // scripts: none but the default one (attacks the enemies in sight)
+  // scripts: only its own default one, NY#TANCS (attacks the nearest enemy
+  // in sight); WTASIGHT, tried first, attacks the party
   WRITE_ASCII 0x248 ~~ #8
   WRITE_ASCII 0x250 ~~ #8
   WRITE_ASCII 0x258 ~~ #8
   WRITE_ASCII 0x260 ~~ #8
-  WRITE_ASCII 0x268 ~~ #8
-  PATCH_IF FILE_EXISTS_IN_GAME ~wtasight.bcs~ BEGIN
-    WRITE_ASCII 0x268 ~WTASIGHT~ #8
-  END
+  WRITE_ASCII 0x268 ~NY#TANCS~ #8
+  WRITE_BYTE  0x270 IDS_OF_SYMBOL (~ea~ ~CONTROLLED~)   // as the summons
   WRITE_BYTE  0x272 IDS_OF_SYMBOL (~race~ ~DRAGON~)
   WRITE_BYTE  0x273 IDS_OF_SYMBOL (~class~ ~FIGHTER~)
   WRITE_ASCII 0x2cc ~~ #8                       // no dialogue

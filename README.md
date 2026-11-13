@@ -88,18 +88,18 @@ BlackDragonMagic/
 | `NY#TCHR`, `NY#TCHC`, `NY#RACE=<race>` | Charm Reptile (Draconic Majesty) and its race checks |
 | `NY#TGEN`, `NY#TGSI`, `NY#TGIP`, `NY#TGDD`, `NY#TGCD` | wizard copies of Entangle, Summon Insects, Insect Plague, Dolorous Decay, Creeping Doom (learned only through the transformations, when the game has them) |
 | `NY#TGDK`, `NY#TGDP` | Darkness (level 2) and its 15-ft. burst |
-| `NY#TGCW`, `NY#TGCX`, `NY#TGCR` | Corrupt Water (level 4): the rain, visual only, 4 explosions about once a second (Fireball's area with IWD:EE Acid Storm's ASTORMA desaturated grey); the caster is immune to the burst and the pool |
+| `NY#TGCW`, `NY#TGCX`, `NY#TGCR` | Corrupt Water (level 4): the rain, visual only, 4 explosions about once a second, the animation played at half speed (each frame shown twice) (Fireball's area with IWD:EE Acid Storm's ASTORMA desaturated grey); the caster is immune to the burst and the pool |
 | `NY#TGCT`, `NY#TGCY` | Corrupt Water: the invisible burst under the rain, once (potions) |
 | `NY#TGCV` | Corrupt Water: potions destroyed once, save vs. Spell; one shared probability roll, a 50-wide window per potion: a random part of the potion kinds, about half |
 | `NY#TGCS`, `NY#TGCP` | Corrupt Water: the pool (Grease's surface, poison, slow), cast where the rain fell (opcode 148) |
 | `NY#TGSR` | Summon Reptile (level 8, the hydra `NY#HYDS`, BG2EE/EET) |
-| `NY#TGSL`, `NY#TGLP` | Swampy Lake (level 9) and its lake (Grease's puddles GREASED scattered: acid, poison); the three zones scatter their animations at random (extended flags 0x16) |
+| `NY#TGSL`, `NY#TGLP`, `NY#TGLA` | Swampy Lake (level 9), its lake (Grease's surface) and the lake's effects (acid, poison); the roots and insects scatter their animations at random (extended flags 0x16); chain lake -> roots -> insects (opcode 148); the caster is immune to the effects spells, not to the zone spells (an immunity to a spell also blocks its own opcode 148 on the caster: in game, only the lake showed) |
 | `NY#TGLR`, `NY#TGLRP`, `NY#TGLE` | Swampy Lake: the roots (Entangle's projectile, 30-ft. radius; Entangle's effects) |
 | `NY#TGLS`, `NY#TGLSP`, `NY#TGLI` | Swampy Lake: the insects (Stinking Cloud's area, 30-ft. radius, with the swarm of Summon Insects' missile scattered over it; Summon Insects' effects, save vs. Spell) |
 | `LUNYB.2DA`, `LUABBR.2DA` | HLA table of the kit (BG2EE / EET, abbreviation `NYB`): extra spells of levels 6, 7 and 8, Breath Doom, Call Ancestor, Bonemelt, Black Dragon Magic Mastery |
 | `NY#BDBL`, `NY#BDBLB`, `NY#BDBLC` | Breath Doom HLA (copy of `SPWI922` Dragon's Breath, acid instead of fire, explosion and sound of `SPIN691`) and its icons |
 | `NY#THCA`, `NY#TANE` | Call Ancestor HLA (Summon Planetar's duration and casting) and the EFF calling the spirit (BG2EE: Summon Planetar goes through opcode 177 and SPPLAN2.EFF) |
-| `NY#TANC`, `NY#TANW`, `NYHD*.BAM`, `<id>.INI` | Half Black Dragon Spirit (`creatures/half_black_dragon`): level 18 fighter, 150 HP, immune to acid, poison and fear, blurred (opcode 65); its Ancestral Greatsword (+3, 1d10 + 2d6 acid); animation: Icewind Dale II's half black dragon (MDH1) converted to IWD:EE format, animation id from 0xEC40 (`NY_HALF_BLACK_DRAGON`); sounds HDRAG*.WAV (Siege of Dragonspear), copied when missing |
+| `NY#TANC`, `NY#TANCS`, `NY#TANW`, `NYHD*.BAM`, `<id>.INI` | Half Black Dragon Spirit (`creatures/half_black_dragon`): level 18 fighter, 150 HP, immune to acid, poison and fear, blurred (opcode 65); its Ancestral Greatsword (+3, 1d10 + 2d6 acid); animation: Icewind Dale II's half black dragon (MDH1) converted to IWD:EE format, animation id from 0xEC40 (`NY_HALF_BLACK_DRAGON`); sounds HDRAG*.WAV (Siege of Dragonspear), copied when missing |
 | `NY#THBM`, `NY#THBE`, `NY#THSK` | Bonemelt HLA (4d4 acid per round, 10 rounds), its EFF and the skeleton destruction |
 | `NY#THMS` | Black Dragon Magic Mastery HLA (learns Creeping Doom, Summon Reptile, Swampy Lake) |
 | `NY#ACDS`, `NY#ACDX` | Acidosis and its retaliation |
