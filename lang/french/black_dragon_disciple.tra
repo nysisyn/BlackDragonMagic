@@ -29,7 +29,7 @@ Des griffes noires poussent aux deux mains du Disciple du Dragon Noir. Il obtien
 
 Chaque attaque réussie a 20 % de chances de provoquer une morsure, qui inflige 1d6 dégâts perforants et 1d4 dégâts d'acide.
 
-Il obtient les capacités innées Sortir les griffes et Rentrer les griffes pour les faire apparaître ou les ranger à volonté. Les griffes occupent le premier emplacement d'arme et celui du bouclier ; après une montée de niveau, il suffit de les sortir à nouveau pour obtenir celles du nouveau niveau.
+Il obtient les capacités innées Sortir les griffes et Rentrer les griffes pour les faire apparaître ou les ranger à volonté. Les griffes occupent l'emplacement d'arme magique et celui du bouclier ; après une montée de niveau, il suffit de les sortir à nouveau pour obtenir celles du nouveau niveau.
 
 Cette transformation draconique prend effet dès qu'elle est apprise, puis quitte le grimoire : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés.~
 
@@ -271,7 +271,7 @@ Aucun malus de combat à deux armes~
 @202 = ~Sortir les griffes~
 @203 = ~Sortir les griffes
 
-Le Disciple du Dragon Noir sort ses griffes : elles occupent le premier emplacement d'arme et celui du bouclier, avec la puissance de son niveau actuel. Il peut les rentrer à volonté.~
+Le Disciple du Dragon Noir sort ses griffes : elles occupent l'emplacement d'arme magique et celui du bouclier, avec la puissance de son niveau actuel. Il peut les rentrer à volonté.~
 @204 = ~Rentrer les griffes~
 @205 = ~Rentrer les griffes
 

@@ -2,9 +2,12 @@
 // Claw & Bite: the claws and the bite
 //
 // The transformation gives the innate ability Extend Claws. Extend Claws
-// puts one claw in each hand: the main one in the first weapon slot
-// (opcode 143, slot 35 = SLOT_WEAPON0), the off-hand one in the shield slot
-// (slot 9): one more attack per round (engine rule for an off-hand weapon).
+// puts one claw in each hand: the main one in the magical weapon slot
+// (opcode 111: selected at once, over any weapon the disciple holds; the
+// first weapon slot (opcode 143, slot 35) kept the staff selected and mixed
+// fist and claws in game), the off-hand one in the shield slot (opcode
+// 143, slot 9): one more attack per round (engine rule for an off-hand
+// weapon).
 // The off-hand claw sets Two-Weapon Style to 3 points while equipped
 // (opcode 233): no two-weapon penalty. Both slots are saved. Extend Claws
 // then turns into Retract Claws, which removes them and turns back.
@@ -107,7 +110,7 @@ CREATE ~SPL~ ~NY#TCLE~
     SET lvl = (s = 1) ? 1 : (5 * s)               // 1, 10, 15, 20, 25
     LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = lvl casting_time = 0 STR_VAR icon = ~NY#BDCLI~ RET h = header END
     LPF NY#T_REMOVE_CLAWS INT_VAR h END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 143 target = 1 timing = 1 parameter1 = 35 STR_VAR resource = EVAL ~NY#TCW%s%~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 111 target = 1 timing = 1 parameter1 = 1 STR_VAR resource = EVAL ~NY#TCW%s%~ END
     LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 143 target = 1 timing = 1 parameter1 = 9  STR_VAR resource = EVAL ~NY#TCO%s%~ END
     LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#TCLE~ END
     LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 171 target = 1 timing = 1 STR_VAR resource = ~NY#TCLR~ END

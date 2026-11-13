@@ -68,7 +68,7 @@ BlackDragonMagic/
 | `NY#T<CODE>B`, `NY#T<CODE>C` | transformation icons: placeholders, the mod's own spell icons mirrored and recoloured amber (hue 41), the colour of the transformations |
 | `NY_BDD_<CODE>`, `NY_BDD_LV<lv>` (SPLSTATE.IDS), `NY#HAS_<CODE>`, `NY#HAS_LV<lv>` (SPLPROT.2DA) | transformation and level marker states, and their checks |
 | `NY#VSC10`, `NY#VSC15`, `NY#VRE15`, `NY#VMI15` | level steps: Dragon Scale AC +1 (10, 15), Draconic Resilience CON +2 (15), Draconic Might STR +2 (15); each removes itself first (opcode 321) |
-| `NY#TCW<s>`, `NY#TCO<s>` | claws, main hand (first weapon slot) and off hand (shield slot, Two-Weapon Style 3 points while equipped): stage s 1-5 (+1 to +5, levels 1/10/15/20/25); 1d4 slashing, +4 THAC0, 20% bite per hit |
+| `NY#TCW<s>`, `NY#TCO<s>` | claws, main hand (magical weapon slot, opcode 111) and off hand (shield slot, Two-Weapon Style 3 points while equipped): stage s 1-5 (+1 to +5, levels 1/10/15/20/25); 1d4 slashing, +4 THAC0, 20% bite per hit |
 | `NY#TCBT` | the bite (1d6 piercing + 1d4 acid) |
 | `NY#TCLE` / `NY#TCLR` | Extend / Retract Claws (innate, swap themselves; Extend Claws has one header per stage: the claws of the disciple's level) |
 | `NY#TBA<m><a>` | breath line alone (Breath Weapon), m = N or X (Breath Mastery), a = 0 or 1 (Acid Mastery) |
@@ -140,7 +140,7 @@ These points were not settled on the Trello cards:
 - **Level steps**: level markers (spell states) set by the global script at levels 10 and 15 apply the steps of the transformations already taken; a transformation taken later applies the steps of the markers already set. Not through the CLAB: a character created at a high level (ToB) did not get its level 1 CLAB spell before his next level-up.
 - **Choices between versions** (breath forms): candidate chains, most specific first, one second apart; the first one whose conditions are all true (opcode 326, nested) blocks the next ones (opcode 206) and gives its version.
 - **Breath recharge**: the breath ability removes every breath ability when used and casts the choice again after its recharge (opcode 146, delayed). Breath Mastery and Acid Mastery have their own versions of each breath (damage doubled, recharge 2 rounds shorter; AC -2). Lost if the disciple dies while it recharges (see TODO).
-- **Claws**: the transformation only gives Extend Claws; extended by hand, with the stage of the disciple's level (extend them again after a level-up). Main claw in the first weapon slot, off-hand claw in the shield slot (one more attack per round, Two-Weapon Style 3 points while equipped: no penalty). Weapons are allowed again: Retract Claws frees the hands.
+- **Claws**: the transformation only gives Extend Claws; extended by hand, with the stage of the disciple's level (extend them again after a level-up). Main claw in the magical weapon slot (opcode 111, selected over any weapon; in the first weapon slot the staff stayed selected), off-hand claw in the shield slot (one more attack per round, Two-Weapon Style 3 points while equipped: no penalty). Weapons are allowed again: Retract Claws frees the hands.
 - **Hostile flag (SPL flag 0x400)**: only on spells hitting other creatures. The spells a disciple applies to himself (transformation effects, level markers, choice chains) must not carry it: applied every script pass, a hostile spell kept the party in combat (no rest, no save).
 - **Acid Mastery, AC reduction**: only on the breaths for now: the engine cannot check the caster of a game spell, nor of a spell cast by an item (the bite).
 
