@@ -6,8 +6,10 @@
 // not learn. Cast by hand, the spell does nothing. As soon as it is in the
 // spellbook of a party member of the kit, a global script (Kit,
 // HaveKnownSpellRES; added at the top of BALDUR.BCS, BDBALDUR.BCS and
-// BALDUR25.BCS) applies NY#T<code>A: he casts its effects NY#T<code>E on
-// himself (opcode 146, at once). Every one is built the same way
+// BALDUR25.BCS) makes him apply its effects NY#T<code>E to himself
+// (ActionOverride + ApplySpellRES: he is the source of the effects, so the
+// spells they cast work; opcode 146 from a spell applied by the global
+// script did nothing). Every one is built the same way
 // (NY#T_BEGIN / NY#T_END):
 //   - nothing happens a second time (opcode 324, spell state of the
 //     transformation already set)
@@ -20,8 +22,8 @@
 // nor a spell state set by the CLAB at level 1 worked for a character
 // created at a high level.
 //
-// Level steps: the global script applies NY#BDN10 / NY#BDN15 (the disciple
-// casts NY#BDM10 / NY#BDM15 on himself) once he has reached level 10 / 15.
+// Level steps: the global script makes the disciple apply NY#BDM10 /
+// NY#BDM15 to himself once he has reached level 10 / 15.
 // Each sets a level marker (spell state NY_BDD_LV<lv>) and applies the
 // steps of the transformations already taken (opcode 326 on their state).
 // A transformation taken later applies at once the steps of the markers
@@ -94,10 +96,8 @@ BEGIN
     LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 328 target = 1 timing = 9 parameter2 = $ny_state(~%code%~) special = 1 END
 END
 
-// NY#T_END (action): adds the transformation to the wizard spells, points
-// the removal from the spellbook to the final resref, and creates
-// NY#T<code>A, applied by the global script: the disciple casts the
-// effects NY#T<code>E on himself (opcode 146, at once).
+// NY#T_END (action): adds the transformation to the wizard spells and
+// points the removal from the spellbook to the final resref.
 DEFINE_ACTION_FUNCTION NY#T_END
   INT_VAR
     level = 1
@@ -110,10 +110,6 @@ BEGIN
   LAF RES_NUM_OF_SPELL_NAME STR_VAR spell_name = EVAL ~WIZARD_NY_T_%code%~ RET res = spell_res END
   COPY_EXISTING ~NY#T%code%E.spl~ ~override~
     LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 172 target = 1 timing = 1 STR_VAR resource = EVAL ~%res%~ END
-  CREATE ~SPL~ ~NY#T%code%A~
-    LPF NY#SPL_BASE INT_VAR type = 4 level = 1 END
-    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1000 level = 1 casting_time = 0 RET h = header END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 timing = 1 parameter2 = 1 STR_VAR resource = EVAL ~NY#T%code%E~ END
 END
 
 
@@ -204,7 +200,7 @@ INCLUDE ~%MOD_FOLDER%/kits/black_dragon_disciple/transformations/granted_spells.
 
 
 // ---------------------------------------------------------------------------
-// Level markers: levels 10 and 15 (global script, wrappers NY#BDN<lv>)
+// Level markers: levels 10 and 15 (global script)
 // ---------------------------------------------------------------------------
 ACTION_FOR_EACH lv IN 10 15 BEGIN
   LAF NY#T_SELF_SPL STR_VAR resref = EVAL ~NY#BDM%lv%~ END
@@ -215,10 +211,6 @@ ACTION_FOR_EACH lv IN 10 15 BEGIN
       LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 326 target = 1 timing = 1 parameter2 = $ny_has(~RES~) STR_VAR resource = ~NY#VRE15~ END
       LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 326 target = 1 timing = 1 parameter2 = $ny_has(~MIG~) STR_VAR resource = ~NY#VMI15~ END
     END
-  CREATE ~SPL~ ~NY#BDN%lv%~
-    LPF NY#SPL_BASE INT_VAR type = 4 level = 1 END
-    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1000 level = 1 casting_time = 0 RET h = header END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 timing = 1 parameter2 = 1 STR_VAR resource = EVAL ~NY#BDM%lv%~ END
 END
 
 
@@ -543,8 +535,8 @@ END
 
 // ---------------------------------------------------------------------------
 // Global script: a transformation in a disciple's spellbook (party members
-// 1 to 6) is applied at once (NY#T<code>A); level markers at levels 10 and
-// 15 (NY#BDN<lv>). Added at the top of the main
+// 1 to 6) is applied at once (NY#T<code>E); level markers at levels 10 and
+// 15 (NY#BDM<lv>). The disciple applies them to himself (ActionOverride). Added at the top of the main
 // game scripts, with Continue() in each block.
 // ---------------------------------------------------------------------------
 OUTER_SET ny_kit_ids = IDS_OF_SYMBOL (~kit~ ~NY#BDD~)
@@ -560,7 +552,7 @@ ACTION_FOR_EACH code IN CLB SCL BRW RES TAL SWS ACD BDM MIG MBR BLS AMS WNG MAJ 
   TriggerOverride(Player%p%,HaveKnownSpellRES("%res%"))
 THEN
   RESPONSE #100
-    ApplySpellRES("NY#T%code%A",Player%p%)
+    ActionOverride(Player%p%,ApplySpellRES("NY#T%code%E",Myself))
     Continue()
 END
 ~
@@ -576,7 +568,7 @@ ACTION_FOR_EACH lv IN 10 15 BEGIN
   !CheckSpellState(Player%p%,NY_BDD_LV%lv%)
 THEN
   RESPONSE #100
-    ApplySpellRES("NY#BDN%lv%",Player%p%)
+    ActionOverride(Player%p%,ApplySpellRES("NY#BDM%lv%",Myself))
     Continue()
 END
 ~
