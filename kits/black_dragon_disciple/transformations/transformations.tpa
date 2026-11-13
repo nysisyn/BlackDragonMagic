@@ -3,7 +3,9 @@
 //
 // Wizard spells of levels 1 to 9 (ADD_SPELL, WIZARD_NY_T_<CODE>) the Black
 // Dragon Disciple learns instead of a spell; its cost is the spell he did
-// not learn. Cast by hand, the spell does nothing. As soon as it is in the
+// not learn. It stays in the spellbook: its description can be read, and it
+// is not offered again at level-up. Cast by hand, it gives back the spell
+// slot it used (opcode 261) and only shows a message. As soon as it is in the
 // spellbook of a party member of the kit, a global script (Kit,
 // HaveKnownSpellRES; added at the top of BALDUR.BCS, BDBALDUR.BCS and
 // BALDUR25.BCS) makes him apply its effects NY#T<code>E to himself
@@ -17,7 +19,6 @@
 //     is known to the level steps and to the other transformations
 //   - its own effects, all permanent (timing 9: they persist through death
 //     and cannot be dispelled)
-//   - removal from the spellbook (opcode 172)
 // The kit is checked by the script only: neither the KIT stat (SPLPROT.2DA)
 // nor a spell state set by the CLAB at level 1 worked for a character
 // created at a high level.
@@ -72,6 +73,9 @@ ACTION_FOR_EACH code IN CLB SCL BRW RES TAL SWS ACD BDM MIG MBR BLS AMS WNG MAJ 
 END
 
 
+// shown when a transformation is cast by hand
+OUTER_SET ny_str_t_known = RESOLVE_STR_REF (@98)
+
 // ---------------------------------------------------------------------------
 // NY#T_BEGIN (action): creates NY#T<code>.SPL, the transformation of the
 // given spell level (the spell learned; cast by hand it does nothing), and
@@ -88,7 +92,9 @@ DEFINE_ACTION_FUNCTION NY#T_BEGIN
 BEGIN
   CREATE ~SPL~ ~NY#T%code%~
     LPF NY#SPL_BASE INT_VAR name desc type = 1 level school = 8 graphics = 10 STR_VAR icon = EVAL ~NY#T%code%C~ END
-    LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 5 range = 1 level = 1 casting_time = 1 STR_VAR icon = EVAL ~NY#T%code%B~ END
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 5 range = 1 level = 1 casting_time = 0 STR_VAR icon = EVAL ~NY#T%code%B~ RET h = header END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 261 target = 1 timing = 1 parameter1 = level parameter2 = 0 END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 139 target = 1 timing = 1 parameter1 = ny_str_t_known END
   LAF NY#T_SELF_SPL STR_VAR resref = EVAL ~NY#T%code%E~ END
   COPY_EXISTING ~NY#T%code%E.spl~ ~override~
     // a second time: nothing
@@ -96,8 +102,7 @@ BEGIN
     LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 328 target = 1 timing = 9 parameter2 = $ny_state(~%code%~) special = 1 END
 END
 
-// NY#T_END (action): adds the transformation to the wizard spells and
-// points the removal from the spellbook to the final resref.
+// NY#T_END (action): adds the transformation to the wizard spells.
 DEFINE_ACTION_FUNCTION NY#T_END
   INT_VAR
     level = 1
@@ -108,8 +113,6 @@ DEFINE_ACTION_FUNCTION NY#T_END
 BEGIN
   ADD_SPELL ~override/NY#T%code%.spl~ 2 level ~WIZARD_NY_T_%code%~
   LAF RES_NUM_OF_SPELL_NAME STR_VAR spell_name = EVAL ~WIZARD_NY_T_%code%~ RET res = spell_res END
-  COPY_EXISTING ~NY#T%code%E.spl~ ~override~
-    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 172 target = 1 timing = 1 STR_VAR resource = EVAL ~%res%~ END
 END
 
 
@@ -550,6 +553,7 @@ ACTION_FOR_EACH code IN CLB SCL BRW RES TAL SWS ACD BDM MIG MBR BLS AMS WNG MAJ 
     APPEND_OUTER ~%ny_workspace%/ny#tlearn.baf~ ~IF
   Kit(Player%p%,%ny_kit_ids%)
   TriggerOverride(Player%p%,HaveKnownSpellRES("%res%"))
+  !CheckSpellState(Player%p%,NY_BDD_%code%)
 THEN
   RESPONSE #100
     ActionOverride(Player%p%,ApplySpellRES("NY#T%code%E",Myself))

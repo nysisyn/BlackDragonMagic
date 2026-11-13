@@ -7,7 +7,7 @@ Avantages :
 - Dé de vie : d6 au lieu de d4.
 - Peut choisir une Transformation draconique unique en gagnant un niveau, au prix d'un nouveau sort appris.
 
-TRANSFORMATIONS DRACONIQUES : Les transformations figurent parmi les sorts que le Disciple du Dragon Noir peut apprendre. Une transformation prend effet dès qu'elle est apprise, puis quitte le grimoire ; elle le change pour toujours, même après la mort, et ne peut pas être dissipée. Les effets qui progressent avec le niveau continuent de progresser après la transformation, et une transformation prise tard donne aussitôt les paliers déjà atteints.
+TRANSFORMATIONS DRACONIQUES : Les transformations figurent parmi les sorts que le Disciple du Dragon Noir peut apprendre. Une transformation prend effet dès qu'elle est apprise ; elle le change pour toujours, même après la mort, et ne peut pas être dissipée. Elle reste ensuite dans le grimoire pour mémoire : la lancer ne fait rien et rend l'emplacement de sort. Les effets qui progressent avec le niveau continuent de progresser après la transformation, et une transformation prise tard donne aussitôt les paliers déjà atteints.
 
 Inconvénients :
 - Un emplacement de sort de moins par niveau de sort.~
@@ -16,6 +16,7 @@ Inconvénients :
 // ---------------------------------------------------------------------------
 // Transformations (sorts)
 // ---------------------------------------------------------------------------
+@98 = ~Cette Transformation draconique fait déjà partie de vous.~
 @100 = ~Griffes et morsure~
 @101 = ~Griffes et morsure
 (Transformation draconique)
@@ -31,7 +32,7 @@ Chaque attaque réussie a 20 % de chances de provoquer une morsure, qui inflige 
 
 Il obtient les capacités innées Sortir les griffes et Rentrer les griffes pour les faire apparaître ou les ranger à volonté. Les griffes occupent l'emplacement d'arme magique et celui du bouclier ; après une montée de niveau, il suffit de les sortir à nouveau pour obtenir celles du nouveau niveau.
 
-Cette transformation draconique prend effet dès qu'elle est apprise, puis quitte le grimoire : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés.~
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; la lancer ne fait rien et rend l'emplacement de sort.~
 
 @102 = ~Écailles de dragon~
 @103 = ~Écailles de dragon
@@ -44,7 +45,7 @@ Temps d'incantation : 1
 
 Des écailles noires recouvrent la peau du Disciple du Dragon Noir. Il obtient un bonus permanent de +3 à la classe d'armure, +4 au niveau 10 et +5 au niveau 15.
 
-Cette transformation draconique prend effet dès qu'elle est apprise, puis quitte le grimoire : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés.~
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; la lancer ne fait rien et rend l'emplacement de sort.~
 
 @104 = ~Souffle~
 @105 = ~Souffle
@@ -57,7 +58,7 @@ Temps d'incantation : 1
 
 Le Disciple du Dragon Noir obtient une nouvelle capacité innée, Souffle du dragon noir : une ligne d'acide qui inflige 4d4 dégâts d'acide, 6d4 à partir du niveau 7 et 8d4 à partir du niveau 10 (jet de sauvegarde contre les souffles pour la moitié). Le souffle ignore la résistance à la magie. Une fois utilisé, il se recharge en 10 rounds.
 
-Cette transformation draconique prend effet dès qu'elle est apprise, puis quitte le grimoire : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés.~
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; la lancer ne fait rien et rend l'emplacement de sort.~
 
 @106 = ~Résilience draconique~
 @107 = ~Résilience draconique
@@ -70,7 +71,7 @@ Temps d'incantation : 1
 
 Le corps du Disciple du Dragon Noir se durcit comme celui d'un dragon. Il obtient +2 en Constitution, +4 à partir du niveau 15, et l'immunité aux coups critiques. Son crâne endurci occupe l'emplacement du casque.
 
-Cette transformation draconique prend effet dès qu'elle est apprise, puis quitte le grimoire : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés.~
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; la lancer ne fait rien et rend l'emplacement de sort.~
 
 @108 = ~Queue draconique~
 @109 = ~Queue draconique
@@ -83,7 +84,7 @@ Temps d'incantation : 1
 
 Une queue puissante pousse au Disciple du Dragon Noir. Une fois par round, une créature hostile au contact subit 2d6 dégâts contondants et tombe à terre pendant 1 seconde si elle rate un jet de sauvegarde contre les souffles.
 
-Cette transformation draconique prend effet dès qu'elle est apprise, puis quitte le grimoire : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés.~
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; la lancer ne fait rien et rend l'emplacement de sort.~
 
 @110 = ~Foulée des marais~
 @111 = ~Foulée des marais
@@ -96,7 +97,7 @@ Temps d'incantation : 1
 
 Le Disciple du Dragon Noir traverse les marais et leurs poisons comme un dragon noir. Il devient immunisé au poison, ainsi qu'à Graisse, Enchevêtrement, Toile d'araignée, Nuage puant et Croissance d'épines.
 
-Cette transformation draconique prend effet dès qu'elle est apprise, puis quitte le grimoire : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés.~
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; la lancer ne fait rien et rend l'emplacement de sort.~
 
 @112 = ~Acidose~
 @113 = ~Acidose
@@ -109,7 +110,7 @@ Temps d'incantation : 1
 
 Le sang du Disciple du Dragon Noir se change en acide. Il obtient 50 % de résistance à l'acide et inflige 20 % de dégâts d'acide en plus. Sous 50 % de ses points de vie, il inflige 1d2 dégâts d'acide à ceux qui le frappent.
 
-Cette transformation draconique prend effet dès qu'elle est apprise, puis quitte le grimoire : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés.~
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; la lancer ne fait rien et rend l'emplacement de sort.~
 
 @114 = ~Magie du dragon noir~
 @115 = ~Magie du dragon noir
@@ -122,7 +123,7 @@ Temps d'incantation : 1
 
 Le Disciple du Dragon Noir apprend 3 sorts de niveau inférieur, normalement inaccessibles aux ensorceleurs : Enchevêtrement, Ténèbres et Invocation d'insectes.
 
-Cette transformation draconique prend effet dès qu'elle est apprise, puis quitte le grimoire : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés.~
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; la lancer ne fait rien et rend l'emplacement de sort.~
 
 @116 = ~Puissance draconique~
 @117 = ~Puissance draconique
@@ -135,7 +136,7 @@ Temps d'incantation : 1
 
 La force d'un dragon emplit le Disciple du Dragon Noir. Il obtient +2 en Force, +4 à partir du niveau 15, et l'immunité à la paralysie et au sommeil.
 
-Cette transformation draconique prend effet dès qu'elle est apprise, puis quitte le grimoire : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés.~
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; la lancer ne fait rien et rend l'emplacement de sort.~
 
 @118 = ~Méta-souffle~
 @119 = ~Méta-souffle
@@ -148,7 +149,7 @@ Temps d'incantation : 1
 
 Le Disciple du Dragon Noir apprend à façonner son souffle. Le Souffle du dragon noir propose désormais trois formes : la ligne, la Boule de souffle et la Flaque de souffle. Toutes partagent la même charge. Recharge : ligne 6 rounds, Flaque de souffle 8 rounds, Boule de souffle 10 rounds.
 
-Cette transformation draconique prend effet dès qu'elle est apprise, puis quitte le grimoire : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés.~
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; la lancer ne fait rien et rend l'emplacement de sort.~
 
 @120 = ~Perception aveugle~
 @121 = ~Perception aveugle
@@ -161,7 +162,7 @@ Temps d'incantation : 1
 
 Le Disciple du Dragon Noir perçoit ce qui l'entoure sans avoir besoin de ses yeux. Il devient immunisé à la cécité, peut voir et attaquer les ennemis invisibles, et sa portée de vision augmente légèrement.
 
-Cette transformation draconique prend effet dès qu'elle est apprise, puis quitte le grimoire : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés.~
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; la lancer ne fait rien et rend l'emplacement de sort.~
 
 @122 = ~Maîtrise de l'acide~
 @123 = ~Maîtrise de l'acide
@@ -174,7 +175,7 @@ Temps d'incantation : 1
 
 L'acide du Disciple du Dragon Noir ronge les armures. Il obtient 50 % de résistance à l'acide. L'acide de son souffle réduit la classe d'armure des cibles de 2 pendant 2 rounds.
 
-Cette transformation draconique prend effet dès qu'elle est apprise, puis quitte le grimoire : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés.~
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; la lancer ne fait rien et rend l'emplacement de sort.~
 
 @124 = ~Ailes de dragon~
 @125 = ~Ailes de dragon
@@ -187,7 +188,7 @@ Temps d'incantation : 1
 
 Des ailes membraneuses déchirent le dos du Disciple du Dragon Noir. Il obtient +4 en vitesse de déplacement et la capacité innée Coup d'ailes, utilisable à volonté et qui se recharge en 4 rounds.
 
-Cette transformation draconique prend effet dès qu'elle est apprise, puis quitte le grimoire : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés.~
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; la lancer ne fait rien et rend l'emplacement de sort.~
 
 @126 = ~Majesté draconique~
 @127 = ~Majesté draconique
@@ -200,7 +201,7 @@ Temps d'incantation : 1
 
 Le Disciple du Dragon Noir porte la présence d'un ver antique. Il obtient +2 en Charisme, +2 en Intelligence et +50 en Connaissances, et peut utiliser Charme-reptile 3 fois par jour.
 
-Cette transformation draconique prend effet dès qu'elle est apprise, puis quitte le grimoire : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés.~
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; la lancer ne fait rien et rend l'emplacement de sort.~
 
 @128 = ~Présence terrifiante~
 @129 = ~Présence terrifiante
@@ -213,7 +214,7 @@ Temps d'incantation : 1
 
 Le Disciple du Dragon Noir obtient la capacité innée Présence terrifiante, une aura de menace draconique qu'il active ou désactive à volonté.
 
-Cette transformation draconique prend effet dès qu'elle est apprise, puis quitte le grimoire : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés.~
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; la lancer ne fait rien et rend l'emplacement de sort.~
 
 @130 = ~Magie supérieure du dragon noir~
 @131 = ~Magie supérieure du dragon noir
@@ -226,7 +227,7 @@ Temps d'incantation : 1
 
 Le Disciple du Dragon Noir apprend 3 sorts de niveau inférieur, normalement inaccessibles aux ensorceleurs : Eau corrompue, Fléau d'insectes et Pourriture douloureuse.
 
-Cette transformation draconique prend effet dès qu'elle est apprise, puis quitte le grimoire : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés.~
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; la lancer ne fait rien et rend l'emplacement de sort.~
 
 @132 = ~Apothéose draconique~
 @133 = ~Apothéose draconique
@@ -239,7 +240,7 @@ Temps d'incantation : 1
 
 Le Disciple du Dragon Noir ne fait plus qu'un avec le dragon qui l'habite. Il obtient +2 en Constitution, +2 en Force, +2 en Charisme et +4 à la classe d'armure.
 
-Cette transformation draconique prend effet dès qu'elle est apprise, puis quitte le grimoire : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés.~
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; la lancer ne fait rien et rend l'emplacement de sort.~
 
 @134 = ~Maîtrise du souffle~
 @135 = ~Maîtrise du souffle
@@ -252,7 +253,7 @@ Temps d'incantation : 1
 
 Le souffle du Disciple du Dragon Noir atteint sa pleine puissance. Les dés de dégâts de tous ses souffles sont doublés (8d4, 12d4, 16d4) et tous leurs temps de recharge sont réduits de 2 rounds.
 
-Cette transformation draconique prend effet dès qu'elle est apprise, puis quitte le grimoire : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés.~
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; la lancer ne fait rien et rend l'emplacement de sort.~
 
 
 // ---------------------------------------------------------------------------
