@@ -150,7 +150,7 @@ CREATE ~SPL~ ~NY#THBM~
 // Black Dragon Magic Mastery: learns the spells of $ny_hms
 // ---------------------------------------------------------------------------
 CREATE ~SPL~ ~NY#THMS~
-  LPF NY#SPL_BASE INT_VAR name = ny_str_hmastery desc = ny_str_hmastery_d type = 4 level = 1 flags = 0x400 STR_VAR icon = ~NY#TGBDC~ END
+  LPF NY#SPL_BASE INT_VAR name = ny_str_hmastery desc = ny_str_hmastery_d type = 4 level = 1 STR_VAR icon = ~NY#TGBDC~ END
   LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = 1 casting_time = 0 STR_VAR icon = ~NY#TGBDB~ RET h = header END
   FOR (i = 0; i < ny_hms_n; ++i) BEGIN
     SPRINT r $ny_hms(~%i%~)

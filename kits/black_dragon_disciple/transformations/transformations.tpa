@@ -111,7 +111,7 @@ BEGIN
   COPY_EXISTING ~NY#T%code%E.spl~ ~override~
     LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 172 target = 1 timing = 1 STR_VAR resource = EVAL ~%res%~ END
   CREATE ~SPL~ ~NY#T%code%A~
-    LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+    LPF NY#SPL_BASE INT_VAR type = 4 level = 1 END
     LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1000 level = 1 casting_time = 0 RET h = header END
     LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 timing = 1 parameter2 = 1 STR_VAR resource = EVAL ~NY#T%code%E~ END
 END
@@ -126,7 +126,7 @@ DEFINE_ACTION_FUNCTION NY#T_SELF_SPL
     resref = ~~
 BEGIN
   CREATE ~SPL~ ~%resref%~
-    LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+    LPF NY#SPL_BASE INT_VAR type = 4 level = 1 END
     LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = 1 casting_time = 0 END
 END
 
@@ -216,7 +216,7 @@ ACTION_FOR_EACH lv IN 10 15 BEGIN
       LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 326 target = 1 timing = 1 parameter2 = $ny_has(~MIG~) STR_VAR resource = ~NY#VMI15~ END
     END
   CREATE ~SPL~ ~NY#BDN%lv%~
-    LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+    LPF NY#SPL_BASE INT_VAR type = 4 level = 1 END
     LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1000 level = 1 casting_time = 0 RET h = header END
     LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 timing = 1 parameter2 = 1 STR_VAR resource = EVAL ~NY#BDM%lv%~ END
 END
