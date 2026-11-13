@@ -1,0 +1,236 @@
+/////////////////////////////////////////////////////////////////////////////
+// Spells learned through Black Dragon Magic, Greater Black Dragon Magic and
+// the high-level ability Black Dragon Magic Mastery (opcode 147, learn
+// spell), and Charm Reptile (Draconic Majesty)
+//
+// Wizard copies of the game's priest spells (type and level changed, kept
+// out of the sorcerer's list: only learned this way), when the game has
+// them:
+//   NY#TGEN  Entangle (level 1)        NY#TGSI  Summon Insects (level 3)
+//   NY#TGIP  Insect Plague (level 5)   NY#TGDD  Dolorous Decay (level 6)
+//   NY#TGCD  Creeping Doom (level 7)
+// New spells (wizard, not in the sorcerer's list either):
+//   NY#TGDK  Darkness (level 2)        NY#TGCW  Corrupt Water (level 4)
+//   NY#TGSR  Summon Reptile (level 8, the hydra, BG2:EE and EET)
+//   NY#TGSL  Swampy Lake (level 9)
+// Lists: $ny_bdm (Black Dragon Magic), $ny_gbd (Greater), $ny_hms
+// (Mastery), with their counts.
+// Icons: placeholders, see each spell.
+/////////////////////////////////////////////////////////////////////////////
+
+OUTER_SET ny_bdm_n = 0
+OUTER_SET ny_gbd_n = 0
+OUTER_SET ny_hms_n = 0
+
+// Wizard copy of a priest spell; adds it to the list given (bdm, gbd, hms)
+DEFINE_ACTION_FUNCTION NY#TG_WIZARD_COPY
+  INT_VAR
+    level = 1
+  STR_VAR
+    ids    = ~~
+    resref = ~~
+  RET
+    ok
+BEGIN
+  OUTER_SET ok = 0
+  ACTION_IF (IDS_OF_SYMBOL (~spell~ ~%ids%~) >= 0) BEGIN
+    LAF RES_NUM_OF_SPELL_NAME STR_VAR spell_name = EVAL ~%ids%~ RET res = spell_res END
+    ACTION_IF FILE_EXISTS_IN_GAME ~%res%.spl~ BEGIN
+      COPY_EXISTING ~%res%.spl~ ~override/%resref%.spl~
+        WRITE_SHORT 0x1c 1                      // wizard
+        WRITE_LONG  0x1e 0                      // no exclusion
+        WRITE_LONG  0x34 level
+      OUTER_SET ok = 1
+    END
+  END
+  ACTION_IF NOT ok BEGIN
+    PRINT ~Black Dragon Disciple: %ids% is not in this game, not learned through the transformations.~
+  END
+END
+
+LAF NY#TG_WIZARD_COPY INT_VAR level = 1 STR_VAR ids = ~CLERIC_ENTANGLE~        resref = ~NY#TGEN~ RET ok END
+ACTION_IF ok BEGIN OUTER_SPRINT $ny_bdm(~%ny_bdm_n%~) ~NY#TGEN~ OUTER_SET ny_bdm_n += 1 END
+// Darkness, below, comes second in the list
+OUTER_SET ny_bdm_dark = ny_bdm_n
+OUTER_SET ny_bdm_n += 1
+LAF NY#TG_WIZARD_COPY INT_VAR level = 3 STR_VAR ids = ~CLERIC_SUMMON_INSECTS~  resref = ~NY#TGSI~ RET ok END
+ACTION_IF ok BEGIN OUTER_SPRINT $ny_bdm(~%ny_bdm_n%~) ~NY#TGSI~ OUTER_SET ny_bdm_n += 1 END
+
+// Corrupt Water (new, below) first, then the priest spells
+OUTER_SPRINT $ny_gbd(~0~) ~NY#TGCW~
+OUTER_SET ny_gbd_n = 1
+LAF NY#TG_WIZARD_COPY INT_VAR level = 5 STR_VAR ids = ~CLERIC_INSECT_PLAGUE~   resref = ~NY#TGIP~ RET ok END
+ACTION_IF ok BEGIN OUTER_SPRINT $ny_gbd(~%ny_gbd_n%~) ~NY#TGIP~ OUTER_SET ny_gbd_n += 1 END
+LAF NY#TG_WIZARD_COPY INT_VAR level = 6 STR_VAR ids = ~CLERIC_DOLOROUS_DECAY~  resref = ~NY#TGDD~ RET ok END
+ACTION_IF ok BEGIN OUTER_SPRINT $ny_gbd(~%ny_gbd_n%~) ~NY#TGDD~ OUTER_SET ny_gbd_n += 1 END
+
+LAF NY#TG_WIZARD_COPY INT_VAR level = 7 STR_VAR ids = ~CLERIC_CREEPING_DOOM~   resref = ~NY#TGCD~ RET ok END
+ACTION_IF ok BEGIN OUTER_SPRINT $ny_hms(~%ny_hms_n%~) ~NY#TGCD~ OUTER_SET ny_hms_n += 1 END
+
+
+// ---------------------------------------------------------------------------
+// Darkness - level 2: every creature within 15 ft. of the caster, ally or
+// enemy, becomes invisible and blinded for 3 rounds (the disciple with
+// Blindsense is immune to the blindness).
+// Projectile NY#TGDP: 15-ft. burst, no visuals. Icon: placeholder, Rot of
+// Ages' (spells component).
+// ---------------------------------------------------------------------------
+OUTER_SET ny_str_dark   = RESOLVE_STR_REF (@260)
+OUTER_SET ny_str_dark_d = RESOLVE_STR_REF (@261)
+COPY ~%MOD_FOLDER%/spells/rot_of_ages/bam/ny#rotb.bam~ ~override~
+     ~%MOD_FOLDER%/spells/rot_of_ages/bam/ny#rotc.bam~ ~override~
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#ROTB~ c = ~NY#ROTC~ END   // Remastered Spell Icons
+
+LAF NY#CLONE_AREA_PRO INT_VAR radius_ft = 15 explosion_effect = 255 STR_VAR source = ~fireball~ new = ~NY#TGDP~ workspace = EVAL ~%ny_workspace%~ RET ny_pro_dark = pro_id END
+COPY_EXISTING ~NY#TGDP.pro~ ~override~
+  WRITE_ASCII 0x10  ~~ #8
+  WRITE_ASCII 0x18  ~~ #8
+  WRITE_ASCII 0x104 ~~ #8
+  WRITE_ASCII 0x10c ~~ #8
+  WRITE_ASCII 0x208 ~~ #8
+  WRITE_ASCII 0x21c ~~ #8
+  WRITE_ASCII 0x230 ~~ #8
+  WRITE_LONG  0x240 0
+BUT_ONLY
+
+CREATE ~SPL~ ~NY#TGDK~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_dark desc = ny_str_dark_d type = 1 level = 2 school = 8 graphics = 10 STR_VAR icon = ~NY#ROTC~ END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 5 range = 1 level = 1 casting_time = 2 projectile = ny_pro_dark STR_VAR icon = ~NY#ROTB~ RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 20 target = 2 timing = 0 duration = (3 * ny_round) parameter2 = 0 resist_dispel = 1 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 74 target = 2 timing = 0 duration = (3 * ny_round) resist_dispel = 1 END
+OUTER_SPRINT $ny_bdm(~%ny_bdm_dark%~) ~NY#TGDK~
+
+
+// ---------------------------------------------------------------------------
+// Corrupt Water - level 4: a foul rain and a pool of rotten water, 15-ft.
+// radius, for 1 turn (Stinking Cloud's CLOUD.PRO: the spell is applied
+// again about once per round). Each time: the potions carried by the
+// creatures in the area are destroyed (opcode 123, every potion of the game
+// at install time), save vs. Death or poisoned for 1 round.
+// Projectile NY#TGCP: placeholder visuals, Pooling Breath's puddles in
+// grey-blue (gradient 26). The rain itself is still to do (see TODO).
+// Icon: placeholder, Pooling Breath's.
+// ---------------------------------------------------------------------------
+OUTER_SET ny_str_cwater   = RESOLVE_STR_REF (@262)
+OUTER_SET ny_str_cwater_d = RESOLVE_STR_REF (@263)
+
+COPY_EXISTING ~fireball.pro~ ~override~
+  READ_SHORT 0x206 ny_fb_size
+BUT_ONLY
+OUTER_SET ny_px_per_ft = ny_fb_size / 20
+
+COPY_EXISTING ~cloud.pro~ ~%ny_workspace%/NY#TGCP.pro~
+  WRITE_ASCII 0x104 ~NY#PBRT~ #8
+  WRITE_BYTE  0x124 26
+  WRITE_BYTE  0x218 26
+  WRITE_ASCII 0x228 ~NY#PBRD~ #8
+  WRITE_SHORT 0x204 (15 * ny_px_per_ft)
+  WRITE_SHORT 0x206 (15 * ny_px_per_ft)
+ADD_PROJECTILE ~%ny_workspace%/NY#TGCP.pro~
+OUTER_SET ny_pro_cwater = IDS_OF_SYMBOL (~projectl~ ~NY#TGCP~) + 1
+
+// every potion of the game (item category 9)
+OUTER_SET ny_potion_n = 0
+COPY_EXISTING_REGEXP GLOB ~^.+\.itm$~ ~override~
+  PATCH_IF (SOURCE_SIZE > 0x71) BEGIN
+    READ_SHORT 0x1c cat
+    PATCH_IF (cat = 9) BEGIN
+      SPRINT $ny_potion(~%ny_potion_n%~) ~%SOURCE_RES%~
+      SET ny_potion_n += 1
+    END
+  END
+BUT_ONLY
+
+CREATE ~SPL~ ~NY#TGCW~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_cwater desc = ny_str_cwater_d type = 1 level = 4 school = 8 graphics = 10 STR_VAR icon = ~NY#PBRC~ END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 4 range = 30 level = 1 casting_time = 4 projectile = ny_pro_cwater STR_VAR icon = ~NY#PBRB~ RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 25 target = 2 timing = 0 duration = ny_round parameter1 = 1 parameter2 = 0 savingthrow = 4 resist_dispel = 1 END
+  FOR (i = 0; i < ny_potion_n; ++i) BEGIN
+    SPRINT r $ny_potion(~%i%~)
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 123 target = 2 timing = 1 STR_VAR resource = EVAL ~%r%~ END
+  END
+
+
+// ---------------------------------------------------------------------------
+// Summon Reptile - level 8 (BG2:EE and EET): the mod's hydra
+// (creatures/hydra/hydra_creature.tpa), 1 turn + 1 round per level. Icon:
+// the hydra's.
+// ---------------------------------------------------------------------------
+ACTION_IF GAME_IS ~bg2ee eet~ BEGIN
+  ACTION_IF NOT FILE_EXISTS_IN_GAME ~ny#hyds.cre~ BEGIN
+    WITH_TRA ~%MOD_FOLDER%/lang/english/hydra.tra~
+             ~%MOD_FOLDER%/lang/%LANGUAGE%/hydra.tra~ BEGIN
+      INCLUDE ~%MOD_FOLDER%/creatures/hydra/hydra_creature.tpa~
+    END
+  END
+  COPY ~%MOD_FOLDER%/creatures/hydra/bam/ny#hyisb.bam~ ~override~
+       ~%MOD_FOLDER%/creatures/hydra/bam/ny#hyisc.bam~ ~override~
+  LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#HYISB~ c = ~NY#HYISC~ END   // Remastered Spell Icons
+
+  OUTER_SET ny_str_sreptile   = RESOLVE_STR_REF (@264)
+  OUTER_SET ny_str_sreptile_d = RESOLVE_STR_REF (@265)
+  CREATE ~SPL~ ~NY#TGSR~
+    LPF NY#SPL_BASE INT_VAR name = ny_str_sreptile desc = ny_str_sreptile_d type = 1 level = 8
+                            school = 2 graphics = 14 STR_VAR icon = ~NY#HYISC~ END
+    FOR (lvl = 16; lvl <= 40; ++lvl) BEGIN
+      LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 4 range = 30 level = ((lvl = 16) ? 1 : lvl) casting_time = 8 STR_VAR icon = ~NY#HYISB~ RET h = header END
+      LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 67 target = 1 timing = 0 duration = ((10 + lvl) * ny_round) STR_VAR resource = ~NY#HYDS~ END
+    END
+  OUTER_SPRINT $ny_hms(~%ny_hms_n%~) ~NY#TGSR~
+  OUTER_SET ny_hms_n += 1
+END
+
+
+// ---------------------------------------------------------------------------
+// Swampy Lake - level 9: a lake of acid, 30-ft. radius, for 1 turn
+// (CLOUD.PRO, applied again about once per round): 4d6 acid, save vs.
+// Breath for half. The caster is immune to it for its duration.
+// Projectile NY#TGLP: Breath Pool's, four times the area.
+// Icon: placeholder, Pooling Breath's.
+// ---------------------------------------------------------------------------
+OUTER_SET ny_str_slake   = RESOLVE_STR_REF (@266)
+OUTER_SET ny_str_slake_d = RESOLVE_STR_REF (@267)
+
+COPY_EXISTING ~NY#TBPP.pro~ ~%ny_workspace%/NY#TGLP.pro~
+  WRITE_SHORT 0x204 (30 * ny_px_per_ft)
+  WRITE_SHORT 0x206 (30 * ny_px_per_ft)
+ADD_PROJECTILE ~%ny_workspace%/NY#TGLP.pro~
+OUTER_SET ny_pro_slake = IDS_OF_SYMBOL (~projectl~ ~NY#TGLP~) + 1
+
+CREATE ~SPL~ ~NY#TGSL~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_slake desc = ny_str_slake_d type = 1 level = 9 school = 2 graphics = 14 STR_VAR icon = ~NY#PBRC~ END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 4 range = 30 level = 1 casting_time = 9 projectile = ny_pro_slake STR_VAR icon = ~NY#PBRB~ RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = ny_turn parameter1 = "-1" STR_VAR resource = ~NY#TGSL~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 1 parameter2 = 0x10000 dicenumber = 4 dicesize = 6
+                               savingthrow = 2 special = 0x100 resist_dispel = 1 END
+OUTER_SPRINT $ny_hms(~%ny_hms_n%~) ~NY#TGSL~
+OUTER_SET ny_hms_n += 1
+
+
+// ---------------------------------------------------------------------------
+// Charm Reptile (Draconic Majesty, 3 times per day): the reptiles of the
+// game (RACE.IDS, those present) are charmed for 1 hour, no save, magic
+// resistance bypassed (resist_dispel 2). One opcode 326 per race: the
+// charm NY#TCHC only lands on a creature of one of these races. Dragons are
+// not in the list. Icon: placeholder, Draconic Majesty's.
+// ---------------------------------------------------------------------------
+OUTER_SET ny_str_creptile   = RESOLVE_STR_REF (@250)
+OUTER_SET ny_str_creptile_d = RESOLVE_STR_REF (@251)
+
+CREATE ~SPL~ ~NY#TCHC~
+  LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1000 level = 1 casting_time = 0 RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 5 target = 2 timing = 0 duration = ny_hour parameter2 = 0 resist_dispel = 2 END
+
+CREATE ~SPL~ ~NY#TCHR~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_creptile desc = ny_str_creptile_d type = 4 level = 1 school = 4 STR_VAR icon = ~NY#TMAJC~ END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 30 level = 1 casting_time = 1 STR_VAR icon = ~NY#TMAJB~ END
+
+ACTION_FOR_EACH race IN LIZARDMAN TROGLODYTE WYVERN BASILISK HYDRA NAGA SNAKE SALAMANDER BEGIN
+  OUTER_SET id = IDS_OF_SYMBOL (~race~ ~%race%~)
+  ACTION_IF (id >= 0) BEGIN
+    LAF NY#SPLPROT_ROW STR_VAR label = EVAL ~NY#RACE=%race%~ stat = ~0x10c~ value = EVAL ~%id%~ relation = ~1~ RET row END
+    COPY_EXISTING ~NY#TCHR.spl~ ~override~
+      LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 326 target = 2 timing = 1 parameter2 = row resist_dispel = 2 STR_VAR resource = ~NY#TCHC~ END
+  END
+END

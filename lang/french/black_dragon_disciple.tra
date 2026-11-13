@@ -1,296 +1,403 @@
 // Kit
 @1 = ~disciple du dragon noir~
 @2 = ~Disciple du Dragon Noir~
-@3 = ~DISCIPLE DU DRAGON NOIR : Le sang d'un dragon noir coule dans les veines de ces ensorceleurs. À mesure que leur puissance grandit, le dragon qui sommeille en eux prend peu à peu possession de leur corps, des griffes noires jusqu'aux ailes membraneuses.
+@3 = ~DISCIPLE DU DRAGON NOIR : Le sang d'un dragon noir coule dans les veines de ces ensorceleurs. Contrairement aux autres Disciples du Dragon, ils ne naissent pas avec les dons de leur ancêtre : griffes, écailles, souffle et ailes sommeillent dans leur sang. Chacun doit être éveillé par un choix, et chaque éveil coûte à l'ensorceleur une part de sa magie, pour toujours.
 
 Avantages :
-- Dé de vie : d6 au lieu de d4, et progression du TAC0 d'un druide.
-- Niveau 1 : bonus de +1 à la CA. Obtient les Griffes draconiques.
+- Dé de vie : d6 au lieu de d4.
+- Peut choisir une Transformation draconique unique en gagnant un niveau, au prix d'un nouveau sort appris.
 
-GRIFFES DRACONIQUES : Les ongles du Disciple du Dragon Noir se sont recourbés en griffes acérées, semblables à celles d'un dragon noir. Elles infligent 1d4 dégâts tranchants et permettent 2 attaques par round à mains nues.
+TRANSFORMATIONS DRACONIQUES : Les transformations figurent parmi les sorts que le Disciple du Dragon Noir peut apprendre. Lancée une fois, une transformation le change pour toujours ; ses effets survivent à la mort et ne peuvent pas être dissipés. Les effets qui progressent avec le niveau continuent de progresser après la transformation, et une transformation prise tard donne aussitôt les paliers déjà atteints.
 
-- Niveau 2 : obtient Foulée des marais.
+Inconvénients :
+- Un emplacement de sort de moins par niveau de sort.
+- Chaque Transformation draconique retire définitivement un emplacement de sort de son niveau.~
 
-FOULÉE DES MARAIS : Son affinité avec les marais permet au Disciple du Dragon Noir de s'y déplacer librement. Il est immunisé contre les effets des sorts tels qu'Enchevêtrement, Graisse et Toile d'araignée.
 
-- Niveau 3 : peut utiliser son Souffle une fois par jour.
+// ---------------------------------------------------------------------------
+// Transformations (sorts)
+// ---------------------------------------------------------------------------
+@100 = ~Griffes et morsure~
+@101 = ~Griffes et morsure
+(Transformation draconique)
 
-SOUFFLE : Le Disciple du Dragon Noir exhale une ligne d'acide de 4,5 m de long et 1,5 m de large, qui inflige 4d4 dégâts d'acide à toutes les créatures sur son passage (jet de sauvegarde contre les souffles pour la moitié).
+Niveau : 1
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
 
-- Niveau 4 : obtient Affinité acide. Les griffes infligent désormais 1d6 dégâts tranchants et comptent comme des armes magiques +1.
+Des griffes noires poussent aux deux mains du Disciple du Dragon Noir. Il obtient deux attaques de griffes infligeant chacune 1d4 dégâts tranchants, sans malus de combat à deux armes, et un bonus de +4 au TAC0 avec elles. Les griffes comptent comme des armes magiques +1, +2 au niveau 10, +3 au niveau 15, +4 au niveau 20 et +5 au niveau 25.
 
-AFFINITÉ ACIDE : Le sang du dragon noir protège le Disciple du Dragon Noir de l'acide et rend son propre acide plus puissant. Il obtient 20 % de résistance à l'acide, et tous les dégâts d'acide qu'il inflige sont augmentés de 5 %. Les deux progressent aux niveaux 8, 12 et 16, jusqu'à 80 % de résistance et +20 % de dégâts d'acide. Au niveau 20, il devient immunisé contre l'acide et ses dégâts d'acide sont augmentés de 25 %.
+Chaque attaque réussie a 20 % de chances de provoquer une morsure, qui inflige 1d6 dégâts perforants et 1d4 dégâts d'acide.
 
-- Niveau 5 : bonus de +1 à la CA et à la Constitution.
-- Niveau 6 : obtient une morsure, invoquée comme arme de la main secondaire à mains nues, qui inflige 1d6 dégâts perforants et 2 dégâts d'acide. La morsure compte comme une arme magique du même enchantement que les griffes. Les capacités innées Combattre avec la morsure et Combattre sans la morsure la font apparaître ou disparaître à volonté.
-- Niveau 7 : peut utiliser son Souffle deux fois par jour. Les dégâts passent à 6d4.
-- Niveau 8 : Affinité acide s'améliore. Les griffes infligent désormais 1d8 dégâts tranchants et comptent comme des armes magiques +2.
-- Niveau 9 : obtient Queue draconique.
+Les capacités innées Rentrer les griffes et Sortir les griffes les rangent ou les font revenir à volonté. Les griffes occupent le premier emplacement d'arme et celui du bouclier.
 
-QUEUE DRACONIQUE : Une puissante queue pousse au Disciple du Dragon Noir. À chaque round, une créature située à moins de 1,5 m doit réussir un jet de sauvegarde contre les souffles ou subir 1d10 dégâts contondants et être jetée au sol pendant 1 seconde.
+Cette transformation draconique ne se lance qu'une fois : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle retire définitivement un emplacement de sort de son niveau. La relancer n'a aucun effet.~
 
-- Niveau 10 : bonus de +1 à la CA. Obtient la capacité passive Perception aveugle.
+@102 = ~Écailles de dragon~
+@103 = ~Écailles de dragon
+(Transformation draconique)
 
-PERCEPTION AVEUGLE : Le Disciple du Dragon Noir perçoit ce qui l'entoure sans avoir besoin de la vue. Il devient immunisé contre la cécité et peut voir et cibler les créatures invisibles.
+Niveau : 1
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
 
-- Niveau 11 : peut utiliser son Souffle trois fois par jour. Les dégâts passent à 8d4.
-- Niveau 12 : Affinité acide s'améliore. Les griffes infligent désormais 1d10 dégâts tranchants et comptent comme des armes magiques +3.
-- Niveau 13 : la morsure inflige désormais 2d6 dégâts perforants et 2d4 dégâts d'acide.
-- Niveau 14 : obtient Ailes draconiques.
+Des écailles noires recouvrent la peau du Disciple du Dragon Noir. Il obtient un bonus permanent de +3 à la classe d'armure, +4 au niveau 10 et +5 au niveau 15.
 
-AILES DRACONIQUES : Une paire d'ailes draconiques pousse dans le dos du Disciple du Dragon Noir, qui gagne +4 en vitesse de déplacement, +2 à la CA et l'immunité aux coups critiques. Déployées, elles révèlent sa véritable forme draconique. Les ailes occupent l'emplacement du casque et peuvent être déployées ou repliées à volonté.
+Cette transformation draconique ne se lance qu'une fois : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle retire définitivement un emplacement de sort de son niveau. La relancer n'a aucun effet.~
 
-- Niveau 15 : bonus de +1 à la CA et à la Constitution.
-- Niveau 16 : Affinité acide s'améliore. Les griffes infligent désormais 2d6 dégâts tranchants et comptent comme des armes magiques +4.
-- Niveau 17 : peut utiliser son Souffle quatre fois par jour. Les dégâts passent à 10d4.
-- Niveau 18 : obtient la capacité innée Présence terrifiante.
+@104 = ~Souffle~
+@105 = ~Souffle
+(Transformation draconique)
 
-PRÉSENCE TERRIFIANTE : Le Disciple du Dragon Noir dégage une aura de menace draconique. Les ennemis de niveau inférieur au sien situés à moins de 4,5 m doivent réussir un jet de sauvegarde contre les sorts ou être paniqués pendant 2 rounds. Qu'elle réussisse ou non, une créature devient ensuite immunisée contre cette aura pendant 24 heures. Les alliés ne sont pas affectés. L'aura peut être activée ou désactivée à volonté.
+Niveau : 2
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
 
-- Niveau 19 : les dégâts du Souffle passent à 12d4, et la ligne atteint 9 m de long et 3 m de large.
-- Niveau 20 : Apothéose draconique : bonus de +1 à la CA et immunité au sommeil et à la paralysie. Affinité acide atteint son apogée. Les griffes infligent désormais 2d8 dégâts tranchants et comptent comme des armes magiques +5.
+Le Disciple du Dragon Noir obtient une nouvelle capacité innée, Souffle du dragon noir : une ligne d'acide qui inflige 4d4 dégâts d'acide, 6d4 à partir du niveau 7 et 8d4 à partir du niveau 10 (jet de sauvegarde contre les souffles pour la moitié). Le souffle ignore la résistance à la magie. Une fois utilisé, il se recharge en 10 rounds.
 
-- Capacités de haut niveau (Throne of Bhaal) : en plus des sorts supplémentaires de l'ensorceleur et de Convocation de planétaire déchu, le Disciple du Dragon Noir peut apprendre les capacités innées d'un dragon noir adulte : Éclosion de souffle, Coup d'ailes, Nuée d'insectes et Croissance végétale ; il peut aussi invoquer une tortue-dragon noire ou un draco-sphinx noir.
+Cette transformation draconique ne se lance qu'une fois : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle retire définitivement un emplacement de sort de son niveau. La relancer n'a aucun effet.~
 
-Désavantages :
-- Lance un sort de moins par jour à chaque niveau de sort.
-- Lance ses sorts comme un ensorceleur d'un niveau de moins (niveau 1 au minimum). Par exemple, il accède aux sorts du 2e niveau au niveau 5 au lieu du niveau 4.
-- Ne peut utiliser aucune arme : le Disciple du Dragon Noir ne combat qu'avec ses griffes et sa morsure. Ses points de compétence ne peuvent aller que dans le Style de combat à une arme (1 point au maximum) et le Style de combat à deux armes (3 points au maximum).
-~
+@106 = ~Résilience draconique~
+@107 = ~Résilience draconique
+(Transformation draconique)
 
-// Griffes draconiques (objet, une description par palier : niveaux 1, 4, 8, 12, 16, 20)
-@10 = ~Griffes draconiques~
-@11 = ~Griffes draconiques
+Niveau : 2
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
 
-Les ongles du Disciple du Dragon Noir se sont recourbés en griffes noires.
+Le corps du Disciple du Dragon Noir se durcit comme celui d'un dragon. Il obtient +2 en Constitution, +4 à partir du niveau 15, et l'immunité aux coups critiques. Son crâne endurci occupe l'emplacement du casque.
 
-CARACTÉRISTIQUES :
+Cette transformation draconique ne se lance qu'une fois : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle retire définitivement un emplacement de sort de son niveau. La relancer n'a aucun effet.~
 
-Dégâts : 1d4 (tranchants)
-Attaques par round : 2
-Facteur de vitesse : 2
-Non magiques~
-@12 = ~Griffes draconiques
+@108 = ~Queue draconique~
+@109 = ~Queue draconique
+(Transformation draconique)
 
-Les griffes ont durci et noirci.
+Niveau : 3
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
 
-CARACTÉRISTIQUES :
+Une queue puissante pousse au Disciple du Dragon Noir. Une fois par round, une créature hostile au contact subit 2d6 dégâts contondants et tombe à terre pendant 1 seconde si elle rate un jet de sauvegarde contre les souffles.
 
-TAC0 : +1
-Dégâts : 1d6+1 (tranchants)
-Attaques par round : 2
-Facteur de vitesse : 2
-Comptent comme une arme +1 pour toucher les créatures~
-@13 = ~Griffes draconiques
+Cette transformation draconique ne se lance qu'une fois : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle retire définitivement un emplacement de sort de son niveau. La relancer n'a aucun effet.~
 
-Les griffes se sont allongées et aiguisées.
+@110 = ~Foulée des marais~
+@111 = ~Foulée des marais
+(Transformation draconique)
 
-CARACTÉRISTIQUES :
+Niveau : 3
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
 
-TAC0 : +2
-Dégâts : 1d8+2 (tranchants)
-Attaques par round : 2
-Facteur de vitesse : 2
-Comptent comme une arme +2 pour toucher les créatures~
-@14 = ~Griffes draconiques
+Le Disciple du Dragon Noir traverse les marais et leurs poisons comme un dragon noir. Il devient immunisé au poison, ainsi qu'à Graisse, Enchevêtrement, Toile d'araignée, Nuage puant et Croissance d'épines.
 
-Les griffes sont devenues aussi dures que celles d'un dragon.
+Cette transformation draconique ne se lance qu'une fois : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle retire définitivement un emplacement de sort de son niveau. La relancer n'a aucun effet.~
 
-CARACTÉRISTIQUES :
+@112 = ~Acidose~
+@113 = ~Acidose
+(Transformation draconique)
 
-TAC0 : +3
-Dégâts : 1d10+3 (tranchants)
-Attaques par round : 2
-Facteur de vitesse : 2
-Comptent comme une arme +3 pour toucher les créatures~
-@15 = ~Griffes draconiques
+Niveau : 4
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
 
-Les griffes ont atteint la taille de celles d'un jeune dragon.
+Le sang du Disciple du Dragon Noir se change en acide. Il obtient 50 % de résistance à l'acide et inflige 20 % de dégâts d'acide en plus. Sous 50 % de ses points de vie, il inflige 1d2 dégâts d'acide à ceux qui le frappent.
+
+Cette transformation draconique ne se lance qu'une fois : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle retire définitivement un emplacement de sort de son niveau. La relancer n'a aucun effet.~
+
+@114 = ~Magie du dragon noir~
+@115 = ~Magie du dragon noir
+(Transformation draconique)
+
+Niveau : 4
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
+
+Le Disciple du Dragon Noir apprend 3 sorts de niveau inférieur, normalement inaccessibles aux ensorceleurs : Enchevêtrement, Ténèbres et Invocation d'insectes.
+
+Cette transformation draconique ne se lance qu'une fois : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle retire définitivement un emplacement de sort de son niveau. La relancer n'a aucun effet.~
+
+@116 = ~Puissance draconique~
+@117 = ~Puissance draconique
+(Transformation draconique)
+
+Niveau : 5
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
+
+La force d'un dragon emplit le Disciple du Dragon Noir. Il obtient +2 en Force, +4 à partir du niveau 15, et l'immunité à la paralysie et au sommeil.
+
+Cette transformation draconique ne se lance qu'une fois : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle retire définitivement un emplacement de sort de son niveau. La relancer n'a aucun effet.~
+
+@118 = ~Méta-souffle~
+@119 = ~Méta-souffle
+(Transformation draconique)
+
+Niveau : 5
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
+
+Le Disciple du Dragon Noir apprend à façonner son souffle. Le Souffle du dragon noir propose désormais trois formes : la ligne, la Boule de souffle et la Flaque de souffle. Toutes partagent la même charge. Recharge : ligne 6 rounds, Flaque de souffle 8 rounds, Boule de souffle 10 rounds.
+
+Cette transformation draconique ne se lance qu'une fois : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle retire définitivement un emplacement de sort de son niveau. La relancer n'a aucun effet.~
+
+@120 = ~Perception aveugle~
+@121 = ~Perception aveugle
+(Transformation draconique)
+
+Niveau : 6
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
+
+Le Disciple du Dragon Noir perçoit ce qui l'entoure sans avoir besoin de ses yeux. Il devient immunisé à la cécité, peut voir et attaquer les ennemis invisibles, et sa portée de vision augmente légèrement.
+
+Cette transformation draconique ne se lance qu'une fois : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle retire définitivement un emplacement de sort de son niveau. La relancer n'a aucun effet.~
+
+@122 = ~Maîtrise de l'acide~
+@123 = ~Maîtrise de l'acide
+(Transformation draconique)
+
+Niveau : 6
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
+
+L'acide du Disciple du Dragon Noir ronge les armures. Il obtient 50 % de résistance à l'acide. L'acide de son souffle et de sa morsure réduit la classe d'armure de la cible de 2 pendant 2 rounds.
+
+Cette transformation draconique ne se lance qu'une fois : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle retire définitivement un emplacement de sort de son niveau. La relancer n'a aucun effet.~
+
+@124 = ~Ailes de dragon~
+@125 = ~Ailes de dragon
+(Transformation draconique)
+
+Niveau : 7
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
+
+Des ailes membraneuses déchirent le dos du Disciple du Dragon Noir. Il obtient +4 en vitesse de déplacement et la capacité innée Coup d'ailes, utilisable à volonté et qui se recharge en 4 rounds.
+
+Cette transformation draconique ne se lance qu'une fois : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle retire définitivement un emplacement de sort de son niveau. La relancer n'a aucun effet.~
+
+@126 = ~Majesté draconique~
+@127 = ~Majesté draconique
+(Transformation draconique)
+
+Niveau : 7
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
+
+Le Disciple du Dragon Noir porte la présence d'un ver antique. Il obtient +2 en Charisme, +2 en Intelligence et +50 en Connaissances, et peut utiliser Charme-reptile 3 fois par jour.
+
+Cette transformation draconique ne se lance qu'une fois : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle retire définitivement un emplacement de sort de son niveau. La relancer n'a aucun effet.~
+
+@128 = ~Présence terrifiante~
+@129 = ~Présence terrifiante
+(Transformation draconique)
+
+Niveau : 8
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
+
+Le Disciple du Dragon Noir obtient la capacité innée Présence terrifiante, une aura de menace draconique qu'il active ou désactive à volonté.
+
+Cette transformation draconique ne se lance qu'une fois : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle retire définitivement un emplacement de sort de son niveau. La relancer n'a aucun effet.~
+
+@130 = ~Magie supérieure du dragon noir~
+@131 = ~Magie supérieure du dragon noir
+(Transformation draconique)
+
+Niveau : 8
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
+
+Le Disciple du Dragon Noir apprend 3 sorts de niveau inférieur, normalement inaccessibles aux ensorceleurs : Eau corrompue, Fléau d'insectes et Pourriture douloureuse.
+
+Cette transformation draconique ne se lance qu'une fois : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle retire définitivement un emplacement de sort de son niveau. La relancer n'a aucun effet.~
+
+@132 = ~Apothéose draconique~
+@133 = ~Apothéose draconique
+(Transformation draconique)
+
+Niveau : 9
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
+
+Le Disciple du Dragon Noir ne fait plus qu'un avec le dragon qui l'habite. Il obtient +2 en Constitution, +2 en Force, +2 en Charisme et +4 à la classe d'armure.
+
+Cette transformation draconique ne se lance qu'une fois : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle retire définitivement un emplacement de sort de son niveau. La relancer n'a aucun effet.~
+
+@134 = ~Maîtrise du souffle~
+@135 = ~Maîtrise du souffle
+(Transformation draconique)
+
+Niveau : 9
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
+
+Le souffle du Disciple du Dragon Noir atteint sa pleine puissance. Les dés de dégâts de tous ses souffles sont doublés (8d4, 12d4, 16d4) et tous leurs temps de recharge sont réduits de 2 rounds.
+
+Cette transformation draconique ne se lance qu'une fois : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle retire définitivement un emplacement de sort de son niveau. La relancer n'a aucun effet.~
+
+
+// ---------------------------------------------------------------------------
+// Capacités et objets donnés par les transformations
+// ---------------------------------------------------------------------------
+@200 = ~Griffes draconiques~
+@201 = ~Griffes draconiques
+
+Les griffes noires du Disciple du Dragon Noir. Chaque attaque réussie a 20 % de chances de provoquer une morsure, qui inflige 1d6 dégâts perforants et 1d4 dégâts d'acide.
 
 CARACTÉRISTIQUES :
 
 TAC0 : +4
-Dégâts : 2d6+4 (tranchants)
-Attaques par round : 2
-Facteur de vitesse : 2
-Comptent comme une arme +4 pour toucher les créatures~
-@16 = ~Griffes draconiques
+Dégâts : 1d4 (tranchant)
+Aucun malus de combat à deux armes~
+@202 = ~Sortir les griffes~
+@203 = ~Sortir les griffes
 
-Les griffes sont devenues celles d'un dragon noir adulte.
+Le Disciple du Dragon Noir sort ses griffes : elles occupent le premier emplacement d'arme et celui du bouclier. Il peut les rentrer à volonté.~
+@204 = ~Rentrer les griffes~
+@205 = ~Rentrer les griffes
 
-CARACTÉRISTIQUES :
+Le Disciple du Dragon Noir rentre ses griffes et libère ses mains. Il peut les sortir à nouveau à volonté.~
+@206 = ~Morsure draconique~
 
-TAC0 : +5
-Dégâts : 2d8+5 (tranchants)
-Attaques par round : 2
-Facteur de vitesse : 2
-Comptent comme une arme +5 pour toucher les créatures~
+@210 = ~Souffle du dragon noir~
+@211 = ~Souffle du dragon noir
 
-// Morsure draconique (objet de la main secondaire, une description par palier : niveaux 6, 8, 12, 13, 16, 20)
-@19 = ~Morsure draconique~
-@20 = ~Morsure draconique
+Le Disciple du Dragon Noir exhale une ligne d'acide. Les créatures sur la ligne subissent des dégâts d'acide (jet de sauvegarde contre les souffles pour la moitié) ; le souffle ignore la résistance à la magie. Une fois utilisé, il se recharge au bout de quelques rounds.~
+@212 = ~Ligne de souffle~
+@213 = ~Ligne de souffle
 
-La mâchoire du Disciple du Dragon Noir s'est allongée en une gueule de dragon. La morsure est son arme de la main secondaire : elle donne une attaque de plus par round, avec les malus habituels du combat à deux armes, que le Style de combat à deux armes réduit. Elle peut être retirée avec la capacité innée Combattre sans la morsure, pour combattre avec les griffes seules.
+Une ligne d'acide. Les créatures sur la ligne subissent des dégâts d'acide (jet de sauvegarde contre les souffles pour la moitié) ; le souffle ignore la résistance à la magie.~
+@214 = ~Boule de souffle~
+@215 = ~Boule de souffle
 
-CARACTÉRISTIQUES :
+Une boule d'acide éclate au point visé, dans un rayon de 6 m. Les créatures dans la zone, alliés compris, subissent des dégâts d'acide (jet de sauvegarde contre les souffles pour la moitié) ; le souffle ignore la résistance à la magie.~
+@216 = ~Flaque de souffle~
+@217 = ~Flaque de souffle
 
-TAC0 : +1
-Dégâts : 1d6+1 (perforants) + 2 acide
-Facteur de vitesse : 2
-Compte comme une arme +1 pour toucher les créatures~
-@21 = ~Morsure draconique
+Une flaque d'acide s'étend sur le sol pendant 1 tour, dans un rayon de 2,3 m. À chaque round, les créatures dans la flaque subissent des dégâts d'acide (jet de sauvegarde contre les souffles pour la moitié) ; le souffle ignore la résistance à la magie. Le Disciple du Dragon Noir n'est pas affecté par sa propre flaque.~
+@218 = ~Crâne draconique~
+@219 = ~Crâne draconique
 
-La mâchoire du Disciple du Dragon Noir s'est allongée en une gueule de dragon. La morsure est son arme de la main secondaire : elle donne une attaque de plus par round, avec les malus habituels du combat à deux armes, que le Style de combat à deux armes réduit. Elle peut être retirée avec la capacité innée Combattre sans la morsure, pour combattre avec les griffes seules.
+Le crâne endurci du Disciple du Dragon Noir le protège des coups critiques.~
 
-CARACTÉRISTIQUES :
+@220 = ~Queue draconique~
 
-TAC0 : +2
-Dégâts : 1d6+2 (perforants) + 2 acide
-Facteur de vitesse : 2
-Compte comme une arme +2 pour toucher les créatures~
-@22 = ~Morsure draconique
+@230 = ~Présence terrifiante~
+@231 = ~Présence terrifiante
 
-La mâchoire du Disciple du Dragon Noir s'est allongée en une gueule de dragon. La morsure est son arme de la main secondaire : elle donne une attaque de plus par round, avec les malus habituels du combat à deux armes, que le Style de combat à deux armes réduit. Elle peut être retirée avec la capacité innée Combattre sans la morsure, pour combattre avec les griffes seules.
-
-CARACTÉRISTIQUES :
-
-TAC0 : +3
-Dégâts : 1d6+3 (perforants) + 2 acide
-Facteur de vitesse : 2
-Compte comme une arme +3 pour toucher les créatures~
-@23 = ~Morsure draconique
-
-La mâchoire du Disciple du Dragon Noir s'est allongée en une gueule de dragon. La morsure est son arme de la main secondaire : elle donne une attaque de plus par round, avec les malus habituels du combat à deux armes, que le Style de combat à deux armes réduit. Elle peut être retirée avec la capacité innée Combattre sans la morsure, pour combattre avec les griffes seules.
-
-CARACTÉRISTIQUES :
-
-TAC0 : +3
-Dégâts : 2d6+3 (perforants) + 2d4 acide
-Facteur de vitesse : 2
-Compte comme une arme +3 pour toucher les créatures~
-@24 = ~Morsure draconique
-
-La mâchoire du Disciple du Dragon Noir s'est allongée en une gueule de dragon. La morsure est son arme de la main secondaire : elle donne une attaque de plus par round, avec les malus habituels du combat à deux armes, que le Style de combat à deux armes réduit. Elle peut être retirée avec la capacité innée Combattre sans la morsure, pour combattre avec les griffes seules.
-
-CARACTÉRISTIQUES :
-
-TAC0 : +4
-Dégâts : 2d6+4 (perforants) + 2d4 acide
-Facteur de vitesse : 2
-Compte comme une arme +4 pour toucher les créatures~
-@25 = ~Morsure draconique
-
-La mâchoire du Disciple du Dragon Noir s'est allongée en une gueule de dragon. La morsure est son arme de la main secondaire : elle donne une attaque de plus par round, avec les malus habituels du combat à deux armes, que le Style de combat à deux armes réduit. Elle peut être retirée avec la capacité innée Combattre sans la morsure, pour combattre avec les griffes seules.
-
-CARACTÉRISTIQUES :
-
-TAC0 : +5
-Dégâts : 2d6+5 (perforants) + 2d4 acide
-Facteur de vitesse : 2
-Compte comme une arme +5 pour toucher les créatures~
-
-// Queue draconique (ligne du journal de combat à chaque coup)
-@26 = ~Queue draconique~
-
-// Souffle d'acide
-@30 = ~Souffle d'acide~
-@31 = ~Souffle d'acide
-
-Le Disciple du Dragon Noir exhale une ligne d'acide de 4,5 m de long et 1,5 m de large, qui inflige 4d4 dégâts d'acide à toutes les créatures sur son passage (jet de sauvegarde contre les souffles pour la moitié). Les dégâts passent à 6d4 au niveau 7, 8d4 au niveau 11, 10d4 au niveau 17 et 12d4 au niveau 19, où la ligne atteint aussi 9 m de long et 3 m de large. Les alliés dans la ligne sont touchés.
-
-Utilisable une fois par jour, deux fois au niveau 7, trois fois au niveau 11 et quatre fois au niveau 17.~
-
-// Présence terrifiante
-@40 = ~Présence terrifiante~
-@41 = ~Présence terrifiante
-
-Le Disciple du Dragon Noir dégage une aura de menace draconique. Les ennemis de niveau inférieur au sien situés à moins de 4,5 m doivent réussir un jet de sauvegarde contre les sorts ou être paniqués pendant 2 rounds. Qu'elle réussisse ou non, une créature devient ensuite immunisée contre cette aura pendant 24 heures. Les alliés ne sont pas affectés.
+Le Disciple du Dragon Noir dégage une aura de menace draconique. Les ennemis de niveau inférieur au sien situés à moins de 3 m doivent réussir un jet de sauvegarde contre les sorts ou être paniqués pendant 2 rounds. Une créature qui réussit devient immunisée contre l'aura pendant 24 heures. Les alliés ne sont pas affectés.
 
 Utiliser cette capacité active l'aura ; elle peut ensuite être désactivée à volonté.~
-@42 = ~Désactiver la Présence terrifiante~
-@43 = ~Désactiver la Présence terrifiante
+@232 = ~Désactiver la Présence terrifiante~
+@233 = ~Désactiver la Présence terrifiante
 
 Désactive l'aura de Présence terrifiante. Elle peut être réactivée à volonté.~
 
-// Ailes draconiques (objet de l'emplacement du casque, et les capacités innées qui les déploient / replient)
-@60 = ~Ailes draconiques~
-@61 = ~Ailes draconiques
+@240 = ~Coup d'ailes~
+@241 = ~Coup d'ailes
 
-Des ailes membraneuses ont déchiré le dos du Disciple du Dragon Noir. Elles prennent la place d'un casque. Déployées, elles révèlent sa véritable forme draconique.
+Le Disciple du Dragon Noir bat des ailes, renversant et repoussant les créatures qui l'entourent. Une fois utilisé, il se recharge en 4 rounds.~
 
-CARACTÉRISTIQUES :
+@250 = ~Charme-reptile~
+@251 = ~Charme-reptile
 
-Déplacement : +4
-Classe d'armure : +2
-Immunité aux coups critiques~
-@62 = ~Ailes draconiques
+Le Disciple du Dragon Noir soumet un reptile à sa volonté : hommes-lézards, vouivres, basilics, hydres, nagas et leurs semblables sont charmés pendant 1 heure, sans jet de sauvegarde et quelle que soit leur résistance à la magie. Les dragons ne sont pas affectés.~
 
-Le Disciple du Dragon Noir déploie ses ailes draconiques, ce qui lui donne +4 en vitesse de déplacement, +2 à la CA et l'immunité aux coups critiques, et révèle sa véritable forme draconique. Les ailes occupent l'emplacement du casque.
 
-Utiliser cette capacité déploie les ailes ; elles peuvent ensuite être repliées à volonté.~
-@63 = ~Replier les ailes draconiques~
-@64 = ~Replier les ailes draconiques
+// ---------------------------------------------------------------------------
+// Sorts appris par la Magie du dragon noir et ses versions supérieures
+// ---------------------------------------------------------------------------
+@260 = ~Ténèbres~
+@261 = ~Ténèbres
+(Altération)
 
-Le Disciple du Dragon Noir replie ses ailes et libère l'emplacement du casque. Elles peuvent être déployées à nouveau à volonté.~
+Niveau : 2
+Portée : 0
+Durée : 3 rounds
+Temps d'incantation : 2
+Zone d'effet : rayon de 4,5 m
+Jet de sauvegarde : aucun
 
-// Combattre avec / sans la morsure (capacités innées qui s'échangent)
-@70 = ~Combattre avec la morsure~
-@71 = ~Combattre avec la morsure
+Le lanceur s'entoure d'un nuage de ténèbres magiques. Toutes les créatures dans la zone, alliées comme ennemies, deviennent invisibles et aveugles pendant 3 rounds.~
 
-Le Disciple du Dragon Noir montre les crocs : la morsure reprend la main secondaire et donne une attaque de plus par round, avec les malus habituels du combat à deux armes.
+@262 = ~Eau corrompue~
+@263 = ~Eau corrompue
+(Altération)
 
-Utiliser cette capacité fait apparaître la morsure ; elle peut ensuite être retirée à volonté.~
-@72 = ~Combattre sans la morsure~
-@73 = ~Combattre sans la morsure
+Niveau : 4
+Portée : 9 m
+Durée : 1 tour
+Temps d'incantation : 4
+Zone d'effet : rayon de 4,5 m
+Jet de sauvegarde : spécial
 
-Le Disciple du Dragon Noir combat avec ses griffes seules, ce qui lui permet de profiter du Style de combat à une arme. La morsure peut être rappelée à volonté.~
+Une pluie immonde tombe sur la zone et laisse au sol une mare d'eau croupie pendant 1 tour. Les potions que portent les créatures dans la zone sont gâtées et détruites. À chaque round, les créatures dans l'eau doivent réussir un jet de sauvegarde contre la mort ou être empoisonnées pendant 1 round.~
 
-// Capacités de haut niveau (BG2:EE et EET)
-@80 = ~Éclosion de souffle~
-@81 = ~Éclosion de souffle
+@264 = ~Invocation de reptile~
+@265 = ~Invocation de reptile
+(Invocation)
 
-Le Disciple du Dragon Noir souffle avec la force d'un dragon noir adulte. Une immense éclosion d'acide explose dans un rayon de 6 m, infligeant 20d10 dégâts d'acide aux ennemis et les projetant en arrière ; ceux qui ne résistent pas perdent aussi connaissance pendant 3 secondes. Un jet de sauvegarde contre les souffles réussi divise les dégâts par deux et annule les autres effets. Les membres du groupe ne sont pas affectés.
+Niveau : 8
+Portée : 9 m
+Durée : 1 tour + 1 round par niveau
+Temps d'incantation : 8
+Zone d'effet : spéciale
+Jet de sauvegarde : aucun
 
-Portée : longue
-Utilisable une fois par jour.~
-@82 = ~Coup d'ailes~
-@83 = ~Coup d'ailes
+Le lanceur appelle une hydre qui combat à ses côtés.~
 
-Le Disciple du Dragon Noir bat des ailes avec la force d'un dragon noir adulte. Les ennemis dans un rayon de 6 m subissent 1d8 dégâts contondants et sont projetés en arrière ; ils doivent aussi réussir un jet de sauvegarde contre les sorts à -4 sous peine de perdre connaissance pendant 3 secondes. Les membres du groupe ne sont pas affectés.
+@266 = ~Lac marécageux~
+@267 = ~Lac marécageux
+(Invocation)
 
-Utilisable une fois par jour.~
-@84 = ~Nuée d'insectes~
-@85 = ~Nuée d'insectes
+Niveau : 9
+Portée : 9 m
+Durée : 1 tour
+Temps d'incantation : 9
+Zone d'effet : rayon de 9 m
+Jet de sauvegarde : spécial
 
-Comme un dragon noir, le Disciple du Dragon Noir appelle du marais une nuée d'insectes, d'araignées et de mille-pattes venimeux sur ses ennemis, sans aucun temps d'incantation. Pendant 3 rounds, les ennemis à moins de 6 m de la cible subissent 2 points de dégâts de poison par seconde et ont 100 % de chances de rater leurs sorts. Aucun jet de sauvegarde n'est permis. Les membres du groupe ne sont pas affectés.
+Un lac d'acide engloutit la zone pendant 1 tour. À chaque round, les créatures dans le lac subissent 4d6 dégâts d'acide (jet de sauvegarde contre les souffles pour la moitié). Le lanceur n'est pas affecté.~
 
-Utilisable une fois par jour.~
-@86 = ~Croissance végétale~
-@87 = ~Croissance végétale
+@270 = ~Esprit de demi-dragon noir~
 
-Comme un dragon noir, le Disciple du Dragon Noir fait jaillir du sol les plantes du marais dans un rayon de 6 m. Les créatures dans la zone doivent réussir un jet de sauvegarde contre les sorts à -10 sous peine d'être entravées pendant 1 round : elles ne peuvent plus bouger et subissent un malus de 2 à la CA. Les alliés sont affectés, mais pas le Disciple du Dragon Noir lui-même.~
 
-// Convocation de tortue-dragon noire (capacité de haut niveau)
-@88 = ~Tortue-dragon noire~
-@89 = ~Vapeur acide~
-@90 = ~Convocation de tortue-dragon noire~
-@91 = ~Convocation de tortue-dragon noire
+// ---------------------------------------------------------------------------
+// Capacités de haut niveau
+// ---------------------------------------------------------------------------
+@300 = ~Souffle fatal~
+@301 = ~Souffle fatal
 
-Le Disciple du Dragon Noir appelle des profondeurs du marais une tortue-dragon noire qui combat à ses côtés pendant 1 tour + 1 round par niveau. Elle lui obéit jusqu'à la fin de la durée ou jusqu'à sa mort.
+Le Disciple du Dragon Noir libère toute la fureur de son ancêtre : un immense cône d'acide. Version acide de Souffle du dragon, qui n'est plus accessible au Disciple du Dragon Noir.~
+@302 = ~Appel de l'ancêtre~
+@303 = ~Appel de l'ancêtre
 
-Tortue-dragon noire : PV 220, CA -3, TAC0 1, 2 morsures par round (4d8+4 dégâts perforants, arme +4). Trois fois par invocation, au plus une fois tous les 3 rounds, elle souffle un nuage de vapeur acide en ligne de 12 m de long et 4,5 m de large, qui inflige 12d8 dégâts d'acide (jet de sauvegarde contre les souffles pour la moitié). Les alliés dans la ligne sont touchés. La tortue est immunisée contre l'acide, le poison et la peur.
+Le Disciple du Dragon Noir appelle l'esprit d'un ancêtre demi-dragon noir qui combat à ses côtés. Remplace Invocation de planétar et Invocation de planétar noir.~
+@304 = ~Fonte-des-Os~
+@305 = ~Fonte-des-Os
 
-Utilisable une fois par jour.~
+Un puissant sort d'acide sur une seule cible. La cible subit 4d4 dégâts d'acide par round pendant 10 rounds. Les squelettes sont détruits sur le coup.~
+@306 = ~Maîtrise de la magie du dragon noir~
+@307 = ~Maîtrise de la magie du dragon noir
 
-// Convocation de draco-sphinx noir (capacité de haut niveau)
-@92 = ~Draco-sphinx noir~
-@93 = ~Rugissement~
-@94 = ~Souffle d'acide~
-@95 = ~Convocation de draco-sphinx noir~
-@96 = ~Convocation de draco-sphinx noir
-
-Le Disciple du Dragon Noir appelle un draco-sphinx noir, un lion ailé portant les cornes et l'acide d'un dragon noir, qui combat à ses côtés pendant 1 tour + 1 round par niveau. Il lui obéit jusqu'à la fin de la durée ou jusqu'à sa mort.
-
-Draco-sphinx noir : PV 200, CA -2, TAC0 2, 3 attaques par round avec ses griffes et ses crocs (2d8+4 dégâts tranchants, arme +4). Lorsqu'il aperçoit des ennemis pour la première fois, il rugit : les ennemis à moins de 9 m doivent réussir un jet de sauvegarde contre les sorts à -2 sous peine de fuir, paniqués, pendant 2 rounds. Deux fois par invocation, au plus une fois tous les 3 rounds, il souffle une ligne d'acide de 12 m de long et 3 m de large, qui inflige 10d8 dégâts d'acide (jet de sauvegarde contre les souffles pour la moitié). Les alliés dans la ligne sont touchés, pas par le rugissement. Le draco-sphinx est immunisé contre l'acide, le poison et la peur.
-
-Utilisable une fois par jour.~
+Le Disciple du Dragon Noir apprend 3 sorts de niveaux 7, 8 et 9, normalement inaccessibles aux ensorceleurs : Fléau rampant, Invocation de reptile et Lac marécageux.~

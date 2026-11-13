@@ -10,7 +10,7 @@ Everything is built at install time from WeiDU code (`CREATE`, effects, headers)
 
 | # | Component | Content | Trello cards | Games |
 |---|-----------|---------|--------------|-------|
-| 0 | Kit | Black Dragon Disciple, sorcerer kit (`NY#BDD`) | level-by-level progression (kit description) | BGEE, BG2EE, EET |
+| 0 | Kit | Black Dragon Disciple, sorcerer kit (`NY#BDD`): a plain sorcerer (d6, one spell slot less per spell level) and 18 Draconic Transformations (wizard spells levels 1-9, `WIZARD_NY_T_<CODE>`), HLA (BG2EE/EET) | Draconic Transformations (kit page) | BGEE, BG2EE, EET |
 | 10 | Spells | Acidosis, wizard level 1 (`WIZARD_NY_ACIDOSIS`); Rot of Ages, wizard level 1 (`WIZARD_NY_ROT_OF_AGES`); Ghostly Tail, wizard level 1 (`WIZARD_NY_GHOSTLY_TAIL`); Mantidrake Spike, wizard level 2 (`WIZARD_NY_MANTIDRAKE_SPIKE`); Summon Dracockatrix, wizard level 2 (`WIZARD_NY_SUMMON_DRACOCKATRIX`); Wyvern Barbed Tail Strike, wizard level 3 (`WIZARD_NY_WYVERN_TAIL`); Black Dragon Pooling Breath, wizard level 3 (`WIZARD_NY_POOLING_BREATH`); Black Dragon Breathball, wizard level 3 (`WIZARD_NY_BREATHBALL`); Stunning Black Dragon Breath, wizard level 4 (`WIZARD_NY_STUNNING_BREATH`); Summon Gorgon, wizard level 5 (`WIZARD_NY_SUMMON_GORGON`); Summon Black Mantidrake, wizard level 5 (`WIZARD_NY_SUMMON_MANTIDRAKE`); Black Dragon Animate Breath, wizard level 7 (`WIZARD_NY_ANIMATE_BREATH`); Bonemelt, wizard level 8 (`WIZARD_NY_BONEMELT`, BG2EE/EET only); Manifest Heritage: Chimera, wizard level 8 (`WIZARD_NY_SUMMON_CHIMERA`, BG2EE/EET only) | Acidosis (L1), Rot of Ages (L1), Ghostly Tail (L1), Mantidrake Spike (L2), Summon Dracockatrix (L2), Wyvern Barbed Tail Strike (L3), Black Dragon Pooling Breath (L3), Black Dragon Breathball (L3), Stunning Black Dragon Breath (L4), Summon Gorgon (L5), Summon Black Mantidrake (L5), Black Dragon Animate Breath (L7), Bonemelt (L8), Manifest Heritage: Chimera (L8) | BGEE, BG2EE, EET |
 | 20 | Tweak | Vitriolic Sphere, 5e style (modifies the existing spell) | Vitriolic Sphere | needs IWDification or IWDEE |
 
@@ -29,11 +29,13 @@ BlackDragonMagic/
 │   ├── setup.tra                 component names, install messages
 │   └── <feature>.tra             one file per feature, loaded with WITH_TRA
 ├── kits/<kit_name>/              one folder per kit
-│   ├── <kit_name>.tpa            install code for the kit and its abilities
-│   ├── 2da/                      CLAB table
-│   ├── baf/                      scripts
+│   ├── <kit_name>.tpa            install code for the kit (registration, CLAB spells)
+│   ├── 2da/                      CLAB and HLA tables
 │   ├── bam/                      animations
-│   └── wav/                      sounds
+│   ├── wav/                      sounds
+│   ├── transformations/          Draconic Transformations (black_dragon_disciple):
+│   │                             transformations, claws, breath, granted spells, their icons
+│   └── hla/                      high-level abilities
 ├── spells/<spell_name>/          one folder per new spell
 │   ├── <spell_name>.tpa
 │   └── bam/                      animations
@@ -59,41 +61,37 @@ BlackDragonMagic/
 
 | Resource | Role |
 |----------|------|
-| `NY#BDL01`…`NY#BDL20` | level bonuses, permanent through the CLAB (only the levels that give something): AC +1 (1, 5, 10, 15, 20), Constitution +1 (5, 15), one spell slot less per spell level (1), Swamp Stride (2), Acid Affinity resistance +20% and acid damage +5% (opcode 332) (4, 8, 12, 16, 20), Draconic Tail (9), Blindsense (10), Apotheosis immunities (20) |
-| `NY#BDTH` | +1 THAC0 at levels 4, 7, 10… 49 (CLAB): druid THAC0 progression on top of the sorcerer's |
-| `NY#BDQ02`…`NY#BDQ50` | spell slots of a sorcerer one level lower (CLAB, one per level, each replaces the previous one) |
-| `MBDA*.BAM`, `<id>.INI`, `NY_BDD_FINAL_FORM` | the disciple's final form: Nysi's own avatar (8 drawn directions; idle (first frame of the idle sheet with slow breathing: the sheet itself moves too much), walk, claws, tail, cast, wings spread, crouch, death), built by `works/final_form_avatar_source/build_avatar.py` (monster_icewind type, no creature sounds: the character keeps his sound set); given by the wings `NY#BDWI` (opcode 53 while equipped), so the disciple takes it when he spreads his wings (level 14) and gets his own back when he folds them; animation id: first free one from 0xECA0. Equipment is not drawn on a creature animation |
-| `NY#BDZ1`…`NY#BDZ6` | put the claws of the stage in both weapon slots (CLAB at levels 1, 4, 8, 12, 16, 20) |
-| `baldur.bcs`, `bdbaldur.bcs`, `baldur25.bcs` | global script `kits/black_dragon_disciple/baf/claws.baf` added at the top: claws given back if missing, weapon slot reselected at a new stage |
-| `NY#BDCL1`…`NY#BDCL6` | claws (weapon item, in both weapon slots), one per stage: 1d4 to 2d8, +0 to +5 to hit and damage (= enchantment), 2 attacks per round |
-| `NY#BDMZ1`…`NY#BDMZ6` | put the bite of the stage in the off-hand slot (CLAB at levels 6, 8, 12, 13, 16, 20) |
-| `NY#BDMO1`…`NY#BDMO6` | bite (off-hand item), one per stage: 1d6 + 2 acid, then 2d6 + 2d4 acid at 13; +1 to +5 as the claws |
-| `NY#BDMT` / `NY#BDMU` | Fight with / without the Bite (innate abilities that swap themselves) |
-| `NY#BDWNI` | wings icon: the game's `IWINGS01` darkened as black dragon wings |
-| `NY#BDBRC`, `NY#BDFPC` | breath and Frightful Presence icons without the stone plate (the game's `SPDD03C` / `SPWI205C` recoloured), used as the ability icons with Remastered Spell Icons |
-| `NY#BDFPI` | Frightful Presence icon: the game's Horror icon `SPWI205B` recoloured acid yellow |
-| `NY#BDFPD`, `NY#BDMD`, `NY#BDWND` | portrait icons (STATDESC.2DA) of Frightful Presence (aura on), the bite (out) and the wings (spread): the icons reduced to 13 px |
-| `NY#BDCLI` | claws icon: the game's `ISHAPE05` blackened |
-| `NY#BDMI` | bite icon, also the Fight with / without the Bite abilities: the game's `IBZPLO02` (dragon head) blackened as the claws |
-| `NY#BDTL` | Draconic Tail strike |
-| `NY#BDBRE` | Acid Breath (1 to 4 per day) |
-| `NY#BDWG` / `NY#BDWH`, `NY#BDWI` | Draconic Wings spread / fold, and the wings (helmet slot item, copy of the game's `WINGS01` / `BDWINGS`) |
-| `NY#BDFP` / `NY#BDFQ` | Frightful Presence on / off |
-| `NY#BDFPA`, `NY#BDFPE` | aura pulse (spell + EFF) |
-| `LUNYB.2DA`, `LUABBR.2DA` | HLA table of the kit (BG2EE / EET, abbreviation `NYB`): extra spells of levels 6, 7 and 8, Summon Dark Planetar, and the 4 black dragon HLA below |
-| `NY#BDBL` | Breathbloom HLA (copy of `SPWI922` Dragon's Breath, acid instead of fire, with the explosion and sound of the game's Black Dragon Breath `SPIN691`: projectile GREEHIT, sound BLACK04, no red dragon head) |
-| `NY#BDBLB`, `NY#BDBLC` | Breathbloom icons: the former Black Dragon Breathball ones (`SPWI922` recoloured acid yellow) |
-| `NY#BDWB` | Wing Buffet HLA (copy of the black dragon's `SPIN695`, save vs. Spell at -4 instead of -10, centred on the caster) |
-| `NY#BDIS` | Insect Swarm HLA (copy of the black dragon's `SPIN689`, unchanged) |
-| `NY#BDDT`, `NY#BDDTB`, `NY#BDDTC` | Summon Black Dragon Turtle HLA (innate, once per day, 1 turn + 1 round per level) and its placeholder icons (the turtle reduced) |
-| `NY#DTUR`, `NY#DTUW`, `NY#DTBR`, `NY#DTBRT`, `NY#DTUS` | the black dragon turtle (220 HP, AC -3, THAC0 1, 2 bites 4d8+4 as a +4 weapon, level 16, immune to acid, poison and fear), its bite, its Acid Steam (line 40 x 15 ft., 12d8 acid, save vs. Breath for half, 3 per summoning, every 3 rounds at most), the line projectile and its override script |
-| `MDTU*.BAM`, `<id>.INI`, `NY_DRAGON_TURTLE` | its animation: the dragon turtle of *Might and Magic VIII: Day of the Destroyer* (3DO / New World Computing, 2000; sprite sheet ripped by Cyrus Annihilator), 5 facings with the west side mirrored, green scales blackened, lies on its selection circle as a flat creature (the middle of its body on the circle's centre, also when dead); built by `works/dragon_turtle_mm8_source/build_turtle.py`; animation id: first free one from 0xEC50 |
-| `NY#BDSX`, `NY#BDSXB`, `NY#BDSXC` | Summon Black Draco-Sphinx HLA (innate, once per day, 1 turn + 1 round per level) and its placeholder icons |
-| `NY#DSX`, `NY#DSXW`, `NY#DSXRR`, `NY#DSXRT`, `NY#DSXBR`, `NY#DSXS` | the black draco-sphinx (200 HP, AC -2, THAC0 2, 3 attacks 2d8+4 as a +4 weapon, level 16, immune to acid, poison and fear), its claws and fangs, its Roar (once, when it first sees enemies: 30 ft., enemies only, save vs. Spell at -2 or panic 2 rounds) and its area, its Acid Breath (twice, line 40 x 10 ft., 10d8 acid, the kit's level 19 breath line) and its override script |
-| `MDSX*.BAM`, `<id>.INI`, `NY_DRACO_SPHINX` | its animation, from three sheets of a black winged sphinx (walk, attack, death; 8 drawn directions, 6 frames each), built by `works/draco_sphinx_source/build_sphinx.py` (blobs cut per column, touching sprites split, feet on the ground, row anchor from the walk frames, cyan blends greyed); slow breathing when idle, paw raised in combat stance, roar for its abilities, stagger when hit; panther sounds; animation id: first free one from 0xEC80 |
-| `NY#BDPG` | Plant Growth HLA (copy of the black dragon's `SPIN688`; one round of immunity to it on the caster, so he is not entangled) |
-| `WEAPPROF.2DA` | kit column: 0 everywhere except Single Weapon Style (1) and Two-Weapon Style (3) |
-| all weapons (`.ITM`) | item usability effect (opcode 319) forbidding them to the kit |
+| `NY#BDL01` | level 1 (CLAB): one spell slot less per spell level (opcode 42, -1 on levels 1-9) |
+| `NY#BDM10`…`NY#BDM25` | levels 10, 15, 20, 25 (CLAB): level marker (spell state `NY_BDD_LV<lv>`) and the level steps of the transformations already taken (opcode 326 on their states) |
+| `SPWIxxx` (`WIZARD_NY_T_<CODE>`), built as `NY#T<CODE>` | the 18 Draconic Transformations (wizard spells of levels 1 to 9): nothing for another kit (opcode 324, `NY#KIT!=BDD`), nothing a second time (opcode 324 on their state), spell state `NY_BDD_<CODE>`, one spell slot of their level less for good (opcode 42), then their own permanent effects (timing 9). Codes: CLB Claw & Bite, SCL Dragon Scale, BRW Breath Weapon, RES Draconic Resilience, TAL Draconic Tail, SWS Swamp Stride, ACD Acidosis, BDM Black Dragon Magic, MIG Draconic Might, MBR Meta-breath, BLS Blindsense, AMS Acid Mastery, WNG Dragon Wings, MAJ Draconic Majesty, FPR Frightful Presence, GBD Greater Black Dragon Magic, APO Dragon Apotheosis, BMS Breath Mastery |
+| `NY#T<CODE>B`, `NY#T<CODE>C` | transformation icons: placeholders, the mod's own spell icons mirrored and recoloured amber (hue 41), the colour of the transformations |
+| `NY_BDD_<CODE>`, `NY_BDD_LV<lv>` (SPLSTATE.IDS), `NY#HAS_<CODE>`, `NY#HAS_LV<lv>`, `NY#KIT!=BDD` (SPLPROT.2DA) | transformation and level marker states, and their checks |
+| `NY#VSC10`, `NY#VSC15`, `NY#VRE15`, `NY#VMI15` | level steps: Dragon Scale AC +1 (10, 15), Draconic Resilience CON +2 (15), Draconic Might STR +2 (15) |
+| `NY#TCW<s><a>`, `NY#TCO<s><a>` | claws, main hand (first weapon slot) and off hand (shield slot, Two-Weapon Style 3 points while equipped): stage s 1-5 (+1 to +5, levels 1/10/15/20/25), a = 1 with Acid Mastery; 1d4 slashing, +4 THAC0, 20% bite per hit |
+| `NY#TCBT0`, `NY#TCBT1` | the bite (1d6 piercing + 1d4 acid), with Acid Mastery (AC -2) |
+| `NY#TCLE` / `NY#TCLR` | Extend / Retract Claws (innate, swap themselves) |
+| `NY#KCRT`, `NY#KC<l>`, `NY#KC<l>2`, `NY#KC<l>F` | choice of the claws (stage, acid): root, candidates a..j and their finals |
+| `NY#TBA<m><a>` | breath line alone (Breath Weapon), m = N or X (Breath Mastery), a = 0 or 1 (Acid Mastery) |
+| `NY#TBM<m><a>` (+ `.2DA`) | breath menu (Meta-breath, opcode 214): `NY#TBL` line, `NY#TBB` ball, `NY#TBP` pool |
+| `NY#KBRT`, `NY#KB<l>`, `NY#KB<l>2`/`3`, `NY#KB<l>F`, `NY#KBRF` | choice of the breath ability: root (also the recharge), candidates a..h, finals; refresh by the breath transformations (pending recharges cancelled) |
+| `NY#TBBP`, `NY#TBPP` | breath ball (Fireball area, Black Dragon Breath explosion) and pool (Stinking Cloud's CLOUD.PRO, Pooling Breath's puddles) projectiles |
+| `NY#TAMR` | Acid Mastery: AC -2 for 2 rounds, not cumulative |
+| `NY#TTLS`, `NY#TTLP` | Draconic Tail strike and its permanent trigger (opcode 232) |
+| `NY#TACH`, `NY#TACS`, `NY#TACP` | Acidosis: acid shield below 50% health (1d2 acid to the attacker) |
+| `NY#TRSI` | Draconic Resilience: the hardened skull (helmet slot, immunity to critical hits) |
+| `NY#TWBF` | Wing Buffet (Dragon Wings, from the black dragon's `SPIN695`, BG2EE/EET), at will, recharge 4 rounds |
+| `NY#BDFP` / `NY#BDFQ`, `NY#BDFPA`, `NY#BDFPE`, `NY#BDFPI`/`C`/`D` | Frightful Presence on / off, its pulse (10 ft.), icons and portrait icon |
+| `NY#TCHR`, `NY#TCHC`, `NY#RACE=<race>` | Charm Reptile (Draconic Majesty) and its race checks |
+| `NY#TGEN`, `NY#TGSI`, `NY#TGIP`, `NY#TGDD`, `NY#TGCD` | wizard copies of Entangle, Summon Insects, Insect Plague, Dolorous Decay, Creeping Doom (learned only through the transformations, when the game has them) |
+| `NY#TGDK`, `NY#TGDP` | Darkness (level 2) and its 15-ft. burst |
+| `NY#TGCW`, `NY#TGCP` | Corrupt Water (level 4) and its pool |
+| `NY#TGSR` | Summon Reptile (level 8, the hydra `NY#HYDS`, BG2EE/EET) |
+| `NY#TGSL`, `NY#TGLP` | Swampy Lake (level 9) and its lake |
+| `LUNYB.2DA`, `LUABBR.2DA` | HLA table of the kit (BG2EE / EET, abbreviation `NYB`): extra spells of levels 6, 7 and 8, Breath Doom, Call Ancestor, Bonemelt, Black Dragon Magic Mastery |
+| `NY#BDBL`, `NY#BDBLB`, `NY#BDBLC` | Breath Doom HLA (copy of `SPWI922` Dragon's Breath, acid instead of fire, explosion and sound of `SPIN691`) and its icons |
+| `NY#THCA`, `NY#TANC` | Call Ancestor HLA and the Half Black Dragon Spirit (placeholder: Summon Planetar's planetar, renamed, immune to acid) |
+| `NY#THBM`, `NY#THBE`, `NY#THSK` | Bonemelt HLA (4d4 acid per round, 10 rounds), its EFF and the skeleton destruction |
+| `NY#THMS` | Black Dragon Magic Mastery HLA (learns Creeping Doom, Summon Reptile, Swampy Lake) |
 | `NY#ACDS`, `NY#ACDX` | Acidosis and its retaliation |
 | `NY#ACIDE`, `NY#ACID6`, `NY#ACDSD`, `NY#ACDSB`, `NY#ACDSC` | Acidosis animations (casting, retaliation), portrait icon and spell icons (the game's `SPWI517` recoloured acid yellow; Nysi's artwork version in `works/acidosis_artwork_icons`) |
 | `NY#ROTS`, `NY#ROTD`, `NY#ROTN` | Rot of Ages, its disease and nausea |
@@ -113,7 +111,7 @@ BlackDragonMagic/
 | `NY#WBTS`, `NY#WBTP` | Wyvern Barbed Tail Strike and its poison |
 | `NY#WBTB`, `NY#WBTC` | Wyvern Barbed Tail Strike icons: the game's `SPPR411` (skull) recoloured toxic lime green (Nysi's artwork version in `works/wyvern_tail_artwork_icons`, source in `works/wyvern_tail_icon_source`; Death Ward based ones in `works/wyvern_tail_old_icons`) |
 | `NY#BDBB`, `NY#BDBBP` | Black Dragon Breathball and its projectile |
-| `NY#BDBBB`, `NY#BDBBC` | Black Dragon Breathball icons: placeholder, the game's Fireball icons `SPWI304` recoloured acid yellow (the former `SPWI922` based ones went to Breathbloom; Nysi's artwork version in `works/breathball_artwork_icons`, source in `works/breathball_icon_source`) |
+| `NY#BDBBB`, `NY#BDBBC` | Black Dragon Breathball icons: placeholder, the game's Fireball icons `SPWI304` recoloured acid yellow (the former `SPWI922` based ones went to the Breath Doom HLA; Nysi's artwork version in `works/breathball_artwork_icons`, source in `works/breathball_icon_source`) |
 | `NY#SBBS`, `NY#SBBT` | Stunning Black Dragon Breath and its line projectile |
 | `NY#SBBB`, `NY#SBBC` | Stunning Black Dragon Breath icons: the game's `SPCL626` (dragon head) recoloured acid yellow (Nysi's artwork version in `works/stunning_breath_artwork_icons`, source in `works/stunning_breath_icon_source`) |
 | `NY#PBRS`, `NY#PBRP` | Black Dragon Pooling Breath and its projectile (Stinking Cloud's area with acid puddles) |
@@ -129,7 +127,7 @@ BlackDragonMagic/
 | `NY#CHIS`, `NY#CHIM`, `NY#CHMW`, `NY#CHBR`, `NY#CHBRT`, `NY#CHIMS` | Summon Chimera, the chimera (from `WYVERNSU.CRE`), its natural weapons, its acid breath and line projectile, its script |
 | `NY#CHISB`, `NY#CHISC` | Summon Chimera icons: placeholder, the game's wyvern head `IMISC52` recoloured acid yellow |
 | `MCHI*.BAM`, `CHIM*.WAV`, `EC33.INI` (or next free id), `ANIMATE.IDS` `NY_CHIMERA` | Icewind Dale II chimera animation and sounds, registered as a monster_icewind animation |
-| `NY#BDBRT`, `NY#BDBRU` | Acid Breath line projectiles (built like Smashing Wave, IWDEE): 15 ft. × 5 ft., then 30 ft. × 10 ft. at level 19 |
+| `NY#BDBRT`, `NY#BDBRU` | Acid Breath line projectiles (built like Smashing Wave, IWDEE): 15 ft. × 5 ft., then 30 ft. × 10 ft. at level 10 |
 | `NY#BDBRI` | Acid Breath icon: the game's `SPDD03B` with the dragon recoloured acid yellow (Nysi's artwork version in `works/acid_breath_artwork_icon`, old DragonAscendant icon in `works/acid_breath_old_icon`) |
 | `NY#BDWAV`, `NY#BDWVT`, `NY#BDWVH`, `NY#BDBRE.wav` | Acid Breath wave, trail and hit animations (Smashing Wave BAMs recoloured), breath sound |
 | `NY#BDFPT`, `NY#VSPH` | cloned projectiles (`NY#BDFPT`: enemies only, area flag 0x40) |
@@ -138,20 +136,18 @@ BlackDragonMagic/
 
 These points were not settled on the Trello cards:
 
-- **Claws**: one item per stage, created in **both weapon slots** (opcode 143, slots 35 and 36) by the CLAB at levels 1/4/8/12/16/20: whichever weapon slot is selected, the disciple fights with his claws, and these slots are saved. They were first in the fist slot, which the engine does not save: a global script had to put them back after each load, and the weapon button lost its icon. The global script (`baf/claws.baf`) is now a safety net (gives the claws back if both copies are missing) and a refresh: at a new stage it selects the other weapon slot then the first one so the engine applies the new claws' equipped effects (2 attacks per round), with retries while the disciple has fewer than 2 attacks (at most once per round and 5 times). Icon: the game's werebear claw (`ISHAPE05`) blackened (`NY#BDCLI`).
-- **Bite** (from the branch `bite`, tested in game): a hand-to-hand item in the off-hand slot (opcode 143, slot 9), created by the CLAB at levels 6/8/12/13/16/20; the engine gives one more attack per round for an off-hand weapon. Acid damage and the acid splash are effects of the attack. The normal two-weapon penalties apply (the branch cancelled them; now the player lowers them with Two-Weapon Style). Not movable: two innate abilities that swap themselves, Fight with / without the Bite (`NY#BDMT` / `NY#BDMU`), summon it (one header per bite stage, at the disciple's level) or dismiss it to fight with the claws alone (Single Weapon Style). A new stage removes the previous bites (opcode 112), summons the new one and gives Fight without the Bite. The off-hand slot is saved, no script needed.
-- **Draconic Tail**: built like Ghostly Tail, permanent (CLAB, level 9): opcode 232 once per round at the nearest enemy, with the range-limited projectile `NY#MELEE`. 1d10 crushing and 1 second unconscious, save vs. Breath. Combat log line on each strike, smashing impact visual.
-- **Draconic Wings**: an item in the helmet slot (opcode 143, slot 6): +4 movement, +2 AC, immunity to critical hits (item flag), portrait icon. Built on the game's wings item (`WINGS01.ITM` in BG2:EE, `BDWINGS.ITM` in SoD) for its paperdoll animation; icon `NY#BDWNI` (the game's `IWINGS01` darkened), also on the abilities; equipped effects, usability and flags replaced. Two innate abilities swap themselves (spread / fold), as Frightful Presence. The helmet slot is saved, no script needed.
-- **No weapon**: opcode 319 (item usability, EE) added at install to every weapon (categories 15-27, 29, 30, 44, 57, 69), parameter2 9 = KIT.IDS. Only the items present at install time are patched. Proficiencies: the kit column of `WEAPPROF.2DA` is set to 0 except Single Weapon Style (1) and Two-Weapon Style (3): the sorcerer's 4 points.
-- **Spell progression one level lower**: at each level N (2 to 50) the CLAB applies `NY#BDQnn`, which removes the previous one (opcode 321) and lowers each spell level by the difference between levels N and N-1 of the game's `MXSPLSRC.2DA` (read at install, opcode 42). Spells known are not delayed.
-- **Blindsense**: immunity to blindness + see invisible (opcode 193, parameter2 1), at any range, as the Dragon Disciple of the Artisan's Kitpack (no range limit there either).
-- **Breath**: real line, built like Smashing Wave (IWDEE): an acid wave travels from the disciple to the targeted point and hits once every creature within its width ("Pass target" + "Limited path count" projectile flags), leaving a trail of acid puddles; speed 20 (Smashing Wave: 40) so the line can be seen. 15 ft. long (header range) and 5 ft. wide (proximity radius 40 px), then 30 ft. and 10 ft. (80 px) at level 19. 4d4 to 12d4, save vs. Breath for half, 1 to 4 uses per day (CLAB). On casting, the disciple gets 2 seconds of immunity to his own breath (opcode 206), as in the old DragonAscendant breath. Animations: Smashing Wave BAMs (IWDEE) recoloured in acid green.
+- **Draconic Transformations**: the kit is a plain sorcerer (Dragon Disciple's d6, one spell slot less per spell level); everything draconic is a wizard spell of levels 1 to 9 learned instead of a spell. Cast once, it sets its spell state, removes one spell slot of its level for good (opcode 42) and applies permanent effects (timing 9: through death, not dispellable). Cast again, or by another kit, it does nothing (opcode 324). For now every sorcerer sees them in the spell list: a G3 library giving the kit its own spell list will hide them (see TODO).
+- **Level steps**: level markers (spell states) set by the CLAB at levels 10, 15, 20 and 25 apply the steps of the transformations already taken; a transformation taken later applies the steps of the markers already set. No dependence on the casting level of opcode 146.
+- **Choices between versions** (claws stage and acid, breath forms): candidate chains, most specific first, one second apart; the first one whose conditions are all true (opcode 326, nested) blocks the next ones (opcode 206) and gives its version.
+- **Breath recharge**: the breath ability removes every breath ability when used and casts the choice again after its recharge (opcode 146, delayed). Breath Mastery and Acid Mastery have their own versions of each breath (damage doubled, recharge 2 rounds shorter; AC -2). Lost if the disciple dies while it recharges (see TODO).
+- **Claws**: main claw in the first weapon slot, off-hand claw in the shield slot (one more attack per round, Two-Weapon Style 3 points while equipped: no penalty). Weapons are allowed again: Retract Claws frees the hands.
+- **Acid Mastery, AC reduction**: only on the mod's own acid (breaths and bite): the engine cannot check the caster of a game spell.
+
+- **Breath**: real line, built like Smashing Wave (IWDEE): an acid wave travels from the disciple to the targeted point and hits once every creature within its width ("Pass target" + "Limited path count" projectile flags), leaving a trail of acid puddles; speed 20 (Smashing Wave: 40) so the line can be seen. 15 ft. long (header range) and 5 ft. wide (proximity radius 40 px), then 30 ft. and 10 ft. (80 px) at level 10. 4d4, 6d4, 8d4 (doubled with Breath Mastery), save vs. Breath for half, recharge in rounds (see Breath recharge). On casting, the disciple gets 2 seconds of immunity to his own breath (opcode 206), as in the old DragonAscendant breath. Animations: Smashing Wave BAMs (IWDEE) recoloured in acid green.
 - **Bonemelt, choosing the mutilation**: casting opens a menu (opcode 214 with `NY#BMLT.2DA`, as the game's Spell Immunity) listing Legs / Arms / Ribcage; the chosen touch spell is cast with 2DA type 3 (no memorisation, its own casting time of 1) and asks for a target. Casting time of the main spell: 5. (First version: three touch innate abilities for 1 turn, less handy.)
 - **Bonemelt, half effect on a successful save**: Legs = movement 62% and -2 AC; Arms = -2 THAC0 and -2 damage; Ribcage = 1d4 acid per round.
 - **Skeletons**: only race `SKELETON` is destroyed.
 - **Acidosis**: acid burst on the caster when cast and acid splash on each attacker hit by the retaliation (BAMs from the old DragonAscendant Acidosis). Portrait icon: Beltyn's Burning Blood icon (IWDEE) recoloured in acid green, added to `STATDESC.2DA`. Spell icons: Nysi's acid drop artwork reduced to 32 px (on a stone plate for the memorised icon, source in `works/acidosis_icon_source`); the previous ones (Beltyn's Burning Blood figure, then the enlarged portrait drop in `drop/`) are kept in `works/acidosis_old_icons`. Casting again replaces the active version; the THAC0 penalty refreshes instead of stacking.
-- **Fewer spells**: one spell slot less per spell level (opcode 42, -1 on levels 1-9, applied at level 1), on top of the one-level delay. The Dragon Disciple uses `MXSPLDD.2DA`, a table the engine ties to that kit only.
-- **HLA** (BG2EE / EET): own table `LUNYB.2DA` (ADD_KIT_EX `luabbr`). Kept from the sorcerer: extra spells of levels 6, 7, 8 and Summon Dark Planetar. Removed: Energy Blades, Improved Alacrity, Dragon's Breath, Summon Planetar, Comet. Added, from the abilities of the black dragon Nizidramanii'yt (`DRAGBLAC.BCS`), as innate abilities (once per day per pick): Breathbloom (French: Éclosion de souffle; Dragon's Breath in acid, 1 pick), Wing Buffet, Insect Swarm, Plant Growth (up to 2 picks each). Also Summon Black Dragon Turtle and Summon Black Draco-Sphinx (1 pick each). Dragon Fear left out: Frightful Presence already covers it. On BG:EE the Dragon Disciple's LUABBR row is still copied.
 - **Rot of Ages**: touch (range 1, as Vampiric Touch). One save vs. Death for the whole disease: the spell casts the disease subspell with the save (opcode 146 at the caster level, max 10). "Suffering from Rot of Ages" is a spell state set for the disease duration; the next casting checks it (opcode 326 + SPLPROT stat 0x112) before setting its own. Nausea as in the game's Stinking Cloud: unconscious for 2 rounds, not woken by damage, "Nauseated" icon. Disease: "Diseased" icon, 1 poison damage at the end of each round. Combat log lines: blinded, diseased, nauseated. Icons: Nysi's rotting cloud artwork (previously Dolorous Decay recoloured in necrotic green).
 - **Ghostly Tail**: built like Acidosis / Fire Shield. Opcode 232 on the caster, condition HPPercentLT(Myself,102) (always true, checked once per round), target NearestEnemyOf: the strike subspell flies with the range-limited projectile `NY#MELEE` (about 12 ft.), so it only reaches an enemy in melee reach; no enemy that close = no strike that round. 1d4 cold damage, no save (a save vs. Spell made it useless against creatures with good saves such as wyverns), no magic resistance, combat log line on each strike, casting time 1, 1 round per level without cap, portrait icon (spellbook icon reduced, `NY#GTLD`) for the duration. Casting again replaces the active tail.
 - **Mantidrake Spike**: built like Melf's Minute Meteors: the spell creates one spike per level in a quick slot (opcode 111); the item is `MELFMET.ITM` patched at install (1d4 piercing, +5 to hit, +2 enchantment, 3 attacks per round, dart projectile, poison 2d4 and the game's poison visual on a failed save vs. Death at -2, one roll through the subspell `NY#MANP`).
@@ -171,3 +167,4 @@ These points were not settled on the Trello cards:
 
 Optional component 900 (BG2:EE, EET): the hydra of *Might and Magic VII: For Blood and Honor* (3DO / New World Computing, 1999; sprite sheet ripped by Cyrus Annihilator, who asks for credit) turned into an Infinity Engine monster animation `MHYD` (monster_icewind type, animation id: first free one from 0xEC40, `NY_HYDRA` in ANIMATE.IDS), with the wyvern's sounds. The sheet has 5 facings (front, front 3/4, profile, back 3/4, back); the west side is mirrored, so the hydra has 8 real directions. Slate grey: the animations exist only in green on the sheet, so they are recoloured with the exact palette swap read from the green and slate standing frames (252 colours, no approximation). Built by `works/hydra_mm7_source/build_mm7.py` (every 256 px cell anchored at its bottom centre, a flat shadow added under the feet, scaled x0.8, attack frames shown twice; idle: slow breathing made by stretching the standing frame up to 2%, plus the sheet's fidget seen from the front; walking speed `move_scale=8`). The death exists only seen from the front. The first version, from the Chaos Hydra of *Heroes of Might and Magic III* (one facing only), is kept in `works/hydra_homm3_source`. Test creature `NY#HYDR` (hostile copy of the summoned hydra): `CLUAConsole:CreateCreature("NY#HYDR")`. Non-commercial use; kept apart so it can be removed easily.
 Summon Hydra (`WIZARD_NY_SUMMON_HYDRA`, wizard level 9, same component): summons `NY#HYDS` (ally) for 1 turn + 1 round per level; stats on par with the level 9 summons (160 HP, AC 0, THAC0 5, level 12, 4 attacks 2d6+4 as a +4 weapon `NY#HYSW`, 50% acid resistance, immune to poison and fear, regenerates 1 HP per second as the trolls: opcode 98 as in `TROLLREG.ITM`, with its portrait icon); out of melee reach it spits Corrosive Spit once per round (`NY#HYSP` / `NY#HYSX`, the animated breath's spit rebuilt in this component, projectile `ACIDBLOB`; override script `NY#HYDSS`); placeholder icons `NY#HYISB` / `NY#HYISC` from the hydra's first frame.
+The hydra itself (animation, `NY#HYDS`, its bites and Corrosive Spit) is built by `creatures/hydra/hydra_creature.tpa`, shared with the kit's Summon Reptile: whichever component comes first builds it.

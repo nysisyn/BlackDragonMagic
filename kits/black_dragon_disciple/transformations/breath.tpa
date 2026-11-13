@@ -1,0 +1,243 @@
+/////////////////////////////////////////////////////////////////////////////
+// Black Dragon Breath (Breath Weapon, Meta-breath, Breath Mastery, Acid
+// Mastery)
+//
+// The breath is an innate ability that removes itself when used and comes
+// back after its recharge: the breath spell removes every breath ability
+// (opcode 172) and casts the breath choice NY#KBRT again after the
+// recharge (opcode 146, delayed). The choice gives the ability that fits
+// the transformations taken:
+//   - Breath Weapon alone: the line (NY#TBA<m><a>), recharge 10 rounds
+//   - Meta-breath (with or without Breath Weapon): a menu (opcode 214,
+//     NY#TBM<m><a>.2DA) of the line (NY#TBL), Breath Ball (NY#TBB) and
+//     Breath Pool (NY#TBP); recharge 6, 10 and 8 rounds
+//   m = N, or X with Breath Mastery: damage dice doubled, recharges 2 rounds
+//   shorter; a = 1 with Acid Mastery: the acid lowers the targets' AC
+//   (NY#TAMR)
+// Damage: 4d4, 6d4 from level 7, 8d4 from level 10 (headers by level), save
+// vs. Breath for half; the pool deals half the dice each round. The breath
+// ignores magic resistance (resist_dispel 0).
+// NY#KBRF (cast by the breath transformations) cancels the pending
+// recharges (opcode 321 on every breath spell) and casts the choice at
+// once.
+// If the disciple dies while his breath recharges, the delayed effect is
+// lost with the others: see TODO.
+//
+// Projectiles
+//   NY#BDBRT/U  line (black_dragon_disciple.tpa)
+//   NY#TBBP     ball: Fireball with the explosion of the game's Black Dragon
+//               Breath (GREEHIT.PRO: explosion effect and colour), no fire
+//               visuals, no travelling object (the breath leaves the mouth)
+//   NY#TBPP     pool: Stinking Cloud's CLOUD.PRO with the acid puddles of
+//               Pooling Breath (spells/pooling_breath/bam), 7.5-ft. radius
+/////////////////////////////////////////////////////////////////////////////
+
+OUTER_SET ny_str_breath    = RESOLVE_STR_REF (@210)
+OUTER_SET ny_str_breath_d  = RESOLVE_STR_REF (@211)
+OUTER_SET ny_str_bline     = RESOLVE_STR_REF (@212)
+OUTER_SET ny_str_bline_d   = RESOLVE_STR_REF (@213)
+OUTER_SET ny_str_bball     = RESOLVE_STR_REF (@214)
+OUTER_SET ny_str_bball_d   = RESOLVE_STR_REF (@215)
+OUTER_SET ny_str_bpool     = RESOLVE_STR_REF (@216)
+OUTER_SET ny_str_bpool_d   = RESOLVE_STR_REF (@217)
+
+// Icons: the former Acid Breath icon (the game's Dragon Disciple breath
+// SPDD03, recoloured acid yellow) for the line and the menu; Breathball and
+// Pooling Breath's icons (spells component) for the ball and the pool
+COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdbri.bam~ ~override~
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdbrc.bam~ ~override~
+     ~%MOD_FOLDER%/spells/breathball/bam/ny#bdbbb.bam~ ~override~
+     ~%MOD_FOLDER%/spells/breathball/bam/ny#bdbbc.bam~ ~override~
+     ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrb.bam~ ~override~
+     ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrc.bam~ ~override~
+     ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrd.bam~ ~override~
+     ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrt.bam~ ~override~
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDBRI~ c = ~NY#BDBRC~ END   // Remastered Spell Icons
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDBBB~ c = ~NY#BDBBC~ END
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#PBRB~  c = ~NY#PBRC~  END
+
+
+// ---------------------------------------------------------------------------
+// Projectiles
+// ---------------------------------------------------------------------------
+COPY_EXISTING ~greehit.pro~ ~override~
+  READ_BYTE 0x217 ny_expl_effect
+  READ_BYTE 0x218 ny_expl_color
+BUT_ONLY
+COPY_EXISTING ~fireball.pro~ ~%ny_workspace%/NY#TBBP.pro~
+  WRITE_BYTE   0x217 ny_expl_effect
+  WRITE_BYTE   0x218 ny_expl_color
+  WRITE_ASCII  0x104 ~~ #8          // no travelling fireball
+  WRITE_ASCII  0x10c ~~ #8          // nor its shadow
+  WRITE_ASCII  0x21c ~~ #8          // no fire explosion animation
+  WRITE_ASCII  0x230 ~~ #8          // no flame ring
+  WRITE_LONG   0x240 0              // extended area flags of the VVC/ring
+ADD_PROJECTILE ~%ny_workspace%/NY#TBBP.pro~
+OUTER_SET ny_pro_tbball = IDS_OF_SYMBOL (~projectl~ ~NY#TBBP~) + 1
+
+COPY_EXISTING ~cloud.pro~ ~%ny_workspace%/NY#TBPP.pro~
+  WRITE_ASCII 0x104 ~NY#PBRT~ #8                // travelling acid blob
+  WRITE_BYTE  0x124 86                          // gradient 86: acid green
+  WRITE_BYTE  0x218 86
+  WRITE_ASCII 0x228 ~NY#PBRD~ #8                // acid puddles instead of the cloud
+  WRITE_SHORT 0x204 128                         // half Stinking Cloud's area
+  WRITE_SHORT 0x206 128
+ADD_PROJECTILE ~%ny_workspace%/NY#TBPP.pro~
+OUTER_SET ny_pro_tbpool = IDS_OF_SYMBOL (~projectl~ ~NY#TBPP~) + 1
+
+
+// ---------------------------------------------------------------------------
+// The breath abilities
+// ---------------------------------------------------------------------------
+// removes every breath ability (when one is used or chosen again)
+DEFINE_PATCH_FUNCTION NY#TB_REMOVE_INNATES
+  INT_VAR
+    h = 1
+BEGIN
+  PATCH_FOR_EACH r IN NY#TBAN0 NY#TBAN1 NY#TBAX0 NY#TBAX1 NY#TBMN0 NY#TBMN1 NY#TBMX0 NY#TBMX1 BEGIN
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = EVAL ~%r%~ END
+  END
+END
+
+// One breath spell.
+//   form : 0 line, 1 ball, 2 pool
+//   mult : 1, or 2 with Breath Mastery
+//   cd   : recharge in rounds
+DEFINE_ACTION_FUNCTION NY#TB_SPELL
+  INT_VAR
+    form = 0
+    mult = 1
+    acid = 0
+    cd   = 10
+    name = "-1"
+    desc = "-1"
+  STR_VAR
+    resref = ~~
+    icon_b = ~~
+    icon_c = ~~
+BEGIN
+  CREATE ~SPL~ ~%resref%~
+    LPF NY#SPL_BASE INT_VAR name desc type = 4 level = 1 flags = 0x400 STR_VAR icon = EVAL ~%icon_c%~ END
+    FOR (i = 0; i < 3; ++i) BEGIN
+      SET lvl  = (i = 0) ? 1 : ((i = 1) ? 7 : 10)
+      SET dice = (4 + 2 * i) * mult                   // 4d4, 6d4, 8d4 (x2)
+      PATCH_IF (form = 0) BEGIN
+        SET pro = (i = 2) ? ny_pro_breath2 : ny_pro_breath
+        SET rng = (i = 2) ? 30 : 15
+      END ELSE PATCH_IF (form = 1) BEGIN
+        SET pro = ny_pro_tbball
+        SET rng = 40
+      END ELSE BEGIN
+        SET pro  = ny_pro_tbpool
+        SET rng  = 30
+        SET dice = dice / 2                           // each round
+      END
+      LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 4 range = rng level = lvl casting_time = 1 projectile = pro STR_VAR icon = EVAL ~%icon_b%~ RET h = header END
+      // used: every breath ability is removed, the choice comes back after
+      // the recharge
+      LPF NY#TB_REMOVE_INNATES INT_VAR h END
+      LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 1 timing = 4 duration = (cd * ny_round) parameter2 = 1 STR_VAR resource = ~NY#KBRT~ END
+      // the disciple is not hit by his own breath (the line starts on him,
+      // the pool may come back to him); for the pool, this immunity also
+      // blocks the caster's effects above at each new pulse
+      LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = ((form = 2) ? ny_turn : 2) parameter1 = "-1" STR_VAR resource = EVAL ~%resref%~ END
+      PATCH_IF (form = 0) BEGIN
+        LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 STR_VAR resource = ~NY#BDWVH~ END
+      END
+      LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12 target = 2 timing = 0 parameter2 = 0x10000 dicenumber = dice dicesize = 4 savingthrow = 2 special = 0x100 END
+      PATCH_IF acid BEGIN
+        LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#TAMR~ END
+      END
+    END
+END
+
+ACTION_FOR_EACH m IN N X BEGIN
+  OUTER_SET mult = (~%m%~ STRING_EQUAL ~X~) ? 2 : 1
+  OUTER_SET less = (mult = 2) ? 2 : 0                 // Breath Mastery: 2 rounds shorter
+  ACTION_FOR_EACH a IN 0 1 BEGIN
+    // Breath Weapon alone: the line
+    LAF NY#TB_SPELL INT_VAR form = 0 mult acid = a cd = (10 - less) name = ny_str_breath desc = ny_str_breath_d
+                    STR_VAR resref = EVAL ~NY#TBA%m%%a%~ icon_b = ~NY#BDBRI~ icon_c = ~NY#BDBRC~ END
+    // Meta-breath: the three forms...
+    LAF NY#TB_SPELL INT_VAR form = 0 mult acid = a cd = (6 - less)  name = ny_str_bline desc = ny_str_bline_d
+                    STR_VAR resref = EVAL ~NY#TBL%m%%a%~ icon_b = ~NY#BDBRI~ icon_c = ~NY#BDBRC~ END
+    LAF NY#TB_SPELL INT_VAR form = 1 mult acid = a cd = (10 - less) name = ny_str_bball desc = ny_str_bball_d
+                    STR_VAR resref = EVAL ~NY#TBB%m%%a%~ icon_b = ~NY#BDBBB~ icon_c = ~NY#BDBBC~ END
+    LAF NY#TB_SPELL INT_VAR form = 2 mult acid = a cd = (8 - less)  name = ny_str_bpool desc = ny_str_bpool_d
+                    STR_VAR resref = EVAL ~NY#TBP%m%%a%~ icon_b = ~NY#PBRB~ icon_c = ~NY#PBRC~ END
+    // ... and their menu (opcode 214; type 3: cast at once, no memorisation)
+<<<<<<<< .../ny-inline/ny#tbm.2da
+2DA V1.0
+****
+            ResRef     Type
+LINE        NY#TBL%m%%a%   3
+BALL        NY#TBB%m%%a%   3
+POOL        NY#TBP%m%%a%   3
+>>>>>>>>
+    COPY ~.../ny-inline/ny#tbm.2da~ ~override/NY#TBM%m%%a%.2da~ EVALUATE_BUFFER
+    CREATE ~SPL~ ~NY#TBM%m%%a%~
+      LPF NY#SPL_BASE INT_VAR name = ny_str_breath desc = ny_str_breath_d type = 4 level = 1 STR_VAR icon = ~NY#BDBRC~ END
+      LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = 1 casting_time = 0 STR_VAR icon = ~NY#BDBRI~ RET h = header END
+      LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 214 target = 1 timing = 1 parameter2 = 0 STR_VAR resource = EVAL ~NY#TBM%m%%a%~ END
+  END
+END
+
+
+// ---------------------------------------------------------------------------
+// Choice of the breath ability: candidates NY#KB<l>, one second apart, most
+// specific first. Conditions: Meta-breath for the menu (Breath Weapon
+// otherwise), Breath Mastery for X, Acid Mastery for a = 1.
+// ---------------------------------------------------------------------------
+ACTION_DEFINE_ASSOCIATIVE_ARRAY ny_breath_cand BEGIN
+  a => NY#TBMX1  b => NY#TBMX0  c => NY#TBMN1  d => NY#TBMN0
+  e => NY#TBAX1  f => NY#TBAX0  g => NY#TBAN1  h => NY#TBAN0
+END
+
+OUTER_SET k = 0
+ACTION_FOR_EACH l IN a b c d e f g h BEGIN
+  OUTER_SET k += 1
+  OUTER_SPRINT innate $ny_breath_cand(~%l%~)
+  OUTER_SET c1 = (k <= 4) ? $ny_has(~MBR~) : $ny_has(~BRW~)
+  OUTER_SET c2 = "-1"
+  OUTER_SET c3 = "-1"
+  ACTION_IF (~%innate%~ STRING_MATCHES_REGEXP ~NY#TB.X.~ = 0) BEGIN
+    OUTER_SET c2 = $ny_has(~BMS~)
+  END
+  ACTION_IF (~%innate%~ STRING_MATCHES_REGEXP ~NY#TB..1~ = 0) BEGIN
+    ACTION_IF (c2 < 0) BEGIN OUTER_SET c2 = $ny_has(~AMS~) END ELSE BEGIN OUTER_SET c3 = $ny_has(~AMS~) END
+  END
+
+  LAF NY#T_SELF_SPL STR_VAR resref = EVAL ~NY#KB%l%F~ END
+  COPY_EXISTING ~NY#KB%l%F.spl~ ~override~
+    SET j = 0
+    PATCH_FOR_EACH n IN a b c d e f g h BEGIN
+      SET j += 1
+      PATCH_IF (j > k) BEGIN
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 206 target = 1 timing = 0 duration = 15 parameter1 = "-1" STR_VAR resource = EVAL ~NY#KB%n%~ END
+      END
+    END
+    LPF NY#TB_REMOVE_INNATES END
+    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 171 target = 1 timing = 1 STR_VAR resource = EVAL ~%innate%~ END
+
+  LAF NY#T_CANDIDATE INT_VAR r1 = c1 r2 = c2 r3 = c3 STR_VAR entry = EVAL ~NY#KB%l%~ final = EVAL ~NY#KB%l%F~ END
+END
+
+LAF NY#T_SELF_SPL STR_VAR resref = ~NY#KBRT~ END
+COPY_EXISTING ~NY#KBRT.spl~ ~override~
+  SET j = 0
+  PATCH_FOR_EACH l IN a b c d e f g h BEGIN
+    SET j += 1
+    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 146 target = 1 timing = 4 duration = j parameter2 = 1 STR_VAR resource = EVAL ~NY#KB%l%~ END
+  END
+
+// Breath transformations: pending recharges cancelled, choice at once
+LAF NY#T_SELF_SPL STR_VAR resref = ~NY#KBRF~ END
+COPY_EXISTING ~NY#KBRF.spl~ ~override~
+  PATCH_FOR_EACH f IN A L B P BEGIN
+    PATCH_FOR_EACH m IN N X BEGIN
+      PATCH_FOR_EACH a IN 0 1 BEGIN
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 321 target = 1 timing = 1 STR_VAR resource = EVAL ~NY#TB%f%%m%%a%~ END
+      END
+    END
+  END
+  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 146 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#KBRT~ END

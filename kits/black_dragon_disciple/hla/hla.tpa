@@ -4,53 +4,43 @@
 //
 // The kit gets its own HLA table (LUNYB.2DA, abbreviation NYB in
 // LUABBR.2DA) instead of the sorcerer's one (LUSO1.2DA for the Dragon
-// Disciple). Kept from the sorcerer: the extra spells of levels 6, 7 and 8
-// and Summon Dark Planetar. Removed: Energy Blades, Improved Alacrity,
-// Dragon's Breath, Summon Planetar and Comet.
-// New, from the abilities of the black dragon Nizidramanii'yt (DRAGBLAC.BCS)
-// and innate (once per day, each pick gives one more use; Breathbloom
-// can only be picked once):
-//   NY#BDBL  Breathbloom: the game's Dragon's Breath (SPWI922), acid instead
+// Disciple). Kept from the sorcerer: the extra spells of levels 6, 7 and 8.
+// Removed: Energy Blades, Improved Alacrity, Dragon's Breath, Summon
+// Planetar, Summon Dark Planetar and Comet.
+// New (innate, once per day, each pick gives one more use, except Black
+// Dragon Magic Mastery, picked once):
+//   NY#BDBL  Breath Doom: the game's Dragon's Breath (SPWI922), acid instead
 //            of fire, with the explosion and sound of the black dragon's own
 //            breath (SPIN691: projectile GREEHIT, sound BLACK04) instead of
 //            the red dragon head visual. Icons: the former Black Dragon
 //            Breathball ones (SPWI922 in acid yellow).
-//   NY#BDWB  Wing Buffet: the dragon's Wing Buffet (SPIN695), save vs. Spell
-//            at -4 instead of -10 against the 3 seconds of unconsciousness.
-//            Icon: the kit's wings.
-//   NY#BDIS  Insect Swarm: the dragon's Summon Insects (SPIN689), unchanged
-//            (Creeping Doom without casting time).
-//   NY#BDPG  Plant Growth: the dragon's Plant Growth (SPIN688); the caster is
-//            not affected.
+//   NY#THCA  Call Ancestor: the game's Summon Planetar (SPWI924) calling
+//            NY#TANC, the Half Black Dragon Spirit. Placeholder: the
+//            planetar renamed, immune to acid (see TODO).
+//   NY#THBM  Bonemelt: 4d4 acid per round for 10 rounds on one creature;
+//            skeletons are destroyed. Icons: the Bonemelt spell's.
+//   NY#THMS  Black Dragon Magic Mastery (AP_, applied when picked): learns
+//            Creeping Doom, Summon Reptile and Swampy Lake
+//            (transformations/granted_spells.tpa).
 /////////////////////////////////////////////////////////////////////////////
 
-OUTER_SET ny_str_bbloom   = RESOLVE_STR_REF (@80)
-OUTER_SET ny_str_bbloom_d = RESOLVE_STR_REF (@81)
-OUTER_SET ny_str_wbuff    = RESOLVE_STR_REF (@82)
-OUTER_SET ny_str_wbuff_d  = RESOLVE_STR_REF (@83)
-OUTER_SET ny_str_insect   = RESOLVE_STR_REF (@84)
-OUTER_SET ny_str_insect_d = RESOLVE_STR_REF (@85)
-OUTER_SET ny_str_plant    = RESOLVE_STR_REF (@86)
-OUTER_SET ny_str_plant_d  = RESOLVE_STR_REF (@87)
+OUTER_SET ny_str_bdoom    = RESOLVE_STR_REF (@300)
+OUTER_SET ny_str_bdoom_d  = RESOLVE_STR_REF (@301)
+OUTER_SET ny_str_ancestor   = RESOLVE_STR_REF (@302)
+OUTER_SET ny_str_ancestor_d = RESOLVE_STR_REF (@303)
+OUTER_SET ny_str_hbonemelt   = RESOLVE_STR_REF (@304)
+OUTER_SET ny_str_hbonemelt_d = RESOLVE_STR_REF (@305)
+OUTER_SET ny_str_hmastery    = RESOLVE_STR_REF (@306)
+OUTER_SET ny_str_hmastery_d  = RESOLVE_STR_REF (@307)
+OUTER_SET ny_str_spirit      = RESOLVE_STR_REF (@270)
 
 // Icons
 COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/bam/ny#bdblb.bam~ ~override~
      ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/bam/ny#bdblc.bam~ ~override~
+     ~%MOD_FOLDER%/spells/bonemelt/bam/ny#bmltb.bam~ ~override~
+     ~%MOD_FOLDER%/spells/bonemelt/bam/ny#bmltc.bam~ ~override~
 LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDBLB~ c = ~NY#BDBLC~ END   // Remastered Spell Icons
-
-// Projectile and sound of the black dragon's breath (SPIN691)
-COPY_EXISTING ~spin691.spl~ ~override~
-  READ_LONG  0x64 ho
-  READ_SHORT (ho + 0x26) ny_bdbl_pro
-  READ_LONG  0x6a eo
-  READ_SHORT (ho + 0x1e) en                      // effects of the (only) header
-  READ_SHORT (ho + 0x20) ei
-  SPRINT ny_bdbl_snd ~BLACK04~
-  FOR (e = ei; e < ei + en; ++e) BEGIN
-    READ_SHORT (eo + e * 0x30) op
-    PATCH_IF (op = 174) BEGIN READ_ASCII (eo + e * 0x30 + 0x14) ny_bdbl_snd (8) NULL END
-  END
-BUT_ONLY
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BMLTB~ c = ~NY#BMLTC~ END
 
 // Turns a copied spell into an innate ability (type 4, every header
 // "innate") with a new name, description and icons.
@@ -73,9 +63,26 @@ BEGIN
   END
 END
 
-// Breathbloom: Dragon's Breath in acid
+
+// ---------------------------------------------------------------------------
+// Breath Doom: Dragon's Breath in acid
+// ---------------------------------------------------------------------------
+// Projectile and sound of the black dragon's breath (SPIN691)
+COPY_EXISTING ~spin691.spl~ ~override~
+  READ_LONG  0x64 ho
+  READ_SHORT (ho + 0x26) ny_bdbl_pro
+  READ_LONG  0x6a eo
+  READ_SHORT (ho + 0x1e) en                      // effects of the (only) header
+  READ_SHORT (ho + 0x20) ei
+  SPRINT ny_bdbl_snd ~BLACK04~
+  FOR (e = ei; e < ei + en; ++e) BEGIN
+    READ_SHORT (eo + e * 0x30) op
+    PATCH_IF (op = 174) BEGIN READ_ASCII (eo + e * 0x30 + 0x14) ny_bdbl_snd (8) NULL END
+  END
+BUT_ONLY
+
 COPY_EXISTING ~spwi922.spl~ ~override/NY#BDBL.spl~
-  LPF NY#HLA_INNATE INT_VAR name = ny_str_bbloom desc = ny_str_bbloom_d STR_VAR icon_b = ~NY#BDBLB~ icon_c = ~NY#BDBLC~ END
+  LPF NY#HLA_INNATE INT_VAR name = ny_str_bdoom desc = ny_str_bdoom_d STR_VAR icon_b = ~NY#BDBLB~ icon_c = ~NY#BDBLC~ END
   LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 12 match_parameter2 = 0x80000 parameter2 = 0x10000 END   // fire -> acid
   LPF DELETE_SPELL_EFFECT INT_VAR opcode_to_delete = 215 END                       // red dragon head
   LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 174 STR_VAR resource = EVAL ~%ny_bdbl_snd%~ END
@@ -85,292 +92,77 @@ COPY_EXISTING ~spwi922.spl~ ~override/NY#BDBL.spl~
     WRITE_SHORT (ho + h * 0x28 + 0x26) ny_bdbl_pro                                  // GREEHIT
   END
 
-// Wing Buffet
-COPY_EXISTING ~spin695.spl~ ~override/NY#BDWB.spl~
-  LPF NY#HLA_INNATE INT_VAR name = ny_str_wbuff desc = ny_str_wbuff_d STR_VAR icon_b = EVAL ~%ny_icon_wings%~ icon_c = EVAL ~%ny_icon_wings%~ END
-  LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 39 savebonus = "-4" END
-  // centred on the Black Dragon Disciple (the dragon aims it at a creature)
-  READ_LONG  0x64 ho
-  READ_SHORT 0x68 hn
-  FOR (h = 0; h < hn; ++h) BEGIN
-    WRITE_BYTE  (ho + h * 0x28 + 0x0c) 5         // target: caster
-    WRITE_SHORT (ho + h * 0x28 + 0x0e) 0         // range
-  END
-
-// Insect Swarm
-COPY_EXISTING ~spin689.spl~ ~override/NY#BDIS.spl~
-  LPF NY#HLA_INNATE INT_VAR name = ny_str_insect desc = ny_str_insect_d STR_VAR icon_b = ~SPPR717B~ icon_c = ~SPPR717C~ END
-
-// Plant Growth
-COPY_EXISTING ~spin688.spl~ ~override/NY#BDPG.spl~
-  LPF NY#HLA_INNATE INT_VAR name = ny_str_plant desc = ny_str_plant_d STR_VAR icon_b = ~SPPR105B~ icon_c = ~SPPR105C~ END
-  // the Black Dragon Disciple is not caught by his own plants (Swamp Stride
-  // only knows the game's Entangle, Grease and Web): one round of immunity
-  // to this spell, applied to himself at the start of the casting
-  LPF ADD_SPELL_EFFECT INT_VAR opcode = 206 target = 1 timing = 0 duration = ny_round parameter1 = "-1" insert_point = 0 STR_VAR resource = ~NY#BDPG~ END
 
 // ---------------------------------------------------------------------------
-// Summon Black Dragon Turtle (HLA, innate, once per day)
-//
-// Animation MDTU from the dragon turtle of Might and Magic VIII: Day of the
-// Destroyer (3DO / New World Computing, 2000; sprite sheet ripped by Cyrus
-// Annihilator), built with works/dragon_turtle_mm8_source/build_turtle.py:
-// monster_icewind type, 5 facings (west side mirrored), green scales
-// blackened, lies on its selection circle as a flat creature (the middle of
-// its body on the circle's centre; flat shadow), falls to the
-// ground when it dies. Animation id: first free one from 0xEC50.
-//   NY#DTUR   the turtle (ally, CONTROLLED), from the summoned wyvern: 220 HP,
-//             AC -3, THAC0 1, 2 attacks per round, level 16, saves of a
-//             level 16 fighter, immune to acid, fear and poison
-//   NY#DTUW   its bite: 4d8+4 piercing, +4 weapon; carries the immunities
-//   NY#DTBR   its Acid Steam (innate): line 40 ft. long and 15 ft. wide,
-//             12d8 acid, save vs. Breath for half; 3 times per summoning,
-//             every 3 rounds at most (script NY#DTUS); NY#DTBRT projectile
-//   NY#BDDT   the HLA: 1 turn + 1 round per level
-//   NY#BDDTB / NY#BDDTC  icons: placeholder, the turtle reduced
+// Call Ancestor: Summon Planetar calling the Half Black Dragon Spirit
 // ---------------------------------------------------------------------------
-OUTER_SET ny_str_dtur    = RESOLVE_STR_REF (@88)
-OUTER_SET ny_str_dtur_br = RESOLVE_STR_REF (@89)
-OUTER_SET ny_str_bddt    = RESOLVE_STR_REF (@90)
-OUTER_SET ny_str_bddt_d  = RESOLVE_STR_REF (@91)
-
-COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/bam/ny#bddtb.bam~ ~override~
-     ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/bam/ny#bddtc.bam~ ~override~
-LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDDTB~ c = ~NY#BDDTC~ END   // Remastered Spell Icons
-
-COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/turtle/anim~ ~override~
-
-OUTER_SET ny_dtu_anim = "-1"
-OUTER_FOR (id = 0xec50; (id <= 0xecff) AND (ny_dtu_anim < 0); ++id) BEGIN
-  LAF NY#HEX4 INT_VAR value = id RET hexstring = hex END
-  OUTER_SET used = FILE_EXISTS_IN_GAME ~%hexstring%.ini~
-  ACTION_IF (NOT used) BEGIN
-    COPY_EXISTING ~animate.ids~ ~override~
-      PATCH_IF (INDEX_BUFFER (CASE_INSENSITIVE EVALUATE_REGEXP ~^0x%hexstring%[ %TAB%]~) >= 0) BEGIN
-        SET used = 1
-      END
-    BUT_ONLY
+OUTER_SPRINT ny_planetar ~~
+COPY_EXISTING ~spwi924.spl~ ~override~
+  READ_LONG  0x6a eo
+  SET en = (BUFFER_LENGTH - eo) / 0x30            // every effect, global or not
+  FOR (e = 0; e < en; ++e) BEGIN
+    READ_SHORT (eo + e * 0x30) op
+    PATCH_IF (op = 67) BEGIN READ_ASCII (eo + e * 0x30 + 0x14) ny_planetar (8) NULL END
   END
-  ACTION_IF (NOT used) BEGIN
-    OUTER_SET ny_dtu_anim = id
-    OUTER_SPRINT ny_dtu_hex ~%hexstring%~
-  END
-END
-ACTION_IF (ny_dtu_anim < 0) BEGIN
-  FAIL ~BlackDragonMagic: no free animation id between 0xEC50 and 0xECFF~
-END
-COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/turtle/ini/dragon_turtle.ini~ ~override/%ny_dtu_hex%.ini~
-ACTION_IF (IDS_OF_SYMBOL (~animate~ ~NY_DRAGON_TURTLE~) < 0) BEGIN
-  APPEND ~animate.ids~ ~0x%ny_dtu_hex% NY_DRAGON_TURTLE~
-END
-PRINT ~Black dragon turtle animation id: 0x%ny_dtu_hex%~
-
-// Acid Steam: line 40 ft. x 15 ft. (the kit's breath wave, wider)
-LAF NY#CREATE_LINE_PRO INT_VAR speed = 20 width = 120 trail_delay = 2 STR_VAR new = ~NY#DTBRT~ bam = ~NY#BDWAV~ trail = ~NY#BDWVT~ sound = ~NY#BDBRE~ workspace = EVAL ~%ny_workspace%~ RET ny_pro_dtbr = pro_id END
-CREATE ~SPL~ ~NY#DTBR~
-  LPF NY#SPL_BASE INT_VAR name = ny_str_dtur_br type = 4 level = 1 flags = 0x400 END
-  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 4 range = 40 level = 1 casting_time = 0 projectile = ny_pro_dtbr RET h = header END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = 2 parameter1 = "-1" STR_VAR resource = ~NY#DTBR~ END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 STR_VAR resource = ~NY#BDWVH~ END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 0 parameter2 = 0x10000 dicenumber = 12 dicesize = 8 savingthrow = 2 special = 0x100 END
-
-COMPILE ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/turtle/baf/ny#dtus.baf~
-
-CREATE ~ITM~ ~NY#DTUW~
-  WRITE_LONG  0x08 ny_str_dtur
-  WRITE_LONG  0x0c ny_str_dtur
-  WRITE_LONG  0x18 0x60                         // not copyable, magical
-  WRITE_SHORT 0x1c 0x1c                         // hand-to-hand weapon
-  WRITE_LONG  0x60 4                            // +4 weapon
-  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 24 END   // panic
-  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 23 END   // morale failure
-  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 25 END   // poison
-  LPF NY#ADD_ITM_HEADER INT_VAR attack_type = 1 id_req = 0 location = 1 target = 1 range = 1 speed = 4
-                                thac0 = 0 damage_bonus = 4 dice_sides = 8 dice_thrown = 4 damage_type = 1 flags = 1 END
-
-COPY_EXISTING ~WYVERNSU.cre~ ~override/NY#DTUR.cre~
-  WRITE_LONG  0x08 ny_str_dtur
-  WRITE_LONG  0x0c ny_str_dtur
-  WRITE_LONG  0x14 0                            // no experience when killed
-  WRITE_SHORT 0x24 220                          // HP
-  WRITE_SHORT 0x26 220
-  WRITE_LONG  0x28 ny_dtu_anim
-  WRITE_SHORT 0x46 "-3"                         // AC
-  WRITE_SHORT 0x48 "-3"
-  WRITE_BYTE  0x52 1                            // THAC0
-  WRITE_BYTE  0x53 2                            // 2 attacks per round
-  // saves of a level 16 fighter: death, wands, polymorph, breath, spells
-  WRITE_BYTE  0x54 3
-  WRITE_BYTE  0x55 5
-  WRITE_BYTE  0x56 4
-  WRITE_BYTE  0x57 4
-  WRITE_BYTE  0x58 6
-  FOR (o = 0x59; o <= 0x63; ++o) BEGIN WRITE_BYTE o 0 END
-  WRITE_BYTE  0x5c 100                          // acid
-  WRITE_BYTE  0x234 16                          // level
-  WRITE_BYTE  0x238 21                          // STR
-  WRITE_BYTE  0x239 0
-  WRITE_BYTE  0x23a 10                          // INT
-  WRITE_BYTE  0x23b 13                          // WIS
-  WRITE_BYTE  0x23c 10                          // DEX
-  WRITE_BYTE  0x23d 21                          // CON
-  WRITE_BYTE  0x23e 12                          // CHA
-  WRITE_ASCII 0x248 ~NY#DTUS~ #8                // override script: Acid Steam
-  WRITE_ASCII 0x258 ~~ #8                       // no wyvern race script
-  WRITE_BYTE  0x270 5                           // CONTROLLED, as summons
-  REMOVE_CRE_ITEMS
-  ADD_CRE_ITEM ~NY#DTUW~ #0 #0 #0 ~NONE~ ~WEAPON1~ EQUIP
-
-// The HLA: innate, 1 turn + 1 round per level
-CREATE ~SPL~ ~NY#BDDT~
-  LPF NY#SPL_BASE INT_VAR name = ny_str_bddt desc = ny_str_bddt_d type = 4 level = 1
-                          school = 2 graphics = 14 STR_VAR icon = ~NY#BDDTC~ END
-  FOR (lvl = 1; lvl <= 50; ++lvl) BEGIN
-    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 4 range = 30 level = lvl casting_time = 5 STR_VAR icon = ~NY#BDDTB~ RET h = header END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 67 target = 1 timing = 0 duration = ((10 + lvl) * ny_round) STR_VAR resource = ~NY#DTUR~ END
-  END
-
-// ---------------------------------------------------------------------------
-// Summon Black Draco-Sphinx (HLA, innate, once per day)
-//
-// Animation MDSX built from three sheets of a black winged sphinx (walk,
-// attack, death; 8 drawn directions, 6 frames each; works/draco_sphinx_source/
-// build_sphinx.py): monster_icewind type, no mirroring, slow breathing when
-// idle, paw raised in combat stance, roar for its special abilities, stagger
-// when hit (first death frames). Panther sounds. Animation id: first free
-// one from 0xEC80.
-//   NY#DSX    the draco-sphinx (ally, CONTROLLED), from the summoned wyvern:
-//             200 HP, AC -2, THAC0 2, 3 attacks per round, level 16, saves
-//             of a level 16 fighter, immune to acid, fear and poison
-//   NY#DSXW   its claws and fangs: 2d8+4 slashing, +4 weapon
-//   NY#DSXRR  its Roar, once (when it first sees enemies): enemies within
-//             30 ft. save vs. Spell at -2 or panic for 2 rounds; NY#DSXRT
-//             its area (no visual, enemies only)
-//   NY#DSXBR  its Acid Breath, twice per summoning, every 3 rounds at most:
-//             line 40 ft. x 10 ft., 10d8 acid, save vs. Breath for half
-//   NY#DSXS   its override script
-//   NY#BDSX   the HLA: 1 turn + 1 round per level
-//   NY#BDSXB / NY#BDSXC  icons: placeholder, the draco-sphinx reduced
-// ---------------------------------------------------------------------------
-OUTER_SET ny_str_dsx    = RESOLVE_STR_REF (@92)
-OUTER_SET ny_str_dsx_ro = RESOLVE_STR_REF (@93)
-OUTER_SET ny_str_dsx_br = RESOLVE_STR_REF (@94)
-OUTER_SET ny_str_bdsx   = RESOLVE_STR_REF (@95)
-OUTER_SET ny_str_bdsx_d = RESOLVE_STR_REF (@96)
-
-COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/bam/ny#bdsxb.bam~ ~override~
-     ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/bam/ny#bdsxc.bam~ ~override~
-LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDSXB~ c = ~NY#BDSXC~ END   // Remastered Spell Icons
-
-COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/sphinx/anim~ ~override~
-
-OUTER_SET ny_dsx_anim = "-1"
-OUTER_FOR (id = 0xec80; (id <= 0xecff) AND (ny_dsx_anim < 0); ++id) BEGIN
-  LAF NY#HEX4 INT_VAR value = id RET hexstring = hex END
-  OUTER_SET used = FILE_EXISTS_IN_GAME ~%hexstring%.ini~
-  ACTION_IF (NOT used) BEGIN
-    COPY_EXISTING ~animate.ids~ ~override~
-      PATCH_IF (INDEX_BUFFER (CASE_INSENSITIVE EVALUATE_REGEXP ~^0x%hexstring%[ %TAB%]~) >= 0) BEGIN
-        SET used = 1
-      END
-    BUT_ONLY
-  END
-  ACTION_IF (NOT used) BEGIN
-    OUTER_SET ny_dsx_anim = id
-    OUTER_SPRINT ny_dsx_hex ~%hexstring%~
-  END
-END
-ACTION_IF (ny_dsx_anim < 0) BEGIN
-  FAIL ~BlackDragonMagic: no free animation id between 0xEC80 and 0xECFF~
-END
-COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/sphinx/ini/draco_sphinx.ini~ ~override/%ny_dsx_hex%.ini~
-ACTION_IF (IDS_OF_SYMBOL (~animate~ ~NY_DRACO_SPHINX~) < 0) BEGIN
-  APPEND ~animate.ids~ ~0x%ny_dsx_hex% NY_DRACO_SPHINX~
-END
-PRINT ~Black draco-sphinx animation id: 0x%ny_dsx_hex%~
-
-// Roar: 30 ft. around it, enemies only, no visual (as Frightful Presence)
-LAF NY#CLONE_AREA_PRO INT_VAR radius_ft = 30 explosion_effect = 255 STR_VAR source = ~fireball~ new = ~NY#DSXRT~ RET ny_pro_dsxro = pro_id END
-COPY_EXISTING ~NY#DSXRT.pro~ ~override~
-  READ_LONG  0x200 ny_dsx_flags
-  WRITE_LONG 0x200 ((ny_dsx_flags BOR 0x40) BAND (BNOT 0x80))
-  WRITE_ASCII 0x10  ~~ #8
-  WRITE_ASCII 0x18  ~~ #8
-  WRITE_ASCII 0x104 ~~ #8
-  WRITE_ASCII 0x10c ~~ #8
-  WRITE_ASCII 0x208 ~~ #8
-  WRITE_ASCII 0x21c ~~ #8
-  WRITE_ASCII 0x230 ~~ #8
-  WRITE_LONG  0x240 0
 BUT_ONLY
-CREATE ~SPL~ ~NY#DSXRR~
-  LPF NY#SPL_BASE INT_VAR name = ny_str_dsx_ro type = 4 level = 1 flags = 0x400 END
-  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = 1 casting_time = 0 projectile = ny_pro_dsxro RET h = header END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 174 target = 1 timing = 1 STR_VAR resource = ~PANTH01~ END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 24  target = 2 timing = 0 duration = (2 * ny_round) savingthrow = 1 savebonus = "-2" END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 142 target = 2 timing = 0 duration = (2 * ny_round) parameter2 = 36 savingthrow = 1 savebonus = "-2" END
 
-// Acid Breath: line 40 ft. x 10 ft. (the kit's breath wave)
-CREATE ~SPL~ ~NY#DSXBR~
-  LPF NY#SPL_BASE INT_VAR name = ny_str_dsx_br type = 4 level = 1 flags = 0x400 END
-  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 4 range = 40 level = 1 casting_time = 0 projectile = ny_pro_breath2 RET h = header END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = 2 parameter1 = "-1" STR_VAR resource = ~NY#DSXBR~ END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 STR_VAR resource = ~NY#BDWVH~ END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 0 parameter2 = 0x10000 dicenumber = 10 dicesize = 8 savingthrow = 2 special = 0x100 END
+ACTION_IF (~%ny_planetar%~ STRING_COMPARE ~~) AND FILE_EXISTS_IN_GAME ~%ny_planetar%.cre~ BEGIN
+  COPY_EXISTING ~%ny_planetar%.cre~ ~override/NY#TANC.cre~
+    WRITE_LONG 0x08 ny_str_spirit
+    WRITE_LONG 0x0c ny_str_spirit
+    WRITE_BYTE 0x5c 100                          // immune to acid
+  COPY_EXISTING ~spwi924.spl~ ~override/NY#THCA.spl~
+    READ_ASCII 0x3a ic (8) NULL                 // the planetar's own icons
+    READ_LONG  0x64 ho
+    READ_ASCII (ho + 0x04) ib (8) NULL
+    LPF NY#HLA_INNATE INT_VAR name = ny_str_ancestor desc = ny_str_ancestor_d STR_VAR icon_b = EVAL ~%ib%~ icon_c = EVAL ~%ic%~ END
+    LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 67 STR_VAR resource = ~NY#TANC~ END
+    WRITE_LONG 0x1e 0                           // no alignment restriction
+END ELSE BEGIN
+  PRINT ~Black Dragon Disciple: Summon Planetar (SPWI924) summons no creature through opcode 67, Call Ancestor not built.~
+END
 
-COMPILE ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/sphinx/baf/ny#dsxs.baf~
 
-CREATE ~ITM~ ~NY#DSXW~
-  WRITE_LONG  0x08 ny_str_dsx
-  WRITE_LONG  0x0c ny_str_dsx
-  WRITE_LONG  0x18 0x60                         // not copyable, magical
-  WRITE_SHORT 0x1c 0x1c                         // hand-to-hand weapon
-  WRITE_LONG  0x60 4                            // +4 weapon
-  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 24 END   // panic
-  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 23 END   // morale failure
-  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 25 END   // poison
-  LPF NY#ADD_ITM_HEADER INT_VAR attack_type = 1 id_req = 0 location = 1 target = 1 range = 1 speed = 3
-                                thac0 = 0 damage_bonus = 4 dice_sides = 8 dice_thrown = 2 damage_type = 3 flags = 1 END
+// ---------------------------------------------------------------------------
+// Bonemelt: 4d4 acid per round for 10 rounds (opcode 272, EFF NY#THBE);
+// skeletons are destroyed (NY#THSK)
+// ---------------------------------------------------------------------------
+LAF NY#CREATE_EFF INT_VAR opcode = 12 target = 1 parameter2 = 0x10000 dicenumber = 4 dicesize = 4 STR_VAR eff = ~NY#THBE~ END
 
-COPY_EXISTING ~WYVERNSU.cre~ ~override/NY#DSX.cre~
-  WRITE_LONG  0x08 ny_str_dsx
-  WRITE_LONG  0x0c ny_str_dsx
-  WRITE_LONG  0x14 0                            // no experience when killed
-  WRITE_SHORT 0x24 200                          // HP
-  WRITE_SHORT 0x26 200
-  WRITE_LONG  0x28 ny_dsx_anim
-  WRITE_SHORT 0x46 "-2"                         // AC
-  WRITE_SHORT 0x48 "-2"
-  WRITE_BYTE  0x52 2                            // THAC0
-  WRITE_BYTE  0x53 3                            // 3 attacks per round
-  WRITE_BYTE  0x54 3
-  WRITE_BYTE  0x55 5
-  WRITE_BYTE  0x56 4
-  WRITE_BYTE  0x57 4
-  WRITE_BYTE  0x58 6
-  FOR (o = 0x59; o <= 0x63; ++o) BEGIN WRITE_BYTE o 0 END
-  WRITE_BYTE  0x5c 100                          // acid
-  WRITE_BYTE  0x234 16                          // level
-  WRITE_BYTE  0x238 20                          // STR
-  WRITE_BYTE  0x239 0
-  WRITE_BYTE  0x23a 16                          // INT
-  WRITE_BYTE  0x23b 17                          // WIS
-  WRITE_BYTE  0x23c 14                          // DEX
-  WRITE_BYTE  0x23d 19                          // CON
-  WRITE_BYTE  0x23e 16                          // CHA
-  WRITE_ASCII 0x248 ~NY#DSXS~ #8                // override script: roar, breath
-  WRITE_ASCII 0x258 ~~ #8                       // no wyvern race script
-  WRITE_BYTE  0x270 5                           // CONTROLLED, as summons
-  REMOVE_CRE_ITEMS
-  ADD_CRE_ITEM ~NY#DSXW~ #0 #0 #0 ~NONE~ ~WEAPON1~ EQUIP
+OUTER_SET ny_ids_skeleton = IDS_OF_SYMBOL (~race~ ~SKELETON~)
+LAF NY#SPLPROT_ROW STR_VAR label = ~NY#RACE!=SKELETON~ stat = ~0x10c~ value = EVAL ~%ny_ids_skeleton%~ relation = ~5~ RET ny_prot_not_skeleton = row END
 
-CREATE ~SPL~ ~NY#BDSX~
-  LPF NY#SPL_BASE INT_VAR name = ny_str_bdsx desc = ny_str_bdsx_d type = 4 level = 1
-                          school = 2 graphics = 14 STR_VAR icon = ~NY#BDSXC~ END
-  FOR (lvl = 1; lvl <= 50; ++lvl) BEGIN
-    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 4 range = 30 level = lvl casting_time = 5 STR_VAR icon = ~NY#BDSXB~ RET h = header END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 67 target = 1 timing = 0 duration = ((10 + lvl) * ny_round) STR_VAR resource = ~NY#DSX~ END
+CREATE ~SPL~ ~NY#THSK~
+  LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1000 level = 1 casting_time = 0 RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 324 target = 2 duration = 1 parameter2 = ny_prot_not_skeleton STR_VAR resource = ~NY#THSK~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 13  target = 2 timing = 1 parameter1 = 0 parameter2 = 0 END
+
+CREATE ~SPL~ ~NY#THBM~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_hbonemelt desc = ny_str_hbonemelt_d type = 4 level = 1 school = 8 graphics = 10 STR_VAR icon = ~NY#BMLTC~ END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 30 level = 1 casting_time = 1 STR_VAR icon = ~NY#BMLTB~ RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 272 target = 2 timing = 0 duration = (10 * ny_round) parameter1 = ny_round parameter2 = 3 resist_dispel = 1 STR_VAR resource = ~NY#THBE~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 STR_VAR resource = ~SHACID~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#THSK~ END
+
+
+// ---------------------------------------------------------------------------
+// Black Dragon Magic Mastery: learns the spells of $ny_hms
+// ---------------------------------------------------------------------------
+CREATE ~SPL~ ~NY#THMS~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_hmastery desc = ny_str_hmastery_d type = 4 level = 1 flags = 0x400 STR_VAR icon = ~NY#TGBDC~ END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = 1 casting_time = 0 STR_VAR icon = ~NY#TGBDB~ RET h = header END
+  FOR (i = 0; i < ny_hms_n; ++i) BEGIN
+    SPRINT r $ny_hms(~%i%~)
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 147 target = 1 timing = 1 STR_VAR resource = EVAL ~%r%~ END
   END
 
+
+// ---------------------------------------------------------------------------
 // HLA table
+// ---------------------------------------------------------------------------
 COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/2da/lunyb.2da~ ~override~
+ACTION_IF NOT FILE_EXISTS_IN_GAME ~NY#THCA.spl~ BEGIN
+  COPY_EXISTING ~lunyb.2da~ ~override~
+    REPLACE_TEXTUALLY ~GA_NY#THCA~ ~*~
+END

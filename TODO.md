@@ -2,58 +2,32 @@
 
 ## To check in game
 
-### Black Dragon Disciple
-New level-by-level version: **new character needed** (the CLAB gives everything when the level is reached).
+### Black Dragon Disciple (Draconic Transformations, branch draconic-transformations)
+Rebuilt from scratch: **new character needed**. Not tested in game yet; checked only by an install on a mock game (data of the generated files).
 
-Still valid from the previous version (same code):
-- [x] Claws replace the fists; back after a load (global script); back after Polymorph Self / Shapechange.
-- [x] Level up while unarmed: 2 attacks per round right away (fist reselected once per stage).
-- [x] Acid Breath: the wave starts on the disciple, goes straight to the targeted point; creatures crossed are hit; visual and sound OK.
-- [x] Bite in the off hand (branch bite): it attacks ("Attack Roll (Off-hand)"), 3 attacks per round, acid damage in the combat log.
+Kit:
+- [ ] Plain sorcerer: d6, one spell slot less per spell level, no claws, no breath, no AC bonus at level 1.
+- [ ] The 18 transformations in the spell list at level-up (levels 1 to 9), names, descriptions and amber icons in English and French.
+- [ ] Casting one: its effects, one slot of its level gone for good (also after a rest, a load, a level-up); cast again: nothing; another sorcerer casting it: nothing (and no slot lost).
+- [ ] Slot already at 0 for that level (opcode 42 at -1): what happens.
+- [ ] Level markers at 10, 15, 20, 25: Dragon Scale +1 AC at 10 and 15, Resilience +2 CON at 15, Might +2 STR at 15, claws +2 to +5; a transformation taken after these levels gives the steps at once.
 
-To check:
-- [x] **No weapon (opcode 319)**: every weapon shown in red and refused for the kit, but still usable by the other characters. If it is the other way round (usable *only* by the kit), the parameter meaning is inverted: tell Claude.
-- [x] **Proficiencies**: at creation and at levels 7, 13 and 19, only Single Weapon Style (max 1) and Two-Weapon Style (max 3) can be raised.
-- [x] **Spells one level lower**: 2nd-level spell slots at level 5 (not 4), 3rd-level at 7 (not 6)... and one slot less per spell level. At level 4 the disciple may pick a 2nd-level spell he cannot cast yet (spells known are not delayed).
-- [x] Claws at levels 1, 4, 8, 12, 16, 20: 1d4, 1d6+1, 1d8+2, 1d10+3, 2d6+4, 2d8+5; old claws gone; still there after a load.
-- [x] Bite from level 6 (1d6+1 + 2 acid), replaced at 8, 12, 13 (2d6 + 2d4 acid), 16, 20; the old one gone, even if it was in the backpack.
-- [x] Bite: two-weapon penalties lowered by Two-Weapon Style (THAC0 3 / 7 at level 16 with 2 points).
-- [x] Bite toggle: Fight without / with the Bite remove and put back the bite of the current stage; the abilities swap.
-- [x] Bite: the claws' retry script (fewer than 2 attacks) does not fire for nothing while the bite is equipped.
-- [x] Claws icon on the weapon button, and Blindsense (attacks invisible enemies), bite toggle, icons: checked.
-- [x] **Claws in both weapon slots** (new character): both weapon buttons show the claws, 2 attacks per round with either slot, still there after a load; new claws at 4/8/12/16/20 replace both copies. The starting weapons go to the backpack (cannot be used by the kit).
-- [x] New icons in game: breath, claws, bite (large), wings, Frightful Presence.
-- [x] Portrait icons: Frightful Presence while the aura is on (gone when dismissed), bite while it is out, wings while spread. Wings: +2 AC.
-- [x] Swamp Stride at level 2: immunity to Entangle, Grease, Web.
-- [x] Acid Breath: 15 ft. long and about 5 ft. wide, 4d4; 2/day at 7, 3/day at 11, 4/day at 17 (several GA_ of the same ability in the CLAB); 30 ft. and 10 ft. wide at 19.
-- [x] Draconic Tail at level 9: one strike per round on the nearest enemy in melee reach, 1d10 crushing + 1 second unconscious on a failed save vs. Breath; combat log line. One save for both effects?
-- [x] Draconic Wings at level 14: equipped in the helmet slot, bonuses applied. Still to check: the wings shown on the character, a helmet already there, after a load.
-- [x] Acid Affinity damage bonus (opcode 332, type acid, as the Robe of Red Flames): bite acid 4 → 5 at level 20 (+25%), shown in the combat log as "(1 damage bonus)".
-- [x] Blindsense at level 10: immunity to blindness, invisible creatures seen and targetable.
-- [x] Frightful Presence at level 18: no longer hits the disciple and his allies (projectile flag 0x40, enemies only).
-- [x] Apotheosis at level 20: immunity to sleep and paralysis, acid immunity (5 × 20%).
-- [x] Druid THAC0: 18 at level 4, 16 at 7, 14 at 10, 12 at 13 (before Strength and weapon bonuses).
-- [x] Frightful Presence: the pulse (opcode 272 -> EFF) really fires and uses the disciple's level.
-- [ ] Frightful Presence: no visual or sound left from Fireball (falling fireball, explosion, flame ring) when the aura pulses.
-- [x] Start of Throne of Bhaal (cutscenes): claws and bite kept.
-
-Not done yet:
-
-### Final form (wings)
-- [ ] With the wings spread (NY#BDWI, from level 14) the disciple takes the avatar animation; 8 directions; idle, walk, claw and tail attacks, casting (hands raised), powers (wings spread), hit, death.
-- [ ] Back to his own animation when he folds the wings; ToB cutscenes, dialogues, resting, saving and loading keep the form.
-- [ ] The character's own sound set still plays; selection circle and size look right.
-
-### High-level abilities (branch hla)
-- [ ] At level-up in Throne of Bhaal the HLA list shows: extra spell 6 / 7 / 8, Summon Dark Planetar (not for good characters), Breathbloom, Wing Buffet, Insect Swarm, Plant Growth, with their names and icons; no Energy Blades, Improved Alacrity, Dragon's Breath, Summon Planetar or Comet.
-- [ ] The 4 new HLA appear as innate abilities, once per day per pick (Breathbloom 1 pick, the others up to 2).
-- [ ] Breathbloom: explosion of the game's Black Dragon Breath (as Nizidramanii'yt), no red dragon head, 20d10 acid (Acid Affinity bonus applies), enemies thrown back and knocked unconscious, save vs. Breath halves and negates; party not hit.
-- [ ] Wing Buffet: centred on the disciple, enemies within 20 ft. take 1d8 and are thrown back, unconscious 3 s on a failed save at -4; party not hit.
-- [ ] Insect Swarm: enemies around the target, 2 poison damage per second and 100% spell failure for 3 rounds; party not hit.
-- [ ] Plant Growth: entangle in a 20-ft. area (save at -10), allies hit, the disciple not (one round of immunity to his own Plant Growth).
-- [ ] French and English descriptions (Breathbloom = Éclosion de souffle in French).
-- [ ] Summon Black Dragon Turtle (HLA): in the HLA list; the turtle appears, 8 directions, black, lies on its circle (no longer floating), also when dead; Acid Steam line 40 x 15 ft. 3 times per summoning (not when the turtle is disabled); 2 bites; balance against Summon Dark Planetar.
-- [ ] Summon Black Draco-Sphinx (HLA): in the HLA list; 8 directions (no mirroring), idle breathing, paw raised in combat stance, walk, attack (paw, roar lunge), stagger when hit, death; Roar once when it first sees enemies (panic 2 rounds, save vs. Spell at -2, enemies only); Acid Breath twice; panther sounds.
+Transformations:
+- [ ] Claw & Bite: claws in the first weapon slot and the shield slot (a few seconds after casting: candidate chain), 2 attacks, no two-weapon penalty, +4 THAC0, bite 20% per hit (1d6 + 1d4 acid, combat log); Retract / Extend Claws; a weapon already in the first slot: what happens to it.
+- [ ] Dragon Scale, Draconic Resilience (skull in the helmet slot, critical hits ignored; a helmet already there?), Draconic Might, Apotheosis: values on the record sheet.
+- [ ] Breath Weapon: line, 4d4 / 6d4 / 8d4, ignores magic resistance; gone after use, back 10 rounds later (+ about 8 seconds of choice); after a load during the recharge.
+- [ ] Meta-breath: menu line / ball / pool, shared charge, recharges 6 / 10 / 8; taken without Breath Weapon: the menu anyway.
+- [ ] Breath Mastery: dice doubled, recharges 2 rounds shorter; Acid Mastery: AC -2 for 2 rounds on the breath and bite targets, not cumulative.
+- [ ] Draconic Tail: one strike per round, 2d6 + 1 second prone on a failed save vs. Breath.
+- [ ] Swamp Stride: poison, Grease, Entangle, Web, Stinking Cloud, Spike Growth.
+- [ ] Acidosis: 50% acid resistance, +20% acid damage, 1d2 acid to attackers below 50% health only.
+- [ ] Black Dragon Magic / Greater / Mastery: the spells really learned by a sorcerer (opcode 147) and castable with the slots of their level.
+- [ ] Blindsense: vision range bonus (opcode 262, +2): visible?
+- [ ] Dragon Wings: +4 movement, Wing Buffet at will with a 4-round recharge (BG2EE/EET).
+- [ ] Draconic Majesty: CHA, INT, Lore; Charm Reptile 3 per day, no save, magic resistance ignored, dragons and non-reptiles unaffected.
+- [ ] Frightful Presence: 10 ft., enemies of lower level only, 24 hours of immunity after the test.
+- [ ] Darkness, Corrupt Water (potions destroyed, poison), Summon Reptile (hydra), Swampy Lake.
+- [ ] HLA (BG2EE/EET): Breath Doom, Call Ancestor (no Planetar left), Bonemelt (skeletons destroyed), Black Dragon Magic Mastery.
 
 ### Acidosis
 - [x] Icons, casting, self damage OK.
@@ -165,3 +139,10 @@ Not done yet:
 ## Later
 - [ ] Custom icons (BAM) for the claws, breath, aura, wing buffet and spells.
 - [ ] Trello *Ideas* list: Swamp Lung, Ghostly Tail, Corrosive Spit, Dracosuchus Jaws, Tail Sweep.
+- [ ] Draconic Transformations, own spell list: a G3 library giving the kit its own spell list, so the other sorcerers no longer see the transformations (they already do nothing for them).
+- [ ] Draconic Transformations, icons: the amber placeholders replaced by real icons (one shape per transformation).
+- [ ] Breath recharge lost if the disciple dies while it recharges (the delayed opcode 146 dies with him): give it back at rest or on resurrection.
+- [ ] Acid Mastery: AC reduction only on the mod's own acid (breaths, bite); the game's acid spells (Melf's Acid Arrow, Vitriolic Sphere...) would need a check of the caster.
+- [ ] Corrupt Water: the rain (visual) and grey-blue water instead of the recoloured acid puddles.
+- [ ] Call Ancestor: a real Half Black Dragon Spirit (Icewind Dale's MDH1 half-dragon animation) instead of the renamed planetar.
+- [ ] Darkness: a darkness visual.

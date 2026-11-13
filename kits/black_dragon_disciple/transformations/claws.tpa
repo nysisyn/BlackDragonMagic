@@ -1,0 +1,201 @@
+/////////////////////////////////////////////////////////////////////////////
+// Claw & Bite: the claws and the bite
+//
+// One claw in each hand: the main one in the first weapon slot (opcode 143,
+// slot 35 = SLOT_WEAPON0), the off-hand one in the shield slot (slot 9):
+// one more attack per round (engine rule for an off-hand weapon). The
+// off-hand claw sets Two-Weapon Style to 3 points while equipped (opcode
+// 233): no two-weapon penalty. Both slots are saved: no global script.
+// 1d4 slashing, +4 THAC0, magical weapons: +1, +2 at level 10, +3 at 15, +4
+// at 20, +5 at 25 (stages 1 to 5, from the level markers).
+// The bite: each successful hit has a 20% chance (one roll per hit) to cast
+// NY#TCBT0 on the target: 1d6 piercing + 1d4 acid. With Acid Mastery the
+// claws carry NY#TCBT1, which also lowers the target's AC (NY#TAMR).
+//
+// Resources
+//   NY#TCW<s><a>  main claw, stage s (1-5), a = 1 with Acid Mastery
+//   NY#TCO<s><a>  off-hand claw
+//   NY#TCBT0/1    the bite
+//   NY#TCLE / NY#TCLR   Extend / Retract Claws (innate, swap themselves)
+//   NY#KCRT       root of the claws choice: candidates NY#KC<l> (l = a..j,
+//                 stage 5 with acid first, stage 1 without acid last), one
+//                 second apart; the first true one (final NY#KC<l>F) blocks
+//                 the others, removes the claws and puts the right ones
+//   Icon: the claws of the former version (NY#BDCLI: the game's werebear
+//   claw icon ISHAPE05, blackened)
+/////////////////////////////////////////////////////////////////////////////
+
+OUTER_SET ny_str_claws     = RESOLVE_STR_REF (@200)
+OUTER_SET ny_str_claws_d   = RESOLVE_STR_REF (@201)
+OUTER_SET ny_str_extend    = RESOLVE_STR_REF (@202)
+OUTER_SET ny_str_extend_d  = RESOLVE_STR_REF (@203)
+OUTER_SET ny_str_retract   = RESOLVE_STR_REF (@204)
+OUTER_SET ny_str_retract_d = RESOLVE_STR_REF (@205)
+OUTER_SET ny_str_bite      = RESOLVE_STR_REF (@206)
+
+COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdcli.bam~ ~override~
+
+OUTER_SET ny_prof_2weapon = IDS_OF_SYMBOL (~stats~ ~PROFICIENCY2WEAPON~)
+
+
+// ---------------------------------------------------------------------------
+// Acid Mastery: acid lowers the target's AC by 2 for 2 rounds, not
+// cumulative (the previous one is removed first). Shared with the breath.
+// ---------------------------------------------------------------------------
+CREATE ~SPL~ ~NY#TAMR~
+  LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1000 level = 1 casting_time = 0 RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 321 target = 2 timing = 1 STR_VAR resource = ~NY#TAMR~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 0   target = 2 timing = 0 duration = (2 * ny_round) parameter1 = "-2" parameter2 = 0 END
+
+
+// ---------------------------------------------------------------------------
+// The bite
+// ---------------------------------------------------------------------------
+ACTION_FOR_EACH a IN 0 1 BEGIN
+  CREATE ~SPL~ ~NY#TCBT%a%~
+    LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1000 level = 1 casting_time = 0 RET h = header END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 1 parameter2 = 0x100000 dicenumber = 1 dicesize = 6 END   // piercing
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 1 parameter2 = 0x10000  dicenumber = 1 dicesize = 4 END   // acid
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 STR_VAR resource = ~SHACID~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 139 target = 2 timing = 1 parameter1 = ny_str_bite END   // combat log
+    PATCH_IF (a = 1) BEGIN
+      LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#TAMR~ END
+    END
+END
+
+
+// ---------------------------------------------------------------------------
+// The claws
+// ---------------------------------------------------------------------------
+DEFINE_ACTION_FUNCTION NY#T_CLAW
+  INT_VAR
+    stage   = 1
+    acid    = 0
+    offhand = 0
+  STR_VAR
+    resref  = ~~
+BEGIN
+  CREATE ~ITM~ ~%resref%~
+    WRITE_LONG  0x08 ny_str_claws
+    WRITE_LONG  0x0c ny_str_claws
+    // flags as FIST.ITM (0x20) + magical (0x40); not movable
+    WRITE_LONG  0x18 0x60
+    WRITE_SHORT 0x1c 0x1c                       // hand-to-hand weapon
+    WRITE_ASCII 0x3a ~NY#BDCLI~ #8
+    WRITE_LONG  0x50 ny_str_claws_d
+    WRITE_LONG  0x54 ny_str_claws_d
+    WRITE_ASCII 0x58 ~NY#BDCLI~ #8
+    WRITE_LONG  0x60 stage                      // enchantment
+    PATCH_IF offhand BEGIN
+      // Two-Weapon Style 3 points while equipped: no two-weapon penalty
+      LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 233 target = 1 timing = 2 parameter1 = 3 parameter2 = ny_prof_2weapon END
+    END
+    // melee: slashing, strength bonus applies; id_req = 0 as FIST.ITM
+    LPF NY#ADD_ITM_HEADER INT_VAR attack_type = 1 id_req = 0 location = 1 target = 1 range = 1 speed = 2
+                                  thac0 = 4 dice_sides = 4 dice_thrown = 1 damage_type = 3 flags = 1
+                         STR_VAR icon = ~NY#BDCLI~ RET h = header END
+    // the bite: 20% per hit
+    LPF ADD_ITEM_EFFECT INT_VAR type = 99 header = h opcode = 146 target = 2 timing = 1 parameter2 = 1
+                                probability1 = 19 probability2 = 0 STR_VAR resource = EVAL ~NY#TCBT%acid%~ END
+END
+
+OUTER_FOR (s = 1; s <= 5; ++s) BEGIN
+  ACTION_FOR_EACH a IN 0 1 BEGIN
+    LAF NY#T_CLAW INT_VAR stage = s acid = a offhand = 0 STR_VAR resref = EVAL ~NY#TCW%s%%a%~ END
+    LAF NY#T_CLAW INT_VAR stage = s acid = a offhand = 1 STR_VAR resref = EVAL ~NY#TCO%s%%a%~ END
+  END
+END
+
+// removes every claw (one copy of each item, whatever its stage)
+DEFINE_PATCH_FUNCTION NY#T_REMOVE_CLAWS
+BEGIN
+  FOR (s = 1; s <= 5; ++s) BEGIN
+    FOR (a = 0; a <= 1; ++a) BEGIN
+      LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 112 target = 1 timing = 1 STR_VAR resource = EVAL ~NY#TCW%s%%a%~ END
+      LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 112 target = 1 timing = 1 STR_VAR resource = EVAL ~NY#TCO%s%%a%~ END
+    END
+  END
+END
+
+
+// ---------------------------------------------------------------------------
+// Extend / Retract Claws
+// ---------------------------------------------------------------------------
+CREATE ~SPL~ ~NY#TCLE~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_extend desc = ny_str_extend_d type = 4 level = 1 STR_VAR icon = ~NY#BDCLI~ END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = 1 casting_time = 0 STR_VAR icon = ~NY#BDCLI~ RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#KCRT~ END
+
+CREATE ~SPL~ ~NY#TCLR~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_retract desc = ny_str_retract_d type = 4 level = 1 STR_VAR icon = ~NY#BDCLI~ END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = 1 casting_time = 0 STR_VAR icon = ~NY#BDCLI~ END
+  LPF NY#T_REMOVE_CLAWS END
+  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#TCLR~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 171 target = 1 timing = 1 STR_VAR resource = ~NY#TCLE~ END
+
+
+// ---------------------------------------------------------------------------
+// Choice of the claws: stage from the level markers, acid with Acid Mastery
+// ---------------------------------------------------------------------------
+// candidates in order: letter, stage, acid
+ACTION_DEFINE_ASSOCIATIVE_ARRAY ny_claw_cand BEGIN
+  a => 51  b => 50  c => 41  d => 40  e => 31
+  f => 30  g => 21  h => 20  i => 11  j => 10
+END
+
+// stage s needs the marker of its level
+ACTION_DEFINE_ASSOCIATIVE_ARRAY ny_claw_marker BEGIN
+  2 => LV10  3 => LV15  4 => LV20  5 => LV25
+END
+
+OUTER_SET k = 0
+ACTION_FOR_EACH l IN a b c d e f g h i j BEGIN
+  OUTER_SET k += 1
+  OUTER_SET sa = $ny_claw_cand(~%l%~)
+  OUTER_SET s  = sa / 10
+  OUTER_SET a  = sa MODULO 10
+
+  // final: blocks the next candidates, removes the claws, puts these ones
+  LAF NY#T_SELF_SPL STR_VAR resref = EVAL ~NY#KC%l%F~ END
+  COPY_EXISTING ~NY#KC%l%F.spl~ ~override~
+    SET j = 0
+    PATCH_FOR_EACH m IN a b c d e f g h i j BEGIN
+      SET j += 1
+      PATCH_IF (j > k) BEGIN
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 206 target = 1 timing = 0 duration = 15 parameter1 = "-1" STR_VAR resource = EVAL ~NY#KC%m%~ END
+      END
+    END
+    LPF NY#T_REMOVE_CLAWS END
+    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 143 target = 1 timing = 1 parameter1 = 35 STR_VAR resource = EVAL ~NY#TCW%s%%a%~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 143 target = 1 timing = 1 parameter1 = 9  STR_VAR resource = EVAL ~NY#TCO%s%%a%~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#TCLE~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#TCLR~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 171 target = 1 timing = 1 STR_VAR resource = ~NY#TCLR~ END
+
+  // conditions: level marker of the stage, Acid Mastery
+  OUTER_SET c1 = "-1"
+  OUTER_SET c2 = "-1"
+  ACTION_IF (s > 1) BEGIN
+    OUTER_SPRINT mk $ny_claw_marker(~%s%~)
+    OUTER_SET c1 = $ny_has(~%mk%~)
+  END
+  ACTION_IF (a = 1) BEGIN
+    ACTION_IF (c1 < 0) BEGIN
+      OUTER_SET c1 = $ny_has(~AMS~)
+    END ELSE BEGIN
+      OUTER_SET c2 = $ny_has(~AMS~)
+    END
+  END
+  LAF NY#T_CANDIDATE INT_VAR r1 = c1 r2 = c2 STR_VAR entry = EVAL ~NY#KC%l%~ final = EVAL ~NY#KC%l%F~ END
+END
+
+// root: the candidates one second apart, most specific first
+LAF NY#T_SELF_SPL STR_VAR resref = ~NY#KCRT~ END
+COPY_EXISTING ~NY#KCRT.spl~ ~override~
+  SET j = 0
+  PATCH_FOR_EACH l IN a b c d e f g h i j BEGIN
+    SET j += 1
+    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 146 target = 1 timing = 4 duration = j parameter2 = 1 STR_VAR resource = EVAL ~NY#KC%l%~ END
+  END

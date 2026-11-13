@@ -1,0 +1,526 @@
+/////////////////////////////////////////////////////////////////////////////
+// Draconic Transformations
+//
+// Wizard spells of levels 1 to 9 (ADD_SPELL, WIZARD_NY_T_<CODE>) the Black
+// Dragon Disciple learns instead of a spell. Every one is built the same
+// way (NY#T_BEGIN / NY#T_END):
+//   - nothing happens for another kit (opcode 324, KIT != NY#BDD)
+//   - nothing happens a second time (opcode 324, spell state of the
+//     transformation already set)
+//   - spell state NY_BDD_<CODE> (opcode 328, permanent): the transformation
+//     is known to the level steps and to the other transformations
+//   - one spell slot of its level less, for good (opcode 42)
+//   - then its own effects, all permanent (timing 9: they persist through
+//     death and cannot be dispelled)
+//
+// Level steps: the CLAB applies NY#BDM10/15/20/25 at levels 10, 15, 20 and
+// 25. Each sets a level marker (spell state NY_BDD_LV<lv>) and applies the
+// steps of the transformations already taken (opcode 326 on their state).
+// A transformation taken later applies at once the steps of the markers
+// already set: the same step spells NY#V<xx><lv>.
+//
+// Choices between several versions (claws stage and acid, breath forms)
+// are made by "candidate" chains (NY#T_CANDIDATE): the most specific
+// candidate first; the first one whose conditions are all true blocks the
+// following ones (opcode 206) and gives its version.
+//
+// Codes (resref NY#T<code> before ADD_SPELL, icons NY#T<code>B / C):
+//   1 CLB Claw & Bite         SCL Dragon Scale
+//   2 BRW Breath Weapon       RES Draconic Resilience
+//   3 TAL Draconic Tail       SWS Swamp Stride
+//   4 ACD Acidosis            BDM Black Dragon Magic
+//   5 MIG Draconic Might      MBR Meta-breath
+//   6 BLS Blindsense          AMS Acid Mastery
+//   7 WNG Dragon Wings        MAJ Draconic Majesty
+//   8 FPR Frightful Presence  GBD Greater Black Dragon Magic
+//   9 APO Dragon Apotheosis   BMS Breath Mastery
+// Icons: placeholders, the mod's own spell icons mirrored and recoloured
+// amber (hue 41), the colour of the transformations (see README).
+/////////////////////////////////////////////////////////////////////////////
+
+
+// ---------------------------------------------------------------------------
+// Icons
+// ---------------------------------------------------------------------------
+ACTION_FOR_EACH code IN clb scl brw res tal sws acd bdm mig mbr bls ams wng maj fpr gbd apo bms BEGIN
+  COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/transformations/bam/ny#t%code%b.bam~ ~override~
+       ~%MOD_FOLDER%/kits/black_dragon_disciple/transformations/bam/ny#t%code%c.bam~ ~override~
+  LAF NY#ICON_B_FROM_C STR_VAR b = EVAL ~NY#T%code%B~ c = EVAL ~NY#T%code%C~ END   // Remastered Spell Icons
+END
+
+
+// ---------------------------------------------------------------------------
+// Spell states and their SPLPROT rows
+// ---------------------------------------------------------------------------
+// another kit than the Black Dragon Disciple
+OUTER_SET ny_ids_kit = IDS_OF_SYMBOL (~stats~ ~KIT~)
+LAF NY#SPLPROT_ROW STR_VAR label = ~NY#KIT!=BDD~ stat = EVAL ~%ny_ids_kit%~ value = EVAL ~%ny_kit_value%~ relation = ~5~ RET ny_prot_not_bdd = row END
+
+// one state per transformation and per level marker; $ny_has(<code>) is
+// the SPLPROT row "has the state"
+ACTION_FOR_EACH code IN CLB SCL BRW RES TAL SWS ACD BDM MIG MBR BLS AMS WNG MAJ FPR GBD APO BMS LV10 LV15 LV20 LV25 BEGIN
+  LAF NY#ADD_SPLSTATE STR_VAR name = EVAL ~NY_BDD_%code%~ RET st = id END
+  OUTER_SET $ny_state(~%code%~) = st
+  LAF NY#SPLPROT_ROW STR_VAR label = EVAL ~NY#HAS_%code%~ stat = ~0x112~ value = EVAL ~%st%~ relation = ~1~ RET row END
+  OUTER_SET $ny_has(~%code%~) = row
+END
+
+
+// ---------------------------------------------------------------------------
+// NY#T_BEGIN (action): creates NY#T<code>.SPL, the transformation of the
+// given spell level, with its common effects. The caller adds its own
+// effects (header 1), then calls NY#T_END.
+// ---------------------------------------------------------------------------
+DEFINE_ACTION_FUNCTION NY#T_BEGIN
+  INT_VAR
+    level = 1
+    name  = "-1"
+    desc  = "-1"
+  STR_VAR
+    code  = ~~
+BEGIN
+  CREATE ~SPL~ ~NY#T%code%~
+    LPF NY#SPL_BASE INT_VAR name desc type = 1 level school = 8 graphics = 10 STR_VAR icon = EVAL ~NY#T%code%C~ END
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 5 range = 1 level = 1 casting_time = 1 STR_VAR icon = EVAL ~NY#T%code%B~ RET h = header END
+    // resource of the two opcodes 324: the final resref, written by NY#T_END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 324 target = 1 duration = 1 parameter2 = ny_prot_not_bdd STR_VAR resource = EVAL ~NY#T%code%~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 324 target = 1 duration = 1 parameter2 = $ny_has(~%code%~) STR_VAR resource = EVAL ~NY#T%code%~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 328 target = 1 timing = 9 parameter2 = $ny_state(~%code%~) special = 1 END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 42  target = 1 timing = 9 parameter1 = "-1" parameter2 = (1 BLSL (level - 1)) END
+END
+
+// NY#T_END (action): adds the transformation to the wizard spells and points
+// its opcodes 324 to the final resref.
+DEFINE_ACTION_FUNCTION NY#T_END
+  INT_VAR
+    level = 1
+  STR_VAR
+    code  = ~~
+  RET
+    res
+BEGIN
+  ADD_SPELL ~override/NY#T%code%.spl~ 2 level ~WIZARD_NY_T_%code%~
+  LAF RES_NUM_OF_SPELL_NAME STR_VAR spell_name = EVAL ~WIZARD_NY_T_%code%~ RET res = spell_res END
+  COPY_EXISTING ~%res%.spl~ ~override~
+    LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 324 STR_VAR resource = EVAL ~%res%~ END
+END
+
+
+// ---------------------------------------------------------------------------
+// NY#T_SELF_SPL (action): an invisible innate spell applied to oneself,
+// returns its header for ADD_SPELL_EFFECT.
+// ---------------------------------------------------------------------------
+DEFINE_ACTION_FUNCTION NY#T_SELF_SPL
+  STR_VAR
+    resref = ~~
+BEGIN
+  CREATE ~SPL~ ~%resref%~
+    LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = 1 casting_time = 0 END
+END
+
+
+// ---------------------------------------------------------------------------
+// NY#T_CANDIDATE (action): entry spell <entry> of a candidate. Its
+// conditions r1, r2, r3 (SPLPROT rows, -1 = none) are checked one after
+// the other (opcode 326, nested spells <entry>2 and <entry>3); when all are
+// true, <final> is applied. The final spell blocks the next candidates
+// (opcode 206) and gives the version.
+// ---------------------------------------------------------------------------
+DEFINE_ACTION_FUNCTION NY#T_CANDIDATE
+  INT_VAR
+    r1 = "-1"
+    r2 = "-1"
+    r3 = "-1"
+  STR_VAR
+    entry = ~~
+    final = ~~
+BEGIN
+  // the last node applies the final spell
+  ACTION_IF (r3 >= 0) BEGIN
+    LAF NY#T_SELF_SPL STR_VAR resref = EVAL ~%entry%3~ END
+    COPY_EXISTING ~%entry%3.spl~ ~override~
+      LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 326 target = 1 timing = 1 parameter2 = r3 STR_VAR resource = EVAL ~%final%~ END
+    OUTER_SPRINT next ~%entry%3~
+  END ELSE BEGIN
+    OUTER_SPRINT next ~%final%~
+  END
+  ACTION_IF (r2 >= 0) BEGIN
+    LAF NY#T_SELF_SPL STR_VAR resref = EVAL ~%entry%2~ END
+    COPY_EXISTING ~%entry%2.spl~ ~override~
+      LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 326 target = 1 timing = 1 parameter2 = r2 STR_VAR resource = EVAL ~%next%~ END
+    OUTER_SPRINT next ~%entry%2~
+  END
+  LAF NY#T_SELF_SPL STR_VAR resref = EVAL ~%entry%~ END
+  COPY_EXISTING ~%entry%.spl~ ~override~
+    PATCH_IF (r1 >= 0) BEGIN
+      LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 326 target = 1 timing = 1 parameter2 = r1 STR_VAR resource = EVAL ~%next%~ END
+    END ELSE BEGIN
+      LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 146 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = EVAL ~%next%~ END
+    END
+END
+
+
+// ---------------------------------------------------------------------------
+// Level step spells (applied by the level markers and by the
+// transformations taken later)
+// ---------------------------------------------------------------------------
+LAF NY#T_SELF_SPL STR_VAR resref = ~NY#VSC10~ END   // Dragon Scale: AC +1
+COPY_EXISTING ~NY#VSC10.spl~ ~override~
+  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 0 target = 1 timing = 9 parameter1 = 1 parameter2 = 0 END
+LAF NY#T_SELF_SPL STR_VAR resref = ~NY#VSC15~ END   // Dragon Scale: AC +1
+COPY_EXISTING ~NY#VSC15.spl~ ~override~
+  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 0 target = 1 timing = 9 parameter1 = 1 parameter2 = 0 END
+LAF NY#T_SELF_SPL STR_VAR resref = ~NY#VRE15~ END   // Draconic Resilience: CON +2
+COPY_EXISTING ~NY#VRE15.spl~ ~override~
+  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 10 target = 1 timing = 9 parameter1 = 2 parameter2 = 0 END
+LAF NY#T_SELF_SPL STR_VAR resref = ~NY#VMI15~ END   // Draconic Might: STR +2
+COPY_EXISTING ~NY#VMI15.spl~ ~override~
+  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 44 target = 1 timing = 9 parameter1 = 2 parameter2 = 0 END
+
+
+// ---------------------------------------------------------------------------
+// Claws, breath and granted spells
+// ---------------------------------------------------------------------------
+INCLUDE ~%MOD_FOLDER%/kits/black_dragon_disciple/transformations/claws.tpa~
+INCLUDE ~%MOD_FOLDER%/kits/black_dragon_disciple/transformations/breath.tpa~
+INCLUDE ~%MOD_FOLDER%/kits/black_dragon_disciple/transformations/granted_spells.tpa~
+
+
+// ---------------------------------------------------------------------------
+// Level markers (CLAB): levels 10, 15, 20 and 25
+// ---------------------------------------------------------------------------
+ACTION_FOR_EACH lv IN 10 15 20 25 BEGIN
+  LAF NY#T_SELF_SPL STR_VAR resref = EVAL ~NY#BDM%lv%~ END
+  COPY_EXISTING ~NY#BDM%lv%.spl~ ~override~
+    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 328 target = 1 timing = 9 parameter2 = $ny_state(~LV%lv%~) special = 1 END
+    // new claws stage (the claws choose their stage from the markers)
+    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 326 target = 1 timing = 1 parameter2 = $ny_has(~CLB~) STR_VAR resource = ~NY#KCRT~ END
+    PATCH_IF (lv = 10 OR lv = 15) BEGIN
+      LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 326 target = 1 timing = 1 parameter2 = $ny_has(~SCL~) STR_VAR resource = EVAL ~NY#VSC%lv%~ END
+    END
+    PATCH_IF (lv = 15) BEGIN
+      LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 326 target = 1 timing = 1 parameter2 = $ny_has(~RES~) STR_VAR resource = ~NY#VRE15~ END
+      LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 326 target = 1 timing = 1 parameter2 = $ny_has(~MIG~) STR_VAR resource = ~NY#VMI15~ END
+    END
+END
+
+
+// ---------------------------------------------------------------------------
+// Frightful Presence: toggleable aura (ON/OFF swap themselves)
+// Every round the aura casts NY#BDFPA at the disciple's level; the header of
+// level L only affects enemies whose level is lower than L. Panic for 2
+// rounds (save vs. Spell); after the test, 24 hours of immunity. A creature
+// that fails is still in panic when it gets the immunity, which only
+// matters once it has recovered: it is not tested again for 24 hours either.
+// ---------------------------------------------------------------------------
+OUTER_SET ny_str_fear_on    = RESOLVE_STR_REF (@230)
+OUTER_SET ny_str_fear_on_d  = RESOLVE_STR_REF (@231)
+OUTER_SET ny_str_fear_off   = RESOLVE_STR_REF (@232)
+OUTER_SET ny_str_fear_off_d = RESOLVE_STR_REF (@233)
+
+// Icons: the game's Horror icon (SPWI205B), recoloured in the acid yellow
+// of the breath; portrait icon reduced to 13 px
+COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdfpi.bam~ ~override~
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdfpc.bam~ ~override~   // no plate (SPWI205C)
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdfpd.bam~ ~override~
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDFPI~ c = ~NY#BDFPC~ END   // Remastered Spell Icons
+LAF NY#ADD_STATDESC INT_VAR strref = ny_str_fear_on STR_VAR bam = ~NY#BDFPD~ RET ny_pd_fear = index END
+
+OUTER_SET ny_ids_level = IDS_OF_SYMBOL (~stats~ ~LEVEL~)
+// immune when not an enemy of the party (EA < EVILCUTOFF)
+LAF NY#SPLPROT_ROW STR_VAR label = ~NY#EA<200~ stat = ~0x10a~ value = ~200~ relation = ~2~ RET ny_prot_not_enemy = row END
+// immune when LEVEL >= opcode parameter1
+LAF NY#SPLPROT_ROW STR_VAR label = ~NY#LEVEL>=PARAM~ stat = EVAL ~%ny_ids_level%~ value = ~-1~ relation = ~4~ RET ny_prot_level = row END
+
+CREATE ~SPL~ ~NY#BDFPA~
+  LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+  FOR (lvl = 1; lvl <= 50; ++lvl) BEGIN
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = lvl casting_time = 0 projectile = ny_pro_fear RET h = header END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 324 target = 2 duration = 1 parameter2 = ny_prot_not_enemy STR_VAR resource = ~NY#BDFPA~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 324 target = 2 duration = 1 parameter1 = lvl parameter2 = ny_prot_level STR_VAR resource = ~NY#BDFPA~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 24  target = 2 duration = (2 * ny_round) resist_dispel = 1 savingthrow = 1 END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 2 duration = ny_day parameter1 = "-1" STR_VAR resource = ~NY#BDFPA~ END
+  END
+
+LAF NY#CREATE_EFF INT_VAR opcode = 146 target = 1 parameter2 = 1 STR_VAR eff = ~NY#BDFPE~ resource = ~NY#BDFPA~ END
+
+CREATE ~SPL~ ~NY#BDFP~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_fear_on desc = ny_str_fear_on_d type = 4 level = 1 STR_VAR icon = ~NY#BDFPC~ END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = 1 casting_time = 1 STR_VAR icon = ~NY#BDFPI~ RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 272 target = 1 timing = 1 parameter1 = ny_round parameter2 = 3 STR_VAR resource = ~NY#BDFPE~ END
+  // portrait icon while the aura is on (removed with the aura by NY#BDFQ)
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 142 target = 1 timing = 1 parameter2 = ny_pd_fear END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#BDFP~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 171 target = 1 timing = 1 STR_VAR resource = ~NY#BDFQ~ END
+
+CREATE ~SPL~ ~NY#BDFQ~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_fear_off desc = ny_str_fear_off_d type = 4 level = 1 STR_VAR icon = ~NY#BDFPC~ END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = 1 casting_time = 0 STR_VAR icon = ~NY#BDFPI~ RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 321 target = 1 timing = 1 STR_VAR resource = ~NY#BDFP~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#BDFQ~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 171 target = 1 timing = 1 STR_VAR resource = ~NY#BDFP~ END
+
+
+// ---------------------------------------------------------------------------
+// Draconic Tail: once per round, the tail strikes the nearest enemy in melee
+// reach: 2d6 crushing damage, save vs. Breath or knocked prone
+// (unconscious) for 1 second.
+// A permanent opcode 232 on the disciple (condition HPPercentLT(Myself,102),
+// always true, checked once per round; target NearestEnemyOf) fires NY#TTLS
+// with the range-limited projectile NY#MELEE: no enemy in reach = no strike
+// that round. Opcode 232 must stay the last (here the only) effect of its
+// spell: NY#TTLP, cast by the transformation.
+// ---------------------------------------------------------------------------
+OUTER_SET ny_str_tail = RESOLVE_STR_REF (@220)
+
+CREATE ~SPL~ ~NY#TTLS~
+  LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1000 level = 1 casting_time = 0 projectile = ny_pro_melee RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 0 parameter2 = 0 dicenumber = 2 dicesize = 6 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 39  target = 2 timing = 0 duration = 1 parameter2 = 0 savingthrow = 2 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 STR_VAR resource = ~SPSDIMPA~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 139 target = 2 timing = 1 parameter1 = ny_str_tail END   // combat log
+
+LAF NY#T_SELF_SPL STR_VAR resref = ~NY#TTLP~ END
+COPY_EXISTING ~NY#TTLP.spl~ ~override~
+  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 232 target = 1 timing = 9 parameter1 = 2 parameter2 = 20 special = 102 STR_VAR resource = ~NY#TTLS~ END
+
+
+// ---------------------------------------------------------------------------
+// Acidosis, below 50% health: each round (opcode 232, condition
+// HPPercentLT(Myself,50)) the disciple gets for 1 round an acid shield
+// (opcode 232, condition HitBy, target LastHitter) dealing 1d2 acid damage
+// to his attackers. Opcodes 232 alone in their spells.
+// ---------------------------------------------------------------------------
+CREATE ~SPL~ ~NY#TACH~
+  LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1000 level = 1 casting_time = 0 RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 0 parameter2 = 0x10000 dicenumber = 1 dicesize = 2 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 STR_VAR resource = ~SHACID~ END
+
+LAF NY#T_SELF_SPL STR_VAR resref = ~NY#TACS~ END
+COPY_EXISTING ~NY#TACS.spl~ ~override~
+  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 232 target = 1 timing = 0 duration = ny_round parameter1 = 1 parameter2 = 0 STR_VAR resource = ~NY#TACH~ END
+
+LAF NY#T_SELF_SPL STR_VAR resref = ~NY#TACP~ END
+COPY_EXISTING ~NY#TACP.spl~ ~override~
+  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 232 target = 1 timing = 9 parameter1 = 0 parameter2 = 20 special = 50 STR_VAR resource = ~NY#TACS~ END
+
+
+// ---------------------------------------------------------------------------
+// Draconic Resilience: the hardened skull, an item in the helmet slot
+// (opcode 143, slot 6) carrying the immunity to critical hits (item flag).
+// Not movable.
+// ---------------------------------------------------------------------------
+OUTER_SET ny_str_skull   = RESOLVE_STR_REF (@218)
+OUTER_SET ny_str_skull_d = RESOLVE_STR_REF (@219)
+CREATE ~ITM~ ~NY#TRSI~
+  WRITE_LONG  0x08 ny_str_skull
+  WRITE_LONG  0x0c ny_str_skull
+  WRITE_LONG  0x18 0x02000060                   // toggle critical hits, magical; not movable
+  WRITE_SHORT 0x1c 7                            // helm
+  WRITE_ASCII 0x3a ~NY#TRESC~ #8
+  WRITE_LONG  0x50 ny_str_skull_d
+  WRITE_LONG  0x54 ny_str_skull_d
+  WRITE_ASCII 0x58 ~NY#TRESC~ #8
+
+
+// ---------------------------------------------------------------------------
+// Dragon Wings: Wing Buffet, the dragon's own (SPIN695, BG2:EE and EET):
+// save vs. Spell at -4 instead of -10 against the 3 seconds of
+// unconsciousness, centred on the disciple. At will: it removes itself and
+// comes back 4 rounds later.
+// ---------------------------------------------------------------------------
+OUTER_SET ny_str_wbuff   = RESOLVE_STR_REF (@240)
+OUTER_SET ny_str_wbuff_d = RESOLVE_STR_REF (@241)
+OUTER_SET ny_wing_buffet = FILE_EXISTS_IN_GAME ~spin695.spl~
+ACTION_IF ny_wing_buffet BEGIN
+  COPY_EXISTING ~spin695.spl~ ~override/NY#TWBF.spl~
+    WRITE_LONG  0x08 ny_str_wbuff
+    WRITE_LONG  0x0c ny_str_wbuff
+    WRITE_LONG  0x50 ny_str_wbuff_d
+    WRITE_LONG  0x54 ny_str_wbuff_d
+    WRITE_SHORT 0x1c 4                          // innate
+    WRITE_LONG  0x34 1
+    WRITE_ASCII 0x3a ~NY#TWNGC~ #8
+    READ_LONG  0x64 ho
+    READ_SHORT 0x68 hn
+    FOR (h = 0; h < hn; ++h) BEGIN
+      WRITE_BYTE  (ho + h * 0x28 + 0x02) 4      // innate
+      WRITE_ASCII (ho + h * 0x28 + 0x04) ~NY#TWNGB~ #8
+      WRITE_BYTE  (ho + h * 0x28 + 0x0c) 5      // target: caster
+      WRITE_SHORT (ho + h * 0x28 + 0x0e) 0      // range
+    END
+    LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 39 savebonus = "-4" END
+    LPF ADD_SPELL_EFFECT INT_VAR opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#TWBF~ END
+    LPF ADD_SPELL_EFFECT INT_VAR opcode = 171 target = 1 timing = 4 duration = (4 * ny_round) STR_VAR resource = ~NY#TWBF~ END
+END ELSE BEGIN
+  PRINT ~Black Dragon Disciple: no Wing Buffet in this game (SPIN695 missing), Dragon Wings gives the movement bonus only.~
+END
+
+
+// ===========================================================================
+// The transformations
+// ===========================================================================
+ACTION_DEFINE_ASSOCIATIVE_ARRAY ny_t_level BEGIN
+  CLB => 1  SCL => 1
+  BRW => 2  RES => 2
+  TAL => 3  SWS => 3
+  ACD => 4  BDM => 4
+  MIG => 5  MBR => 5
+  BLS => 6  AMS => 6
+  WNG => 7  MAJ => 7
+  FPR => 8  GBD => 8
+  APO => 9  BMS => 9
+END
+
+OUTER_SET $ny_t_name(~CLB~) = RESOLVE_STR_REF (@100)   OUTER_SET $ny_t_desc(~CLB~) = RESOLVE_STR_REF (@101)
+OUTER_SET $ny_t_name(~SCL~) = RESOLVE_STR_REF (@102)   OUTER_SET $ny_t_desc(~SCL~) = RESOLVE_STR_REF (@103)
+OUTER_SET $ny_t_name(~BRW~) = RESOLVE_STR_REF (@104)   OUTER_SET $ny_t_desc(~BRW~) = RESOLVE_STR_REF (@105)
+OUTER_SET $ny_t_name(~RES~) = RESOLVE_STR_REF (@106)   OUTER_SET $ny_t_desc(~RES~) = RESOLVE_STR_REF (@107)
+OUTER_SET $ny_t_name(~TAL~) = RESOLVE_STR_REF (@108)   OUTER_SET $ny_t_desc(~TAL~) = RESOLVE_STR_REF (@109)
+OUTER_SET $ny_t_name(~SWS~) = RESOLVE_STR_REF (@110)   OUTER_SET $ny_t_desc(~SWS~) = RESOLVE_STR_REF (@111)
+OUTER_SET $ny_t_name(~ACD~) = RESOLVE_STR_REF (@112)   OUTER_SET $ny_t_desc(~ACD~) = RESOLVE_STR_REF (@113)
+OUTER_SET $ny_t_name(~BDM~) = RESOLVE_STR_REF (@114)   OUTER_SET $ny_t_desc(~BDM~) = RESOLVE_STR_REF (@115)
+OUTER_SET $ny_t_name(~MIG~) = RESOLVE_STR_REF (@116)   OUTER_SET $ny_t_desc(~MIG~) = RESOLVE_STR_REF (@117)
+OUTER_SET $ny_t_name(~MBR~) = RESOLVE_STR_REF (@118)   OUTER_SET $ny_t_desc(~MBR~) = RESOLVE_STR_REF (@119)
+OUTER_SET $ny_t_name(~BLS~) = RESOLVE_STR_REF (@120)   OUTER_SET $ny_t_desc(~BLS~) = RESOLVE_STR_REF (@121)
+OUTER_SET $ny_t_name(~AMS~) = RESOLVE_STR_REF (@122)   OUTER_SET $ny_t_desc(~AMS~) = RESOLVE_STR_REF (@123)
+OUTER_SET $ny_t_name(~WNG~) = RESOLVE_STR_REF (@124)   OUTER_SET $ny_t_desc(~WNG~) = RESOLVE_STR_REF (@125)
+OUTER_SET $ny_t_name(~MAJ~) = RESOLVE_STR_REF (@126)   OUTER_SET $ny_t_desc(~MAJ~) = RESOLVE_STR_REF (@127)
+OUTER_SET $ny_t_name(~FPR~) = RESOLVE_STR_REF (@128)   OUTER_SET $ny_t_desc(~FPR~) = RESOLVE_STR_REF (@129)
+OUTER_SET $ny_t_name(~GBD~) = RESOLVE_STR_REF (@130)   OUTER_SET $ny_t_desc(~GBD~) = RESOLVE_STR_REF (@131)
+OUTER_SET $ny_t_name(~APO~) = RESOLVE_STR_REF (@132)   OUTER_SET $ny_t_desc(~APO~) = RESOLVE_STR_REF (@133)
+OUTER_SET $ny_t_name(~BMS~) = RESOLVE_STR_REF (@134)   OUTER_SET $ny_t_desc(~BMS~) = RESOLVE_STR_REF (@135)
+
+// Swamp Stride: the game's swamp spells (those present in the game)
+OUTER_SET ny_swamp_n = 0
+ACTION_FOR_EACH ids IN WIZARD_GREASE CLERIC_ENTANGLE WIZARD_WEB WIZARD_STINKING_CLOUD CLERIC_SPIKE_GROWTH BEGIN
+  ACTION_IF (IDS_OF_SYMBOL (~spell~ ~%ids%~) >= 0) BEGIN
+    LAF RES_NUM_OF_SPELL_NAME STR_VAR spell_name = EVAL ~%ids%~ RET r = spell_res END
+    OUTER_SPRINT $ny_swamp(~%ny_swamp_n%~) ~%r%~
+    OUTER_SET ny_swamp_n += 1
+  END
+END
+// ... and the Entangle learned through Black Dragon Magic
+ACTION_IF FILE_EXISTS_IN_GAME ~NY#TGEN.spl~ BEGIN
+  OUTER_SPRINT $ny_swamp(~%ny_swamp_n%~) ~NY#TGEN~
+  OUTER_SET ny_swamp_n += 1
+END
+
+ACTION_FOR_EACH code IN CLB SCL BRW RES TAL SWS ACD BDM MIG MBR BLS AMS WNG MAJ FPR GBD APO BMS BEGIN
+  OUTER_SET lv = $ny_t_level(~%code%~)
+  OUTER_SET n  = $ny_t_name(~%code%~)
+  OUTER_SET d  = $ny_t_desc(~%code%~)
+  LAF NY#T_BEGIN INT_VAR level = lv name = n desc = d STR_VAR code END
+
+  COPY_EXISTING ~NY#T%code%.spl~ ~override~
+    PATCH_MATCH ~%code%~ WITH
+      // Claw & Bite: claws of the level's stage (see claws.tpa)
+      ~CLB~ BEGIN
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 146 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#KCRT~ END
+      END
+      // Dragon Scale: AC +3, +1 at levels 10 and 15
+      ~SCL~ BEGIN
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 0   target = 1 timing = 9 parameter1 = 3 parameter2 = 0 END
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 326 target = 1 timing = 1 parameter2 = $ny_has(~LV10~) STR_VAR resource = ~NY#VSC10~ END
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 326 target = 1 timing = 1 parameter2 = $ny_has(~LV15~) STR_VAR resource = ~NY#VSC15~ END
+      END
+      // Breath transformations: the breath ability is chosen again
+      ~BRW~ ~MBR~ ~BMS~ BEGIN
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 146 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#KBRF~ END
+      END
+      // Draconic Resilience: CON +2, +2 at level 15; the skull (critical hits)
+      ~RES~ BEGIN
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 10  target = 1 timing = 9 parameter1 = 2 parameter2 = 0 END
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 143 target = 1 timing = 1 parameter1 = 6 STR_VAR resource = ~NY#TRSI~ END
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 326 target = 1 timing = 1 parameter2 = $ny_has(~LV15~) STR_VAR resource = ~NY#VRE15~ END
+      END
+      ~TAL~ BEGIN
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 146 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#TTLP~ END
+      END
+      // Swamp Stride: poison, Grease, Entangle, Web, Stinking Cloud, Spike
+      // Growth (and the web state from other sources)
+      ~SWS~ BEGIN
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 101 target = 1 timing = 9 parameter2 = 25  END
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 101 target = 1 timing = 9 parameter2 = 157 END
+        FOR (i = 0; i < ny_swamp_n; ++i) BEGIN
+          SPRINT r $ny_swamp(~%i%~)
+          LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 206 target = 1 timing = 9 parameter1 = "-1" STR_VAR resource = EVAL ~%r%~ END
+        END
+      END
+      // Acidosis: 50% acid resistance, +20% acid damage (opcode 332, type 4
+      // = acid), acid shield below 50% health
+      ~ACD~ BEGIN
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 27  target = 1 timing = 9 parameter1 = 50 parameter2 = 0 END
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 332 target = 1 timing = 9 parameter1 = 20 parameter2 = 4 END
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 146 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#TACP~ END
+      END
+      ~BDM~ BEGIN
+        FOR (i = 0; i < ny_bdm_n; ++i) BEGIN
+          SPRINT r $ny_bdm(~%i%~)
+          LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 147 target = 1 timing = 1 STR_VAR resource = EVAL ~%r%~ END
+        END
+      END
+      // Draconic Might: STR +2, +2 at level 15; sleep, paralysis, hold
+      ~MIG~ BEGIN
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 44  target = 1 timing = 9 parameter1 = 2 parameter2 = 0 END
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 101 target = 1 timing = 9 parameter2 = 39  END
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 101 target = 1 timing = 9 parameter2 = 109 END
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 101 target = 1 timing = 9 parameter2 = 175 END
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 101 target = 1 timing = 9 parameter2 = 185 END
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 326 target = 1 timing = 1 parameter2 = $ny_has(~LV15~) STR_VAR resource = ~NY#VMI15~ END
+      END
+      // Blindsense: blindness, see invisible (opcode 193, as the Artisan's
+      // Kitpack Dragon Disciple), vision range +2 (opcode 262)
+      ~BLS~ BEGIN
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 101 target = 1 timing = 9 parameter2 = 74 END
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 193 target = 1 timing = 9 parameter2 = 1 END
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 262 target = 1 timing = 9 parameter1 = 2 parameter2 = 0 END
+      END
+      // Acid Mastery: 50% acid resistance; the breath and the claws are
+      // chosen again (their acid versions)
+      ~AMS~ BEGIN
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 27  target = 1 timing = 9 parameter1 = 50 parameter2 = 0 END
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 146 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#KBRF~ END
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 326 target = 1 timing = 1 parameter2 = $ny_has(~CLB~) STR_VAR resource = ~NY#KCRT~ END
+      END
+      // Dragon Wings: movement +4, Wing Buffet
+      ~WNG~ BEGIN
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 126 target = 1 timing = 9 parameter1 = 4 parameter2 = 0 END
+        PATCH_IF ny_wing_buffet BEGIN
+          LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 171 target = 1 timing = 1 STR_VAR resource = ~NY#TWBF~ END
+        END
+      END
+      // Draconic Majesty: CHA +2, INT +2, Lore +50, Charm Reptile 3 per day
+      ~MAJ~ BEGIN
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 6   target = 1 timing = 9 parameter1 = 2  parameter2 = 0 END
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 19  target = 1 timing = 9 parameter1 = 2  parameter2 = 0 END
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 21  target = 1 timing = 9 parameter1 = 50 parameter2 = 0 END
+        FOR (i = 0; i < 3; ++i) BEGIN
+          LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 171 target = 1 timing = 1 STR_VAR resource = ~NY#TCHR~ END
+        END
+      END
+      ~FPR~ BEGIN
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 171 target = 1 timing = 1 STR_VAR resource = ~NY#BDFP~ END
+      END
+      ~GBD~ BEGIN
+        FOR (i = 0; i < ny_gbd_n; ++i) BEGIN
+          SPRINT r $ny_gbd(~%i%~)
+          LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 147 target = 1 timing = 1 STR_VAR resource = EVAL ~%r%~ END
+        END
+      END
+      // Dragon Apotheosis: CON, STR, CHA +2, AC +4
+      ~APO~ BEGIN
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 10 target = 1 timing = 9 parameter1 = 2 parameter2 = 0 END
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 44 target = 1 timing = 9 parameter1 = 2 parameter2 = 0 END
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 6  target = 1 timing = 9 parameter1 = 2 parameter2 = 0 END
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 0  target = 1 timing = 9 parameter1 = 4 parameter2 = 0 END
+      END
+      DEFAULT
+    END
+  BUT_ONLY
+
+  LAF NY#T_END INT_VAR level = lv STR_VAR code END
+END

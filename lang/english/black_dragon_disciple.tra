@@ -1,298 +1,404 @@
 // Kit
 @1 = ~black dragon disciple~
 @2 = ~Black Dragon Disciple~
-@3 = ~BLACK DRAGON DISCIPLE: The blood of a black dragon runs in the veins of these sorcerers. As they grow in power, the dragon within slowly takes over their body, from black claws to leathery wings.
+@3 = ~BLACK DRAGON DISCIPLE: The blood of a black dragon runs in the veins of these sorcerers. Unlike other Dragon Disciples, they are not born with their ancestor's gifts: claws, scales, breath and wings lie dormant in their blood. Each one must be awakened by choice, and every awakening costs a part of the sorcerer's magic, forever.
 
 Advantages:
-- Hit Die: d6 instead of d4, and THAC0 progression of a druid.
-- 1st level: +1 bonus to AC. Gains Draconic Claws.
+- Hit Die: d6 instead of d4.
+- May select unique Draconic Transformation when gaining new level, at the cost of learning a new spell.
 
-DRACONIC CLAWS: The nails of the Black Dragon Disciple have curved into vicious claws like those of a black dragon. They deal 1d4 slashing damage and allow 2 attacks per round when fighting unarmed.
-
-- 2nd level: Gains Swamp Stride.
-
-SWAMP STRIDE: Affinity with swamp terrain allows the Black Dragon Disciple to move freely through it. He is immune to the effects of spells such as Entangle, Grease and Web.
-
-- 3rd level: May use Breath Weapon once per day.
-
-BREATH WEAPON: The Black Dragon Disciple exhales a 15-ft. long, 5-ft. wide line of acid, dealing 4d4 acid damage to all creatures in the line (save vs. Breath for half).
-
-- 4th level: Gains Acid Affinity. Claws now deal 1d6 slashing damage and count as +1 magical weapons.
-
-ACID AFFINITY: The black dragon's blood protects the Black Dragon Disciple from acid and makes his own acid more potent. He gains 20% acid resistance, and all acid damage he deals is increased by 5%. Both increase at levels 8, 12 and 16, up to 80% acid resistance and +20% acid damage. At level 20, he becomes immune to acid and his acid damage is increased by 25%.
-
-- 5th level: +1 bonus to AC and Constitution.
-- 6th level: Gains a bite attack, summoned as an off-hand weapon while unarmed, dealing 1d6 piercing and 2 acid damage. The bite counts as a magical weapon of the same enchantment as the claws. The innate abilities Fight with the Bite and Fight without the Bite summon or dismiss it at will.
-- 7th level: May use Breath Weapon twice per day. Damage increases to 6d4.
-- 8th level: Acid Affinity improves. Claws now deal 1d8 slashing damage and count as +2 magical weapons.
-- 9th level: Gains Draconic Tail.
-
-DRACONIC TAIL: The Black Dragon Disciple grows a powerful tail. Each round, one creature within 5 ft. must save vs. Breath or take 1d10 crushing damage and be knocked prone for 1 second.
-
-- 10th level: +1 bonus to AC. Gains the Blindsense passive ability.
-
-BLINDSENSE: The Black Dragon Disciple can perceive his surroundings without relying on sight. He becomes immune to blindness and can see and target invisible creatures.
-
-- 11th level: May use Breath Weapon three times per day. Damage increases to 8d4.
-- 12th level: Acid Affinity improves. Claws now deal 1d10 slashing damage and count as +3 magical weapons.
-- 13th level: Bite now deals 2d6 piercing damage and 2d4 acid damage.
-- 14th level: Gains Draconic Wings.
-
-DRACONIC WINGS: The Black Dragon Disciple grows a pair of draconic wings, gaining +4 movement speed, +2 AC and immunity to critical hits. Spread, they reveal his true draconic form. The wings occupy the helmet slot and may be toggled on and off at will.
-
-- 15th level: +1 bonus to AC and Constitution.
-- 16th level: Acid Affinity improves. Claws now deal 2d6 slashing damage and count as +4 magical weapons.
-- 17th level: May use Breath Weapon four times per day. Damage increases to 10d4.
-- 18th level: Gains the innate ability Frightful Presence.
-
-FRIGHTFUL PRESENCE: The Black Dragon Disciple radiates an aura of draconic menace. Enemies of a lower level than the Black Dragon Disciple within 15 ft. must save vs. Spell or be panicked for 2 rounds. Whether it succeeds or fails, a creature then becomes immune to this aura for 24 hours. Allies are not affected. The aura may be toggled on and off at will.
-
-- 19th level: Breath Weapon damage increases to 12d4, and the line grows to 30 ft. long and 10 ft. wide.
-- 20th level: Draconic Apotheosis: +1 bonus to AC and immunity to sleep and paralysis. Acid Affinity reaches its peak. Claws now deal 2d8 slashing damage and count as +5 magical weapons.
-
-- High-level abilities (Throne of Bhaal): besides the sorcerer's extra spells and Summon Dark Planetar, the Black Dragon Disciple may learn the innate abilities of an adult black dragon: Breathbloom, Wing Buffet, Insect Swarm and Plant Growth; he may also summon a black dragon turtle or a black draco-sphinx.
+DRACONIC TRANSFORMATIONS: The transformations appear among the spells the Black Dragon Disciple can learn. Cast once, a transformation changes him permanently; its effects persist through death and cannot be dispelled. Effects that grow with level keep growing after the transformation, and a transformation taken late grants at once the steps already reached.
 
 Disadvantages:
-- Casts one fewer spell per day at each spell level.
-- Casts spells as a sorcerer one level lower (minimum 1st level). For example, he gains access to 2nd-level spells at level 5 instead of 4.
-- Cannot use any weapon: the Black Dragon Disciple fights only with his claws and bite. His proficiency points may only be spent on Single Weapon Style (up to 1 point) and Two-Weapon Style (up to 3 points).
-~
+- One spell slot less per spell level.
+- Each Draconic Transformation permanently removes one spell slot of its level.~
 
-// Draconic Claws (item, one description per stage: levels 1, 4, 8, 12, 16, 20)
-@10 = ~Draconic Claws~
-@11 = ~Draconic Claws
 
-The nails of the Black Dragon Disciple have curved into black claws.
+// ---------------------------------------------------------------------------
+// Transformations (spells)
+// ---------------------------------------------------------------------------
+
+@100 = ~Claw & Bite~
+@101 = ~Claw & Bite
+(Draconic Transformation)
+
+Level: 1
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+Black claws grow on both hands of the Black Dragon Disciple. He gains two claw attacks dealing 1d4 slashing damage each, with no two-weapon penalty, and a +4 bonus to THAC0 with them. The claws count as +1 magical weapons, +2 at level 10, +3 at level 15, +4 at level 20 and +5 at level 25.
+
+Each successful attack has a 20% chance to provoke a bite, dealing 1d6 piercing and 1d4 acid damage.
+
+The innate abilities Retract Claws and Extend Claws dismiss or summon them at will. The claws take the first weapon slot and the shield slot.
+
+This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+
+@102 = ~Dragon Scale~
+@103 = ~Dragon Scale
+(Draconic Transformation)
+
+Level: 1
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+Black scales cover the skin of the Black Dragon Disciple. He gains a permanent +3 bonus to Armor Class, +4 at level 10 and +5 at level 15.
+
+This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+
+@104 = ~Breath Weapon~
+@105 = ~Breath Weapon
+(Draconic Transformation)
+
+Level: 2
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+The Black Dragon Disciple gains a new innate ability, Black Dragon Breath: a line of acid dealing 4d4 acid damage, 6d4 from level 7 and 8d4 from level 10 (save vs. Breath for half). The breath ignores magic resistance. Once used, it recharges in 10 rounds.
+
+This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+
+@106 = ~Draconic Resilience~
+@107 = ~Draconic Resilience
+(Draconic Transformation)
+
+Level: 2
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+The body of the Black Dragon Disciple hardens like a dragon's. He gains +2 Constitution, +4 from level 15, and immunity to critical hits. The resilient skull takes the helmet slot.
+
+This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+
+@108 = ~Draconic Tail~
+@109 = ~Draconic Tail
+(Draconic Transformation)
+
+Level: 3
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+The Black Dragon Disciple grows a powerful tail. Once per round, a hostile creature in close range takes 2d6 crushing damage and is knocked prone for 1 second if it fails a save vs. Breath.
+
+This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+
+@110 = ~Swamp Stride~
+@111 = ~Swamp Stride
+(Draconic Transformation)
+
+Level: 3
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+The Black Dragon Disciple moves through swamps and their poisons like a black dragon. He becomes immune to poison, and to Grease, Entangle, Web, Stinking Cloud and Spike Growth.
+
+This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+
+@112 = ~Acidosis~
+@113 = ~Acidosis
+(Draconic Transformation)
+
+Level: 4
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+The blood of the Black Dragon Disciple turns to acid. He gains 50% acid resistance and deals 20% more acid damage. Below 50% health, he deals 1d2 acid damage to his attackers.
+
+This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+
+@114 = ~Black Dragon Magic~
+@115 = ~Black Dragon Magic
+(Draconic Transformation)
+
+Level: 4
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+The Black Dragon Disciple learns 3 lower-level spells normally unavailable to sorcerers: Entangle, Darkness and Summon Insect.
+
+This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+
+@116 = ~Draconic Might~
+@117 = ~Draconic Might
+(Draconic Transformation)
+
+Level: 5
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+The strength of a dragon fills the Black Dragon Disciple. He gains +2 Strength, +4 from level 15, and immunity to paralysis and sleep.
+
+This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+
+@118 = ~Meta-breath~
+@119 = ~Meta-breath
+(Draconic Transformation)
+
+Level: 5
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+The Black Dragon Disciple learns to shape his breath. Black Dragon Breath now offers three forms: the line, Breath Ball and Breath Pool. All of them share the same charge. Recharge: line 6 rounds, Breath Pool 8 rounds, Breath Ball 10 rounds.
+
+This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+
+@120 = ~Blindsense~
+@121 = ~Blindsense
+(Draconic Transformation)
+
+Level: 6
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+The Black Dragon Disciple perceives his surroundings without relying on sight. He becomes immune to blindness, can see and attack invisible enemies, and his vision range slightly increases.
+
+This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+
+@122 = ~Acid Mastery~
+@123 = ~Acid Mastery
+(Draconic Transformation)
+
+Level: 6
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+The acid of the Black Dragon Disciple eats through armor. He gains 50% acid resistance. The acid of his breath and of his bite reduces the target's Armor Class by 2 for 2 rounds.
+
+This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+
+@124 = ~Dragon Wings~
+@125 = ~Dragon Wings
+(Draconic Transformation)
+
+Level: 7
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+Leathery wings tear through the back of the Black Dragon Disciple. He gains +4 movement speed and the innate ability Wing Buffet, usable at will and recharging in 4 rounds.
+
+This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+
+@126 = ~Draconic Majesty~
+@127 = ~Draconic Majesty
+(Draconic Transformation)
+
+Level: 7
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+The Black Dragon Disciple carries the presence of an ancient wyrm. He gains +2 Charisma, +2 Intelligence and +50 Lore, and may use Charm Reptile 3 times per day.
+
+This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+
+@128 = ~Frightful Presence~
+@129 = ~Frightful Presence
+(Draconic Transformation)
+
+Level: 8
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+The Black Dragon Disciple gains the innate ability Frightful Presence, an aura of draconic menace he turns on or off at will.
+
+This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+
+@130 = ~Greater Black Dragon Magic~
+@131 = ~Greater Black Dragon Magic
+(Draconic Transformation)
+
+Level: 8
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+The Black Dragon Disciple learns 3 lower-level spells normally unavailable to sorcerers: Corrupt Water, Insect Plague and Dolorous Decay.
+
+This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+
+@132 = ~Dragon Apotheosis~
+@133 = ~Dragon Apotheosis
+(Draconic Transformation)
+
+Level: 9
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+The Black Dragon Disciple becomes one with the dragon within. He gains +2 Constitution, +2 Strength, +2 Charisma and +4 Armor Class.
+
+This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+
+@134 = ~Breath Mastery~
+@135 = ~Breath Mastery
+(Draconic Transformation)
+
+Level: 9
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+The breath of the Black Dragon Disciple reaches its full strength. The damage dice of all his breaths are doubled (8d4, 12d4, 16d4) and all their recharge times are 2 rounds shorter.
+
+This draconic transformation is cast only once: its effects are permanent, persist through death and cannot be dispelled. It permanently removes one spell slot of its level. Casting it again has no effect.~
+
+
+// ---------------------------------------------------------------------------
+// Abilities and items given by the transformations
+// ---------------------------------------------------------------------------
+@200 = ~Draconic Claws~
+@201 = ~Draconic Claws
+
+The black claws of the Black Dragon Disciple. Each successful attack has a 20% chance to provoke a bite, dealing 1d6 piercing and 1d4 acid damage.
 
 STATISTICS:
 
+THAC0: +4
 Damage: 1d4 (slashing)
-Attacks per round: 2
-Speed Factor: 2
-Not magical~
-@12 = ~Draconic Claws
+No two-weapon penalty~
+@202 = ~Extend Claws~
+@203 = ~Extend Claws
 
-The claws have hardened and darkened.
+The Black Dragon Disciple extends his claws: they take the first weapon slot and the shield slot. They can be retracted at will.~
+@204 = ~Retract Claws~
+@205 = ~Retract Claws
 
-STATISTICS:
+The Black Dragon Disciple retracts his claws and frees his hands. They can be extended again at will.~
+@206 = ~Draconic Bite~
 
-THAC0: +1
-Damage: 1d6+1 (slashing)
-Attacks per round: 2
-Speed Factor: 2
-Counts as a +1 weapon for the purpose of hitting creatures~
-@13 = ~Draconic Claws
+@210 = ~Black Dragon Breath~
+@211 = ~Black Dragon Breath
 
-The claws have grown longer and sharper.
+The Black Dragon Disciple exhales a line of acid. Creatures in the line take acid damage (save vs. Breath for half); the breath ignores magic resistance. Once used, it recharges after a few rounds.~
+@212 = ~Breath Line~
+@213 = ~Breath Line
 
-STATISTICS:
+A line of acid. Creatures in the line take acid damage (save vs. Breath for half); the breath ignores magic resistance.~
+@214 = ~Breath Ball~
+@215 = ~Breath Ball
 
-THAC0: +2
-Damage: 1d8+2 (slashing)
-Attacks per round: 2
-Speed Factor: 2
-Counts as a +2 weapon for the purpose of hitting creatures~
-@14 = ~Draconic Claws
+A ball of acid bursts at the targeted point, 20-ft. radius. Creatures in the area, allies included, take acid damage (save vs. Breath for half); the breath ignores magic resistance.~
+@216 = ~Breath Pool~
+@217 = ~Breath Pool
 
-The claws have become as hard as a dragon's.
+A pool of acid spreads on the ground for 1 turn, 7.5-ft. radius. Each round, creatures in the pool take acid damage (save vs. Breath for half); the breath ignores magic resistance. The Black Dragon Disciple is not affected by his own pool.~
+@218 = ~Draconic Skull~
+@219 = ~Draconic Skull
 
-STATISTICS:
+The hardened skull of the Black Dragon Disciple protects him from critical hits.~
 
-THAC0: +3
-Damage: 1d10+3 (slashing)
-Attacks per round: 2
-Speed Factor: 2
-Counts as a +3 weapon for the purpose of hitting creatures~
-@15 = ~Draconic Claws
+@220 = ~Draconic Tail~
 
-The claws have grown to the size of a young dragon's.
+@230 = ~Frightful Presence~
+@231 = ~Frightful Presence
 
-STATISTICS:
+The Black Dragon Disciple emanates an aura of draconic menace. Enemies of a lower level than his within 10 ft. must save vs. Spell or panic for 2 rounds. A creature that succeeds becomes immune to the aura for 24 hours. Allies are not affected.
 
-THAC0: +4
-Damage: 2d6+4 (slashing)
-Attacks per round: 2
-Speed Factor: 2
-Counts as a +4 weapon for the purpose of hitting creatures~
-@16 = ~Draconic Claws
+Using this ability turns the aura on; it can then be turned off at will.~
+@232 = ~Dismiss Frightful Presence~
+@233 = ~Dismiss Frightful Presence
 
-The claws have become those of an adult black dragon.
+Turns off the aura of Frightful Presence. It can be turned on again at will.~
 
-STATISTICS:
+@240 = ~Wing Buffet~
+@241 = ~Wing Buffet
 
-THAC0: +5
-Damage: 2d8+5 (slashing)
-Attacks per round: 2
-Speed Factor: 2
-Counts as a +5 weapon for the purpose of hitting creatures~
+The Black Dragon Disciple beats his wings, knocking down and pushing back the creatures around him. Once used, it recharges in 4 rounds.~
 
-// Draconic Bite (off-hand item, one description per stage: levels 6, 8, 12, 13, 16, 20)
-@19 = ~Draconic Bite~
-@20 = ~Draconic Bite
+@250 = ~Charm Reptile~
+@251 = ~Charm Reptile
 
-The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bite is his off-hand weapon: it gives one more attack per round, with the usual two-weapon penalties, which Two-Weapon Style reduces. It can be dismissed with the innate ability Fight without the Bite, to fight with the claws alone.
+The Black Dragon Disciple bends a reptile to his will: lizard men, wyverns, basilisks, hydras, nagas and their kin are charmed for 1 hour, with no saving throw and regardless of their magic resistance. Dragons are not affected.~
 
-STATISTICS:
 
-THAC0: +1
-Damage: 1d6+1 (piercing) + 2 acid
-Speed Factor: 2
-Counts as a +1 weapon for the purpose of hitting creatures~
-@21 = ~Draconic Bite
+// ---------------------------------------------------------------------------
+// Spells learned through Black Dragon Magic and its greater versions
+// ---------------------------------------------------------------------------
+@260 = ~Darkness~
+@261 = ~Darkness
+(Alteration)
 
-The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bite is his off-hand weapon: it gives one more attack per round, with the usual two-weapon penalties, which Two-Weapon Style reduces. It can be dismissed with the innate ability Fight without the Bite, to fight with the claws alone.
+Level: 2
+Range: 0
+Duration: 3 rounds
+Casting Time: 2
+Area of Effect: 15-ft. radius
+Saving Throw: None
 
-STATISTICS:
+The caster surrounds himself with a cloud of magical darkness. Every creature in the area, ally or enemy, becomes invisible and blinded for 3 rounds.~
 
-THAC0: +2
-Damage: 1d6+2 (piercing) + 2 acid
-Speed Factor: 2
-Counts as a +2 weapon for the purpose of hitting creatures~
-@22 = ~Draconic Bite
+@262 = ~Corrupt Water~
+@263 = ~Corrupt Water
+(Alteration)
 
-The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bite is his off-hand weapon: it gives one more attack per round, with the usual two-weapon penalties, which Two-Weapon Style reduces. It can be dismissed with the innate ability Fight without the Bite, to fight with the claws alone.
+Level: 4
+Range: 30 ft.
+Duration: 1 turn
+Casting Time: 4
+Area of Effect: 15-ft. radius
+Saving Throw: Special
 
-STATISTICS:
+A foul rain falls on the area and leaves a pool of rotten water on the ground for 1 turn. The potions carried by the creatures in the area are spoiled and destroyed. Each round, creatures in the water must save vs. Death or be poisoned for 1 round.~
 
-THAC0: +3
-Damage: 1d6+3 (piercing) + 2 acid
-Speed Factor: 2
-Counts as a +3 weapon for the purpose of hitting creatures~
-@23 = ~Draconic Bite
+@264 = ~Summon Reptile~
+@265 = ~Summon Reptile
+(Conjuration)
 
-The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bite is his off-hand weapon: it gives one more attack per round, with the usual two-weapon penalties, which Two-Weapon Style reduces. It can be dismissed with the innate ability Fight without the Bite, to fight with the claws alone.
+Level: 8
+Range: 30 ft.
+Duration: 1 turn + 1 round per level
+Casting Time: 8
+Area of Effect: Special
+Saving Throw: None
 
-STATISTICS:
+The caster calls a hydra to fight at his side.~
 
-THAC0: +3
-Damage: 2d6+3 (piercing) + 2d4 acid
-Speed Factor: 2
-Counts as a +3 weapon for the purpose of hitting creatures~
-@24 = ~Draconic Bite
+@266 = ~Swampy Lake~
+@267 = ~Swampy Lake
+(Conjuration)
 
-The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bite is his off-hand weapon: it gives one more attack per round, with the usual two-weapon penalties, which Two-Weapon Style reduces. It can be dismissed with the innate ability Fight without the Bite, to fight with the claws alone.
+Level: 9
+Range: 30 ft.
+Duration: 1 turn
+Casting Time: 9
+Area of Effect: 30-ft. radius
+Saving Throw: Special
 
-STATISTICS:
+A lake of acid swallows the area for 1 turn. Each round, creatures in the lake take 4d6 acid damage (save vs. Breath for half). The caster is not affected.~
 
-THAC0: +4
-Damage: 2d6+4 (piercing) + 2d4 acid
-Speed Factor: 2
-Counts as a +4 weapon for the purpose of hitting creatures~
-@25 = ~Draconic Bite
+@270 = ~Half Black Dragon Spirit~
 
-The jaw of the Black Dragon Disciple has lengthened into a draconic maw. The bite is his off-hand weapon: it gives one more attack per round, with the usual two-weapon penalties, which Two-Weapon Style reduces. It can be dismissed with the innate ability Fight without the Bite, to fight with the claws alone.
 
-STATISTICS:
+// ---------------------------------------------------------------------------
+// High-level abilities
+// ---------------------------------------------------------------------------
+@300 = ~Breath Doom~
+@301 = ~Breath Doom
 
-THAC0: +5
-Damage: 2d6+5 (piercing) + 2d4 acid
-Speed Factor: 2
-Counts as a +5 weapon for the purpose of hitting creatures~
+The Black Dragon Disciple unleashes the full fury of his ancestor: a huge cone of acid. Acid version of Dragon's Breath, which is no longer available to the Black Dragon Disciple.~
+@302 = ~Call Ancestor~
+@303 = ~Call Ancestor
 
-// Draconic Tail (combat log line on each strike)
-@26 = ~Draconic Tail~
+The Black Dragon Disciple calls the spirit of a half black dragon ancestor to fight at his side. Replaces Summon Planetar and Summon Dark Planetar.~
+@304 = ~Bonemelt~
+@305 = ~Bonemelt
 
-// Acid Breath
-@30 = ~Acid Breath~
-@31 = ~Acid Breath
+A powerful single-target acid spell. The target takes 4d4 acid damage per round for 10 rounds. Skeletons are destroyed instantly.~
+@306 = ~Black Dragon Magic Mastery~
+@307 = ~Black Dragon Magic Mastery
 
-The Black Dragon Disciple exhales a 15-ft. long, 5-ft. wide line of acid, dealing 4d4 acid damage to all creatures in the line (save vs. Breath for half). The damage increases to 6d4 at level 7, 8d4 at level 11, 10d4 at level 17 and 12d4 at level 19, when the line also grows to 30 ft. long and 10 ft. wide. Allies in the line are affected.
-
-Usable once per day, twice at level 7, three times at level 11 and four times at level 17.~
-
-// Frightful Presence
-@40 = ~Frightful Presence~
-@41 = ~Frightful Presence
-
-The Black Dragon Disciple radiates an aura of draconic menace. Enemies of a lower level than the Black Dragon Disciple within 15 ft. must save vs. Spell or be panicked for 2 rounds. Whether it succeeds or fails, a creature then becomes immune to this aura for 24 hours. Allies are not affected.
-
-Using this ability turns the aura on; it can then be dismissed at will.~
-@42 = ~Dismiss Frightful Presence~
-@43 = ~Dismiss Frightful Presence
-
-Turns off the Frightful Presence aura. It can be turned on again at will.~
-
-// Draconic Wings (helmet slot item, and the innate abilities that spread / fold them)
-@60 = ~Draconic Wings~
-@61 = ~Draconic Wings
-
-Leathery wings have torn free from the back of the Black Dragon Disciple. They take the place of a helmet. Spread, they show his true draconic form.
-
-STATISTICS:
-
-Movement: +4
-Armor Class: +2
-Immunity to critical hits~
-@62 = ~Draconic Wings
-
-The Black Dragon Disciple spreads his draconic wings, gaining +4 movement speed, +2 AC and immunity to critical hits, and reveals his true draconic form. The wings occupy the helmet slot.
-
-Using this ability spreads the wings; they can then be folded at will.~
-@63 = ~Fold Draconic Wings~
-@64 = ~Fold Draconic Wings
-
-The Black Dragon Disciple folds his wings and frees the helmet slot. They can be spread again at will.~
-
-// Fight with / without the Bite (innate abilities that swap themselves)
-@70 = ~Fight with the Bite~
-@71 = ~Fight with the Bite
-
-The Black Dragon Disciple bares his fangs: the bite takes the off hand again and gives one more attack per round, with the usual two-weapon penalties.
-
-Using this ability summons the bite; it can then be dismissed at will.~
-@72 = ~Fight without the Bite~
-@73 = ~Fight without the Bite
-
-The Black Dragon Disciple fights with his claws alone, which lets him benefit from Single Weapon Style. The bite can be summoned again at will.~
-
-// High-level abilities (BG2:EE and EET)
-@80 = ~Breathbloom~
-@81 = ~Breathbloom
-
-The Black Dragon Disciple exhales with the strength of an adult black dragon. A great bloom of acid bursts in a 20-ft. radius, dealing 20d10 acid damage to enemies and throwing them back; those who are not resisting are also knocked unconscious for 3 seconds. A successful save vs. Breath halves the damage and negates the other effects. Party members are not affected.
-
-Range: long
-Usable once per day.~
-@82 = ~Wing Buffet~
-@83 = ~Wing Buffet
-
-The Black Dragon Disciple beats his wings with the strength of an adult black dragon. Enemies within 20 ft. take 1d8 crushing damage and are thrown back; they must also save vs. Spell at -4 or be knocked unconscious for 3 seconds. Party members are not affected.
-
-Usable once per day.~
-@84 = ~Insect Swarm~
-@85 = ~Insect Swarm
-
-Like a black dragon, the Black Dragon Disciple calls a swarm of venomous insects, spiders and centipedes from the swamp onto his enemies, without any casting time. For 3 rounds, enemies within 20 ft. of the target take 2 points of poison damage per second and have a 100% chance of failing to cast spells. There is no saving throw. Party members are not affected.
-
-Usable once per day.~
-@86 = ~Plant Growth~
-@87 = ~Plant Growth
-
-Like a black dragon, the Black Dragon Disciple makes the swamp plants burst from the ground in a 20-ft. radius. Creatures in the area must save vs. Spell at -10 or be entangled for 1 round: they cannot move and suffer a 2-point penalty to AC. Allies are affected, but not the Black Dragon Disciple himself.
-
-Usable once per day.~
-
-// Summon Black Dragon Turtle (HLA)
-@88 = ~Black Dragon Turtle~
-@89 = ~Acid Steam~
-@90 = ~Summon Black Dragon Turtle~
-@91 = ~Summon Black Dragon Turtle
-
-The Black Dragon Disciple calls a black dragon turtle from the depths of the swamp to fight at his side for 1 turn + 1 round per level. It obeys him until the duration ends or it is slain.
-
-Black dragon turtle: HP 220, AC -3, THAC0 1, 2 bites per round (4d8+4 piercing damage, +4 weapon). Three times per summoning, at most once every 3 rounds, it breathes a cloud of acid steam in a line 40 ft. long and 15 ft. wide, dealing 12d8 acid damage (save vs. Breath for half). Allies in the line are affected. The turtle is immune to acid, poison and fear.
-
-Usable once per day.~
-
-// Summon Black Draco-Sphinx (HLA)
-@92 = ~Black Draco-Sphinx~
-@93 = ~Roar~
-@94 = ~Acid Breath~
-@95 = ~Summon Black Draco-Sphinx~
-@96 = ~Summon Black Draco-Sphinx
-
-The Black Dragon Disciple calls a black draco-sphinx, a winged lion with the horns and the acid of a black dragon, to fight at his side for 1 turn + 1 round per level. It obeys him until the duration ends or it is slain.
-
-Black draco-sphinx: HP 200, AC -2, THAC0 2, 3 attacks per round with its claws and fangs (2d8+4 slashing damage, +4 weapon). When it first sees enemies, it roars: enemies within 30 ft. must save vs. Spell at -2 or flee in panic for 2 rounds. Twice per summoning, at most once every 3 rounds, it breathes a line of acid 40 ft. long and 10 ft. wide, dealing 10d8 acid damage (save vs. Breath for half). Allies in the line are affected, not by the roar. The draco-sphinx is immune to acid, poison and fear.
-
-Usable once per day.~
+The Black Dragon Disciple learns 3 spells of levels 7, 8 and 9 normally unavailable to sorcerers: Creeping Doom, Summon Reptile and Swampy Lake.~

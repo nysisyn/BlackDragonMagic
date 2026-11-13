@@ -1,74 +1,15 @@
 /////////////////////////////////////////////////////////////////////////////
-// Test: hydra animation (BG2:EE and EET)
+// Test: hydra (BG2:EE and EET)
 //
-// Animation MHYD built from the hydra of Might and Magic VII: For Blood and
-// Honor (3DO / New World Computing, 1999; sprite sheet ripped by Cyrus
-// Annihilator) with works/hydra_mm7_source/build_mm7.py: monster_icewind
-// type (MHYD<seq>.BAM: S, SW, W, NW, N / MHYD<seq>E.BAM: NE, E, SE). The
-// sheet has 5 facings (front, front 3/4, profile, back 3/4, back), the west
-// side is mirrored: 8 real directions. Slate grey variant: the animations
-// exist only in green, recoloured with the exact palette swap read from the
-// green and slate standing frames (252 colours). Flat shadow added under the
-// feet. Scaled x0.8.
-// Sequences: SD stand (slow breathing made by stretching the standing frame
-// up to 2%, and seen from the front the sheet's fidget once per cycle), SC combat stance (heads swaying up), WK walk (8
-// frames), A1-A4 / CA / SP attack (heads rise and strike, shown twice as
-// slow), GH hit, DE death (front view only in the sheet), TW / SL dead, GU
-// get up (death reversed).
-// The first version (Chaos Hydra of Heroes of Might and Magic III, one
-// facing only) is kept in works/hydra_homm3_source.
-//
-// Test creature NY#HYDR (hostile copy of the summoned hydra, see below), to
-// create with the console: CLUAConsole:CreateCreature("NY#HYDR")
+// The creature is built by hydra_creature.tpa (also used by the Black
+// Dragon Disciple's Summon Reptile). This component adds the test creature
+// NY#HYDR (hostile copy of the summoned hydra), to create with the console:
+// CLUAConsole:CreateCreature("NY#HYDR"), and the spell Summon Hydra.
 /////////////////////////////////////////////////////////////////////////////
 
-OUTER_SET ny_str_hydra = RESOLVE_STR_REF (@1)
-
-COPY ~%MOD_FOLDER%/creatures/hydra/anim~ ~override~
-
-// Animation id: first free one from 0xEC40 (no INI file, no ANIMATE.IDS entry)
-OUTER_SET ny_hyd_anim = "-1"
-OUTER_FOR (id = 0xec40; (id <= 0xecff) AND (ny_hyd_anim < 0); ++id) BEGIN
-  LAF NY#HEX4 INT_VAR value = id RET hexstring = hex END
-  OUTER_SET used = FILE_EXISTS_IN_GAME ~%hexstring%.ini~
-  ACTION_IF (NOT used) BEGIN
-    COPY_EXISTING ~animate.ids~ ~override~
-      PATCH_IF (INDEX_BUFFER (CASE_INSENSITIVE EVALUATE_REGEXP ~^0x%hexstring%[ %TAB%]~) >= 0) BEGIN
-        SET used = 1
-      END
-    BUT_ONLY
-  END
-  ACTION_IF (NOT used) BEGIN
-    OUTER_SET ny_hyd_anim = id
-    OUTER_SPRINT ny_hyd_hex ~%hexstring%~
-  END
+ACTION_IF NOT FILE_EXISTS_IN_GAME ~ny#hyds.cre~ BEGIN
+  INCLUDE ~%MOD_FOLDER%/creatures/hydra/hydra_creature.tpa~
 END
-ACTION_IF (ny_hyd_anim < 0) BEGIN
-  FAIL ~BlackDragonMagic: no free animation id between 0xEC40 and 0xECFF~
-END
-COPY ~%MOD_FOLDER%/creatures/hydra/ini/hydra.ini~ ~override/%ny_hyd_hex%.ini~
-ACTION_IF (IDS_OF_SYMBOL (~animate~ ~NY_HYDRA~) < 0) BEGIN
-  APPEND ~animate.ids~ ~0x%ny_hyd_hex% NY_HYDRA~
-END
-PRINT ~Hydra animation id: 0x%ny_hyd_hex%~
-
-/////////////////////////////////////////////////////////////////////////////
-// Summon Hydra - wizard, level 9, Conjuration
-//
-//   NY#HYDS   the summoned hydra (ally, CONTROLLED), from the summoned wyvern,
-//             on par with the level 9 summons: 160 HP, AC 0, THAC0 5,
-//             4 attacks per round (its heads), level 12, saves of a level 12
-//             fighter, STR 20, 50% acid resistance, immune to poison and
-//             fear, regenerates 1 HP per second as a troll; no experience
-//             when killed
-//   NY#HYSP   its Corrosive Spit (projectile ACIDBLOB), NY#HYSX failed save,
-//   NY#HYDSS  its override script (spit at range, melee otherwise)
-//   NY#HYSW   its bites: 2d6+4 piercing, +4 weapon (+2 to hit); carries the
-//             immunities and the regeneration (with its portrait icon)
-//   NY#HYDR   test copy, hostile, to create with the console
-//   NY#HYIS   the spell, 1 turn + 1 round per level (WIZARD_NY_SUMMON_HYDRA)
-//   NY#HYISB / NY#HYISC  icons: placeholder, the hydra's first frame reduced
-/////////////////////////////////////////////////////////////////////////////
 
 OUTER_SET ny_str_hyis   = RESOLVE_STR_REF (@2)
 OUTER_SET ny_str_hyis_d = RESOLVE_STR_REF (@3)
@@ -76,80 +17,6 @@ OUTER_SET ny_str_hyis_d = RESOLVE_STR_REF (@3)
 COPY ~%MOD_FOLDER%/creatures/hydra/bam/ny#hyisb.bam~ ~override~
      ~%MOD_FOLDER%/creatures/hydra/bam/ny#hyisc.bam~ ~override~
 LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#HYISB~ c = ~NY#HYISC~ END   // Remastered Spell Icons
-
-// Corrosive Spit of the hydra: the animated breath's spit (spells/
-// corrosive_spit, NY#ABRX), rebuilt here so this component stands alone,
-// with the game's acid blob projectile (ACIDBLOB) instead of Melf's arrow:
-// 5d4 acid; save vs. Spell or blinded 1 round and 5d4 acid more next round.
-// Innate, no casting animation or time (ReallyForceSpellRES in its script).
-OUTER_SET ny_str_hysp      = RESOLVE_STR_REF (@4)
-OUTER_SET ny_str_hysp_fail = RESOLVE_STR_REF (@5)
-OUTER_SET ny_pro_hysp = IDS_OF_SYMBOL (~projectl~ ~ACIDBLOB~) + 1
-
-CREATE ~SPL~ ~NY#HYSX~
-  LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
-  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1000 level = 1 casting_time = 0 RET h = header END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 74  target = 2 timing = 0 duration = 6 END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 4 duration = 6 parameter2 = 0x10000 dicenumber = 5 dicesize = 4 END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 139 target = 2 timing = 1 parameter1 = ny_str_hysp_fail END   // combat log
-
-CREATE ~SPL~ ~NY#HYSP~
-  LPF NY#SPL_BASE INT_VAR name = ny_str_hysp type = 4 level = 1 flags = 0x400 school = 2 graphics = 0 END
-  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 30 level = 1 casting_time = 0 projectile = ny_pro_hysp RET h = header END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 1 parameter2 = 0x10000 dicenumber = 5 dicesize = 4 resist_dispel = 1 END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 resist_dispel = 1 STR_VAR resource = ~SHACID~ END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 timing = 1 parameter1 = 1 parameter2 = 1
-                               savingthrow = 1 resist_dispel = 1 STR_VAR resource = ~NY#HYSX~ END
-
-COMPILE ~%MOD_FOLDER%/creatures/hydra/baf/ny#hydss.baf~
-
-CREATE ~ITM~ ~NY#HYSW~
-  WRITE_LONG  0x08 ny_str_hydra
-  WRITE_LONG  0x0c ny_str_hydra
-  WRITE_LONG  0x18 0x60                         // not copyable, magical
-  WRITE_SHORT 0x1c 0x1c                         // hand-to-hand weapon
-  WRITE_LONG  0x60 4                            // +4 weapon
-  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 24 END   // panic
-  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 23 END   // morale failure
-  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 25 END   // poison
-  // regeneration as the trolls (TROLLREG.ITM): 1 HP per second
-  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 98  target = 1 timing = 2 parameter1 = 1 parameter2 = 2 END
-  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 142 target = 1 timing = 2 parameter2 = 87 END   // regeneration icon
-  LPF NY#ADD_ITM_HEADER INT_VAR attack_type = 1 id_req = 0 location = 1 target = 1 range = 1 speed = 3
-                                thac0 = 2 damage_bonus = 4 dice_sides = 6 dice_thrown = 2 damage_type = 1 flags = 1 END
-
-COPY_EXISTING ~WYVERNSU.cre~ ~override/NY#HYDS.cre~
-  WRITE_LONG  0x08 ny_str_hydra
-  WRITE_LONG  0x0c ny_str_hydra
-  WRITE_LONG  0x14 0                            // no experience when killed
-  WRITE_SHORT 0x24 160                          // HP
-  WRITE_SHORT 0x26 160
-  WRITE_LONG  0x28 ny_hyd_anim
-  WRITE_SHORT 0x46 0                            // AC
-  WRITE_SHORT 0x48 0
-  WRITE_BYTE  0x52 5                            // THAC0
-  WRITE_BYTE  0x53 4                            // 4 attacks per round
-  // saves of a level 12 fighter: death, wands, polymorph, breath, spells
-  WRITE_BYTE  0x54 5
-  WRITE_BYTE  0x55 7
-  WRITE_BYTE  0x56 6
-  WRITE_BYTE  0x57 5
-  WRITE_BYTE  0x58 8
-  FOR (o = 0x59; o <= 0x63; ++o) BEGIN WRITE_BYTE o 0 END
-  WRITE_BYTE  0x5c 50                           // acid
-  WRITE_BYTE  0x234 12                          // level
-  WRITE_BYTE  0x238 20                          // STR
-  WRITE_BYTE  0x239 0
-  WRITE_BYTE  0x23a 4                           // INT
-  WRITE_BYTE  0x23b 13                          // WIS
-  WRITE_BYTE  0x23c 14                          // DEX
-  WRITE_BYTE  0x23d 19                          // CON
-  WRITE_BYTE  0x23e 10                          // CHA
-  WRITE_ASCII 0x248 ~NY#HYDSS~ #8               // override script: Corrosive Spit
-  WRITE_ASCII 0x258 ~~ #8                       // no wyvern race script
-  WRITE_BYTE  0x270 5                           // CONTROLLED, as summons
-  REMOVE_CRE_ITEMS
-  ADD_CRE_ITEM ~NY#HYSW~ #0 #0 #0 ~NONE~ ~WEAPON1~ EQUIP
 
 // Test copy, hostile
 COPY_EXISTING ~NY#HYDS.cre~ ~override/NY#HYDR.cre~

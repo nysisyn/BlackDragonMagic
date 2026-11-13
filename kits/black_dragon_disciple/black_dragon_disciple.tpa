@@ -1,148 +1,51 @@
 /////////////////////////////////////////////////////////////////////////////
-// Black Dragon Disciple - sorcerer kit
+// Black Dragon Disciple - sorcerer kit, Draconic Transformations version
 //
-// Level by level progression (kit description @3). The CLAB
-// (2da/clny#bdd.2da) gives every feature at its level.
+// The kit itself is a plain sorcerer with the Dragon Disciple's d6 hit die
+// and one spell slot less per spell level. Everything draconic comes from
+// the Draconic Transformations (transformations/), wizard spells of levels
+// 1 to 9 the disciple learns instead of a spell; each one, cast once, gives
+// its effects for good and removes one spell slot of its level.
 //
-// Resources
-//   NY#BDL01..20 level bonuses (AP_ in the CLAB, permanent): AC, Constitution,
-//                Swamp Stride, Acid Affinity, Blindsense, Draconic Tail,
-//                Apotheosis immunities. Only the levels that give something.
-//   NY#BDTH      +1 THAC0, given by the CLAB at levels 4, 7, 10... 49: with
-//                the sorcerer's own progression, gives the druid's THAC0
-//   NY#BDQ02..50 spell slots of a sorcerer one level lower (CLAB, one per
-//                level, each one replaces the previous one)
-//   NY#BDZ1..6   put the claws of the stage in both weapon slots (CLAB)
-//   NY#BDCL1..6  claws (weapon item), one per stage: levels 1, 4, 8, 12, 16, 20
-//   NY#BDMZ1..6  put the bite of the stage in the off-hand slot (CLAB)
-//   NY#BDMT      Fight with the Bite / NY#BDMU  Fight without the Bite
-//   NY#BDMO1..6  bite (off-hand item), one per stage: levels 6, 8, 12, 13,
-//                16, 20 (from the branch "bite")
-//   NY#BDTL      Draconic Tail strike (fired once per round by NY#BDL09)
-//   NY#BDBRE     Acid Breath (1 to 4 per day, CLAB)
-//   NY#BDBRT     Acid Breath line, 15 ft. long and 5 ft. wide
-//   NY#BDBRU     Acid Breath line, 30 ft. long and 10 ft. wide (level 19)
-//   NY#BDWG      Draconic Wings ON  / NY#BDWH  OFF
-//   NY#BDWI      the wings (helmet slot item); spread, they give the final
-//                form (animation MBDA)
-//   NY#BDFP      Frightful Presence ON  / NY#BDFQ  OFF
-//   NY#BDFPE     aura pulse (EFF)      / NY#BDFPA  pulse spell
-//   NY#BDBL, NY#BDWB, NY#BDIS, NY#BDPG   high-level abilities (hla/hla.tpa)
+// Files
+//   2da/clny#bdd.2da                 CLAB: spell slot penalty, level markers
+//   transformations/transformations.tpa   the 18 transformations
+//   transformations/claws.tpa        Claw & Bite: claws, bite, toggles
+//   transformations/breath.tpa       Black Dragon Breath and its forms
+//   transformations/granted_spells.tpa    spells learned through Black
+//                                    Dragon Magic, Charm Reptile
+//   hla/hla.tpa                      high-level abilities (BG2:EE, EET)
 //
+// Resources of this file
+//   NY#BDL01     level 1 (CLAB): one spell slot less per spell level
+//   NY#BDM10..25  levels 10, 15, 20, 25 (CLAB): level marker (spell
+//                state) and the level steps of the transformations taken
+//   NY#BDBRT/U   breath line projectiles (15 ft. / 30 ft.)
+//   NY#BDFPT     Frightful Presence burst projectile (10 ft.)
+//   NY#MELEE     range-limited projectile (Draconic Tail, Acidosis)
 /////////////////////////////////////////////////////////////////////////////
 
-// ---------------------------------------------------------------------------
-// Strings
-// ---------------------------------------------------------------------------
-OUTER_SET ny_str_claws       = RESOLVE_STR_REF (@10)
-OUTER_SET ny_str_claws_d1    = RESOLVE_STR_REF (@11)
-OUTER_SET ny_str_claws_d2    = RESOLVE_STR_REF (@12)
-OUTER_SET ny_str_claws_d3    = RESOLVE_STR_REF (@13)
-OUTER_SET ny_str_claws_d4    = RESOLVE_STR_REF (@14)
-OUTER_SET ny_str_claws_d5    = RESOLVE_STR_REF (@15)
-OUTER_SET ny_str_claws_d6    = RESOLVE_STR_REF (@16)
-OUTER_SET ny_str_bite        = RESOLVE_STR_REF (@19)
-OUTER_SET ny_str_bite_d1     = RESOLVE_STR_REF (@20)
-OUTER_SET ny_str_bite_d2     = RESOLVE_STR_REF (@21)
-OUTER_SET ny_str_bite_d3     = RESOLVE_STR_REF (@22)
-OUTER_SET ny_str_bite_d4     = RESOLVE_STR_REF (@23)
-OUTER_SET ny_str_bite_d5     = RESOLVE_STR_REF (@24)
-OUTER_SET ny_str_bite_d6     = RESOLVE_STR_REF (@25)
-OUTER_SET ny_str_tail        = RESOLVE_STR_REF (@26)
-OUTER_SET ny_str_bite_on     = RESOLVE_STR_REF (@70)
-OUTER_SET ny_str_bite_on_d   = RESOLVE_STR_REF (@71)
-OUTER_SET ny_str_bite_off    = RESOLVE_STR_REF (@72)
-OUTER_SET ny_str_bite_off_d  = RESOLVE_STR_REF (@73)
-OUTER_SET ny_str_breath      = RESOLVE_STR_REF (@30)
-OUTER_SET ny_str_breath_d    = RESOLVE_STR_REF (@31)
-OUTER_SET ny_str_fear_on     = RESOLVE_STR_REF (@40)
-OUTER_SET ny_str_fear_on_d   = RESOLVE_STR_REF (@41)
-OUTER_SET ny_str_fear_off    = RESOLVE_STR_REF (@42)
-OUTER_SET ny_str_fear_off_d  = RESOLVE_STR_REF (@43)
-OUTER_SET ny_str_wings       = RESOLVE_STR_REF (@60)
-OUTER_SET ny_str_wings_d     = RESOLVE_STR_REF (@61)
-OUTER_SET ny_str_wings_on_d  = RESOLVE_STR_REF (@62)
-OUTER_SET ny_str_wings_off   = RESOLVE_STR_REF (@63)
-OUTER_SET ny_str_wings_off_d = RESOLVE_STR_REF (@64)
-
 
 // ---------------------------------------------------------------------------
-// Icons
+// Projectiles shared by the transformations
 // ---------------------------------------------------------------------------
-// Claws: the game's werebear claw icon (ISHAPE05), blackened as black
-// dragon scales.
-COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdcli.bam~ ~override~
-OUTER_SPRINT ny_icon_claws ~NY#BDCLI~
-// Acid Breath: the game's Dragon Disciple breath icon (SPDD03B), the
-// dragon recoloured in bright acid yellow (hue 62), the stone plate kept
-// (Nysi's artwork version in works/acid_breath_artwork_icon, the old
-// DragonAscendant icon in works/acid_breath_old_icon)
-COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdbri.bam~ ~override~
-     ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdbrc.bam~ ~override~   // no plate (SPDD03C)
-LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDBRI~ c = ~NY#BDBRC~ END   // Remastered Spell Icons
-OUTER_SPRINT ny_icon_breath ~NY#BDBRI~
-// Bite: the game's dragon head icon (IBZPLO02), blackened as the claws;
-// both cycles show its large frame (54x64), the size of the claws icon
-// (previous test icon in works/bite_old_icon)
-COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdmi.bam~ ~override~
-OUTER_SPRINT ny_icon_bite ~NY#BDMI~
-// Frightful Presence: the game's Horror icon (SPWI205B), recoloured in
-// the acid yellow of the breath
-COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdfpi.bam~ ~override~
-     ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdfpc.bam~ ~override~   // no plate (SPWI205C)
-LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDFPI~ c = ~NY#BDFPC~ END   // Remastered Spell Icons
-OUTER_SPRINT ny_icon_fear ~NY#BDFPI~
-// Wings: the game's wings icon (IWINGS01) darkened as black dragon wings,
-// for the item and the spread / fold abilities
-COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdwni.bam~ ~override~
-OUTER_SPRINT ny_icon_wings ~NY#BDWNI~
-
-
-// Portrait icons (STATDESC.2DA): the icons above reduced to 13 px, the bite
-// and the wings brightened to stay readable at that size
-COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdfpd.bam~ ~override~
-     ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdmd.bam~  ~override~
-     ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdwnd.bam~ ~override~
-LAF NY#ADD_STATDESC INT_VAR strref = ny_str_fear_on STR_VAR bam = ~NY#BDFPD~ RET ny_pd_fear  = index END
-LAF NY#ADD_STATDESC INT_VAR strref = ny_str_bite    STR_VAR bam = ~NY#BDMD~  RET ny_pd_bite  = index END
-LAF NY#ADD_STATDESC INT_VAR strref = ny_str_wings   STR_VAR bam = ~NY#BDWND~ RET ny_pd_wings = index END
-
-
-// ---------------------------------------------------------------------------
-// Spell Immunities to Frightful Presence
-// ---------------------------------------------------------------------------
-OUTER_SET ny_ids_level     = IDS_OF_SYMBOL (~stats~ ~LEVEL~)
-
-// immune when not an enemy of the party (EA < EVILCUTOFF)
-LAF NY#SPLPROT_ROW STR_VAR label = ~NY#EA<200~ stat = ~0x10a~ value = ~200~ relation = ~2~ RET ny_prot_not_enemy = row END
-// immune when LEVEL >= opcode parameter1
-LAF NY#SPLPROT_ROW STR_VAR label = ~NY#LEVEL>=PARAM~ stat = EVAL ~%ny_ids_level%~ value = ~-1~ relation = ~4~ RET ny_prot_level = row END
-
-
-// ---------------------------------------------------------------------------
-// Projectiles
-// ---------------------------------------------------------------------------
-// Acid Breath: real line, built like Smashing Wave (IWDEE): an acid wave
-// travels to the targeted point and hits once every creature it crosses,
-// leaving a trail of acid puddles. Slower than Smashing Wave (20 instead of
-// 40) so the line can be seen. Animations: Smashing Wave BAMs recoloured in
-// acid green.
-// Width: proximity radius around the path (16 px = 1 ft.): 40 px for a
-// 5-ft. wide line, 80 px for a 10-ft. wide line (level 19). The length is
-// the range of the spell header (15, then 30).
+// Breath line, built like Smashing Wave (IWDEE): an acid wave travels to the
+// targeted point and hits once every creature it crosses, leaving a trail of
+// acid puddles. Animations: Smashing Wave BAMs recoloured in acid green.
+// Width: proximity radius around the path (16 px = 1 ft.): 40 px for a 5-ft.
+// wide line, 80 px for a 10-ft. wide line (level 10). The length is the
+// range of the spell header (15, then 30).
 COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdwav.bam~ ~override~   // travelling wave
      ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdwvt.bam~ ~override~   // trail
      ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdwvh.bam~ ~override~   // hit splash
      ~%MOD_FOLDER%/kits/black_dragon_disciple/wav/ny#bdbre.wav~ ~override~   // breath sound
 LAF NY#CREATE_LINE_PRO INT_VAR speed = 20 width = 40 trail_delay = 2 STR_VAR new = ~NY#BDBRT~ bam = ~NY#BDWAV~ trail = ~NY#BDWVT~ sound = ~NY#BDBRE~ workspace = EVAL ~%ny_workspace%~ RET ny_pro_breath = pro_id END
 LAF NY#CREATE_LINE_PRO INT_VAR speed = 20 width = 80 trail_delay = 2 STR_VAR new = ~NY#BDBRU~ bam = ~NY#BDWAV~ trail = ~NY#BDWVT~ sound = ~NY#BDBRE~ workspace = EVAL ~%ny_workspace%~ RET ny_pro_breath2 = pro_id END
-// Frightful Presence: 15-ft. burst centred on the caster, no visual
-LAF NY#CLONE_AREA_PRO INT_VAR radius_ft = 15 explosion_effect = 255 STR_VAR source = ~fireball~ new = ~NY#BDFPT~ RET ny_pro_fear = pro_id END
-// enemies only (area flag 0x40, as the game's SPAR**NP projectiles; the
-// party versions SPAR**PA add 0x80): the disciple and his allies are no
-// longer hit, so no "unaffected" message on them
-// Nothing left of Fireball's visuals and sounds: travelling fireball and its
-// shadow, fire and explosion sounds, explosion animation (VVC), flame ring.
+
+// Frightful Presence: 10-ft. burst centred on the caster, enemies only (area
+// flag 0x40, as the game's SPAR**NP projectiles; the party versions SPAR**PA
+// add 0x80), nothing left of Fireball's visuals and sounds
+LAF NY#CLONE_AREA_PRO INT_VAR radius_ft = 10 explosion_effect = 255 STR_VAR source = ~fireball~ new = ~NY#BDFPT~ workspace = EVAL ~%ny_workspace%~ RET ny_pro_fear = pro_id END
 COPY_EXISTING ~NY#BDFPT.pro~ ~override~
   READ_LONG  0x200 ny_fear_flags
   WRITE_LONG 0x200 ((ny_fear_flags BOR 0x40) BAND (BNOT 0x80))
@@ -155,498 +58,33 @@ COPY_EXISTING ~NY#BDFPT.pro~ ~override~
   WRITE_ASCII 0x230 ~~ #8           // flame ring
   WRITE_LONG  0x240 0               // extended area flags of the VVC / ring
 BUT_ONLY
-// Draconic Tail: range-limited projectile (about 12 ft., melee reach),
-// shared with Ghostly Tail and Acidosis
+
+// Draconic Tail and Acidosis: range-limited projectile (about 12 ft., melee
+// reach), shared with Ghostly Tail and Acidosis (spells component)
 LAF NY#MELEE_RANGE_PRO STR_VAR workspace = EVAL ~%ny_workspace%~ RET ny_pro_melee = pro_id END
 
 
 // ---------------------------------------------------------------------------
-// Level bonuses (AP_ in the CLAB, permanent)
-// One spell per level that gives something; the effects are added below.
+// Level 1 (CLAB): one spell less per day per spell level (levels 1-9,
+// bitmask 0x1FF). Never below 0, follows the level ups.
 // ---------------------------------------------------------------------------
-ACTION_FOR_EACH lvl IN ~01~ ~02~ ~04~ ~05~ ~08~ ~09~ ~10~ ~12~ ~15~ ~16~ ~20~ BEGIN
-  CREATE ~SPL~ ~NY#BDL%lvl%~
-    LPF NY#SPL_BASE INT_VAR type = 4 level = 1 END
-    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = 1 casting_time = 0 END
-END
-
-// AC +1: levels 1, 5, 10, 15, 20 (scales)
-ACTION_FOR_EACH lvl IN ~01~ ~05~ ~10~ ~15~ ~20~ BEGIN
-  COPY_EXISTING ~NY#BDL%lvl%.spl~ ~override~
-    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 0 target = 1 timing = 9 parameter1 = 1 parameter2 = 0 END
-END
-
-// Constitution +1: levels 5 and 15
-ACTION_FOR_EACH lvl IN ~05~ ~15~ BEGIN
-  COPY_EXISTING ~NY#BDL%lvl%.spl~ ~override~
-    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 10 target = 1 timing = 9 parameter1 = 1 parameter2 = 0 END
-END
-
-// Acid Affinity: acid resistance +20% and acid damage dealt +5% (opcode
-// 332, Specific Damage Modifier, type 4 = acid) at levels 4, 8, 12, 16 and
-// 20: up to immunity and +25% at level 20.
-ACTION_FOR_EACH lvl IN ~04~ ~08~ ~12~ ~16~ ~20~ BEGIN
-  COPY_EXISTING ~NY#BDL%lvl%.spl~ ~override~
-    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 27  target = 1 timing = 9 parameter1 = 20 parameter2 = 0 END
-    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 332 target = 1 timing = 9 parameter1 = 5  parameter2 = 4 END
-END
-
-// Level 1: one spell less per day per spell level (levels 1-9, bitmask
-// 0x1FF). Never below 0, follows the level ups. The Dragon Disciple uses
-// MXSPLDD.2DA instead, tied to that kit by the engine.
-COPY_EXISTING ~NY#BDL01.spl~ ~override~
-  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 42 target = 1 timing = 9 parameter1 = "-1" parameter2 = 0x1ff END
-
-// Level 2 - Swamp Stride: Entangle, Grease, Web
-COPY_EXISTING ~NY#BDL02.spl~ ~override~
-  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 206 target = 1 timing = 9 parameter1 = "-1" STR_VAR resource = ~SPPR105~ END
-  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 206 target = 1 timing = 9 parameter1 = "-1" STR_VAR resource = ~SPWI101~ END
-  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 206 target = 1 timing = 9 parameter1 = "-1" STR_VAR resource = ~SPWI215~ END
-  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 101 target = 1 timing = 9 parameter2 = 157 END   // web state from other sources
-
-// Level 10 - Blindsense: immunity to blindness, see and target invisible
-// creatures at any range (opcode 193, as the Artisan's Kitpack Dragon
-// Disciple).
-COPY_EXISTING ~NY#BDL10.spl~ ~override~
-  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 101 target = 1 timing = 9 parameter2 = 74 END
-  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 193 target = 1 timing = 9 parameter2 = 1 END
-
-// Level 20 - Draconic Apotheosis: immunity to sleep and paralysis
-COPY_EXISTING ~NY#BDL20.spl~ ~override~
-  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 101 target = 1 timing = 9 parameter2 = 39  END   // sleep / unconsciousness
-  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 101 target = 1 timing = 9 parameter2 = 109 END   // paralysis
-  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 101 target = 1 timing = 9 parameter2 = 175 END   // hold
-  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 101 target = 1 timing = 9 parameter2 = 185 END   // hold II
-
-// Druid THAC0: THAC0.2DA follows the class, not the kit. The sorcerer gains
-// 1 point at levels 4, 7, 10..., the druid 2: the CLAB gives +1 at each of
-// these levels (row ABILITY4).
-CREATE ~SPL~ ~NY#BDTH~
+CREATE ~SPL~ ~NY#BDL01~
   LPF NY#SPL_BASE INT_VAR type = 4 level = 1 END
   LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = 1 casting_time = 0 RET h = header END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 54 target = 1 timing = 9 parameter1 = 1 parameter2 = 0 END
-
-
-// ---------------------------------------------------------------------------
-// Spell progression of a sorcerer one level lower
-//
-// At level N the disciple must have the spell slots of a level N-1
-// sorcerer: the CLAB applies NY#BDQnn at each level N from 2 to 50. It first
-// removes the previous one (opcode 321), then lowers each spell level by
-// (slots at N) - (slots at N-1), read from the game's MXSPLSRC.2DA at
-// install time. The penalty is not cumulative: only the last NY#BDQnn is
-// active. The one spell less per day (NY#BDL01) comes on top.
-// Spells known (SPLSRCKN.2DA) are not delayed: the disciple may learn a
-// spell one level before he can cast it.
-// ---------------------------------------------------------------------------
-COPY_EXISTING ~mxsplsrc.2da~ ~override~
-  COUNT_2DA_ROWS 10 ny_mx_rows
-  FOR (r = 0; r < ny_mx_rows; ++r) BEGIN
-    FOR (c = 1; c <= 9; ++c) BEGIN
-      READ_2DA_ENTRY r c 10 v
-      PATCH_IF NOT (IS_AN_INT v) BEGIN SET v = 0 END
-      SET $ny_mx(~%r%~ ~%c%~) = v
-    END
-  END
-BUT_ONLY
-
-OUTER_FOR (lvl = 2; lvl <= 50; ++lvl) BEGIN
-  OUTER_SPRINT nn ~%lvl%~
-  ACTION_IF (lvl < 10) BEGIN OUTER_SPRINT nn ~0%lvl%~ END
-  OUTER_SET prev = lvl - 1
-  OUTER_SPRINT pp ~%prev%~
-  ACTION_IF (prev < 10) BEGIN OUTER_SPRINT pp ~0%prev%~ END
-  CREATE ~SPL~ ~NY#BDQ%nn%~
-    LPF NY#SPL_BASE INT_VAR type = 4 level = 1 END
-    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = 1 casting_time = 0 RET h = header END
-    PATCH_IF (lvl > 2) BEGIN
-      LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 321 target = 1 timing = 1 STR_VAR resource = EVAL ~NY#BDQ%pp%~ END
-    END
-    // rows of MXSPLSRC.2DA: row 0 = level 1
-    PATCH_IF (lvl <= ny_mx_rows) BEGIN
-      FOR (c = 1; c <= 9; ++c) BEGIN
-        SET r_now  = lvl - 1
-        SET r_prev = lvl - 2
-        SET diff = $ny_mx(~%r_now%~ ~%c%~) - $ny_mx(~%r_prev%~ ~%c%~)
-        PATCH_IF (diff > 0) BEGIN
-          LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 42 target = 1 timing = 9 parameter1 = (0 - diff) parameter2 = (1 BLSL (c - 1)) END
-        END
-      END
-    END
-END
-
-
-// ---------------------------------------------------------------------------
-// Draconic Tail (level 9): once per round, the tail strikes the nearest
-// enemy in melee reach: save vs. Breath or 1d10 crushing damage and knocked
-// prone (unconscious) for 1 second.
-// Built like Ghostly Tail: a permanent opcode 232 on the disciple (condition
-// HPPercentLT(Myself,102), always true, checked once per round; target
-// NearestEnemyOf) fires NY#BDTL with the range-limited projectile NY#MELEE:
-// no enemy in reach = no strike that round.
-// ---------------------------------------------------------------------------
-CREATE ~SPL~ ~NY#BDTL~
-  LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
-  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1000 level = 1 casting_time = 0 projectile = ny_pro_melee RET h = header END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 0 parameter2 = 0 dicenumber = 1 dicesize = 10 savingthrow = 2 END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 39  target = 2 timing = 0 duration = 1 parameter2 = 0 savingthrow = 2 END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 savingthrow = 2 STR_VAR resource = ~SPSDIMPA~ END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 139 target = 2 timing = 1 parameter1 = ny_str_tail savingthrow = 2 END   // combat log
-
-// opcode 232 must stay the last (here the only) effect of the spell
-COPY_EXISTING ~NY#BDL09.spl~ ~override~
-  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 232 target = 1 timing = 9 parameter1 = 2 parameter2 = 20 special = 102 STR_VAR resource = ~NY#BDTL~ END
-
-
-// ---------------------------------------------------------------------------
-// Draconic Claws: one item per stage, in both weapon slots (see below):
-// their equipped effects give 2 attacks per round.
-// Stages: levels 1, 4, 8, 12, 16, 20.
-// ---------------------------------------------------------------------------
-DEFINE_ACTION_FUNCTION NY#BDD_CLAWS
-  INT_VAR
-    stage  = 1
-    name   = "-1"
-    desc   = "-1"
-    sides  = 4
-    thrown = 1
-  STR_VAR
-    icon  = ~~
-BEGIN
-  CREATE ~ITM~ ~NY#BDCL%stage%~
-    WRITE_LONG  0x08 name
-    WRITE_LONG  0x0c name
-    // flags as FIST.ITM (0x20) + magical (0x40)
-    WRITE_LONG  0x18 0x60
-    WRITE_SHORT 0x1c 0x1c                       // hand-to-hand weapon
-    WRITE_EVALUATED_ASCII 0x3a ~%icon%~ #8
-    WRITE_LONG  0x50 desc
-    WRITE_LONG  0x54 desc
-    WRITE_EVALUATED_ASCII 0x58 ~%icon%~ #8
-    WRITE_LONG  0x60 (stage - 1)                // enchantment, also to-hit/damage bonus
-
-    // 2 attacks per round from level 1, never more
-    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 1 target = 1 timing = 2 parameter1 = 2 parameter2 = 1 END
-
-    // melee: slashing, strength bonus applies
-    // id_req = 0 as FIST.ITM: the ability (and its icon) is always available
-    // to-hit and damage bonus = enchantment (+0 to +5), as magical weapons
-    LPF NY#ADD_ITM_HEADER INT_VAR attack_type = 1 id_req = 0 location = 1 target = 1 range = 1 speed = 2
-                                  thac0 = (stage - 1) damage_bonus = (stage - 1)
-                                  dice_sides = sides dice_thrown = thrown damage_type = 3 flags = 1
-                         STR_VAR icon END
-END
-
-LAF NY#BDD_CLAWS INT_VAR stage = 1 name = ny_str_claws desc = ny_str_claws_d1 sides = 4  thrown = 1 STR_VAR icon = EVAL ~%ny_icon_claws%~ END
-LAF NY#BDD_CLAWS INT_VAR stage = 2 name = ny_str_claws desc = ny_str_claws_d2 sides = 6  thrown = 1 STR_VAR icon = EVAL ~%ny_icon_claws%~ END
-LAF NY#BDD_CLAWS INT_VAR stage = 3 name = ny_str_claws desc = ny_str_claws_d3 sides = 8  thrown = 1 STR_VAR icon = EVAL ~%ny_icon_claws%~ END
-LAF NY#BDD_CLAWS INT_VAR stage = 4 name = ny_str_claws desc = ny_str_claws_d4 sides = 10 thrown = 1 STR_VAR icon = EVAL ~%ny_icon_claws%~ END
-LAF NY#BDD_CLAWS INT_VAR stage = 5 name = ny_str_claws desc = ny_str_claws_d5 sides = 6  thrown = 2 STR_VAR icon = EVAL ~%ny_icon_claws%~ END
-LAF NY#BDD_CLAWS INT_VAR stage = 6 name = ny_str_claws desc = ny_str_claws_d6 sides = 8  thrown = 2 STR_VAR icon = EVAL ~%ny_icon_claws%~ END
-
-// ---------------------------------------------------------------------------
-// Final form: Nysi's avatar of the fully evolved Black Dragon Disciple
-// (animation MBDA, scaled x0.5, 8 drawn directions: idle (still frame with
-// slow breathing), walk, claws, tail, cast, wings,
-// crouch, death; works/final_form_avatar_source/build_avatar.py). The wings
-// carry it (opcode 53 while equipped, see NY#BDWI below): the disciple takes
-// this form when he spreads his wings and gets his own back when he folds
-// them.
-// Equipment is not drawn on a creature animation (as with shapeshifting).
-// Animation id: first free one from 0xECA0 (NY_BDD_FINAL_FORM).
-// ---------------------------------------------------------------------------
-COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/avatar/anim~ ~override~
-OUTER_SET ny_bda_anim = "-1"
-OUTER_FOR (id = 0xeca0; (id <= 0xecff) AND (ny_bda_anim < 0); ++id) BEGIN
-  LAF NY#HEX4 INT_VAR value = id RET hexstring = hex END
-  OUTER_SET used = FILE_EXISTS_IN_GAME ~%hexstring%.ini~
-  ACTION_IF (NOT used) BEGIN
-    COPY_EXISTING ~animate.ids~ ~override~
-      PATCH_IF (INDEX_BUFFER (CASE_INSENSITIVE EVALUATE_REGEXP ~^0x%hexstring%[ %TAB%]~) >= 0) BEGIN
-        SET used = 1
-      END
-    BUT_ONLY
-  END
-  ACTION_IF (NOT used) BEGIN
-    OUTER_SET ny_bda_anim = id
-    OUTER_SPRINT ny_bda_hex ~%hexstring%~
-  END
-END
-ACTION_IF (ny_bda_anim < 0) BEGIN
-  FAIL ~BlackDragonMagic: no free animation id between 0xECA0 and 0xECFF~
-END
-COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/avatar/ini/final_form.ini~ ~override/%ny_bda_hex%.ini~
-ACTION_IF (IDS_OF_SYMBOL (~animate~ ~NY_BDD_FINAL_FORM~) < 0) BEGIN
-  APPEND ~animate.ids~ ~0x%ny_bda_hex% NY_BDD_FINAL_FORM~
-END
-PRINT ~Black Dragon Disciple final form animation id: 0x%ny_bda_hex%~
-
-// ---------------------------------------------------------------------------
-// Claws in the two weapon slots
-//
-// NY#BDZn.SPL removes the claws of the previous stages (opcode 112, twice:
-// one copy per slot) and creates the claws NY#BDCLn in both weapon slots
-// (opcode 143, slots 35 and 36 = SLOT_WEAPON0 / SLOT_WEAPON1). It is
-// applied by the CLAB at levels 1, 4, 8, 12, 16 and 20.
-// The claws were first in the fist slot, which the engine does not save
-// (the global script had to put them back after each load, and the weapon
-// button lost its icon). The weapon slots are saved, and the disciple can
-// never hold another weapon: whichever weapon slot is selected, he fights
-// with his claws. The global script baf/claws.baf still gives them back if
-// both copies are missing, and selects the weapon slot again at each new
-// stage so the engine applies the new claws' effects (2 attacks per round).
-// ---------------------------------------------------------------------------
-OUTER_FOR (s = 1; s <= 6; ++s) BEGIN
-  CREATE ~SPL~ ~NY#BDZ%s%~
-    LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x200 END
-    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1 level = 1 casting_time = 0 RET h = header END
-    // remove the claws of the previous stages first (opcode 112 removes
-    // equipped items; twice, one copy per weapon slot): opcode 143 may not
-    // replace an item already in the slot
-    FOR (k = 1; k < s; ++k) BEGIN
-      LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 112 target = 2 timing = 1 STR_VAR resource = EVAL ~NY#BDCL%k%~ END
-      LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 112 target = 2 timing = 1 STR_VAR resource = EVAL ~NY#BDCL%k%~ END
-    END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 143 target = 2 timing = 1 parameter1 = 35 STR_VAR resource = EVAL ~NY#BDCL%s%~ END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 143 target = 2 timing = 1 parameter1 = 36 STR_VAR resource = EVAL ~NY#BDCL%s%~ END
-END
-
-
-// ---------------------------------------------------------------------------
-// Draconic Bite (from the branch "bite", tested in game): one item per
-// stage, in the off-hand slot (opcode 143, slot 9 = SHIELD) from level 6, so
-// the disciple fights with the claws in the main hand (weapon slot) and the
-// bite in the off hand: one more attack per round (engine rule for an
-// off-hand weapon).
-// Stages: levels 6, 8, 12, 13, 16, 20. 1d6 piercing + 2 acid, then 2d6 +
-// 2d4 acid from level 13 (acid: effect of the attack, with the acid splash).
-// Enchantment and to-hit/damage bonus as the claws of the same level (+1 at
-// 6, +2 at 8, +3 at 12 and 13, +4 at 16, +5 at 20).
-// The normal two-weapon penalties apply: the player lowers them with
-// Two-Weapon Style (up to 3 points, see the proficiencies below).
-// Hand-to-hand weapon (0x1c) as the claws, not movable: the disciple
-// dismisses or summons it with two innate abilities that swap themselves
-// (as the wings), "Fight without the Bite" (NY#BDMU) to fight with the claws
-// alone (Single Weapon Style) and "Fight with the Bite" (NY#BDMT). The
-// off-hand slot is saved: no global script for the bite.
-// NY#BDMZn (CLAB) removes the bites of the previous stages (opcode 112),
-// creates the bite of the stage and gives "Fight without the Bite": a new
-// stage always summons the bite.
-// ---------------------------------------------------------------------------
-DEFINE_ACTION_FUNCTION NY#BDD_BITE
-  INT_VAR
-    stage   = 1
-    desc    = "-1"
-    enchant = 1
-    thrown  = 1
-BEGIN
-  CREATE ~ITM~ ~NY#BDMO%stage%~
-    WRITE_LONG  0x08 ny_str_bite
-    WRITE_LONG  0x0c ny_str_bite
-    // flags as FIST.ITM (0x20) + magical (0x40), not movable
-    WRITE_LONG  0x18 0x60
-    WRITE_SHORT 0x1c 0x1c                       // hand-to-hand weapon
-    WRITE_EVALUATED_ASCII 0x3a ~%ny_icon_bite%~ #8
-    WRITE_LONG  0x50 desc
-    WRITE_LONG  0x54 desc
-    WRITE_EVALUATED_ASCII 0x58 ~%ny_icon_bite%~ #8
-    WRITE_LONG  0x60 enchant
-
-    // portrait icon while the bite is out
-    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 142 target = 1 timing = 2 parameter2 = ny_pd_bite END
-
-    LPF NY#ADD_ITM_HEADER INT_VAR attack_type = 1 id_req = 0 location = 1 target = 1 range = 1 speed = 2
-                                  thac0 = enchant damage_bonus = enchant
-                                  dice_sides = 6 dice_thrown = thrown damage_type = 1 flags = 1
-                         STR_VAR icon = EVAL ~%ny_icon_bite%~ RET h = header END
-    // acid: 2 fixed damage at levels 6-12 (one die of piercing damage), 2d4
-    // from level 13
-    PATCH_IF (thrown = 1) BEGIN
-      LPF ADD_ITEM_EFFECT INT_VAR type = 99 header = h opcode = 12  target = 2 timing = 1 parameter1 = 2 parameter2 = 0x10000 END
-    END ELSE BEGIN
-      LPF ADD_ITEM_EFFECT INT_VAR type = 99 header = h opcode = 12  target = 2 timing = 1 parameter2 = 0x10000 dicenumber = 2 dicesize = 4 END
-    END
-    LPF ADD_ITEM_EFFECT INT_VAR type = 99 header = h opcode = 215 target = 2 timing = 0 duration = 1 parameter2 = 1 STR_VAR resource = ~SHACID~ END
-END
-
-LAF NY#BDD_BITE INT_VAR stage = 1 desc = ny_str_bite_d1 enchant = 1 thrown = 1 END   // level 6
-LAF NY#BDD_BITE INT_VAR stage = 2 desc = ny_str_bite_d2 enchant = 2 thrown = 1 END   // level 8
-LAF NY#BDD_BITE INT_VAR stage = 3 desc = ny_str_bite_d3 enchant = 3 thrown = 1 END   // level 12
-LAF NY#BDD_BITE INT_VAR stage = 4 desc = ny_str_bite_d4 enchant = 3 thrown = 2 END   // level 13
-LAF NY#BDD_BITE INT_VAR stage = 5 desc = ny_str_bite_d5 enchant = 4 thrown = 2 END   // level 16
-LAF NY#BDD_BITE INT_VAR stage = 6 desc = ny_str_bite_d6 enchant = 5 thrown = 2 END   // level 20
-
-OUTER_FOR (s = 1; s <= 6; ++s) BEGIN
-  CREATE ~SPL~ ~NY#BDMZ%s%~
-    LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x200 END
-    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1 level = 1 casting_time = 0 RET h = header END
-    FOR (k = 1; k < s; ++k) BEGIN
-      LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 112 target = 2 timing = 1 STR_VAR resource = EVAL ~NY#BDMO%k%~ END
-    END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 143 target = 2 timing = 1 parameter1 = 9 STR_VAR resource = EVAL ~NY#BDMO%s%~ END
-    // the bite is out: only "Fight without the Bite" (removed first so it
-    // is never given twice)
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 2 timing = 1 STR_VAR resource = ~NY#BDMT~ END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 2 timing = 1 STR_VAR resource = ~NY#BDMU~ END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 171 target = 2 timing = 1 STR_VAR resource = ~NY#BDMU~ END
-END
-
-// Fight with the Bite: one header per bite stage (the innate ability uses
-// the disciple's level), each puts the bite of that stage in the off hand
-CREATE ~SPL~ ~NY#BDMT~
-  LPF NY#SPL_BASE INT_VAR name = ny_str_bite_on desc = ny_str_bite_on_d type = 4 level = 1 STR_VAR icon = EVAL ~%ny_icon_bite%~ END
-  FOR (s = 1; s <= 6; ++s) BEGIN
-    SET lvl = (s = 1) ? 6 : ((s = 2) ? 8 : ((s = 3) ? 12 : ((s = 4) ? 13 : ((s = 5) ? 16 : 20))))
-    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = lvl casting_time = 0 STR_VAR icon = EVAL ~%ny_icon_bite%~ RET h = header END
-    FOR (k = 1; k <= 6; ++k) BEGIN
-      LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 112 target = 1 timing = 1 STR_VAR resource = EVAL ~NY#BDMO%k%~ END
-    END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 143 target = 1 timing = 1 parameter1 = 9 STR_VAR resource = EVAL ~NY#BDMO%s%~ END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#BDMT~ END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 171 target = 1 timing = 1 STR_VAR resource = ~NY#BDMU~ END
-  END
-
-// Fight without the Bite: removes the bite, whatever its stage
-CREATE ~SPL~ ~NY#BDMU~
-  LPF NY#SPL_BASE INT_VAR name = ny_str_bite_off desc = ny_str_bite_off_d type = 4 level = 1 STR_VAR icon = EVAL ~%ny_icon_bite%~ END
-  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = 1 casting_time = 0 STR_VAR icon = EVAL ~%ny_icon_bite%~ RET h = header END
-  FOR (k = 1; k <= 6; ++k) BEGIN
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 112 target = 1 timing = 1 STR_VAR resource = EVAL ~NY#BDMO%k%~ END
-  END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#BDMU~ END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 171 target = 1 timing = 1 STR_VAR resource = ~NY#BDMT~ END
-
-
-// ---------------------------------------------------------------------------
-// Acid Breath: line of acid, save vs. Breath for half
-//   level 3: 4d4, 7: 6d4, 11: 8d4, 17: 10d4 (15 ft. x 5 ft.)
-//   level 19: 12d4, 30 ft. x 10 ft.
-// Uses per day: 1 at level 3, +1 at 7, 11 and 17 (CLAB).
-// ---------------------------------------------------------------------------
-CREATE ~SPL~ ~NY#BDBRE~
-  LPF NY#SPL_BASE INT_VAR name = ny_str_breath desc = ny_str_breath_d type = 4 level = 1 flags = 0x400 STR_VAR icon = EVAL ~%ny_icon_breath%~ END
-  FOR (i = 0; i < 5; ++i) BEGIN
-    SET lvl  = (i = 0) ? 3 : ((i = 1) ? 7 : ((i = 2) ? 11 : ((i = 3) ? 17 : 19)))
-    SET dice = 4 + (2 * i)                       // 4d4 .. 12d4
-    SET pro  = (i = 4) ? ny_pro_breath2 : ny_pro_breath
-    SET rng  = (i = 4) ? 30 : 15
-    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 4 range = rng level = lvl casting_time = 1 projectile = pro STR_VAR icon = EVAL ~%ny_icon_breath%~ RET h = header END
-    // the wave starts on the disciple: 2 seconds of immunity to his own
-    // breath, applied on casting before the wave leaves
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = 2 parameter1 = "-1" STR_VAR resource = ~NY#BDBRE~ END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 STR_VAR resource = ~NY#BDWVH~ END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12 target = 2 timing = 0 parameter2 = 0x10000 dicenumber = dice dicesize = 4 savingthrow = 2 special = 0x100 END
-  END
-
-
-// ---------------------------------------------------------------------------
-// Draconic Wings (level 14): an item in the helmet slot (opcode 143, slot 6
-// = HELMET) giving +4 movement, +2 AC and immunity to critical hits (item
-// flag), with a portrait icon.
-// Built on the game's wings item (WINGS01.ITM in BG2:EE, BDWINGS.ITM in
-// SoD): its paperdoll animation shows the wings on the character. Icon:
-// NY#BDWNI (see Icons). If neither exists, a plain helmet item without
-// animation.
-// The innate ability spreads them; it is then replaced by the one that
-// folds them (removes the item), and so on (ON/OFF swap themselves, as
-// Frightful Presence). The helmet slot is saved: no global script.
-// Not movable: the player removes them with the ability only.
-// ---------------------------------------------------------------------------
-OUTER_SPRINT ny_wings_src ~~
-ACTION_IF FILE_EXISTS_IN_GAME ~wings01.itm~ BEGIN
-  OUTER_SPRINT ny_wings_src ~wings01~
-END ELSE ACTION_IF FILE_EXISTS_IN_GAME ~bdwings.itm~ BEGIN
-  OUTER_SPRINT ny_wings_src ~bdwings~
-END
-
-ACTION_IF (~%ny_wings_src%~ STRING_COMPARE ~~) BEGIN
-  COPY_EXISTING ~%ny_wings_src%.itm~ ~override/NY#BDWI.itm~
-    LPF DELETE_ITEM_EQEFFECT INT_VAR opcode_to_delete = "-1" END
-END ELSE BEGIN
-  CREATE ~ITM~ ~NY#BDWI~
-    WRITE_SHORT 0x1c 7                          // helm
-    WRITE_EVALUATED_ASCII 0x3a ~%ny_icon_wings%~ #8
-    WRITE_EVALUATED_ASCII 0x58 ~%ny_icon_wings%~ #8
-END
-
-COPY_EXISTING ~NY#BDWI.itm~ ~override~
-  WRITE_EVALUATED_ASCII 0x3a ~%ny_icon_wings%~ #8   // inventory icon
-  WRITE_LONG  0x08 ny_str_wings
-  WRITE_LONG  0x0c ny_str_wings
-  // flags: displayable (0x08, as the source item) + 0x20 + magical (0x40) +
-  // toggle critical hits; not movable (0x04 cleared)
-  WRITE_LONG  0x18 0x02000068
-  WRITE_LONG  0x1e 0                            // usable by everyone
-  WRITE_BYTE  0x29 0                            // kit usability bytes
-  WRITE_BYTE  0x2b 0
-  WRITE_BYTE  0x2d 0
-  WRITE_BYTE  0x2f 0
-  WRITE_LONG  0x50 ny_str_wings_d
-  WRITE_LONG  0x54 ny_str_wings_d
-  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 126 target = 1 timing = 2 parameter1 = 4 parameter2 = 0 END   // movement +4
-  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 0   target = 1 timing = 2 parameter1 = 2 parameter2 = 0 END   // AC +2
-  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 142 target = 1 timing = 2 parameter2 = ny_pd_wings END        // portrait icon
-  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 53  target = 1 timing = 2 parameter1 = ny_bda_anim parameter2 = 0 END   // final form (avatar)
-
-CREATE ~SPL~ ~NY#BDWG~
-  LPF NY#SPL_BASE INT_VAR name = ny_str_wings desc = ny_str_wings_on_d type = 4 level = 1 STR_VAR icon = EVAL ~%ny_icon_wings%~ END
-  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = 1 casting_time = 0 STR_VAR icon = EVAL ~%ny_icon_wings%~ RET h = header END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 143 target = 1 timing = 1 parameter1 = 6 STR_VAR resource = ~NY#BDWI~ END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#BDWG~ END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 171 target = 1 timing = 1 STR_VAR resource = ~NY#BDWH~ END
-
-CREATE ~SPL~ ~NY#BDWH~
-  LPF NY#SPL_BASE INT_VAR name = ny_str_wings_off desc = ny_str_wings_off_d type = 4 level = 1 STR_VAR icon = EVAL ~%ny_icon_wings%~ END
-  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = 1 casting_time = 0 STR_VAR icon = EVAL ~%ny_icon_wings%~ RET h = header END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 112 target = 1 timing = 1 STR_VAR resource = ~NY#BDWI~ END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#BDWH~ END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 171 target = 1 timing = 1 STR_VAR resource = ~NY#BDWG~ END
-
-
-// ---------------------------------------------------------------------------
-// Frightful Presence (level 18): toggleable aura (ON/OFF swap themselves)
-// Every round the aura casts NY#BDFPA at the disciple's level; the header of
-// level L only affects enemies whose level is lower than L.
-// ---------------------------------------------------------------------------
-CREATE ~SPL~ ~NY#BDFPA~
-  LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
-  FOR (lvl = 18; lvl <= 50; ++lvl) BEGIN
-    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = lvl casting_time = 0 projectile = ny_pro_fear RET h = header END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 324 target = 2 duration = 1 parameter2 = ny_prot_not_enemy STR_VAR resource = ~NY#BDFPA~ END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 324 target = 2 duration = 1 parameter1 = lvl parameter2 = ny_prot_level STR_VAR resource = ~NY#BDFPA~ END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 24  target = 2 duration = (2 * ny_round) resist_dispel = 1 savingthrow = 1 END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 2 duration = ny_day parameter1 = "-1" STR_VAR resource = ~NY#BDFPA~ END
-  END
-
-LAF NY#CREATE_EFF INT_VAR opcode = 146 target = 1 parameter2 = 1 STR_VAR eff = ~NY#BDFPE~ resource = ~NY#BDFPA~ END
-
-CREATE ~SPL~ ~NY#BDFP~
-  LPF NY#SPL_BASE INT_VAR name = ny_str_fear_on desc = ny_str_fear_on_d type = 4 level = 1 STR_VAR icon = EVAL ~%ny_icon_fear%~ END
-  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = 1 casting_time = 1 STR_VAR icon = EVAL ~%ny_icon_fear%~ RET h = header END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 272 target = 1 timing = 1 parameter1 = ny_round parameter2 = 3 STR_VAR resource = ~NY#BDFPE~ END
-  // portrait icon while the aura is on (removed with the aura by NY#BDFQ)
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 142 target = 1 timing = 1 parameter2 = ny_pd_fear END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#BDFP~ END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 171 target = 1 timing = 1 STR_VAR resource = ~NY#BDFQ~ END
-
-CREATE ~SPL~ ~NY#BDFQ~
-  LPF NY#SPL_BASE INT_VAR name = ny_str_fear_off desc = ny_str_fear_off_d type = 4 level = 1 STR_VAR icon = EVAL ~%ny_icon_fear%~ END
-  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 5 range = 1 level = 1 casting_time = 0 STR_VAR icon = EVAL ~%ny_icon_fear%~ RET h = header END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 321 target = 1 timing = 1 STR_VAR resource = ~NY#BDFP~ END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#BDFQ~ END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 171 target = 1 timing = 1 STR_VAR resource = ~NY#BDFP~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 42 target = 1 timing = 9 parameter1 = "-1" parameter2 = 0x1ff END
 
 
 // ---------------------------------------------------------------------------
 // Kit registration with ADD_KIT_EX (lib/a7#add_kit_ex.tpa, by Argent77).
 // The kit is cloned from the Dragon Disciple: every table that is not given
 // here (weapon proficiencies, alignments, race tables, CLASTEXT/SODCLTXT,
-// CLSRCREQ, HPCLASS, NUMWSLOT, starting equipment...) copies its row.
+// CLSRCREQ, HPCLASS: d6, NUMWSLOT, starting equipment...) copies its row.
+// The transformations need the kit's value (KIT.IDS), hence after.
 // ---------------------------------------------------------------------------
 // High-level abilities (BG2:EE and EET): own table LUNYB.2DA, see
-// hla/hla.tpa. On BG:EE the Dragon Disciple's LUABBR row is copied.
+// hla/hla.tpa (included at the end). On BG:EE the Dragon Disciple's LUABBR
+// row is copied.
 ACTION_IF GAME_IS ~bg2ee eet~ BEGIN
-  INCLUDE ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/hla.tpa~
   OUTER_SPRINT ny_luabbr ~NYB~
 END ELSE BEGIN
   OUTER_SPRINT ny_luabbr ~~
@@ -679,65 +117,11 @@ OUTER_SET ny_kit_value = IDS_OF_SYMBOL (~kit~ ~NY#BDD~)   // 0x40xx in KIT.IDS
 
 
 // ---------------------------------------------------------------------------
-// Weapon proficiencies: no weapon at all. The 4 proficiency points of the
-// sorcerer can only go to Single Weapon Style (1 point, claws alone) and
-// Two-Weapon Style (3 points, claws and bite).
-// WEAPPROF.2DA: the column of the kit (header row: one entry less than the
-// data rows) is set to 0 on every row except these two styles.
+// Transformations, then the high-level abilities (they reuse the breath
+// projectiles and the granted spells)
 // ---------------------------------------------------------------------------
-OUTER_SET ny_prof_single  = IDS_OF_SYMBOL (~stats~ ~PROFICIENCYSINGLEWEAPON~)
-OUTER_SET ny_prof_2weapon = IDS_OF_SYMBOL (~stats~ ~PROFICIENCY2WEAPON~)
+INCLUDE ~%MOD_FOLDER%/kits/black_dragon_disciple/transformations/transformations.tpa~
 
-COPY_EXISTING ~weapprof.2da~ ~override~
-  COUNT_2DA_COLS ncols
-  SET kcol = "-1"
-  READ_2DA_ENTRIES_NOW hdr (ncols - 1)          // header row first, then the data rows
-  FOR (c = 0; c < (ncols - 1); ++c) BEGIN
-    READ_2DA_ENTRY_FORMER hdr 0 c name
-    PATCH_IF (~%name%~ STRING_EQUAL_CASE ~NY#BDD~) BEGIN SET kcol = c + 1 END
-  END
-  PATCH_IF (kcol < 0) BEGIN
-    PATCH_FAIL ~BlackDragonMagic: column NY#BDD not found in WEAPPROF.2DA~
-  END
-  READ_2DA_ENTRIES_NOW rows ncols               // data rows only
-  FOR (r = 0; r < rows; ++r) BEGIN
-    READ_2DA_ENTRY_FORMER rows r 1 id
-    SET value = 0
-    PATCH_IF (IS_AN_INT id) BEGIN
-      PATCH_IF (id = ny_prof_single)  BEGIN SET value = 1 END
-      PATCH_IF (id = ny_prof_2weapon) BEGIN SET value = 3 END
-    END
-    SET_2DA_ENTRY r kcol ncols value
-  END
-BUT_ONLY
-
-
-// ---------------------------------------------------------------------------
-// No weapon: every weapon of the game gets an item usability effect (opcode
-// 319, EE) that forbids it to the kit (parameter2 9 = KIT.IDS, parameter1 =
-// the kit's value). Only the items present at install time are patched:
-// install this component after the mods that add weapons.
-// Categories: bows, daggers, maces, slings, small swords, large swords,
-// hammers, morning stars, flails, darts, axes, quarterstaves, crossbows,
-// spears, halberds, clubs, greatswords, bastard swords (hand-to-hand
-// weapons, 28, are left alone: fists, claws and the bite).
-// ---------------------------------------------------------------------------
-COPY_EXISTING_REGEXP GLOB ~^.+\.itm$~ ~override~
-  PATCH_IF (SOURCE_SIZE > 0x71) BEGIN
-    READ_SHORT 0x1c cat
-    PATCH_IF ((cat >= 15 AND cat <= 27) OR cat = 29 OR cat = 30 OR cat = 44 OR cat = 57 OR cat = 69) BEGIN
-      LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 319 target = 1 timing = 2 parameter1 = ny_kit_value parameter2 = 9 END
-    END
-  END
-BUT_ONLY
-
-
-// ---------------------------------------------------------------------------
-// Global script: claws back after a load (see baf/claws.baf).
-// Added at the top of the main game scripts, with Continue() in each block.
-// ---------------------------------------------------------------------------
-ACTION_FOR_EACH ny_script IN ~baldur~ ~bdbaldur~ ~baldur25~ BEGIN
-  ACTION_IF FILE_EXISTS_IN_GAME ~%ny_script%.bcs~ BEGIN
-    EXTEND_TOP ~%ny_script%.bcs~ ~%MOD_FOLDER%/kits/black_dragon_disciple/baf/claws.baf~ EVALUATE_BUFFER
-  END
+ACTION_IF GAME_IS ~bg2ee eet~ BEGIN
+  INCLUDE ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/hla.tpa~
 END
