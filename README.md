@@ -36,6 +36,9 @@ BlackDragonMagic/
 │   ├── transformations/          Draconic Transformations (black_dragon_disciple):
 │   │                             transformations, claws, breath, granted spells, their icons
 │   └── hla/                      high-level abilities
+├── creatures/<creature>/         creatures shared by several features: hydra (Summon Reptile, test
+│                                 component), half_black_dragon (Call Ancestor): anim/ BAMs, ini/,
+│                                 snd/ sounds copied when missing, <creature>.tpa
 ├── spells/<spell_name>/          one folder per new spell
 │   ├── <spell_name>.tpa
 │   └── bam/                      animations
@@ -74,7 +77,7 @@ BlackDragonMagic/
 | `NY#TBA<m><a>` | breath line alone (Breath Weapon), m = N or X (Breath Mastery), a = 0 or 1 (Acid Mastery) |
 | `NY#TBM<m><a>` (+ `.2DA`) | breath menu (Meta-breath, opcode 214): `NY#TBL` line, `NY#TBB` ball, `NY#TBP` pool |
 | `NY#KBRT`, `NY#KB<l>`, `NY#KB<l>2`/`3`, `NY#KB<l>F`, `NY#KBRF` | choice of the breath ability: root (also the recharge), candidates a..h, finals; refresh by the breath transformations (pending recharges cancelled) |
-| `NY#TBBP`, `NY#TBPX`, `NY#TBPP` | breath ball (Fireball area with Breath Doom's explosion: GREEHIT.PRO's sound, SPBDIMSP, SPBDRAE2), pool explosion (the same at the pool's size) and pool (Stinking Cloud's CLOUD.PRO, Pooling Breath's puddles) projectiles |
+| `NY#TBBP`, `NY#TBPX`, `NY#TBPP` | breath ball (Fireball area with Breath Doom's explosion: GREEHIT.PRO's sound, SPBDIMSP, SPBDRAE2), pool explosion (the same at the pool's size) and pool (Stinking Cloud's CLOUD.PRO, Pooling Breath's puddles) projectiles; the ball travels as a green orb (Pooling Breath's blob `NY#PBRT`); the pool is spat 15 ft. ahead |
 | `NY#TQ<m><a><i>` | the pool itself, one per damage tier i, cast where the pool explosion lands (opcode 148) |
 | `NY#TAMR` | Acid Mastery: AC -2 for 2 rounds, not cumulative |
 | `NY#TTLS`, `NY#TTLP` | Draconic Tail strike and its permanent trigger (opcode 232) |
@@ -85,12 +88,17 @@ BlackDragonMagic/
 | `NY#TCHR`, `NY#TCHC`, `NY#RACE=<race>` | Charm Reptile (Draconic Majesty) and its race checks |
 | `NY#TGEN`, `NY#TGSI`, `NY#TGIP`, `NY#TGDD`, `NY#TGCD` | wizard copies of Entangle, Summon Insects, Insect Plague, Dolorous Decay, Creeping Doom (learned only through the transformations, when the game has them) |
 | `NY#TGDK`, `NY#TGDP` | Darkness (level 2) and its 15-ft. burst |
-| `NY#TGCW`, `NY#TGCP`, `NY#TGCR` | Corrupt Water (level 4), its area (rain, Grease's surface) and the rain: IWD:EE Acid Storm's ASTORMA desaturated grey |
+| `NY#TGCW`, `NY#TGCX`, `NY#TGCR` | Corrupt Water (level 4): the rain, falling once (Fireball's area with IWD:EE Acid Storm's ASTORMA desaturated grey) |
+| `NY#TGCV` | Corrupt Water: potions destroyed once, save vs. Spell; one shared probability roll, a 50-wide window per potion: a random part of the potion kinds, about half |
+| `NY#TGCS`, `NY#TGCP` | Corrupt Water: the pool (Grease's surface, poison, slow), cast where the rain fell (opcode 148) |
 | `NY#TGSR` | Summon Reptile (level 8, the hydra `NY#HYDS`, BG2EE/EET) |
-| `NY#TGSL`, `NY#TGLP` | Swampy Lake (level 9) and its lake |
+| `NY#TGSL`, `NY#TGLP` | Swampy Lake (level 9) and its lake (Grease's surface: acid, poison) |
+| `NY#TGLR`, `NY#TGLRP`, `NY#TGLE` | Swampy Lake: the roots (Entangle's projectile, 30-ft. radius; Entangle's effects) |
+| `NY#TGLS`, `NY#TGLSP`, `NY#TGLI` | Swampy Lake: the insects (Insect Plague's projectile, 30-ft. radius; Summon Insects' effects, save vs. Spell) |
 | `LUNYB.2DA`, `LUABBR.2DA` | HLA table of the kit (BG2EE / EET, abbreviation `NYB`): extra spells of levels 6, 7 and 8, Breath Doom, Call Ancestor, Bonemelt, Black Dragon Magic Mastery |
 | `NY#BDBL`, `NY#BDBLB`, `NY#BDBLC` | Breath Doom HLA (copy of `SPWI922` Dragon's Breath, acid instead of fire, explosion and sound of `SPIN691`) and its icons |
-| `NY#THCA`, `NY#TANC`, `NY#TANE` | Call Ancestor HLA, the Half Black Dragon Spirit (placeholder: Summon Planetar's planetar, renamed, immune to acid) and the EFF calling it (BG2EE: Summon Planetar goes through opcode 177 and SPPLAN2.EFF) |
+| `NY#THCA`, `NY#TANE` | Call Ancestor HLA (Summon Planetar's duration and casting) and the EFF calling the spirit (BG2EE: Summon Planetar goes through opcode 177 and SPPLAN2.EFF) |
+| `NY#TANC`, `NY#TANW`, `NYHD*.BAM`, `<id>.INI` | Half Black Dragon Spirit (`creatures/half_black_dragon`): level 18 fighter, 150 HP, immune to acid, poison and fear, blurred (opcode 65); its Ancestral Greatsword (+3, 1d10 + 2d6 acid); animation: Icewind Dale II's half black dragon (MDH1) converted to IWD:EE format, animation id from 0xEC40 (`NY_HALF_BLACK_DRAGON`); sounds HDRAG*.WAV (Siege of Dragonspear), copied when missing |
 | `NY#THBM`, `NY#THBE`, `NY#THSK` | Bonemelt HLA (4d4 acid per round, 10 rounds), its EFF and the skeleton destruction |
 | `NY#THMS` | Black Dragon Magic Mastery HLA (learns Creeping Doom, Summon Reptile, Swampy Lake) |
 | `NY#ACDS`, `NY#ACDX` | Acidosis and its retaliation |

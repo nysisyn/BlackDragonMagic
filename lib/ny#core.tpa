@@ -487,3 +487,45 @@ BEGIN
     OUTER_SPRINT hex ~%hex%%c%~
   END
 END
+
+
+/////////////////////////////////////////////////////////////////////////////
+// NY#NEW_ANIMATION (action)
+// Gives a creature animation its id: the first free one from 0xEC40 to
+// 0xECFF (no INI file, no ANIMATE.IDS entry), copies its INI file as
+// <id>.INI and adds <symbol> to ANIMATE.IDS. Returns the id and its 4
+// hexadecimal digits.
+/////////////////////////////////////////////////////////////////////////////
+DEFINE_ACTION_FUNCTION NY#NEW_ANIMATION
+  STR_VAR
+    ini    = ~~
+    symbol = ~~
+  RET
+    id
+    hex
+BEGIN
+  OUTER_SET id = "-1"
+  OUTER_SPRINT hex ~~
+  OUTER_FOR (a = 0xec40; (a <= 0xecff) AND (id < 0); ++a) BEGIN
+    LAF NY#HEX4 INT_VAR value = a RET h = hex END
+    OUTER_SET used = FILE_EXISTS_IN_GAME ~%h%.ini~
+    ACTION_IF (NOT used) BEGIN
+      COPY_EXISTING ~animate.ids~ ~override~
+        PATCH_IF (INDEX_BUFFER (CASE_INSENSITIVE EVALUATE_REGEXP ~^0x%h%[ %TAB%]~) >= 0) BEGIN
+          SET used = 1
+        END
+      BUT_ONLY
+    END
+    ACTION_IF (NOT used) BEGIN
+      OUTER_SET id = a
+      OUTER_SPRINT hex ~%h%~
+    END
+  END
+  ACTION_IF (id < 0) BEGIN
+    FAIL ~BlackDragonMagic: no free animation id between 0xEC40 and 0xECFF~
+  END
+  COPY ~%ini%~ ~override/%hex%.ini~
+  ACTION_IF (IDS_OF_SYMBOL (~animate~ ~%symbol%~) < 0) BEGIN
+    APPEND ~animate.ids~ ~0x%hex% %symbol%~
+  END
+END

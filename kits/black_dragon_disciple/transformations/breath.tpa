@@ -27,9 +27,9 @@
 //   NY#BDBRT/U  line (black_dragon_disciple.tpa)
 //   NY#TBBP     ball: Fireball with the explosion of Breath Doom (the
 //               game's black dragon breath GREEHIT.PRO: sound, explosion
-//               animation SPBDIMSP, spread SPBDRAE2, effect, colour, flags),
-//               no fire visuals, no travelling object (the breath leaves the
-//               mouth)
+//               animation SPBDIMSP, spread SPBDRAE2, effect, colour, flags);
+//               it travels as a green orb (Pooling Breath's acid blob
+//               NY#PBRT, no smoke)
 //   NY#TBPX     pool, first: the same explosion at the pool's size; it casts
 //               the pool where it explodes (opcode 148, NY#TQ<m><a><i>)
 //   NY#TBPP     pool, then: Stinking Cloud's CLOUD.PRO with the acid puddles
@@ -57,6 +57,7 @@ COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdbri.bam~ ~override~
      ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrb.bam~ ~override~
      ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrc.bam~ ~override~
      ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrd.bam~ ~override~
+     ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrt.bam~ ~override~
 LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDBRI~ c = ~NY#BDBRC~ END   // Remastered Spell Icons
 LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDBBB~ c = ~NY#BDBBC~ END
 LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#PBRB~  c = ~NY#PBRC~  END
@@ -84,8 +85,10 @@ COPY_EXISTING ~greehit.pro~ ~override~
   END
 BUT_ONLY
 COPY_EXISTING ~fireball.pro~ ~%ny_workspace%/NY#TBBP.pro~
-  WRITE_ASCII  0x104 ~~ #8          // no travelling fireball
-  WRITE_ASCII  0x10c ~~ #8          // nor its shadow
+  WRITE_ASCII  0x104 ~NY#PBRT~ #8   // a green orb instead of the fireball
+  WRITE_ASCII  0x10c ~~ #8          // no shadow
+  WRITE_LONG   0x100 (THIS BAND (BNOT 0x2))   // no smoke
+  WRITE_BYTE   0x124 86             // gradient 86: acid green (as Pooling Breath's blob)
   FOR (o = 0x208; o < 0x250; ++o) BEGIN
     WRITE_BYTE o $ny_greehit(~%o%~)
   END
@@ -181,7 +184,7 @@ BEGIN
         SET rng = 40
       END ELSE BEGIN
         SET pro = ny_pro_tbpoolx
-        SET rng = 30
+        SET rng = 15                                  // spat just ahead
       END
       LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 4 range = rng level = lvl casting_time = 1 projectile = pro STR_VAR icon = EVAL ~%icon_b%~ RET h = header END
       // used: every breath ability is removed, the choice comes back after

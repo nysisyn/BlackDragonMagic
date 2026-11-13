@@ -27,30 +27,9 @@ OUTER_SET ny_str_hydra = RESOLVE_STR_REF (@1)
 
 COPY ~%MOD_FOLDER%/creatures/hydra/anim~ ~override~
 
-// Animation id: first free one from 0xEC40 (no INI file, no ANIMATE.IDS entry)
-OUTER_SET ny_hyd_anim = "-1"
-OUTER_FOR (id = 0xec40; (id <= 0xecff) AND (ny_hyd_anim < 0); ++id) BEGIN
-  LAF NY#HEX4 INT_VAR value = id RET hexstring = hex END
-  OUTER_SET used = FILE_EXISTS_IN_GAME ~%hexstring%.ini~
-  ACTION_IF (NOT used) BEGIN
-    COPY_EXISTING ~animate.ids~ ~override~
-      PATCH_IF (INDEX_BUFFER (CASE_INSENSITIVE EVALUATE_REGEXP ~^0x%hexstring%[ %TAB%]~) >= 0) BEGIN
-        SET used = 1
-      END
-    BUT_ONLY
-  END
-  ACTION_IF (NOT used) BEGIN
-    OUTER_SET ny_hyd_anim = id
-    OUTER_SPRINT ny_hyd_hex ~%hexstring%~
-  END
-END
-ACTION_IF (ny_hyd_anim < 0) BEGIN
-  FAIL ~BlackDragonMagic: no free animation id between 0xEC40 and 0xECFF~
-END
-COPY ~%MOD_FOLDER%/creatures/hydra/ini/hydra.ini~ ~override/%ny_hyd_hex%.ini~
-ACTION_IF (IDS_OF_SYMBOL (~animate~ ~NY_HYDRA~) < 0) BEGIN
-  APPEND ~animate.ids~ ~0x%ny_hyd_hex% NY_HYDRA~
-END
+// Animation id: first free one from 0xEC40 (lib/ny#core.tpa)
+LAF NY#NEW_ANIMATION STR_VAR ini = EVAL ~%MOD_FOLDER%/creatures/hydra/ini/hydra.ini~ symbol = ~NY_HYDRA~
+                     RET ny_hyd_anim = id ny_hyd_hex = hex END
 PRINT ~Hydra animation id: 0x%ny_hyd_hex%~
 
 /////////////////////////////////////////////////////////////////////////////

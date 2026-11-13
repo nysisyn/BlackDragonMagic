@@ -102,17 +102,23 @@ OUTER_SPRINT $ny_bdm(~%ny_bdm_dark%~) ~NY#TGDK~
 
 
 // ---------------------------------------------------------------------------
-// Corrupt Water - level 4: a foul rain and a pool of rotten water, 15-ft.
-// radius, for 1 turn (Stinking Cloud's CLOUD.PRO: the spell is applied
-// again about once per round). Each time: the potions carried by the
-// creatures in the area are destroyed (opcode 123, every potion of the game
-// at install time; no message: the engine cannot tell whether one was
-// destroyed), save vs. Death or poisoned for 1 round, save vs. Spell or
-// slowed as by Grease (SPWI101's effects: opcodes 158, 126, 142).
-// Projectile NY#TGCP: Stinking Cloud's CLOUD.PRO; the rain is Acid Storm's
-// (IWD:EE ASTORMA, desaturated grey: NY#TGCR, blended as in IWD:EE), its
-// sound ARE_M04; on the ground, Grease's surface (explosion effect and
-// colour of GREASE.PRO). No travelling object: the rain falls on the spot.
+// Corrupt Water - level 4: a foul rain falls once on a 15-ft. radius, then
+// a pool of rotten water stays for 1 turn.
+// The rain (NY#TGCW, projectile NY#TGCX: Fireball's area, no fire, Acid
+// Storm's rain of IWD:EE (ASTORMA desaturated grey: NY#TGCR, blended as in
+// IWD:EE) and its sound ARE_M04): the creatures caught in it save vs.
+// Spell or lose part of their potions (NY#TGCV, below); then the pool is
+// cast where the rain fell (opcode 148, NY#TGCS).
+// The pool (NY#TGCS, projectile NY#TGCP: Stinking Cloud's CLOUD.PRO, the
+// spell applied again about once per round, Grease's surface: explosion
+// effect and colour of GREASE.PRO): save vs. Death or poisoned for 1 round,
+// save vs. Spell or slowed as by Grease (SPWI101's effects: opcodes 158,
+// 126, 142).
+// Potions (NY#TGCV): one opcode 123 per potion of the game (item category
+// 9, at install time). The effects of a spell share one probability roll:
+// each potion gets its own 50-wide window (start 0 to 49, spread over the
+// list), so one roll destroys a random part of the potion kinds, about half
+// on average. No message: the engine cannot tell whether one was destroyed.
 // Icon: placeholder, Pooling Breath's.
 // ---------------------------------------------------------------------------
 OUTER_SET ny_str_cwater   = RESOLVE_STR_REF (@262)
@@ -124,6 +130,19 @@ BUT_ONLY
 OUTER_SET ny_px_per_ft = ny_fb_size / 20
 
 COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#tgcr.bam~ ~override~
+COPY_EXISTING ~fireball.pro~ ~%ny_workspace%/NY#TGCX.pro~
+  WRITE_ASCII 0x104 ~~ #8                       // no travelling fireball
+  WRITE_ASCII 0x10c ~~ #8                       // nor its shadow
+  WRITE_SHORT 0x204 (15 * ny_px_per_ft)
+  WRITE_SHORT 0x206 (15 * ny_px_per_ft)
+  WRITE_ASCII 0x208 ~ARE_M04~ #8                // Acid Storm's rain sound
+  WRITE_ASCII 0x21c ~~ #8                       // no fire explosion
+  WRITE_ASCII 0x228 ~NY#TGCR~ #8                // the rain, once
+  WRITE_ASCII 0x230 ~~ #8                       // no flame ring
+  WRITE_LONG  0x240 0x7004                      // Acid Storm's flags: scattered, blended, glowing
+ADD_PROJECTILE ~%ny_workspace%/NY#TGCX.pro~
+OUTER_SET ny_pro_cwater_rain = IDS_OF_SYMBOL (~projectl~ ~NY#TGCX~) + 1
+
 COPY_EXISTING ~grease.pro~ ~override~
   READ_BYTE 0x217 ny_grease_effect
   READ_BYTE 0x218 ny_grease_color
@@ -132,9 +151,7 @@ COPY_EXISTING ~cloud.pro~ ~%ny_workspace%/NY#TGCP.pro~
   WRITE_ASCII 0x104 ~~ #8                       // no travelling object
   WRITE_BYTE  0x217 ny_grease_effect            // Grease's surface
   WRITE_BYTE  0x218 ny_grease_color
-  WRITE_ASCII 0x228 ~NY#TGCR~ #8                // the rain
-  WRITE_ASCII 0x238 ~ARE_M04~ #8                // Acid Storm's rain sound
-  WRITE_LONG  0x240 (THIS BOR 0x6000)           // blended, glowing (as Acid Storm)
+  WRITE_ASCII 0x228 ~~ #8                       // no cloud
   WRITE_SHORT 0x204 (15 * ny_px_per_ft)
   WRITE_SHORT 0x206 (15 * ny_px_per_ft)
 ADD_PROJECTILE ~%ny_workspace%/NY#TGCP.pro~
@@ -152,18 +169,30 @@ COPY_EXISTING_REGEXP GLOB ~^.+\.itm$~ ~override~
   END
 BUT_ONLY
 
-CREATE ~SPL~ ~NY#TGCW~
-  LPF NY#SPL_BASE INT_VAR name = ny_str_cwater desc = ny_str_cwater_d type = 1 level = 4 school = 8 graphics = 10 STR_VAR icon = ~NY#PBRC~ END
-  LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 4 range = 30 level = 1 casting_time = 4 projectile = ny_pro_cwater STR_VAR icon = ~NY#PBRB~ RET h = header END
+CREATE ~SPL~ ~NY#TGCV~
+  LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 1 range = 1000 level = 1 casting_time = 0 RET h = header END
+  FOR (i = 0; i < ny_potion_n; ++i) BEGIN
+    SPRINT r $ny_potion(~%i%~)
+    SET low = (i * 37) MODULO 50
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 123 target = 2 timing = 1 probability1 = (low + 49) probability2 = low
+                         STR_VAR resource = EVAL ~%r%~ END
+  END
+
+CREATE ~SPL~ ~NY#TGCS~
+  LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 4 range = 30 level = 1 casting_time = 0 projectile = ny_pro_cwater RET h = header END
   LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 25 target = 2 timing = 0 duration = ny_round parameter1 = 1 parameter2 = 0 savingthrow = 4 resist_dispel = 1 END
   // Grease (SPWI101): animation, movement 20%, Grease icon
   LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 158 target = 2 timing = 0 duration = ny_round savingthrow = 1 resist_dispel = 1 END
   LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 126 target = 2 timing = 0 duration = ny_round parameter1 = 20 parameter2 = 5 savingthrow = 1 resist_dispel = 1 END
   LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 142 target = 2 timing = 0 duration = ny_round parameter2 = 145 savingthrow = 1 resist_dispel = 1 END
-  FOR (i = 0; i < ny_potion_n; ++i) BEGIN
-    SPRINT r $ny_potion(~%i%~)
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 123 target = 2 timing = 1 STR_VAR resource = EVAL ~%r%~ END
-  END
+
+CREATE ~SPL~ ~NY#TGCW~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_cwater desc = ny_str_cwater_d type = 1 level = 4 school = 8 graphics = 10 STR_VAR icon = ~NY#PBRC~ END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 4 range = 30 level = 1 casting_time = 4 projectile = ny_pro_cwater_rain STR_VAR icon = ~NY#PBRB~ RET h = header END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 timing = 1 parameter2 = 1 savingthrow = 1 resist_dispel = 1 STR_VAR resource = ~NY#TGCV~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 148 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#TGCS~ END
 
 
 // ---------------------------------------------------------------------------
@@ -197,27 +226,105 @@ END
 
 
 // ---------------------------------------------------------------------------
-// Swampy Lake - level 9: a lake of acid, 30-ft. radius, for 1 turn
-// (CLOUD.PRO, applied again about once per round): 4d6 acid, save vs.
-// Breath for half. The caster is immune to it for its duration.
-// Projectile NY#TGLP: Breath Pool's, four times the area.
+// Swampy Lake - level 9: a swamp of three overlapping zones, 30-ft. radius
+// each, for about 1 turn (area projectiles applying their spell again about
+// once per round). The caster is immune to all three.
+//   NY#TGSL  the lake (projectile NY#TGLP: CLOUD.PRO with Grease's surface,
+//            as Corrupt Water's pool): 4d6 acid, save vs. Breath for half;
+//            save vs. Death or poisoned for 1 round. It casts the two others
+//            where it lands (opcode 148).
+//   NY#TGLR  the roots (projectile NY#TGLRP: Entangle's, 30-ft. radius):
+//            NY#TGLE on the creatures, Entangle's effects (NY#TGEN, the
+//            Black Dragon Magic copy) with their own save vs. Spell
+//   NY#TGLS  the insects (projectile NY#TGLSP: Insect Plague's, 30-ft.
+//            radius): save vs. Spell or NY#TGLI, Summon Insects' effects
+//            (NY#TGSI) on the creature
+// NY#TGLE and NY#TGLI first remove themselves (opcode 321): applied again
+// each round, they do not pile up. A zone whose source spell is missing is
+// left out.
 // Icon: placeholder, Pooling Breath's.
 // ---------------------------------------------------------------------------
 OUTER_SET ny_str_slake   = RESOLVE_STR_REF (@266)
 OUTER_SET ny_str_slake_d = RESOLVE_STR_REF (@267)
 
-COPY_EXISTING ~NY#TBPP.pro~ ~%ny_workspace%/NY#TGLP.pro~
+COPY_EXISTING ~NY#TGCP.pro~ ~%ny_workspace%/NY#TGLP.pro~
   WRITE_SHORT 0x204 (30 * ny_px_per_ft)
   WRITE_SHORT 0x206 (30 * ny_px_per_ft)
 ADD_PROJECTILE ~%ny_workspace%/NY#TGLP.pro~
 OUTER_SET ny_pro_slake = IDS_OF_SYMBOL (~projectl~ ~NY#TGLP~) + 1
 
+// One zone: <zone> on a 30-ft. clone of the projectile of <source>; on the
+// creatures, <effect>: the effects of <source> (its first header), removing
+// themselves first; the cast of <effect> gets the save <save> (0: none)
+DEFINE_ACTION_FUNCTION NY#TGL_ZONE
+  INT_VAR
+    save = 0
+  STR_VAR
+    source = ~~
+    zone   = ~~
+    effect = ~~
+  RET
+    ok
+BEGIN
+  OUTER_SET ok = 0
+  OUTER_SET pro = 0
+  ACTION_IF FILE_EXISTS_IN_GAME ~%source%.spl~ BEGIN
+    COPY_EXISTING ~%source%.spl~ ~override~
+      READ_LONG  0x64 ho
+      READ_SHORT 0x68 hn
+      PATCH_IF (hn > 0) BEGIN READ_SHORT (ho + 0x26) pro END
+      PATCH_IF (pro > 1) BEGIN
+        LOOKUP_IDS_SYMBOL_OF_INT pro_res ~projectl~ (pro - 1)
+      END
+    BUT_ONLY
+  END
+  ACTION_IF (pro > 1) BEGIN
+    ACTION_IF FILE_EXISTS_IN_GAME ~%pro_res%.pro~ BEGIN
+      OUTER_SET ok = 1
+      LAF NY#CLONE_AREA_PRO INT_VAR radius_ft = 30 STR_VAR source = EVAL ~%pro_res%~ new = EVAL ~%zone%P~
+                            workspace = EVAL ~%ny_workspace%~ RET zpro = pro_id END
+      // the effects on the creatures: the source's first header, no
+      // projectile, removing themselves first
+      COPY_EXISTING ~%source%.spl~ ~override/%effect%.spl~
+        WRITE_LONG  0x08 "-1"
+        WRITE_LONG  0x0c "-1"
+        WRITE_SHORT 0x1c 4                      // innate
+        WRITE_LONG  0x18 (THIS BOR 0x400)       // hostile
+        READ_LONG  0x64 ho
+        WRITE_SHORT 0x68 1                      // the first header only
+        WRITE_BYTE  (ho + 0x0c) 1               // creature
+        WRITE_SHORT (ho + 0x0e) 1000
+        WRITE_SHORT (ho + 0x10) 1               // from level 1
+        WRITE_SHORT (ho + 0x12) 0               // no casting time
+        WRITE_SHORT (ho + 0x26) 1               // no projectile
+        LPF ADD_SPELL_EFFECT INT_VAR header = 1 insert_point = 0 opcode = 321 target = 2 timing = 1 STR_VAR resource = EVAL ~%effect%~ END
+      CREATE ~SPL~ ~%zone%~
+        LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+        LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 4 range = 30 level = 1 casting_time = 0 projectile = zpro RET h = header END
+        LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 timing = 1 parameter2 = 1 savingthrow = save resist_dispel = 1
+                             STR_VAR resource = EVAL ~%effect%~ END
+    END
+  END
+END
+
+LAF NY#TGL_ZONE INT_VAR save = 0 STR_VAR source = ~NY#TGEN~ zone = ~NY#TGLR~ effect = ~NY#TGLE~ RET ny_slake_roots = ok END
+LAF NY#TGL_ZONE INT_VAR save = 1 STR_VAR source = ~NY#TGSI~ zone = ~NY#TGLS~ effect = ~NY#TGLI~ RET ny_slake_insects = ok END
+
 CREATE ~SPL~ ~NY#TGSL~
   LPF NY#SPL_BASE INT_VAR name = ny_str_slake desc = ny_str_slake_d type = 1 level = 9 school = 2 graphics = 14 STR_VAR icon = ~NY#PBRC~ END
   LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 4 range = 30 level = 1 casting_time = 9 projectile = ny_pro_slake STR_VAR icon = ~NY#PBRB~ RET h = header END
   LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = ny_turn parameter1 = "-1" STR_VAR resource = ~NY#TGSL~ END
+  PATCH_IF ny_slake_roots BEGIN
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = ny_turn parameter1 = "-1" STR_VAR resource = ~NY#TGLR~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 148 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#TGLR~ END
+  END
+  PATCH_IF ny_slake_insects BEGIN
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = ny_turn parameter1 = "-1" STR_VAR resource = ~NY#TGLS~ END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 148 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#TGLS~ END
+  END
   LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 1 parameter2 = 0x10000 dicenumber = 4 dicesize = 6
                                savingthrow = 2 special = 0x100 resist_dispel = 1 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 25  target = 2 timing = 0 duration = ny_round parameter1 = 1 parameter2 = 0 savingthrow = 4 resist_dispel = 1 END
 OUTER_SPRINT $ny_hms(~%ny_hms_n%~) ~NY#TGSL~
 OUTER_SET ny_hms_n += 1
 

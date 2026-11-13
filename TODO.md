@@ -28,7 +28,9 @@ Transformations:
 - [ ] Dragon Wings: +4 movement, Wing Buffet at will with a 4-round recharge (BG2EE/EET).
 - [ ] Draconic Majesty: CHA, INT, Lore; Charm Reptile 3 per day, no save, magic resistance ignored, dragons and non-reptiles unaffected.
 - [ ] Frightful Presence: 10 ft., enemies of lower level only, 24 hours of immunity after the test.
-- [ ] Darkness, Corrupt Water (potions destroyed, poison, grey rain, Grease surface and slow), Summon Reptile (hydra), Swampy Lake.
+- [ ] Darkness, Corrupt Water (rain once; potions: save vs. Spell, about half of the kinds; pool: poison, Grease surface and slow), Summon Reptile (hydra), Swampy Lake (lake, roots, insects: acid, poison, entangle, Summon Insects).
+- [ ] Breath Ball: green orb travelling, then the explosion. Breath Pool: range 15 ft.
+- [ ] Call Ancestor: the Half Black Dragon Spirit (animation, sounds, blur, greatsword with acid).
 - [ ] Breath Ball: Breath Doom's explosion. Breath Pool: the explosion first, then the pool where it landed (opcode 148 at the target point: to check the pool does not appear on the disciple).
 - [ ] Messages "Breath weapon ready" and "Wing Buffet ready" when they come back.
 - [ ] Swamp Stride: immune to Corrupt Water.
@@ -148,5 +150,4 @@ Transformations:
 - [ ] Draconic Transformations, icons: the dark placeholders replaced by real icons (one shape per transformation).
 - [ ] Breath recharge lost if the disciple dies while it recharges (the delayed opcode 146 dies with him): give it back at rest or on resurrection.
 - [ ] Acid Mastery: AC reduction only on the breaths; the bite (cast by an item) and the game's acid spells (Melf's Acid Arrow, Vitriolic Sphere...) would need a check of the caster.
-- [ ] Call Ancestor: a real Half Black Dragon Spirit (Icewind Dale's MDH1 half-dragon animation) instead of the renamed planetar.
 - [ ] Darkness: a darkness visual.

@@ -354,7 +354,7 @@ Casting Time: 4
 Area of Effect: 15-ft. radius
 Saving Throw: Special
 
-A foul rain falls on the area and leaves a pool of rotten water on the ground for 1 turn. The potions carried by the creatures in the area are spoiled and destroyed. The water is slippery, as a Grease spell. Each round, creatures in the water must save vs. Death or be poisoned for 1 round, and save vs. Spell or be slowed by the slippery ground.~
+A foul rain falls on the area and leaves a pool of rotten water on the ground for 1 turn. Creatures caught in the rain must save vs. Spell or part of their potions, about half of the kinds they carry, are spoiled and destroyed. The water is slippery, as a Grease spell. Each round, creatures in the water must save vs. Death or be poisoned for 1 round, and save vs. Spell or be slowed by the slippery ground.~
 
 @264 = ~Summon Reptile~
 @265 = ~Summon Reptile
@@ -380,9 +380,21 @@ Casting Time: 9
 Area of Effect: 30-ft. radius
 Saving Throw: Special
 
-A lake of acid swallows the area for 1 turn. Each round, creatures in the lake take 4d6 acid damage (save vs. Breath for half). The caster is not affected.~
+A swamp of acid swallows the area for 1 turn: a lake, roots and swarms of insects. Each round, creatures in the swamp take 4d6 acid damage (save vs. Breath for half), must save vs. Death or be poisoned for 1 round, save vs. Spell or be entangled by the roots, and save vs. Spell or be harassed by the insects as by a Summon Insects spell. The caster is not affected.~
 
 @270 = ~Half Black Dragon Spirit~
+@271 = ~Ancestral Greatsword~
+@272 = ~Ancestral Greatsword
+
+The two-handed sword of a half black dragon ancestor, as ghostly as its bearer. Its blade drips with acid.
+
+STATISTICS:
+
+THAC0: +3
+Damage: 1d10 +3 (slashing) + 2d6 acid
+Speed Factor: 7
+Proficiency Type: Two-Handed Sword
+Type: Two-handed~
 
 
 // ---------------------------------------------------------------------------
@@ -395,7 +407,7 @@ The Black Dragon Disciple unleashes the full fury of his ancestor: a huge cone o
 @302 = ~Call Ancestor~
 @303 = ~Call Ancestor
 
-The Black Dragon Disciple calls the spirit of a half black dragon ancestor to fight at his side. Replaces Summon Planetar and Summon Dark Planetar.~
+The Black Dragon Disciple calls the spirit of a half black dragon ancestor to fight at his side. The spirit, blurred like a ghost, fights with a two-handed sword dripping with acid (+3, 1d10 slashing + 2d6 acid). It is immune to acid, poison and fear. Replaces Summon Planetar and Summon Dark Planetar.~
 @304 = ~Bonemelt~
 @305 = ~Bonemelt
 

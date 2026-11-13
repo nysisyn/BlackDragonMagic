@@ -14,9 +14,11 @@
 //            breath (SPIN691: projectile GREEHIT, sound BLACK04) instead of
 //            the red dragon head visual. Icons: the former Black Dragon
 //            Breathball ones (SPWI922 in acid yellow).
-//   NY#THCA  Call Ancestor: the game's Summon Planetar (SPWI924) calling
-//            NY#TANC, the Half Black Dragon Spirit. Placeholder: the
-//            planetar renamed, immune to acid (see TODO).
+//   NY#THCA  Call Ancestor: the game's Summon Planetar (SPWI924: duration,
+//            casting) calling NY#TANC, the Half Black Dragon Spirit
+//            (creatures/half_black_dragon/half_black_dragon.tpa) through
+//            NY#TANE (BG2:EE: opcode 177 and its EFF SPPLAN2.EFF; opcode 67
+//            directly otherwise).
 //   NY#THBM  Bonemelt: 4d4 acid per round for 10 rounds on one creature;
 //            skeletons are destroyed. Icons: the Bonemelt spell's.
 //   NY#THMS  Black Dragon Magic Mastery (AP_, applied when picked): learns
@@ -119,10 +121,7 @@ ACTION_IF (~%ny_planetar%~ STRING_EQUAL ~~) AND (~%ny_planetar_eff%~ STRING_COMP
 END
 
 ACTION_IF (~%ny_planetar%~ STRING_COMPARE ~~) AND FILE_EXISTS_IN_GAME ~%ny_planetar%.cre~ BEGIN
-  COPY_EXISTING ~%ny_planetar%.cre~ ~override/NY#TANC.cre~
-    WRITE_LONG 0x08 ny_str_spirit
-    WRITE_LONG 0x0c ny_str_spirit
-    WRITE_BYTE 0x5c 100                          // immune to acid
+  INCLUDE ~%MOD_FOLDER%/creatures/half_black_dragon/half_black_dragon.tpa~
   // the EFF of opcode 177, calling the spirit
   ACTION_IF (~%ny_planetar_eff%~ STRING_COMPARE ~~) BEGIN
     COPY_EXISTING ~%ny_planetar_eff%.eff~ ~override/NY#TANE.eff~
