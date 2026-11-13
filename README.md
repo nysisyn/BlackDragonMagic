@@ -90,7 +90,7 @@ BlackDragonMagic/
 | `NY#TGSL`, `NY#TGLP` | Swampy Lake (level 9) and its lake |
 | `LUNYB.2DA`, `LUABBR.2DA` | HLA table of the kit (BG2EE / EET, abbreviation `NYB`): extra spells of levels 6, 7 and 8, Breath Doom, Call Ancestor, Bonemelt, Black Dragon Magic Mastery |
 | `NY#BDBL`, `NY#BDBLB`, `NY#BDBLC` | Breath Doom HLA (copy of `SPWI922` Dragon's Breath, acid instead of fire, explosion and sound of `SPIN691`) and its icons |
-| `NY#THCA`, `NY#TANC` | Call Ancestor HLA and the Half Black Dragon Spirit (placeholder: Summon Planetar's planetar, renamed, immune to acid) |
+| `NY#THCA`, `NY#TANC`, `NY#TANE` | Call Ancestor HLA, the Half Black Dragon Spirit (placeholder: Summon Planetar's planetar, renamed, immune to acid) and the EFF calling it (BG2EE: Summon Planetar goes through opcode 177 and SPPLAN2.EFF) |
 | `NY#THBM`, `NY#THBE`, `NY#THSK` | Bonemelt HLA (4d4 acid per round, 10 rounds), its EFF and the skeleton destruction |
 | `NY#THMS` | Black Dragon Magic Mastery HLA (learns Creeping Doom, Summon Reptile, Swampy Lake) |
 | `NY#ACDS`, `NY#ACDX` | Acidosis and its retaliation |
