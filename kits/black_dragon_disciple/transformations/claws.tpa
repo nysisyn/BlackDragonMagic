@@ -11,7 +11,7 @@
 // The off-hand claw sets Two-Weapon Style to 3 points while equipped
 // (opcode 233): no two-weapon penalty. Both slots are saved. Extend Claws
 // then turns into Retract Claws, which removes them and turns back.
-// 1d4 slashing, no THAC0 bonus, magical weapons: +1, +2 at level 10, +3 at 15, +4
+// 1d4 slashing, magical weapons (to hit, damage and enchantment): +1, +2 at level 10, +3 at 15, +4
 // at 20, +5 at 25 (headers of Extend Claws by level: the claws of the
 // disciple's level when he extends them).
 // The bite: each successful hit has a 20% chance (one roll per hit) to cast
@@ -77,7 +77,7 @@ BEGIN
     END
     // melee: slashing, strength bonus applies; id_req = 0 as FIST.ITM
     LPF NY#ADD_ITM_HEADER INT_VAR attack_type = 1 id_req = 0 location = 1 target = 1 range = 1 speed = 2
-                                  thac0 = 0 dice_sides = 4 dice_thrown = 1 damage_type = 3 flags = 1
+                                  thac0 = stage dice_sides = 4 dice_thrown = 1 damage_bonus = stage damage_type = 3 flags = 1
                          STR_VAR icon = ~NY#BDCLI~ RET h = header END
     // the bite: 20% per hit
     LPF ADD_ITEM_EFFECT INT_VAR type = 99 header = h opcode = 146 target = 2 timing = 1 parameter2 = 1

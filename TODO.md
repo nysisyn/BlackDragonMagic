@@ -15,7 +15,7 @@ Kit:
 - [ ] Transformations picked at character creation applied as soon as the game starts.
 
 Transformations:
-- [ ] Claw & Bite: Extend Claws given; claws in the first weapon slot and the shield slot, 2 attacks, no two-weapon penalty, no THAC0 bonus, bite 20% per hit (1d6 + 1d4 acid, combat log); Retract / Extend; stage of the level (+2 at 10...); a weapon already in the first slot: what happens to it.
+- [ ] Claw & Bite: Extend Claws given; claws in the first weapon slot and the shield slot, 2 attacks, no two-weapon penalty, +1 to +5 to hit and damage, bite 20% per hit (1d6 + 1d4 acid, combat log); Retract / Extend; stage of the level (+2 at 10...); a weapon already in the first slot: what happens to it.
 - [ ] Dragon Scale, Draconic Resilience (skull in the helmet slot, critical hits ignored; a helmet already there?), Draconic Might, Apotheosis: values on the record sheet.
 - [ ] Breath Weapon: line, 4d4 / 6d4 / 8d4, ignores magic resistance; gone after use, back 10 rounds later (+ about 8 seconds of choice); after a load during the recharge.
 - [ ] Meta-breath: menu line / ball / pool, shared charge, recharges 6 / 10 / 8; taken without Breath Weapon: the menu anyway.
