@@ -236,9 +236,10 @@ END
 //   NY#TGLR  the roots (projectile NY#TGLRP: Entangle's, 30-ft. radius):
 //            NY#TGLE on the creatures, Entangle's effects (NY#TGEN, the
 //            Black Dragon Magic copy) with their own save vs. Spell
-//   NY#TGLS  the insects (projectile NY#TGLSP: Insect Plague's, 30-ft.
-//            radius): save vs. Spell or NY#TGLI, Summon Insects' effects
-//            (NY#TGSI) on the creature
+//   NY#TGLS  the insects (projectile NY#TGLSP: Stinking Cloud's area,
+//            30-ft. radius, with the swarm of Summon Insects' missile
+//            INSEC1, SPIPLARI, scattered over it): save vs. Spell or
+//            NY#TGLI, Summon Insects' effects (NY#TGSI) on the creature
 // NY#TGLE and NY#TGLI first remove themselves (opcode 321): applied again
 // each round, they do not pile up. A zone whose source spell is missing is
 // left out.
@@ -253,7 +254,8 @@ COPY_EXISTING ~NY#TGCP.pro~ ~%ny_workspace%/NY#TGLP.pro~
 ADD_PROJECTILE ~%ny_workspace%/NY#TGLP.pro~
 OUTER_SET ny_pro_slake = IDS_OF_SYMBOL (~projectl~ ~NY#TGLP~) + 1
 
-// One zone: <zone> on a 30-ft. clone of the projectile of <source>; on the
+// One zone: <zone> on a 30-ft. clone of the projectile of <source> (if it
+// is a missile, Stinking Cloud's area with its animation); on the
 // creatures, <effect>: the effects of <source> (its first header), removing
 // themselves first; the cast of <effect> gets the save <save> (0: none)
 DEFINE_ACTION_FUNCTION NY#TGL_ZONE
@@ -281,8 +283,32 @@ BEGIN
   ACTION_IF (pro > 1) BEGIN
     ACTION_IF FILE_EXISTS_IN_GAME ~%pro_res%.pro~ BEGIN
       OUTER_SET ok = 1
-      LAF NY#CLONE_AREA_PRO INT_VAR radius_ft = 30 STR_VAR source = EVAL ~%pro_res%~ new = EVAL ~%zone%P~
-                            workspace = EVAL ~%ny_workspace%~ RET zpro = pro_id END
+      OUTER_SET area = 0
+      OUTER_SPRINT bam ~~
+      OUTER_SPRINT snd ~~
+      COPY_EXISTING ~%pro_res%.pro~ ~override~
+        READ_SHORT 0x08 type
+        SET area = (type = 3) AND (SOURCE_SIZE >= 0x300)
+        PATCH_IF (SOURCE_SIZE >= 0x10c) BEGIN
+          READ_ASCII 0x104 bam (8) NULL
+          READ_ASCII 0x10  snd (8) NULL
+        END
+      BUT_ONLY
+      ACTION_IF area BEGIN
+        LAF NY#CLONE_AREA_PRO INT_VAR radius_ft = 30 STR_VAR source = EVAL ~%pro_res%~ new = EVAL ~%zone%P~
+                              workspace = EVAL ~%ny_workspace%~ RET zpro = pro_id END
+      END ELSE BEGIN
+        // a missile (Summon Insects' INSEC1): Stinking Cloud's area, its
+        // travelling animation (the swarm) scattered over it
+        COPY_EXISTING ~cloud.pro~ ~%ny_workspace%/%zone%P.pro~
+          WRITE_ASCII 0x104 ~~ #8
+          WRITE_ASCIIE 0x228 ~%bam%~ #8
+          WRITE_ASCIIE 0x238 ~%snd%~ #8
+          WRITE_SHORT 0x204 (30 * ny_px_per_ft)
+          WRITE_SHORT 0x206 (30 * ny_px_per_ft)
+        ADD_PROJECTILE ~%ny_workspace%/%zone%P.pro~
+        OUTER_SET zpro = IDS_OF_SYMBOL (~projectl~ ~%zone%P~) + 1
+      END
       // the effects on the creatures: the source's first header, no
       // projectile, removing themselves first
       COPY_EXISTING ~%source%.spl~ ~override/%effect%.spl~

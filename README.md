@@ -94,7 +94,7 @@ BlackDragonMagic/
 | `NY#TGSR` | Summon Reptile (level 8, the hydra `NY#HYDS`, BG2EE/EET) |
 | `NY#TGSL`, `NY#TGLP` | Swampy Lake (level 9) and its lake (Grease's surface: acid, poison) |
 | `NY#TGLR`, `NY#TGLRP`, `NY#TGLE` | Swampy Lake: the roots (Entangle's projectile, 30-ft. radius; Entangle's effects) |
-| `NY#TGLS`, `NY#TGLSP`, `NY#TGLI` | Swampy Lake: the insects (Insect Plague's projectile, 30-ft. radius; Summon Insects' effects, save vs. Spell) |
+| `NY#TGLS`, `NY#TGLSP`, `NY#TGLI` | Swampy Lake: the insects (Stinking Cloud's area, 30-ft. radius, with the swarm of Summon Insects' missile scattered over it; Summon Insects' effects, save vs. Spell) |
 | `LUNYB.2DA`, `LUABBR.2DA` | HLA table of the kit (BG2EE / EET, abbreviation `NYB`): extra spells of levels 6, 7 and 8, Breath Doom, Call Ancestor, Bonemelt, Black Dragon Magic Mastery |
 | `NY#BDBL`, `NY#BDBLB`, `NY#BDBLC` | Breath Doom HLA (copy of `SPWI922` Dragon's Breath, acid instead of fire, explosion and sound of `SPIN691`) and its icons |
 | `NY#THCA`, `NY#TANE` | Call Ancestor HLA (Summon Planetar's duration and casting) and the EFF calling the spirit (BG2EE: Summon Planetar goes through opcode 177 and SPPLAN2.EFF) |
