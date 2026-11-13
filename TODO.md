@@ -7,7 +7,7 @@ Rebuilt from scratch: **new character needed**. Not tested in game yet; checked 
 
 Kit:
 - [ ] Plain sorcerer: d6, one spell slot less per spell level, no claws, no breath, no AC bonus at level 1.
-- [ ] The 18 transformations in the spell list at level-up (levels 1 to 9), names, descriptions and amber icons in English and French.
+- [ ] The 18 transformations in the spell list at level-up (levels 1 to 9), names, descriptions and icons in English and French.
 - [x] Learning one at level-up: its effects at once (global script); no spell slot lost.
 - [ ] It stays in the spellbook and is no longer offered at level-up; cast by hand: message, the slot comes back.
 - [ ] Another sorcerer learning it: nothing happens.
@@ -142,7 +142,7 @@ Transformations:
 - [ ] Custom icons (BAM) for the claws, breath, aura, wing buffet and spells.
 - [ ] Trello *Ideas* list: Swamp Lung, Ghostly Tail, Corrosive Spit, Dracosuchus Jaws, Tail Sweep.
 - [ ] Draconic Transformations, own spell list: a G3 library giving the kit its own spell list, so the other sorcerers no longer see the transformations (they already do nothing for them).
-- [ ] Draconic Transformations, icons: the amber placeholders replaced by real icons (one shape per transformation).
+- [ ] Draconic Transformations, icons: the dark placeholders replaced by real icons (one shape per transformation).
 - [ ] Breath recharge lost if the disciple dies while it recharges (the delayed opcode 146 dies with him): give it back at rest or on resurrection.
 - [ ] Acid Mastery: AC reduction only on the breaths; the bite (cast by an item) and the game's acid spells (Melf's Acid Arrow, Vitriolic Sphere...) would need a check of the caster.
 - [ ] Corrupt Water: the rain (visual) and grey-blue water instead of the recoloured acid puddles.
