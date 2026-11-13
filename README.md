@@ -88,11 +88,12 @@ BlackDragonMagic/
 | `NY#TCHR`, `NY#TCHC`, `NY#RACE=<race>` | Charm Reptile (Draconic Majesty) and its race checks |
 | `NY#TGEN`, `NY#TGSI`, `NY#TGIP`, `NY#TGDD`, `NY#TGCD` | wizard copies of Entangle, Summon Insects, Insect Plague, Dolorous Decay, Creeping Doom (learned only through the transformations, when the game has them) |
 | `NY#TGDK`, `NY#TGDP` | Darkness (level 2) and its 15-ft. burst |
-| `NY#TGCW`, `NY#TGCX`, `NY#TGCR` | Corrupt Water (level 4): the rain, falling once (Fireball's area with IWD:EE Acid Storm's ASTORMA desaturated grey) |
+| `NY#TGCW`, `NY#TGCX`, `NY#TGCR` | Corrupt Water (level 4): the rain, visual only, 4 explosions about once a second (Fireball's area with IWD:EE Acid Storm's ASTORMA desaturated grey); the caster is immune to the burst and the pool |
+| `NY#TGCT`, `NY#TGCY` | Corrupt Water: the invisible burst under the rain, once (potions) |
 | `NY#TGCV` | Corrupt Water: potions destroyed once, save vs. Spell; one shared probability roll, a 50-wide window per potion: a random part of the potion kinds, about half |
 | `NY#TGCS`, `NY#TGCP` | Corrupt Water: the pool (Grease's surface, poison, slow), cast where the rain fell (opcode 148) |
 | `NY#TGSR` | Summon Reptile (level 8, the hydra `NY#HYDS`, BG2EE/EET) |
-| `NY#TGSL`, `NY#TGLP` | Swampy Lake (level 9) and its lake (Grease's surface: acid, poison) |
+| `NY#TGSL`, `NY#TGLP` | Swampy Lake (level 9) and its lake (Grease's puddles GREASED scattered: acid, poison); the three zones scatter their animations at random (extended flags 0x16) |
 | `NY#TGLR`, `NY#TGLRP`, `NY#TGLE` | Swampy Lake: the roots (Entangle's projectile, 30-ft. radius; Entangle's effects) |
 | `NY#TGLS`, `NY#TGLSP`, `NY#TGLI` | Swampy Lake: the insects (Stinking Cloud's area, 30-ft. radius, with the swarm of Summon Insects' missile scattered over it; Summon Insects' effects, save vs. Spell) |
 | `LUNYB.2DA`, `LUABBR.2DA` | HLA table of the kit (BG2EE / EET, abbreviation `NYB`): extra spells of levels 6, 7 and 8, Breath Doom, Call Ancestor, Bonemelt, Black Dragon Magic Mastery |
