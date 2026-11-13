@@ -68,7 +68,7 @@ BlackDragonMagic/
 | `NY#T<CODE>B`, `NY#T<CODE>C` | transformation icons: placeholders, the mod's own spell icons mirrored and recoloured near black (dark glyph on the stone plate): readable in the spellbook, discreet in the casting list, where the transformations stay but do nothing |
 | `NY_BDD_<CODE>`, `NY_BDD_LV<lv>` (SPLSTATE.IDS), `NY#HAS_<CODE>`, `NY#HAS_LV<lv>` (SPLPROT.2DA) | transformation and level marker states, and their checks |
 | `NY#VSC10`, `NY#VSC15`, `NY#VRE15`, `NY#VMI15` | level steps: Dragon Scale AC +1 (10, 15), Draconic Resilience CON +2 (15), Draconic Might STR +2 (15); each removes itself first (opcode 321) |
-| `NY#TCW<s>`, `NY#TCO<s>` | claws, main hand (magical weapon slot, opcode 111) and off hand (shield slot, Two-Weapon Style 3 points while equipped): stage s 1-5 (+1 to +5, levels 1/10/15/20/25); 1d4 slashing, +4 THAC0, 20% bite per hit |
+| `NY#TCW<s>`, `NY#TCO<s>` | claws, main hand (magical weapon slot, opcode 111) and off hand (shield slot, Two-Weapon Style 3 points while equipped): stage s 1-5 (+1 to +5, levels 1/10/15/20/25); 1d4 slashing, no THAC0 bonus, 20% bite per hit |
 | `NY#TCBT` | the bite (1d6 piercing + 1d4 acid) |
 | `NY#TCLE` / `NY#TCLR` | Extend / Retract Claws (innate, swap themselves; Extend Claws has one header per stage: the claws of the disciple's level) |
 | `NY#TBA<m><a>` | breath line alone (Breath Weapon), m = N or X (Breath Mastery), a = 0 or 1 (Acid Mastery) |
