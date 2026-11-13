@@ -266,17 +266,12 @@ END
 //            30-ft. radius, with the swarm of Summon Insects' missile
 //            INSEC1, SPIPLARI, scattered over it): save vs. Spell or
 //            NY#TGLI, Summon Insects' effects (NY#TGSI) on the creature
-// The roots and the insects scatter their animations at random (extended
-// area flags: random speed, start scattered, repeat scattering); Grease's
-// surface is an explosion effect, it cannot be scattered.
 // NY#TGLE and NY#TGLI first remove themselves (opcode 321): applied again
 // each round, they do not pile up. A zone whose source spell is missing is
 // left out.
 // Icon: placeholder, Pooling Breath's.
 // ---------------------------------------------------------------------------
 OUTER_SET ny_str_slake   = RESOLVE_STR_REF (@266)
-// extended area flags: random speed, start scattered, repeat scattering
-OUTER_SET ny_random_scatter = 0x16
 OUTER_SET ny_str_slake_d = RESOLVE_STR_REF (@267)
 
 COPY_EXISTING ~NY#TGCP.pro~ ~%ny_workspace%/NY#TGLP.pro~
@@ -328,8 +323,6 @@ BEGIN
       ACTION_IF area BEGIN
         LAF NY#CLONE_AREA_PRO INT_VAR radius_ft = 30 STR_VAR source = EVAL ~%pro_res%~ new = EVAL ~%zone%P~
                               workspace = EVAL ~%ny_workspace%~ RET zpro = pro_id END
-        COPY_EXISTING ~%zone%P.pro~ ~override~
-          WRITE_LONG 0x240 (THIS BOR ny_random_scatter)
       END ELSE BEGIN
         // a missile (Summon Insects' INSEC1): Stinking Cloud's area, its
         // travelling animation (the swarm) scattered over it
@@ -337,7 +330,6 @@ BEGIN
           WRITE_ASCII 0x104 ~~ #8
           WRITE_ASCIIE 0x228 ~%bam%~ #8
           WRITE_ASCIIE 0x238 ~%snd%~ #8
-          WRITE_LONG   0x240 (THIS BOR ny_random_scatter)
           WRITE_SHORT 0x204 (30 * ny_px_per_ft)
           WRITE_SHORT 0x206 (30 * ny_px_per_ft)
         ADD_PROJECTILE ~%ny_workspace%/%zone%P.pro~

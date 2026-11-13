@@ -1,8 +1,12 @@
 /////////////////////////////////////////////////////////////////////////////
-// Half Black Dragon Spirit (BG2:EE and EET), called by Call Ancestor
-// (kits/black_dragon_disciple/hla/hla.tpa, which includes this file).
-// Needs ny_planetar: the CRE of Summon Planetar, used as the base for the
-// summon's flags (gender SUMMONED, allegiance), everything else rewritten.
+// Nydra'Nath, the Half Black Dragon Spirit (BG2:EE and EET), called by Call
+// Ancestor (kits/black_dragon_disciple/hla/hla.tpa, which includes this
+// file). Needs ny_planetar: the CRE of Summon Planetar, used as the base: as
+// strong as the planetar, it keeps the planetar's allegiance, summon AI
+// (default script BDSUM00), immunities, regeneration, see invisible, magic
+// resistance, resistances and its ring of protection from weapons below
+// +3 (IMMUNE3); without its spells (and their script PLANGOOD) nor its
+// voice.
 //
 // Animation NYHD: the half black dragon of Icewind Dale II (MDH1),
 // converted for the Enhanced Edition by Nysi (works/: "Half Black Dragon
@@ -10,19 +14,19 @@
 // Sounds HDRAG*.WAV: the half-dragon's of Siege of Dragonspear, copied only
 // when the game lacks them (BG2:EE; EET has them).
 //
-//   NY#TANC  the spirit: level 18 fighter, 150 HP, AC 0, THAC0 3, 2 attacks
-//            per round, STR 20, immune to acid and poison, no fear; Blur
-//            (opcode 65) for its ghostly look; no experience when killed
-//   NY#TANCS its script (default slot): attacks the nearest enemy in sight
+//   NY#TANC  the spirit: level 25 fighter, 150 HP, AC -7, THAC0 3, 3 attacks
+//            per round, STR 22, immune to acid; Blur (opcode 65) for its
+//            ghostly look; no experience when killed
 //   NY#TANW  its Ancestral Greatsword: two-handed sword +3, 1d10 slashing
-//            + 2d6 acid; carries Blur and the immunities
+//            + 2d6 acid; carries Blur, the immunities to poison and fear,
+//            and to the disciple's own area spells and breaths (the spirit
+//            stays out of its descendant's acid, roots, insects...)
 /////////////////////////////////////////////////////////////////////////////
 
 OUTER_SET ny_str_tanw   = RESOLVE_STR_REF (@271)
 OUTER_SET ny_str_tanw_d = RESOLVE_STR_REF (@272)
 
 COPY ~%MOD_FOLDER%/creatures/half_black_dragon/anim~ ~override~
-COMPILE ~%MOD_FOLDER%/creatures/half_black_dragon/baf/ny#tancs.baf~
 ACTION_FOR_EACH snd IN hdrag01a hdrag01b hdrag02a hdrag03a hdrag03b hdrag04a hdrag04b hdrag05a hdrag05b
                        hdrag06a hdrag06b hdrag07a hdrag08a hdrag08b hdrag09a hdrag09b hdrag09c hdrag09d BEGIN
   ACTION_IF NOT FILE_EXISTS_IN_GAME ~%snd%.wav~ BEGIN
@@ -48,6 +52,22 @@ CREATE ~ITM~ ~NY#TANW~
   LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 25 END   // poison
   LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 24 END   // panic
   LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 101 target = 1 timing = 2 parameter2 = 23 END   // morale failure
+  // the disciple's area spells and breaths
+  PATCH_FOR_EACH r IN NY#TGCT NY#TGCV NY#TGCS NY#TGLA NY#TGLE NY#TGLI NY#TAMR NY#BDBL BEGIN
+    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 206 target = 1 timing = 2 parameter1 = "-1" STR_VAR resource = EVAL ~%r%~ END
+  END
+  PATCH_FOR_EACH f IN A L B P BEGIN
+    PATCH_FOR_EACH m IN N X BEGIN
+      PATCH_FOR_EACH a IN 0 1 BEGIN
+        LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 206 target = 1 timing = 2 parameter1 = "-1" STR_VAR resource = EVAL ~NY#TB%f%%m%%a%~ END
+        PATCH_FOR_EACH i IN 0 1 2 BEGIN
+          PATCH_IF (~%f%~ STRING_EQUAL ~P~) BEGIN
+            LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 206 target = 1 timing = 2 parameter1 = "-1" STR_VAR resource = EVAL ~NY#TQ%m%%a%%i%~ END
+          END
+        END
+      END
+    END
+  END
   LPF NY#ADD_ITM_HEADER INT_VAR attack_type = 1 id_req = 0 location = 1 target = 1 range = 1 speed = 7
                                 thac0 = 3 dice_sides = 10 dice_thrown = 1 damage_bonus = 3 damage_type = 3 flags = 1
                        RET h = header END
@@ -63,24 +83,15 @@ COPY_EXISTING ~%ny_planetar%.cre~ ~override/NY#TANC.cre~
   WRITE_LONG  0x28 ny_hbd_anim
   WRITE_ASCII 0x34 ~~ #8                        // no portraits
   WRITE_ASCII 0x3c ~~ #8
-  WRITE_SHORT 0x46 0                            // AC
-  WRITE_SHORT 0x48 0
+  WRITE_SHORT 0x46 "-7"                         // AC (the planetar's)
+  WRITE_SHORT 0x48 "-7"
   WRITE_BYTE  0x52 3                            // THAC0
-  WRITE_BYTE  0x53 2                            // 2 attacks per round
-  // saves of a level 18 fighter: death, wands, polymorph, breath, spells
-  WRITE_BYTE  0x54 3
-  WRITE_BYTE  0x55 5
-  WRITE_BYTE  0x56 4
-  WRITE_BYTE  0x57 4
-  WRITE_BYTE  0x58 6
-  FOR (o = 0x59; o <= 0x63; ++o) BEGIN WRITE_BYTE o 0 END
+  WRITE_BYTE  0x53 3                            // 3 attacks per round
   WRITE_BYTE  0x5c 100                          // acid
   // no planetar voice: the animation's sounds (INI) only
   FOR (o = 0xa4; o < 0x234; o += 4) BEGIN WRITE_LONG o "-1" END
-  WRITE_BYTE  0x234 18                          // level
-  WRITE_BYTE  0x235 0
-  WRITE_BYTE  0x236 0
-  WRITE_BYTE  0x238 20                          // STR
+  WRITE_BYTE  0x234 25                          // level
+  WRITE_BYTE  0x238 22                          // STR
   WRITE_BYTE  0x239 0
   WRITE_BYTE  0x23a 14                          // INT
   WRITE_BYTE  0x23b 14                          // WIS
@@ -88,19 +99,16 @@ COPY_EXISTING ~%ny_planetar%.cre~ ~override/NY#TANC.cre~
   WRITE_BYTE  0x23d 19                          // CON
   WRITE_BYTE  0x23e 16                          // CHA
   WRITE_LONG  0x244 0                           // no kit
-  // scripts: only its own default one, NY#TANCS (attacks the nearest enemy
-  // in sight); WTASIGHT, tried first, attacks the party
-  WRITE_ASCII 0x248 ~~ #8
-  WRITE_ASCII 0x250 ~~ #8
-  WRITE_ASCII 0x258 ~~ #8
-  WRITE_ASCII 0x260 ~~ #8
-  WRITE_ASCII 0x268 ~NY#TANCS~ #8
-  WRITE_BYTE  0x270 IDS_OF_SYMBOL (~ea~ ~CONTROLLED~)   // as the summons
+  WRITE_ASCII 0x248 ~~ #8                       // no spell script (PLANGOOD)
   WRITE_BYTE  0x272 IDS_OF_SYMBOL (~race~ ~DRAGON~)
   WRITE_BYTE  0x273 IDS_OF_SYMBOL (~class~ ~FIGHTER~)
   WRITE_ASCII 0x2cc ~~ #8                       // no dialogue
-  REMOVE_CRE_EFFECTS
   REMOVE_KNOWN_SPELLS
   REMOVE_MEMORIZED_SPELLS
-  REMOVE_CRE_ITEMS
-  ADD_CRE_ITEM ~NY#TANW~ #0 #0 #0 ~NONE~ ~WEAPON1~ EQUIP TWOHANDED
+  // the summons' AI (the planetar's own default script)
+  WRITE_ASCII 0x268 ~~ #8
+  PATCH_IF FILE_EXISTS_IN_GAME ~bdsum00.bcs~ BEGIN
+    WRITE_ASCII 0x268 ~BDSUM00~ #8
+  END
+  // the planetar's sword replaced, its IMMUNE3 ring kept
+  REPLACE_CRE_ITEM ~NY#TANW~ #0 #0 #0 ~NONE~ ~WEAPON1~ EQUIP TWOHANDED

@@ -15,7 +15,8 @@
 //            the red dragon head visual. Icons: the former Black Dragon
 //            Breathball ones (SPWI922 in acid yellow).
 //   NY#THCA  Call Ancestor: the game's Summon Planetar (SPWI924: duration,
-//            casting) calling NY#TANC, the Half Black Dragon Spirit
+//            casting; icons recoloured acid yellow, NY#THCAB/C) calling
+//            NY#TANC, Nydra'Nath the Half Black Dragon Spirit
 //            (creatures/half_black_dragon/half_black_dragon.tpa) through
 //            NY#TANE (BG2:EE: opcode 177 and its EFF SPPLAN2.EFF; opcode 67
 //            directly otherwise).
@@ -39,9 +40,12 @@ OUTER_SET ny_str_spirit      = RESOLVE_STR_REF (@270)
 // Icons
 COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/bam/ny#bdblb.bam~ ~override~
      ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/bam/ny#bdblc.bam~ ~override~
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/bam/ny#thcab.bam~ ~override~
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/hla/bam/ny#thcac.bam~ ~override~
      ~%MOD_FOLDER%/spells/bonemelt/bam/ny#bmltb.bam~ ~override~
      ~%MOD_FOLDER%/spells/bonemelt/bam/ny#bmltc.bam~ ~override~
 LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDBLB~ c = ~NY#BDBLC~ END   // Remastered Spell Icons
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#THCAB~ c = ~NY#THCAC~ END
 LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BMLTB~ c = ~NY#BMLTC~ END
 
 // Turns a copied spell into an innate ability (type 4, every header
@@ -128,10 +132,7 @@ ACTION_IF (~%ny_planetar%~ STRING_COMPARE ~~) AND FILE_EXISTS_IN_GAME ~%ny_plane
       WRITE_ASCII 0x30 ~NY#TANC~ #8
   END
   COPY_EXISTING ~spwi924.spl~ ~override/NY#THCA.spl~
-    READ_ASCII 0x3a ic (8) NULL                 // the planetar's own icons
-    READ_LONG  0x64 ho
-    READ_ASCII (ho + 0x04) ib (8) NULL
-    LPF NY#HLA_INNATE INT_VAR name = ny_str_ancestor desc = ny_str_ancestor_d STR_VAR icon_b = EVAL ~%ib%~ icon_c = EVAL ~%ic%~ END
+    LPF NY#HLA_INNATE INT_VAR name = ny_str_ancestor desc = ny_str_ancestor_d STR_VAR icon_b = ~NY#THCAB~ icon_c = ~NY#THCAC~ END
     LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 67  STR_VAR resource = ~NY#TANC~ END
     LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 177 STR_VAR resource = ~NY#TANE~ END
     WRITE_LONG 0x1e 0                           // no alignment restriction
