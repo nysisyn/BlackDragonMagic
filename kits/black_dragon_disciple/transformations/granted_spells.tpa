@@ -106,9 +106,13 @@ OUTER_SPRINT $ny_bdm(~%ny_bdm_dark%~) ~NY#TGDK~
 // radius, for 1 turn (Stinking Cloud's CLOUD.PRO: the spell is applied
 // again about once per round). Each time: the potions carried by the
 // creatures in the area are destroyed (opcode 123, every potion of the game
-// at install time), save vs. Death or poisoned for 1 round.
-// Projectile NY#TGCP: placeholder visuals, Pooling Breath's puddles in
-// grey-blue (gradient 26). The rain itself is still to do (see TODO).
+// at install time; no message: the engine cannot tell whether one was
+// destroyed), save vs. Death or poisoned for 1 round, save vs. Spell or
+// slowed as by Grease (SPWI101's effects: opcodes 158, 126, 142).
+// Projectile NY#TGCP: Stinking Cloud's CLOUD.PRO; the rain is Acid Storm's
+// (IWD:EE ASTORMA, desaturated grey: NY#TGCR, blended as in IWD:EE), its
+// sound ARE_M04; on the ground, Grease's surface (explosion effect and
+// colour of GREASE.PRO). No travelling object: the rain falls on the spot.
 // Icon: placeholder, Pooling Breath's.
 // ---------------------------------------------------------------------------
 OUTER_SET ny_str_cwater   = RESOLVE_STR_REF (@262)
@@ -119,11 +123,18 @@ COPY_EXISTING ~fireball.pro~ ~override~
 BUT_ONLY
 OUTER_SET ny_px_per_ft = ny_fb_size / 20
 
+COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#tgcr.bam~ ~override~
+COPY_EXISTING ~grease.pro~ ~override~
+  READ_BYTE 0x217 ny_grease_effect
+  READ_BYTE 0x218 ny_grease_color
+BUT_ONLY
 COPY_EXISTING ~cloud.pro~ ~%ny_workspace%/NY#TGCP.pro~
-  WRITE_ASCII 0x104 ~NY#PBRT~ #8
-  WRITE_BYTE  0x124 26
-  WRITE_BYTE  0x218 26
-  WRITE_ASCII 0x228 ~NY#PBRD~ #8
+  WRITE_ASCII 0x104 ~~ #8                       // no travelling object
+  WRITE_BYTE  0x217 ny_grease_effect            // Grease's surface
+  WRITE_BYTE  0x218 ny_grease_color
+  WRITE_ASCII 0x228 ~NY#TGCR~ #8                // the rain
+  WRITE_ASCII 0x238 ~ARE_M04~ #8                // Acid Storm's rain sound
+  WRITE_LONG  0x240 (THIS BOR 0x6000)           // blended, glowing (as Acid Storm)
   WRITE_SHORT 0x204 (15 * ny_px_per_ft)
   WRITE_SHORT 0x206 (15 * ny_px_per_ft)
 ADD_PROJECTILE ~%ny_workspace%/NY#TGCP.pro~
@@ -145,6 +156,10 @@ CREATE ~SPL~ ~NY#TGCW~
   LPF NY#SPL_BASE INT_VAR name = ny_str_cwater desc = ny_str_cwater_d type = 1 level = 4 school = 8 graphics = 10 STR_VAR icon = ~NY#PBRC~ END
   LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 4 range = 30 level = 1 casting_time = 4 projectile = ny_pro_cwater STR_VAR icon = ~NY#PBRB~ RET h = header END
   LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 25 target = 2 timing = 0 duration = ny_round parameter1 = 1 parameter2 = 0 savingthrow = 4 resist_dispel = 1 END
+  // Grease (SPWI101): animation, movement 20%, Grease icon
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 158 target = 2 timing = 0 duration = ny_round savingthrow = 1 resist_dispel = 1 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 126 target = 2 timing = 0 duration = ny_round parameter1 = 20 parameter2 = 5 savingthrow = 1 resist_dispel = 1 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 142 target = 2 timing = 0 duration = ny_round parameter2 = 145 savingthrow = 1 resist_dispel = 1 END
   FOR (i = 0; i < ny_potion_n; ++i) BEGIN
     SPRINT r $ny_potion(~%i%~)
     LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 123 target = 2 timing = 1 STR_VAR resource = EVAL ~%r%~ END

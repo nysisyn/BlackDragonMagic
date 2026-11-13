@@ -340,11 +340,12 @@ CREATE ~ITM~ ~NY#TRSI~
 // ---------------------------------------------------------------------------
 // Dragon Wings: Wing Buffet, the dragon's own (SPIN695, BG2:EE and EET):
 // save vs. Spell at -4 instead of -10 against the 3 seconds of
-// unconsciousness, centred on the disciple. At will: it removes itself and
-// comes back 4 rounds later.
+// unconsciousness, centred on the disciple (as the dragon's: no aiming). At
+// will: it removes itself and comes back 4 rounds later, with a message.
 // ---------------------------------------------------------------------------
 OUTER_SET ny_str_wbuff   = RESOLVE_STR_REF (@240)
 OUTER_SET ny_str_wbuff_d = RESOLVE_STR_REF (@241)
+OUTER_SET ny_str_wbuff_r = RESOLVE_STR_REF (@253)
 OUTER_SET ny_wing_buffet = FILE_EXISTS_IN_GAME ~spin695.spl~
 ACTION_IF ny_wing_buffet BEGIN
   COPY_EXISTING ~spin695.spl~ ~override/NY#TWBF.spl~
@@ -366,6 +367,7 @@ ACTION_IF ny_wing_buffet BEGIN
     LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 39 savebonus = "-4" END
     LPF ADD_SPELL_EFFECT INT_VAR opcode = 172 target = 1 timing = 1 STR_VAR resource = ~NY#TWBF~ END
     LPF ADD_SPELL_EFFECT INT_VAR opcode = 171 target = 1 timing = 4 duration = (4 * ny_round) STR_VAR resource = ~NY#TWBF~ END
+    LPF ADD_SPELL_EFFECT INT_VAR opcode = 139 target = 1 timing = 4 duration = (4 * ny_round) parameter1 = ny_str_wbuff_r END
 END ELSE BEGIN
   PRINT ~Black Dragon Disciple: no Wing Buffet in this game (SPIN695 missing), Dragon Wings gives the movement bonus only.~
 END
@@ -414,10 +416,12 @@ ACTION_FOR_EACH ids IN WIZARD_GREASE CLERIC_ENTANGLE WIZARD_WEB WIZARD_STINKING_
     OUTER_SET ny_swamp_n += 1
   END
 END
-// ... and the Entangle learned through Black Dragon Magic
-ACTION_IF FILE_EXISTS_IN_GAME ~NY#TGEN.spl~ BEGIN
-  OUTER_SPRINT $ny_swamp(~%ny_swamp_n%~) ~NY#TGEN~
-  OUTER_SET ny_swamp_n += 1
+// ... and the Entangle and Corrupt Water learned through Black Dragon Magic
+ACTION_FOR_EACH r IN NY#TGEN NY#TGCW BEGIN
+  ACTION_IF FILE_EXISTS_IN_GAME ~%r%.spl~ BEGIN
+    OUTER_SPRINT $ny_swamp(~%ny_swamp_n%~) ~%r%~
+    OUTER_SET ny_swamp_n += 1
+  END
 END
 
 ACTION_FOR_EACH code IN CLB SCL BRW RES TAL SWS ACD BDM MIG MBR BLS AMS WNG MAJ FPR GBD APO BMS BEGIN
@@ -452,7 +456,7 @@ ACTION_FOR_EACH code IN CLB SCL BRW RES TAL SWS ACD BDM MIG MBR BLS AMS WNG MAJ 
         LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 146 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#TTLP~ END
       END
       // Swamp Stride: poison, Grease, Entangle, Web, Stinking Cloud, Spike
-      // Growth (and the web state from other sources)
+      // Growth, Corrupt Water (and the web state from other sources)
       ~SWS~ BEGIN
         LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 101 target = 1 timing = 9 parameter2 = 25  END
         LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 101 target = 1 timing = 9 parameter2 = 157 END

@@ -96,7 +96,7 @@ Range: Personal
 Duration: Permanent
 Casting Time: 1
 
-The Black Dragon Disciple moves through swamps and their poisons like a black dragon. He becomes immune to poison, and to Grease, Entangle, Web, Stinking Cloud and Spike Growth.
+The Black Dragon Disciple moves through swamps and their poisons like a black dragon. He becomes immune to poison, and to Grease, Entangle, Web, Stinking Cloud, Spike Growth and Corrupt Water.
 
 This draconic transformation takes effect as soon as it is learned: its effects are permanent, persist through death and cannot be dispelled. It then stays in the spellbook as a reminder; casting it does nothing and gives back the spell slot.~
 
@@ -327,6 +327,9 @@ The Black Dragon Disciple bends a reptile to his will: lizard men, wyverns, basi
 // ---------------------------------------------------------------------------
 // Spells learned through Black Dragon Magic and its greater versions
 // ---------------------------------------------------------------------------
+@252 = ~Breath weapon ready~
+@253 = ~Wing Buffet ready~
+
 @260 = ~Darkness~
 @261 = ~Darkness
 (Alteration)
@@ -351,7 +354,7 @@ Casting Time: 4
 Area of Effect: 15-ft. radius
 Saving Throw: Special
 
-A foul rain falls on the area and leaves a pool of rotten water on the ground for 1 turn. The potions carried by the creatures in the area are spoiled and destroyed. Each round, creatures in the water must save vs. Death or be poisoned for 1 round.~
+A foul rain falls on the area and leaves a pool of rotten water on the ground for 1 turn. The potions carried by the creatures in the area are spoiled and destroyed. The water is slippery, as a Grease spell. Each round, creatures in the water must save vs. Death or be poisoned for 1 round, and save vs. Spell or be slowed by the slippery ground.~
 
 @264 = ~Summon Reptile~
 @265 = ~Summon Reptile

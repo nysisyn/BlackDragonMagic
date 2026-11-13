@@ -25,11 +25,16 @@
 //
 // Projectiles
 //   NY#BDBRT/U  line (black_dragon_disciple.tpa)
-//   NY#TBBP     ball: Fireball with the explosion of the game's Black Dragon
-//               Breath (GREEHIT.PRO: explosion effect and colour), no fire
-//               visuals, no travelling object (the breath leaves the mouth)
-//   NY#TBPP     pool: Stinking Cloud's CLOUD.PRO with the acid puddles of
-//               Pooling Breath (spells/pooling_breath/bam), 7.5-ft. radius
+//   NY#TBBP     ball: Fireball with the explosion of Breath Doom (the
+//               game's black dragon breath GREEHIT.PRO: sound, explosion
+//               animation SPBDIMSP, spread SPBDRAE2, effect, colour, flags),
+//               no fire visuals, no travelling object (the breath leaves the
+//               mouth)
+//   NY#TBPX     pool, first: the same explosion at the pool's size; it casts
+//               the pool where it explodes (opcode 148, NY#TQ<m><a><i>)
+//   NY#TBPP     pool, then: Stinking Cloud's CLOUD.PRO with the acid puddles
+//               of Pooling Breath (spells/pooling_breath/bam), 7.5-ft.
+//               radius, no travelling object
 /////////////////////////////////////////////////////////////////////////////
 
 OUTER_SET ny_str_breath    = RESOLVE_STR_REF (@210)
@@ -40,6 +45,7 @@ OUTER_SET ny_str_bball     = RESOLVE_STR_REF (@214)
 OUTER_SET ny_str_bball_d   = RESOLVE_STR_REF (@215)
 OUTER_SET ny_str_bpool     = RESOLVE_STR_REF (@216)
 OUTER_SET ny_str_bpool_d   = RESOLVE_STR_REF (@217)
+OUTER_SET ny_str_breath_ready = RESOLVE_STR_REF (@252)
 
 // Icons: the former Acid Breath icon (the game's Dragon Disciple breath
 // SPDD03, recoloured acid yellow) for the line and the menu; Breathball and
@@ -51,7 +57,6 @@ COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdbri.bam~ ~override~
      ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrb.bam~ ~override~
      ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrc.bam~ ~override~
      ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrd.bam~ ~override~
-     ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrt.bam~ ~override~
 LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDBRI~ c = ~NY#BDBRC~ END   // Remastered Spell Icons
 LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDBBB~ c = ~NY#BDBBC~ END
 LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#PBRB~  c = ~NY#PBRC~  END
@@ -71,25 +76,31 @@ CREATE ~SPL~ ~NY#TAMR~
 // ---------------------------------------------------------------------------
 // Projectiles
 // ---------------------------------------------------------------------------
+// Breath Doom's explosion: GREEHIT.PRO from the explosion sound (0x208) to
+// the end of the area fields (0x24f)
 COPY_EXISTING ~greehit.pro~ ~override~
-  READ_BYTE 0x217 ny_expl_effect
-  READ_BYTE 0x218 ny_expl_color
+  FOR (o = 0x208; o < 0x250; ++o) BEGIN
+    READ_BYTE o $ny_greehit(~%o%~)
+  END
 BUT_ONLY
 COPY_EXISTING ~fireball.pro~ ~%ny_workspace%/NY#TBBP.pro~
-  WRITE_BYTE   0x217 ny_expl_effect
-  WRITE_BYTE   0x218 ny_expl_color
   WRITE_ASCII  0x104 ~~ #8          // no travelling fireball
   WRITE_ASCII  0x10c ~~ #8          // nor its shadow
-  WRITE_ASCII  0x21c ~~ #8          // no fire explosion animation
-  WRITE_ASCII  0x230 ~~ #8          // no flame ring
-  WRITE_LONG   0x240 0              // extended area flags of the VVC/ring
+  FOR (o = 0x208; o < 0x250; ++o) BEGIN
+    WRITE_BYTE o $ny_greehit(~%o%~)
+  END
 ADD_PROJECTILE ~%ny_workspace%/NY#TBBP.pro~
 OUTER_SET ny_pro_tbball = IDS_OF_SYMBOL (~projectl~ ~NY#TBBP~) + 1
 
+COPY_EXISTING ~greehit.pro~ ~%ny_workspace%/NY#TBPX.pro~
+  WRITE_SHORT 0x204 128                         // the pool's size
+  WRITE_SHORT 0x206 128
+ADD_PROJECTILE ~%ny_workspace%/NY#TBPX.pro~
+OUTER_SET ny_pro_tbpoolx = IDS_OF_SYMBOL (~projectl~ ~NY#TBPX~) + 1
+
 COPY_EXISTING ~cloud.pro~ ~%ny_workspace%/NY#TBPP.pro~
-  WRITE_ASCII 0x104 ~NY#PBRT~ #8                // travelling acid blob
-  WRITE_BYTE  0x124 86                          // gradient 86: acid green
-  WRITE_BYTE  0x218 86
+  WRITE_ASCII 0x104 ~~ #8                       // no travelling object
+  WRITE_BYTE  0x218 86                          // gradient 86: acid green
   WRITE_ASCII 0x228 ~NY#PBRD~ #8                // acid puddles instead of the cloud
   WRITE_SHORT 0x204 128                         // half Stinking Cloud's area
   WRITE_SHORT 0x206 128
@@ -110,10 +121,29 @@ BEGIN
   END
 END
 
+// The damage of a breath, on the targets
+DEFINE_PATCH_FUNCTION NY#TB_DAMAGE
+  INT_VAR
+    h    = 1
+    dice = 4
+    line = 0
+    acid = 0
+BEGIN
+  PATCH_IF line BEGIN
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 STR_VAR resource = ~NY#BDWVH~ END
+  END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12 target = 2 timing = 0 parameter2 = 0x10000 dicenumber = dice dicesize = 4 savingthrow = 2 special = 0x100 END
+  PATCH_IF acid BEGIN
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#TAMR~ END
+  END
+END
+
 // One breath spell.
 //   form : 0 line, 1 ball, 2 pool
 //   mult : 1, or 2 with Breath Mastery
 //   cd   : recharge in rounds
+//   sub  : the pool's prefix (6 characters): the pool itself is a second
+//          spell per tier, <sub><i>, cast where the explosion lands
 DEFINE_ACTION_FUNCTION NY#TB_SPELL
   INT_VAR
     form = 0
@@ -124,9 +154,20 @@ DEFINE_ACTION_FUNCTION NY#TB_SPELL
     desc = "-1"
   STR_VAR
     resref = ~~
+    sub    = ~~
     icon_b = ~~
     icon_c = ~~
 BEGIN
+  // the pool: one spell per tier, damage each round (half the dice)
+  ACTION_IF (form = 2) BEGIN
+    OUTER_FOR (i = 0; i < 3; ++i) BEGIN
+      CREATE ~SPL~ ~%sub%%i%~
+        LPF NY#SPL_BASE INT_VAR name desc type = 4 level = 1 flags = 0x400 STR_VAR icon = EVAL ~%icon_c%~ END
+        LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 4 range = 30 level = 1 casting_time = 0 projectile = ny_pro_tbpool STR_VAR icon = EVAL ~%icon_b%~ RET h = header END
+        LPF NY#TB_DAMAGE INT_VAR h dice = ((4 + 2 * i) * mult / 2) acid END
+    END
+  END
+
   CREATE ~SPL~ ~%resref%~
     LPF NY#SPL_BASE INT_VAR name desc type = 4 level = 1 flags = 0x400 STR_VAR icon = EVAL ~%icon_c%~ END
     FOR (i = 0; i < 3; ++i) BEGIN
@@ -139,25 +180,25 @@ BEGIN
         SET pro = ny_pro_tbball
         SET rng = 40
       END ELSE BEGIN
-        SET pro  = ny_pro_tbpool
-        SET rng  = 30
-        SET dice = dice / 2                           // each round
+        SET pro = ny_pro_tbpoolx
+        SET rng = 30
       END
       LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 4 range = rng level = lvl casting_time = 1 projectile = pro STR_VAR icon = EVAL ~%icon_b%~ RET h = header END
       // used: every breath ability is removed, the choice comes back after
-      // the recharge
+      // the recharge, with a message
       LPF NY#TB_REMOVE_INNATES INT_VAR h END
       LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 1 timing = 4 duration = (cd * ny_round) parameter2 = 1 STR_VAR resource = ~NY#KBRT~ END
-      // the disciple is not hit by his own breath (the line starts on him,
-      // the pool may come back to him); for the pool, this immunity also
-      // blocks the caster's effects above at each new pulse
-      LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = ((form = 2) ? ny_turn : 2) parameter1 = "-1" STR_VAR resource = EVAL ~%resref%~ END
-      PATCH_IF (form = 0) BEGIN
-        LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 STR_VAR resource = ~NY#BDWVH~ END
-      END
-      LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12 target = 2 timing = 0 parameter2 = 0x10000 dicenumber = dice dicesize = 4 savingthrow = 2 special = 0x100 END
-      PATCH_IF acid BEGIN
-        LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 146 target = 2 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#TAMR~ END
+      LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 139 target = 1 timing = 4 duration = (cd * ny_round) parameter1 = ny_str_breath_ready END
+      PATCH_IF (form = 2) BEGIN
+        // the pool, where the explosion lands; the disciple is not hit by
+        // his own pool (this immunity also blocks the caster's effects of
+        // the pool spell at each new pulse)
+        LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = ny_turn parameter1 = "-1" STR_VAR resource = EVAL ~%sub%%i%~ END
+        LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 148 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = EVAL ~%sub%%i%~ END
+      END ELSE BEGIN
+        // the disciple is not hit by his own breath (the line starts on him)
+        LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = 2 parameter1 = "-1" STR_VAR resource = EVAL ~%resref%~ END
+        LPF NY#TB_DAMAGE INT_VAR h dice line = (form = 0) acid END
       END
     END
 END
@@ -175,7 +216,7 @@ ACTION_FOR_EACH m IN N X BEGIN
     LAF NY#TB_SPELL INT_VAR form = 1 mult acid = a cd = (10 - less) name = ny_str_bball desc = ny_str_bball_d
                     STR_VAR resref = EVAL ~NY#TBB%m%%a%~ icon_b = ~NY#BDBBB~ icon_c = ~NY#BDBBC~ END
     LAF NY#TB_SPELL INT_VAR form = 2 mult acid = a cd = (8 - less)  name = ny_str_bpool desc = ny_str_bpool_d
-                    STR_VAR resref = EVAL ~NY#TBP%m%%a%~ icon_b = ~NY#PBRB~ icon_c = ~NY#PBRC~ END
+                    STR_VAR resref = EVAL ~NY#TBP%m%%a%~ sub = EVAL ~NY#TQ%m%%a%~ icon_b = ~NY#PBRB~ icon_c = ~NY#PBRC~ END
     // ... and their menu (opcode 214; type 3: cast at once, no memorisation)
 <<<<<<<< .../ny-inline/ny#tbm.2da
 2DA V1.0

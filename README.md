@@ -74,17 +74,18 @@ BlackDragonMagic/
 | `NY#TBA<m><a>` | breath line alone (Breath Weapon), m = N or X (Breath Mastery), a = 0 or 1 (Acid Mastery) |
 | `NY#TBM<m><a>` (+ `.2DA`) | breath menu (Meta-breath, opcode 214): `NY#TBL` line, `NY#TBB` ball, `NY#TBP` pool |
 | `NY#KBRT`, `NY#KB<l>`, `NY#KB<l>2`/`3`, `NY#KB<l>F`, `NY#KBRF` | choice of the breath ability: root (also the recharge), candidates a..h, finals; refresh by the breath transformations (pending recharges cancelled) |
-| `NY#TBBP`, `NY#TBPP` | breath ball (Fireball area, Black Dragon Breath explosion) and pool (Stinking Cloud's CLOUD.PRO, Pooling Breath's puddles) projectiles |
+| `NY#TBBP`, `NY#TBPX`, `NY#TBPP` | breath ball (Fireball area with Breath Doom's explosion: GREEHIT.PRO's sound, SPBDIMSP, SPBDRAE2), pool explosion (the same at the pool's size) and pool (Stinking Cloud's CLOUD.PRO, Pooling Breath's puddles) projectiles |
+| `NY#TQ<m><a><i>` | the pool itself, one per damage tier i, cast where the pool explosion lands (opcode 148) |
 | `NY#TAMR` | Acid Mastery: AC -2 for 2 rounds, not cumulative |
 | `NY#TTLS`, `NY#TTLP` | Draconic Tail strike and its permanent trigger (opcode 232) |
 | `NY#TACH`, `NY#TACS`, `NY#TACP` | Acidosis: acid shield below 50% health (1d2 acid to the attacker) |
 | `NY#TRSI` | Draconic Resilience: the hardened skull (helmet slot, immunity to critical hits) |
-| `NY#TWBF` | Wing Buffet (Dragon Wings, from the black dragon's `SPIN695`, BG2EE/EET), at will, recharge 4 rounds |
+| `NY#TWBF` | Wing Buffet (Dragon Wings, from the black dragon's `SPIN695`, BG2EE/EET), centred on the disciple, at will, recharge 4 rounds with a "Wing Buffet ready" message |
 | `NY#BDFP` / `NY#BDFQ`, `NY#BDFPA`, `NY#BDFPE`, `NY#BDFPI`/`C`/`D` | Frightful Presence on / off, its pulse (10 ft.), icons and portrait icon |
 | `NY#TCHR`, `NY#TCHC`, `NY#RACE=<race>` | Charm Reptile (Draconic Majesty) and its race checks |
 | `NY#TGEN`, `NY#TGSI`, `NY#TGIP`, `NY#TGDD`, `NY#TGCD` | wizard copies of Entangle, Summon Insects, Insect Plague, Dolorous Decay, Creeping Doom (learned only through the transformations, when the game has them) |
 | `NY#TGDK`, `NY#TGDP` | Darkness (level 2) and its 15-ft. burst |
-| `NY#TGCW`, `NY#TGCP` | Corrupt Water (level 4) and its pool |
+| `NY#TGCW`, `NY#TGCP`, `NY#TGCR` | Corrupt Water (level 4), its area (rain, Grease's surface) and the rain: IWD:EE Acid Storm's ASTORMA desaturated grey |
 | `NY#TGSR` | Summon Reptile (level 8, the hydra `NY#HYDS`, BG2EE/EET) |
 | `NY#TGSL`, `NY#TGLP` | Swampy Lake (level 9) and its lake |
 | `LUNYB.2DA`, `LUABBR.2DA` | HLA table of the kit (BG2EE / EET, abbreviation `NYB`): extra spells of levels 6, 7 and 8, Breath Doom, Call Ancestor, Bonemelt, Black Dragon Magic Mastery |
@@ -139,7 +140,7 @@ These points were not settled on the Trello cards:
 - **Draconic Transformations**: the kit is a plain sorcerer (Dragon Disciple's d6, one spell slot less per spell level); everything draconic is a wizard spell of levels 1 to 9 learned instead of a spell. Its cost is the spell not learned: as soon as it is in the spellbook a global script makes the disciple cast it on himself; it sets its spell state and applies permanent effects (timing 9: through death, not dispellable). No spell slot is lost. It stays in the spellbook: removed (opcode 172), it was offered again at the next level-up; cast by hand it gives back its slot (opcode 261). A second application does nothing (opcode 324); only the script checks the kit (`Kit()`): the KIT stat compared in SPLPROT.2DA did not work in game, nor a spell state set by the CLAB at level 1 for a character created at a high level. For now every sorcerer sees them in the spell list: a G3 library giving the kit its own spell list will hide them (see TODO).
 - **Level steps**: level markers (spell states) set by the global script at levels 10 and 15 apply the steps of the transformations already taken; a transformation taken later applies the steps of the markers already set. Not through the CLAB: a character created at a high level (ToB) did not get its level 1 CLAB spell before his next level-up.
 - **Choices between versions** (breath forms): candidate chains, most specific first, one second apart; the first one whose conditions are all true (opcode 326, nested) blocks the next ones (opcode 206) and gives its version.
-- **Breath recharge**: the breath ability removes every breath ability when used and casts the choice again after its recharge (opcode 146, delayed). Breath Mastery and Acid Mastery have their own versions of each breath (damage doubled, recharge 2 rounds shorter; AC -2). Lost if the disciple dies while it recharges (see TODO).
+- **Breath recharge**: the breath ability removes every breath ability when used and casts the choice again after its recharge (opcode 146, delayed). Breath Mastery and Acid Mastery have their own versions of each breath (damage doubled, recharge 2 rounds shorter; AC -2). A "Breath weapon ready" message (opcode 139, delayed as the recharge) shows when it comes back. Lost if the disciple dies while it recharges (see TODO).
 - **Claws**: the transformation only gives Extend Claws; extended by hand, with the stage of the disciple's level (extend them again after a level-up). Main claw in the magical weapon slot (opcode 111, selected over any weapon; in the first weapon slot the staff stayed selected), off-hand claw in the shield slot (one more attack per round, Two-Weapon Style 3 points while equipped: no penalty). Weapons are allowed again: Retract Claws frees the hands.
 - **Hostile flag (SPL flag 0x400)**: only on spells hitting other creatures. The spells a disciple applies to himself (transformation effects, level markers, choice chains) must not carry it: applied every script pass, a hostile spell kept the party in combat (no rest, no save).
 - **Acid Mastery, AC reduction**: only on the breaths for now: the engine cannot check the caster of a game spell, nor of a spell cast by an item (the bite).

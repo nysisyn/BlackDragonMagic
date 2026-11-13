@@ -95,7 +95,7 @@ Portée : personnelle
 Durée : permanente
 Temps d'incantation : 1
 
-Le Disciple du Dragon Noir traverse les marais et leurs poisons comme un dragon noir. Il devient immunisé au poison, ainsi qu'à Graisse, Enchevêtrement, Toile d'araignée, Nuage puant et Croissance d'épines.
+Le Disciple du Dragon Noir traverse les marais et leurs poisons comme un dragon noir. Il devient immunisé au poison, ainsi qu'à Graisse, Enchevêtrement, Toile d'araignée, Nuage puant, Croissance d'épines et Eau corrompue.
 
 Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; la lancer ne fait rien et rend l'emplacement de sort.~
 
@@ -326,6 +326,9 @@ Le Disciple du Dragon Noir soumet un reptile à sa volonté : hommes-lézards, v
 // ---------------------------------------------------------------------------
 // Sorts appris par la Magie du dragon noir et ses versions supérieures
 // ---------------------------------------------------------------------------
+@252 = ~Souffle prêt~
+@253 = ~Coup d'ailes prêt~
+
 @260 = ~Ténèbres~
 @261 = ~Ténèbres
 (Altération)
@@ -350,7 +353,7 @@ Temps d'incantation : 4
 Zone d'effet : rayon de 4,5 m
 Jet de sauvegarde : spécial
 
-Une pluie immonde tombe sur la zone et laisse au sol une mare d'eau croupie pendant 1 tour. Les potions que portent les créatures dans la zone sont gâtées et détruites. À chaque round, les créatures dans l'eau doivent réussir un jet de sauvegarde contre la mort ou être empoisonnées pendant 1 round.~
+Une pluie immonde tombe sur la zone et laisse au sol une mare d'eau croupie pendant 1 tour. Les potions que portent les créatures dans la zone sont gâtées et détruites. L'eau est glissante, comme sous l'effet d'un sort de Graisse. À chaque round, les créatures dans l'eau doivent réussir un jet de sauvegarde contre la mort ou être empoisonnées pendant 1 round, et un jet de sauvegarde contre les sorts ou être ralenties par le sol glissant.~
 
 @264 = ~Invocation de reptile~
 @265 = ~Invocation de reptile
