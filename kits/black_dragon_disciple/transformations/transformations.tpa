@@ -4,14 +4,17 @@
 // Wizard spells of levels 1 to 9 (ADD_SPELL, WIZARD_NY_T_<CODE>) the Black
 // Dragon Disciple learns instead of a spell. Every one is built the same
 // way (NY#T_BEGIN / NY#T_END):
-//   - nothing happens for another kit (opcode 324, KIT != NY#BDD)
 //   - nothing happens a second time (opcode 324, spell state of the
 //     transformation already set)
-//   - spell state NY_BDD_<CODE> (opcode 328, permanent): the transformation
-//     is known to the level steps and to the other transformations
-//   - one spell slot of its level less, for good (opcode 42)
-//   - then its own effects, all permanent (timing 9: they persist through
-//     death and cannot be dispelled)
+//   - everything else is in NY#T<code>E, applied only to a Black Dragon
+//     Disciple (opcode 326 on the kit's spell state NY_BDD_KIT, set by the
+//     CLAB at level 1: the KIT stat is not compared reliably):
+//     - spell state NY_BDD_<CODE> (opcode 328, permanent): the
+//       transformation is known to the level steps and to the other
+//       transformations
+//     - one spell slot of its level less, for good (opcode 42)
+//     - then its own effects, all permanent (timing 9: they persist through
+//       death and cannot be dispelled)
 //
 // Level steps: the CLAB applies NY#BDM10/15/20/25 at levels 10, 15, 20 and
 // 25. Each sets a level marker (spell state NY_BDD_LV<lv>) and applies the
@@ -52,13 +55,9 @@ END
 // ---------------------------------------------------------------------------
 // Spell states and their SPLPROT rows
 // ---------------------------------------------------------------------------
-// another kit than the Black Dragon Disciple
-OUTER_SET ny_ids_kit = IDS_OF_SYMBOL (~stats~ ~KIT~)
-LAF NY#SPLPROT_ROW STR_VAR label = ~NY#KIT!=BDD~ stat = EVAL ~%ny_ids_kit%~ value = EVAL ~%ny_kit_value%~ relation = ~5~ RET ny_prot_not_bdd = row END
-
-// one state per transformation and per level marker; $ny_has(<code>) is
-// the SPLPROT row "has the state"
-ACTION_FOR_EACH code IN CLB SCL BRW RES TAL SWS ACD BDM MIG MBR BLS AMS WNG MAJ FPR GBD APO BMS LV10 LV15 LV20 LV25 BEGIN
+// one state for the kit itself, one per transformation and per level
+// marker; $ny_has(<code>) is the SPLPROT row "has the state"
+ACTION_FOR_EACH code IN KIT CLB SCL BRW RES TAL SWS ACD BDM MIG MBR BLS AMS WNG MAJ FPR GBD APO BMS LV10 LV15 LV20 LV25 BEGIN
   LAF NY#ADD_SPLSTATE STR_VAR name = EVAL ~NY_BDD_%code%~ RET st = id END
   OUTER_SET $ny_state(~%code%~) = st
   LAF NY#SPLPROT_ROW STR_VAR label = EVAL ~NY#HAS_%code%~ stat = ~0x112~ value = EVAL ~%st%~ relation = ~1~ RET row END
@@ -66,10 +65,16 @@ ACTION_FOR_EACH code IN CLB SCL BRW RES TAL SWS ACD BDM MIG MBR BLS AMS WNG MAJ 
 END
 
 
+// the kit's state, set at level 1 by the CLAB (NY#BDL01)
+COPY_EXISTING ~NY#BDL01.spl~ ~override~
+  LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 328 target = 1 timing = 9 parameter2 = $ny_state(~KIT~) special = 1 END
+
+
 // ---------------------------------------------------------------------------
 // NY#T_BEGIN (action): creates NY#T<code>.SPL, the transformation of the
-// given spell level, with its common effects. The caller adds its own
-// effects (header 1), then calls NY#T_END.
+// given spell level, and NY#T<code>E.SPL with its common effects. The
+// caller adds its own effects to NY#T<code>E (header 1), then calls
+// NY#T_END.
 // ---------------------------------------------------------------------------
 DEFINE_ACTION_FUNCTION NY#T_BEGIN
   INT_VAR
@@ -82,11 +87,13 @@ BEGIN
   CREATE ~SPL~ ~NY#T%code%~
     LPF NY#SPL_BASE INT_VAR name desc type = 1 level school = 8 graphics = 10 STR_VAR icon = EVAL ~NY#T%code%C~ END
     LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 5 range = 1 level = 1 casting_time = 1 STR_VAR icon = EVAL ~NY#T%code%B~ RET h = header END
-    // resource of the two opcodes 324: the final resref, written by NY#T_END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 324 target = 1 duration = 1 parameter2 = ny_prot_not_bdd STR_VAR resource = EVAL ~NY#T%code%~ END
+    // resource of opcode 324: the final resref, written by NY#T_END
     LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 324 target = 1 duration = 1 parameter2 = $ny_has(~%code%~) STR_VAR resource = EVAL ~NY#T%code%~ END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 328 target = 1 timing = 9 parameter2 = $ny_state(~%code%~) special = 1 END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 42  target = 1 timing = 9 parameter1 = "-1" parameter2 = (1 BLSL (level - 1)) END
+    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 326 target = 1 timing = 1 parameter2 = $ny_has(~KIT~) STR_VAR resource = EVAL ~NY#T%code%E~ END
+  LAF NY#T_SELF_SPL STR_VAR resref = EVAL ~NY#T%code%E~ END
+  COPY_EXISTING ~NY#T%code%E.spl~ ~override~
+    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 328 target = 1 timing = 9 parameter2 = $ny_state(~%code%~) special = 1 END
+    LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 42  target = 1 timing = 9 parameter1 = "-1" parameter2 = (1 BLSL (level - 1)) END
 END
 
 // NY#T_END (action): adds the transformation to the wizard spells and points
@@ -415,7 +422,7 @@ ACTION_FOR_EACH code IN CLB SCL BRW RES TAL SWS ACD BDM MIG MBR BLS AMS WNG MAJ 
   OUTER_SET d  = $ny_t_desc(~%code%~)
   LAF NY#T_BEGIN INT_VAR level = lv name = n desc = d STR_VAR code END
 
-  COPY_EXISTING ~NY#T%code%.spl~ ~override~
+  COPY_EXISTING ~NY#T%code%E.spl~ ~override~
     PATCH_MATCH ~%code%~ WITH
       // Claw & Bite: claws of the level's stage (see claws.tpa)
       ~CLB~ BEGIN

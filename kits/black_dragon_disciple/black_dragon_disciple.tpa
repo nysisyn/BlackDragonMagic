@@ -79,7 +79,6 @@ CREATE ~SPL~ ~NY#BDL01~
 // The kit is cloned from the Dragon Disciple: every table that is not given
 // here (weapon proficiencies, alignments, race tables, CLASTEXT/SODCLTXT,
 // CLSRCREQ, HPCLASS: d6, NUMWSLOT, starting equipment...) copies its row.
-// The transformations need the kit's value (KIT.IDS), hence after.
 // ---------------------------------------------------------------------------
 // High-level abilities (BG2:EE and EET): own table LUNYB.2DA, see
 // hla/hla.tpa (included at the end). On BG:EE the Dragon Disciple's LUABBR
@@ -112,8 +111,6 @@ LAF ADD_KIT_EX
   RET
     ny_kit_id = kit_id
 END
-
-OUTER_SET ny_kit_value = IDS_OF_SYMBOL (~kit~ ~NY#BDD~)   // 0x40xx in KIT.IDS
 
 
 // ---------------------------------------------------------------------------
