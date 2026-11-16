@@ -399,13 +399,17 @@ Type : à deux mains~
 // Capacités de haut niveau
 // ---------------------------------------------------------------------------
 @300 = ~Souffle fatal~
+@273 = ~Souffle ancestral~
+@274 = ~Souffle ancestral
+
+Nydra'Nath crache une ligne d'acide : 6d8 dégâts d'acide, jet de sauvegarde contre les souffles pour la moitié. Une fois par invocation.~
 @301 = ~Souffle fatal
 
 Le Disciple du Dragon Noir libère toute la fureur de son ancêtre : un immense cône d'acide. Version acide de Souffle du dragon, qui n'est plus accessible au Disciple du Dragon Noir.~
-@302 = ~Appel de l'ancêtre~
-@303 = ~Appel de l'ancêtre
+@302 = ~Appel de l'ancêtre draconique~
+@303 = ~Appel de l'ancêtre draconique
 
-Le Disciple du Dragon Noir appelle Nydra'Nath, l'esprit d'un ancêtre demi-dragon noir, qui combat à ses côtés. Aussi puissant qu'un planétar, il ne craint ni les armes inférieures à +3, ni la plupart des sorts, ni l'acide, les racines et les insectes de son descendant. L'esprit, flou comme un fantôme, combat avec une épée à deux mains ruisselante d'acide (+3, 1d10 tranchant + 2d6 acide). Il est immunisé à l'acide, au poison et à la peur. Remplace Invocation de planétar et Invocation de planétar noir.~
+Le Disciple du Dragon Noir appelle Nydra'Nath, l'esprit d'un ancêtre demi-dragon noir, qui combat à ses côtés. Il ne craint ni les armes inférieures à +3, ni la plupart des sorts, ni l'acide, les racines et les insectes de son descendant. L'esprit, flou comme un fantôme, combat avec une épée à deux mains ruisselante d'acide (+3, 1d10 tranchant + 2d6 acide) et peut cracher une fois une ligne d'acide (6d8 dégâts d'acide, jet de sauvegarde contre les souffles pour la moitié). Il est immunisé à l'acide, au poison et à la peur.~
 @304 = ~Fonte-des-Os~
 @305 = ~Fonte-des-Os
 

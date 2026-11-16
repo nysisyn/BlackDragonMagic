@@ -32,11 +32,11 @@ Transformations:
 - [ ] Frightful Presence: 10 ft., enemies of lower level only, 24 hours of immunity after the test.
 - [ ] Darkness, Corrupt Water (rain once; potions: save vs. Spell, about half of the kinds; pool: poison, Grease surface and slow), Summon Reptile (hydra), Swampy Lake (lake, roots, insects: acid, poison, entangle, Summon Insects).
 - [ ] Breath Ball: green orb travelling, then the explosion. Breath Pool: range 15 ft.
-- [ ] Call Ancestor: the Half Black Dragon Spirit (animation, sounds, blur, greatsword with acid).
+- [ ] Call Draconic Ancestor: the Half Black Dragon Spirit (animation, sounds, blur, greatsword with acid).
 - [ ] Breath Ball: Breath Doom's explosion. Breath Pool: the explosion first, then the pool where it landed (opcode 148 at the target point: to check the pool does not appear on the disciple).
 - [ ] Messages "Breath weapon ready" and "Wing Buffet ready" when they come back.
 - [ ] Swamp Stride: immune to Corrupt Water.
-- [ ] HLA (BG2EE/EET): Breath Doom, Call Ancestor (no Planetar left), Bonemelt (skeletons destroyed), Black Dragon Magic Mastery.
+- [ ] HLA (BG2EE/EET): Breath Doom, Call Draconic Ancestor (no Planetar left; Ancestral Breath castable by hand, once), Bonemelt (skeletons destroyed), Black Dragon Magic Mastery.
 
 ### Acidosis
 - [x] Icons, casting, self damage OK.

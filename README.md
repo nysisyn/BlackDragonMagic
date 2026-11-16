@@ -38,7 +38,7 @@ BlackDragonMagic/
 │   │                             transformations, claws, breath, granted spells, their icons
 │   └── hla/                      high-level abilities
 ├── creatures/<creature>/         creatures shared by several features: hydra (Summon Reptile, test
-│                                 component), half_black_dragon (Call Ancestor): anim/ BAMs, ini/,
+│                                 component), half_black_dragon (Call Draconic Ancestor): anim/ BAMs, ini/,
 │                                 snd/ sounds copied when missing, <creature>.tpa
 ├── spells/<spell_name>/          one folder per new spell
 │   ├── <spell_name>.tpa
@@ -97,11 +97,11 @@ BlackDragonMagic/
 | `NY#TGSL`, `NY#TGLP`, `NY#TGLA` | Swampy Lake (level 9), its lake (Grease's surface) and the lake's effects (acid, poison); chain lake -> roots -> insects (opcode 148); the caster is immune to the effects spells, not to the zone spells (an immunity to a spell also blocks its own opcode 148 on the caster: in game, only the lake showed) |
 | `NY#TGLR`, `NY#TGLRP`, `NY#TGLE` | Swampy Lake: the roots (Entangle's projectile, 30-ft. radius; Entangle's effects) |
 | `NY#TGLS`, `NY#TGLSP`, `NY#TGLI` | Swampy Lake: the insects (Stinking Cloud's area, 30-ft. radius, with the swarm of Summon Insects' missile scattered over it; Summon Insects' effects, save vs. Spell) |
-| `LUNYB.2DA`, `LUABBR.2DA` | HLA table of the kit (BG2EE / EET, abbreviation `NYB`): extra spells of levels 6, 7 and 8, Breath Doom, Call Ancestor, Bonemelt, Black Dragon Magic Mastery |
+| `LUNYB.2DA`, `LUABBR.2DA` | HLA table of the kit (BG2EE / EET, abbreviation `NYB`): extra spells of levels 6, 7 and 8, Breath Doom, Call Draconic Ancestor, Bonemelt, Black Dragon Magic Mastery |
 | `NY#BDBL`, `NY#BDBLB`, `NY#BDBLC` | Breath Doom HLA (copy of `SPWI922` Dragon's Breath, acid instead of fire, explosion and sound of `SPIN691`) and its icons |
-| `NY#THCA`, `NY#TANE` | Call Ancestor HLA (Summon Planetar's duration and casting) and the EFF calling the spirit (BG2EE: Summon Planetar goes through opcode 177 and SPPLAN2.EFF) |
-| `NY#TANC`, `NY#TANW`, `NYHD*.BAM`, `<id>.INI` | Nydra'Nath, the Half Black Dragon Spirit (`creatures/half_black_dragon`): the planetar's CRE as base (allegiance, summon AI BDSUM00, immunities, regeneration, magic resistance, resistances, IMMUNE3 ring), without its spells, script and voice; level 25 fighter, 150 HP, AC -7, THAC0 3, 3 attacks, STR 22, immune to acid, blurred (opcode 65); its Ancestral Greatsword (+3, 1d10 + 2d6 acid) also makes it immune to the disciple's area spells and breaths; animation: Icewind Dale II's half black dragon (MDH1) converted to IWD:EE format, animation id from 0xEC40 (`NY_HALF_BLACK_DRAGON`); sounds HDRAG*.WAV (Siege of Dragonspear), copied when missing |
-| `NY#THCAB`, `NY#THCAC` | Call Ancestor icons: Summon Planetar's recoloured acid yellow |
+| `NY#THCA`, `NY#TANE` | Call Draconic Ancestor HLA (Summon Planetar's duration and casting) and the EFF calling the spirit (BG2EE: Summon Planetar goes through opcode 177 and SPPLAN2.EFF) |
+| `NY#TANC`, `NY#TANB`, `NY#TANW`, `NYHD*.BAM`, `<id>.INI` | Nydra'Nath, the Half Black Dragon Spirit (`creatures/half_black_dragon`): the planetar's CRE as base (allegiance, summon AI BDSUM00, immunities, regeneration, magic resistance, resistances, IMMUNE3 ring), without its spells, script and voice; level 25 fighter, 150 HP, AC -7, THAC0 3, 3 attacks, STR 22, immune to acid, blurred (opcode 65); its Ancestral Breath (innate, once per summoning, cast by the player only: acid line NY#BDBRU, 6d8, save vs. Breath for half); its Ancestral Greatsword (+3, 1d10 + 2d6 acid) also makes it immune to the disciple's area spells and breaths; animation: Icewind Dale II's half black dragon (MDH1) converted to IWD:EE format, animation id from 0xEC40 (`NY_HALF_BLACK_DRAGON`); sounds HDRAG*.WAV (Siege of Dragonspear), copied when missing |
+| `NY#THCAB`, `NY#THCAC` | Call Draconic Ancestor icons: Summon Planetar's recoloured acid yellow |
 | `NY#THBM`, `NY#THBE`, `NY#THSK` | Bonemelt HLA (4d4 acid per round, 10 rounds), its EFF and the skeleton destruction |
 | `NY#THMS` | Black Dragon Magic Mastery HLA (learns Creeping Doom, Summon Reptile, Swampy Lake) |
 | `NY#ACDS`, `NY#ACDX` | Acidosis and its retaliation |

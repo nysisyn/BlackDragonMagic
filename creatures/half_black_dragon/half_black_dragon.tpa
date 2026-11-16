@@ -17,6 +17,10 @@
 //   NY#TANC  the spirit: level 25 fighter, 150 HP, AC -7, THAC0 3, 3 attacks
 //            per round, STR 22, immune to acid; Blur (opcode 65) for its
 //            ghostly look; no experience when killed
+//   NY#TANB  its Ancestral Breath (innate, once per summoning, cast by the
+//            player only: no script uses it): a line of acid, the
+//            disciple's wide breath line NY#BDBRU, 6d8 acid, save vs. Breath
+//            for half (a half black dragon's breath in D&D 3rd edition)
 //   NY#TANW  its Ancestral Greatsword: two-handed sword +3, 1d10 slashing
 //            + 2d6 acid; carries Blur, the immunities to poison and fear,
 //            and to the disciple's own area spells and breaths (the spirit
@@ -25,6 +29,8 @@
 
 OUTER_SET ny_str_tanw   = RESOLVE_STR_REF (@271)
 OUTER_SET ny_str_tanw_d = RESOLVE_STR_REF (@272)
+OUTER_SET ny_str_tanb   = RESOLVE_STR_REF (@273)
+OUTER_SET ny_str_tanb_d = RESOLVE_STR_REF (@274)
 
 COPY ~%MOD_FOLDER%/creatures/half_black_dragon/anim~ ~override~
 ACTION_FOR_EACH snd IN hdrag01a hdrag01b hdrag02a hdrag03a hdrag03b hdrag04a hdrag04b hdrag05a hdrag05b
@@ -74,6 +80,14 @@ CREATE ~ITM~ ~NY#TANW~
   LPF ADD_ITEM_EFFECT INT_VAR type = 99 header = h opcode = 12 target = 2 timing = 1 parameter2 = 0x10000
                               dicenumber = 2 dicesize = 6 END                            // acid
 
+CREATE ~SPL~ ~NY#TANB~
+  LPF NY#SPL_BASE INT_VAR name = ny_str_tanb desc = ny_str_tanb_d type = 4 level = 1 flags = 0x400 STR_VAR icon = ~NY#BDBRC~ END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 4 range = 30 level = 1 casting_time = 1 projectile = ny_pro_breath2 STR_VAR icon = ~NY#BDBRI~ RET h = header END
+  // the spirit is not hit by its own breath (the line starts on it)
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = 2 parameter1 = "-1" STR_VAR resource = ~NY#TANB~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 STR_VAR resource = ~NY#BDWVH~ END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 0 parameter2 = 0x10000 dicenumber = 6 dicesize = 8 savingthrow = 2 special = 0x100 END
+
 COPY_EXISTING ~%ny_planetar%.cre~ ~override/NY#TANC.cre~
   WRITE_LONG  0x08 ny_str_spirit
   WRITE_LONG  0x0c ny_str_spirit
@@ -105,6 +119,8 @@ COPY_EXISTING ~%ny_planetar%.cre~ ~override/NY#TANC.cre~
   WRITE_ASCII 0x2cc ~~ #8                       // no dialogue
   REMOVE_KNOWN_SPELLS
   REMOVE_MEMORIZED_SPELLS
+  ADD_KNOWN_SPELL ~NY#TANB~ #0 ~innate~
+  ADD_MEMORIZED_SPELL ~NY#TANB~ #0 ~innate~ (1)
   // the summons' AI (the planetar's own default script)
   WRITE_ASCII 0x268 ~~ #8
   PATCH_IF FILE_EXISTS_IN_GAME ~bdsum00.bcs~ BEGIN

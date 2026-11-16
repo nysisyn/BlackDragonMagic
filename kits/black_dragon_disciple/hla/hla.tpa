@@ -14,7 +14,7 @@
 //            breath (SPIN691: projectile GREEHIT, sound BLACK04) instead of
 //            the red dragon head visual. Icons: the former Black Dragon
 //            Breathball ones (SPWI922 in acid yellow).
-//   NY#THCA  Call Ancestor: the game's Summon Planetar (SPWI924: duration,
+//   NY#THCA  Call Draconic Ancestor: the game's Summon Planetar (SPWI924: duration,
 //            casting; icons recoloured acid yellow, NY#THCAB/C) calling
 //            NY#TANC, Nydra'Nath the Half Black Dragon Spirit
 //            (creatures/half_black_dragon/half_black_dragon.tpa) through
@@ -100,7 +100,7 @@ COPY_EXISTING ~spwi922.spl~ ~override/NY#BDBL.spl~
 
 
 // ---------------------------------------------------------------------------
-// Call Ancestor: Summon Planetar calling the Half Black Dragon Spirit
+// Call Draconic Ancestor: Summon Planetar calling the Half Black Dragon Spirit
 // ---------------------------------------------------------------------------
 // The planetar comes from opcode 67 in the spell or, as in BG2:EE, from
 // opcode 177 and its EFF (SPPLAN2.EFF: opcode 67, PLANEVIL).
@@ -137,7 +137,7 @@ ACTION_IF (~%ny_planetar%~ STRING_COMPARE ~~) AND FILE_EXISTS_IN_GAME ~%ny_plane
     LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 177 STR_VAR resource = ~NY#TANE~ END
     WRITE_LONG 0x1e 0                           // no alignment restriction
 END ELSE BEGIN
-  PRINT ~Black Dragon Disciple: Summon Planetar (SPWI924) summons no creature (opcode 67, or 177 and its EFF), Call Ancestor not built.~
+  PRINT ~Black Dragon Disciple: Summon Planetar (SPWI924) summons no creature (opcode 67, or 177 and its EFF), Call Draconic Ancestor not built.~
 END
 
 
@@ -180,7 +180,7 @@ CREATE ~SPL~ ~NY#THMS~
 // HLA table
 // ---------------------------------------------------------------------------
 COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/2da/lunyb.2da~ ~override~
-// without Call Ancestor, its row goes (a row "*" is an empty ability: the
+// without Call Draconic Ancestor, its row goes (a row "*" is an empty ability: the
 // engine shows none of the table)
 ACTION_IF NOT FILE_EXISTS_IN_GAME ~NY#THCA.spl~ BEGIN
   COPY_EXISTING ~lunyb.2da~ ~override~

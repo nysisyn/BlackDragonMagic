@@ -400,13 +400,17 @@ Type: Two-handed~
 // High-level abilities
 // ---------------------------------------------------------------------------
 @300 = ~Breath Doom~
+@273 = ~Ancestral Breath~
+@274 = ~Ancestral Breath
+
+Nydra'Nath breathes a line of acid: 6d8 acid damage, save vs. Breath for half. Once per summoning.~
 @301 = ~Breath Doom
 
 The Black Dragon Disciple unleashes the full fury of his ancestor: a huge cone of acid. Acid version of Dragon's Breath, which is no longer available to the Black Dragon Disciple.~
-@302 = ~Call Ancestor~
-@303 = ~Call Ancestor
+@302 = ~Call Draconic Ancestor~
+@303 = ~Call Draconic Ancestor
 
-The Black Dragon Disciple calls Nydra'Nath, the spirit of a half black dragon ancestor, to fight at his side. As mighty as a planetar, it shrugs off weapons below +3, most spells and its descendant's own acid, roots and insects. The spirit, blurred like a ghost, fights with a two-handed sword dripping with acid (+3, 1d10 slashing + 2d6 acid). It is immune to acid, poison and fear. Replaces Summon Planetar and Summon Dark Planetar.~
+The Black Dragon Disciple calls Nydra'Nath, the spirit of a half black dragon ancestor, to fight at his side. It shrugs off weapons below +3, most spells and its descendant's own acid, roots and insects. The spirit, blurred like a ghost, fights with a two-handed sword dripping with acid (+3, 1d10 slashing + 2d6 acid) and can breathe a line of acid once (6d8 acid damage, save vs. Breath for half). It is immune to acid, poison and fear.~
 @304 = ~Bonemelt~
 @305 = ~Bonemelt
 
