@@ -33,8 +33,8 @@
 //   NY#TBPX     pool, first: the same explosion at the pool's size; it casts
 //               the pool where it explodes (opcode 148, NY#TQ<m><a><i>)
 //   NY#TBPP     pool, then: Stinking Cloud's CLOUD.PRO with acid puddles
-//               NY#TBPD (the game's Grease puddles GREASED: yellow ones in
-//               the explosion's yellow-green over almost black ones, half
+//               NY#TBPD (the game's Grease puddles GREASED: acid green ones
+//               over almost black ones, half
 //               speed), 7.5-ft. radius, no travelling object
 /////////////////////////////////////////////////////////////////////////////
 
@@ -100,8 +100,8 @@ COPY_EXISTING ~fireball.pro~ ~%ny_workspace%/NY#TBPX.pro~
 ADD_PROJECTILE ~%ny_workspace%/NY#TBPX.pro~
 OUTER_SET ny_pro_tbpoolx = IDS_OF_SYMBOL (~projectl~ ~NY#TBPX~) + 1
 
-// the puddles: the game's GREASED.BAM in two versions, SPBDIMSP's
-// yellow-green and almost black, assembled: 6 dark puddles underneath and
+// the puddles: the game's GREASED.BAM in two versions, acid green (colours
+// adjusted by hand by Nysi) and almost black, assembled: 6 dark puddles underneath and
 // around, 7 yellow ones on top and a small one top left (each one at another
 // point of its cycle),
 // half speed
