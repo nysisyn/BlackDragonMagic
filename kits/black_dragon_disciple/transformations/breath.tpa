@@ -102,7 +102,8 @@ OUTER_SET ny_pro_tbpoolx = IDS_OF_SYMBOL (~projectl~ ~NY#TBPX~) + 1
 
 // the puddles: the game's GREASED.BAM in two versions, SPBDIMSP's
 // yellow-green and almost black, assembled: 6 dark puddles underneath and
-// around, 7 yellow ones on top (each one at another point of its cycle),
+// around, 7 yellow ones on top and a small one top left (each one at another
+// point of its cycle),
 // half speed
 COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#tbpd.bam~ ~override~
 COPY_EXISTING ~cloud.pro~ ~%ny_workspace%/NY#TBPP.pro~

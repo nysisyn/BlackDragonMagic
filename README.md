@@ -142,7 +142,7 @@ BlackDragonMagic/
 | `NY#BDBRT`, `NY#BDBRU` | Acid Breath line projectiles (built like Smashing Wave, IWDEE): 15 ft. × 5 ft., then 30 ft. × 10 ft. at level 10 |
 | `NY#BDBRI` | Acid Breath icon: the game's `SPDD03B` with the dragon recoloured acid yellow (Nysi's artwork version in `works/acid_breath_artwork_icon`, old DragonAscendant icon in `works/acid_breath_old_icon`) |
 | `NY#BDBRT` | Breath projectile: the Dragon Disciple's DDBREAT.PRO (140° cone in front of the disciple, hits everyone in it) with Breath Ball's explosion (NY#BD_EXPLOSION: the BG2:EE GREEHIT.PRO fields 0x208-0x24f written as values, RNG_M03, SPBDIMSP, SPBDRAE2; SoD's GREEHIT.PRO is another projectile), its cone width kept; one projectile for every level. Without DDBREAT.PRO or the explosion BAMs: the former acid wave line (NY#BDBRT / NY#BDBRU, 5 ft. / 10 ft. wide) |
-| `NY#TBPD` | Breath Pool's puddles, built offline from the game's GREASED.BAM: a yellow version (SPBDIMSP's yellow-green) and an almost black one, assembled (6 dark puddles underneath and around, 7 yellow on top, each shifted in its cycle), half speed |
+| `NY#TBPD` | Breath Pool's puddles, built offline from the game's GREASED.BAM: a yellow version (SPBDIMSP's yellow-green) and an almost black one, assembled (6 dark puddles underneath and around, 7 yellow on top and a small one top left, each shifted in its cycle), half speed |
 | `NY#BDWVH`, `NY#BDBRE.wav` | breath hit splash (Smashing Wave BAM recoloured), breath sound |
 | `NY#BDWAV`, `NY#BDWVT`, `NY#TANL` | Nydra'Nath's breath line for now (and the disciple's without GREEHIT.PRO): the former acid wave and its trail (Smashing Wave BAMs recoloured) |
 | `NY#BDFPT`, `NY#VSPH` | cloned projectiles (`NY#BDFPT`: enemies only, area flag 0x40) |
