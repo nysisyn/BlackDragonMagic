@@ -21,6 +21,10 @@
 //            player only: no script uses it): a line of acid, the
 //            disciple's wide breath line NY#BDBRU, 10d8 acid, save vs.
 //            Breath for half
+//   NY#TANF  its Wing Buffet: the black dragon's SPIN695 (enemies only:
+//            projectile INAREANP), centred on the spirit; cast by its script
+//   NY#TANCS its script (override slot): Wing Buffet when an enemy is within
+//            range 10, every 4 rounds at most
 //   NY#TANW  its Ancestral Greatsword: two-handed sword +3, 1d10 slashing
 //            + 2d6 acid; on a hit, one roll: 10% swamp plants (NY#TANP),
 //            10% insect swarm (NY#TANI), 10% Rot of Ages at level 10 (spells
@@ -122,6 +126,19 @@ CREATE ~SPL~ ~NY#TANB~
   LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 STR_VAR resource = ~NY#BDWVH~ END
   LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 0 parameter2 = 0x10000 dicenumber = 10 dicesize = 8 savingthrow = 2 special = 0x100 END
 
+// Wing Buffet, cast by the spirit's own script
+OUTER_SET ny_tan_wings = FILE_EXISTS_IN_GAME ~spin695.spl~
+ACTION_IF ny_tan_wings BEGIN
+  COPY_EXISTING ~spin695.spl~ ~override/NY#TANF.spl~
+    READ_LONG  0x64 ho
+    READ_SHORT 0x68 hn
+    FOR (h = 0; h < hn; ++h) BEGIN
+      WRITE_BYTE  (ho + h * 0x28 + 0x0c) 5      // target: the spirit itself
+      WRITE_SHORT (ho + h * 0x28 + 0x0e) 0
+    END
+  COMPILE ~%MOD_FOLDER%/creatures/half_black_dragon/baf/ny#tancs.baf~
+END
+
 COPY_EXISTING ~%ny_planetar%.cre~ ~override/NY#TANC.cre~
   WRITE_LONG  0x08 ny_str_spirit
   WRITE_LONG  0x0c ny_str_spirit
@@ -147,7 +164,10 @@ COPY_EXISTING ~%ny_planetar%.cre~ ~override/NY#TANC.cre~
   WRITE_BYTE  0x23d 19                          // CON
   WRITE_BYTE  0x23e 16                          // CHA
   WRITE_LONG  0x244 0                           // no kit
-  WRITE_ASCII 0x248 ~~ #8                       // no spell script (PLANGOOD)
+  WRITE_ASCII 0x248 ~~ #8                       // no spell script (PLANGOOD)...
+  PATCH_IF ny_tan_wings BEGIN
+    WRITE_ASCII 0x248 ~NY#TANCS~ #8             // ... its Wing Buffet instead
+  END
   WRITE_BYTE  0x272 IDS_OF_SYMBOL (~race~ ~DRAGON~)
   WRITE_BYTE  0x273 IDS_OF_SYMBOL (~class~ ~FIGHTER~)
   WRITE_ASCII 0x2cc ~~ #8                       // no dialogue
