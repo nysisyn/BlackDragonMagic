@@ -32,8 +32,9 @@
 //               NY#PBRT, no smoke)
 //   NY#TBPX     pool, first: the same explosion at the pool's size; it casts
 //               the pool where it explodes (opcode 148, NY#TQ<m><a><i>)
-//   NY#TBPP     pool, then: Stinking Cloud's CLOUD.PRO with the acid puddles
-//               of Pooling Breath (spells/pooling_breath/bam), 7.5-ft.
+//   NY#TBPP     pool, then: Stinking Cloud's CLOUD.PRO with acid puddles
+//               NY#TBPD (Pooling Breath's, in the explosion's yellow-green,
+//               three per frame, half speed), 7.5-ft.
 //               radius, no travelling object
 /////////////////////////////////////////////////////////////////////////////
 
@@ -56,7 +57,6 @@ COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdbri.bam~ ~override~
      ~%MOD_FOLDER%/spells/breathball/bam/ny#bdbbc.bam~ ~override~
      ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrb.bam~ ~override~
      ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrc.bam~ ~override~
-     ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrd.bam~ ~override~
      ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrt.bam~ ~override~
 LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDBRI~ c = ~NY#BDBRC~ END   // Remastered Spell Icons
 LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDBBB~ c = ~NY#BDBBC~ END
@@ -100,10 +100,13 @@ COPY_EXISTING ~fireball.pro~ ~%ny_workspace%/NY#TBPX.pro~
 ADD_PROJECTILE ~%ny_workspace%/NY#TBPX.pro~
 OUTER_SET ny_pro_tbpoolx = IDS_OF_SYMBOL (~projectl~ ~NY#TBPX~) + 1
 
+// the puddles: Pooling Breath's (NY#PBRD) in SPBDIMSP's yellow-green, three
+// per frame (each one at another point of its cycle), half speed
+COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#tbpd.bam~ ~override~
 COPY_EXISTING ~cloud.pro~ ~%ny_workspace%/NY#TBPP.pro~
   WRITE_ASCII 0x104 ~~ #8                       // no travelling object
   WRITE_BYTE  0x218 86                          // gradient 86: acid green
-  WRITE_ASCII 0x228 ~NY#PBRD~ #8                // acid puddles instead of the cloud
+  WRITE_ASCII 0x228 ~NY#TBPD~ #8                // acid puddles instead of the cloud
   WRITE_SHORT 0x204 128                         // half Stinking Cloud's area
   WRITE_SHORT 0x206 128
 ADD_PROJECTILE ~%ny_workspace%/NY#TBPP.pro~
