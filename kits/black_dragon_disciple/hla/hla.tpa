@@ -100,6 +100,7 @@ ACTION_IF FILE_EXISTS_IN_GAME ~%ny_bdbl_pro_res%.pro~ BEGIN
     PATCH_IF (SOURCE_SIZE >= 0x224) BEGIN
       WRITE_ASCIIE 0x21c ~%ny_bd_expl_bam%~ #8
       WRITE_ASCIIE 0x228 ~%ny_bd_spread_bam%~ #8
+      WRITE_LONG   0x240 (THIS BAND (BNOT 0x6000))   // not blended nor glowing: the black puddles show
     END
   ADD_PROJECTILE ~%ny_workspace%/NY#BDBLP.pro~
   OUTER_SET ny_bdbl_pro = IDS_OF_SYMBOL (~projectl~ ~NY#BDBLP~) + 1

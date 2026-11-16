@@ -34,8 +34,8 @@
 // 0x208 to 0x24f), written as it is there: Siege of Dragonspear's
 // GREEHIT.PRO is another projectile. Sound RNG_M03, explosion animation
 // ny_bd_expl_bam (played once where the breath lands), spread animation
-// ny_bd_spread_bam (scattered over the area afterwards, blended and
-// glowing). Kept: area flags, size, cone width (0x224).
+// ny_bd_spread_bam (scattered over the area afterwards; not blended nor
+// glowing, unlike GREEHIT: blended, the black puddles are invisible). Kept: area flags, size, cone width (0x224).
 // ny_bd_expl_bam: NY#BDBA, Nysi's greener version of the game's SPBDIMSP.
 // ny_bd_spread_bam: on trial, Breath Pool's puddles NY#TBPD (copied by
 // transformations/breath.tpa) instead of the game's acid drops SPBDRAE2.
@@ -56,7 +56,7 @@ DEFINE_PATCH_FUNCTION NY#BD_EXPLOSION BEGIN
   WRITE_ASCIIE 0x228 ~%ny_bd_spread_bam%~ #8    // spread animation
   WRITE_ASCII 0x230 ~~ #8                       // no ring
   WRITE_ASCII 0x238 ~~ #8                       // no area sound
-  WRITE_LONG  0x240 0x7214                      // extended flags
+  WRITE_LONG  0x240 0x1214                      // extended flags: GREEHIT's 0x7214 without blend (0x2000) and glow (0x4000)
   WRITE_SHORT 0x244 0
   WRITE_SHORT 0x246 0
   WRITE_SHORT 0x248 5
