@@ -11,7 +11,8 @@ Kit:
 - [x] Learning one at level-up: its effects at once (global script); no spell slot lost.
 - [x] Ability location 0: still offered at level-up, applied when learned, not offered again, absent from the casting bar, still listed in the spellbook screen.
 - [ ] Another sorcerer learning it: nothing happens.
-- [ ] Only the kit is offered the transformations: Black Dragon Disciple at level-up and at creation (also created at a high level) sees them; plain sorcerer, Dragon Disciple (level-up, creation) and a mage at creation do not; game in French and in English.
+- [x] Only the kit is offered the transformations: the Black Dragon Disciple sees them at creation and at level-up; a plain sorcerer and a mage at creation do not (BG2:EE and SoD).
+- [ ] Same check for the Dragon Disciple, a disciple created at a high level, and after switching the game language.
 - [ ] Level markers at 10 and 15 (global script): Dragon Scale +1 AC at 10 and 15, Resilience +2 CON at 15, Might +2 STR at 15; a transformation taken after these levels gives the steps at once; a character created at a high level (ToB) gets them right away.
 - [ ] Transformations picked at character creation applied as soon as the game starts.
 
