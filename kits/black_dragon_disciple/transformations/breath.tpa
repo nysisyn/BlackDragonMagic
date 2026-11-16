@@ -77,27 +77,26 @@ CREATE ~SPL~ ~NY#TAMR~
 // ---------------------------------------------------------------------------
 // Projectiles
 // ---------------------------------------------------------------------------
-// Breath Doom's explosion: GREEHIT.PRO from the explosion sound (0x208) to
-// the end of the area fields (0x24f)
-COPY_EXISTING ~greehit.pro~ ~override~
-  FOR (o = 0x208; o < 0x250; ++o) BEGIN
-    READ_BYTE o $ny_greehit(~%o%~)
-  END
-BUT_ONLY
+// Breath Doom's explosion: NY#BD_EXPLOSION (black_dragon_disciple.tpa)
 COPY_EXISTING ~fireball.pro~ ~%ny_workspace%/NY#TBBP.pro~
   WRITE_ASCII  0x104 ~NY#PBRT~ #8   // a green orb instead of the fireball
   WRITE_ASCII  0x10c ~~ #8          // no shadow
   WRITE_LONG   0x100 (THIS BAND (BNOT 0x2))   // no smoke
   WRITE_BYTE   0x124 86             // gradient 86: acid green (as Pooling Breath's blob)
-  FOR (o = 0x208; o < 0x250; ++o) BEGIN
-    WRITE_BYTE o $ny_greehit(~%o%~)
+  PATCH_IF ny_bd_expl BEGIN
+    LPF NY#BD_EXPLOSION END
   END
 ADD_PROJECTILE ~%ny_workspace%/NY#TBBP.pro~
 OUTER_SET ny_pro_tbball = IDS_OF_SYMBOL (~projectl~ ~NY#TBBP~) + 1
 
-COPY_EXISTING ~greehit.pro~ ~%ny_workspace%/NY#TBPX.pro~
+COPY_EXISTING ~fireball.pro~ ~%ny_workspace%/NY#TBPX.pro~
+  WRITE_ASCII 0x104 ~~ #8                       // no travelling fireball
+  WRITE_ASCII 0x10c ~~ #8                       // nor its shadow
   WRITE_SHORT 0x204 128                         // the pool's size
   WRITE_SHORT 0x206 128
+  PATCH_IF ny_bd_expl BEGIN
+    LPF NY#BD_EXPLOSION END
+  END
 ADD_PROJECTILE ~%ny_workspace%/NY#TBPX.pro~
 OUTER_SET ny_pro_tbpoolx = IDS_OF_SYMBOL (~projectl~ ~NY#TBPX~) + 1
 
