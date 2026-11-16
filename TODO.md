@@ -36,7 +36,7 @@ Transformations:
 - [ ] Breath Ball: Breath Doom's explosion. Breath Pool: the explosion first, then the pool where it landed (opcode 148 at the target point: to check the pool does not appear on the disciple).
 - [ ] Messages "Breath weapon ready" and "Wing Buffet ready" when they come back.
 - [ ] Swamp Stride: immune to Corrupt Water.
-- [ ] HLA (BG2EE/EET): Breath Doom, Call Draconic Ancestor (no Planetar left; Ancestral Breath castable by hand, once), Bonemelt (skeletons destroyed), Black Dragon Magic Mastery.
+- [ ] HLA (BG2EE/EET): Breath Doom, Call Draconic Ancestor (no Planetar left; Ancestral Breath castable by hand, once, 10d8; greatsword procs: plants, insects, Rot of Ages, never two on one hit), Bonemelt (skeletons destroyed), Black Dragon Magic Mastery.
 
 ### Acidosis
 - [x] Icons, casting, self damage OK.

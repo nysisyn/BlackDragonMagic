@@ -387,6 +387,11 @@ A swamp of acid swallows the area for 1 turn: a lake, roots and swarms of insect
 
 The two-handed sword of a half black dragon ancestor, as ghostly as its bearer. Its blade drips with acid.
 
+Each hit has a 10% chance of each of the following, never more than one at a time:
+- Swamp plants: the target is held fast (movement stopped, -2 AC) for 1 round, save vs. Spell negates.
+- Insect swarm: the target cannot cast spells and is bitten for 3 rounds.
+- Rot of Ages (if the Black Dragon Magic spells are installed), at level 10.
+
 STATISTICS:
 
 THAC0: +3
@@ -394,23 +399,23 @@ Damage: 1d10 +3 (slashing) + 2d6 acid
 Speed Factor: 7
 Proficiency Type: Two-Handed Sword
 Type: Two-handed~
+@273 = ~Ancestral Breath~
+@274 = ~Ancestral Breath
+
+Nydra'Nath breathes a line of acid: 10d8 acid damage, save vs. Breath for half. Once per summoning.~
 
 
 // ---------------------------------------------------------------------------
 // High-level abilities
 // ---------------------------------------------------------------------------
 @300 = ~Breath Doom~
-@273 = ~Ancestral Breath~
-@274 = ~Ancestral Breath
-
-Nydra'Nath breathes a line of acid: 6d8 acid damage, save vs. Breath for half. Once per summoning.~
 @301 = ~Breath Doom
 
 The Black Dragon Disciple unleashes the full fury of his ancestor: a huge cone of acid. Acid version of Dragon's Breath, which is no longer available to the Black Dragon Disciple.~
 @302 = ~Call Draconic Ancestor~
 @303 = ~Call Draconic Ancestor
 
-The Black Dragon Disciple calls Nydra'Nath, the spirit of a half black dragon ancestor, to fight at his side. It shrugs off weapons below +3, most spells and its descendant's own acid, roots and insects. The spirit, blurred like a ghost, fights with a two-handed sword dripping with acid (+3, 1d10 slashing + 2d6 acid) and can breathe a line of acid once (6d8 acid damage, save vs. Breath for half). It is immune to acid, poison and fear.~
+The Black Dragon Disciple calls Nydra'Nath, the spirit of a half black dragon ancestor, to fight at his side. It shrugs off weapons below +3, most spells and its descendant's own acid, roots and insects. The spirit, blurred like a ghost, fights with a two-handed sword dripping with acid (+3, 1d10 slashing + 2d6 acid; each hit may entangle the target in swamp plants, cover it with a swarm of insects that stops its spellcasting, or infect it with Rot of Ages) and can breathe a line of acid once (10d8 acid damage, save vs. Breath for half). It is immune to acid, poison and fear.~
 @304 = ~Bonemelt~
 @305 = ~Bonemelt
 

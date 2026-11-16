@@ -80,3 +80,16 @@ CREATE ~SPL~ ~NY#ROTS~
   END
 
 ADD_SPELL ~override/NY#ROTS.spl~ 2 1 ~WIZARD_NY_ROT_OF_AGES~
+
+// Nydra'Nath's Ancestral Greatsword (Black Dragon Disciple, installed
+// before): 10% Rot of Ages at level 10 on a hit (its window: 20-29, see
+// creatures/half_black_dragon/half_black_dragon.tpa)
+ACTION_IF FILE_EXISTS_IN_GAME ~NY#TANW.itm~ BEGIN
+  LAF RES_NUM_OF_SPELL_NAME STR_VAR spell_name = ~WIZARD_NY_ROT_OF_AGES~ RET ny_rot_res = spell_res END
+  COPY_EXISTING ~NY#TANW.itm~ ~override~
+    PATCH_IF (INDEX_BUFFER (~%ny_rot_res%~) < 0) BEGIN
+      LPF ADD_ITEM_EFFECT INT_VAR type = 99 header = 1 opcode = 146 target = 2 timing = 1 parameter1 = 10 parameter2 = 1
+                                  probability1 = 29 probability2 = 20 STR_VAR resource = EVAL ~%ny_rot_res%~ END
+    END
+  BUT_ONLY
+END

@@ -19,10 +19,13 @@
 //            ghostly look; no experience when killed
 //   NY#TANB  its Ancestral Breath (innate, once per summoning, cast by the
 //            player only: no script uses it): a line of acid, the
-//            disciple's wide breath line NY#BDBRU, 6d8 acid, save vs. Breath
-//            for half (a half black dragon's breath in D&D 3rd edition)
+//            disciple's wide breath line NY#BDBRU, 10d8 acid, save vs.
+//            Breath for half
 //   NY#TANW  its Ancestral Greatsword: two-handed sword +3, 1d10 slashing
-//            + 2d6 acid; carries Blur, the immunities to poison and fear,
+//            + 2d6 acid; on a hit, one roll: 10% swamp plants (NY#TANP),
+//            10% insect swarm (NY#TANI), 10% Rot of Ages at level 10 (spells
+//            component: added by it, or here if already installed); carries
+//            Blur, the immunities to poison and fear,
 //            and to the disciple's own area spells and breaths (the spirit
 //            stays out of its descendant's acid, roots, insects...)
 /////////////////////////////////////////////////////////////////////////////
@@ -44,6 +47,23 @@ LAF NY#NEW_ANIMATION STR_VAR ini = EVAL ~%MOD_FOLDER%/creatures/half_black_drago
 PRINT ~Half black dragon animation id: 0x%ny_hbd_hex%~
 
 OUTER_SET ny_prof_2hsword = IDS_OF_SYMBOL (~stats~ ~PROFICIENCYTWOHANDEDSWORD~)
+
+// The black dragon of Suldanessellar's powers (SPIN688 swamp plants,
+// SPIN689 insect swarm), on one creature: first header only, no projectile
+ACTION_FOR_EACH pair IN ~SPIN688 NY#TANP~ ~SPIN689 NY#TANI~ BEGIN
+  OUTER_PATCH_SAVE src ~%pair%~ BEGIN REPLACE_TEXTUALLY ~ .*~ ~~ END
+  OUTER_PATCH_SAVE dst ~%pair%~ BEGIN REPLACE_TEXTUALLY ~.* ~ ~~ END
+  ACTION_IF FILE_EXISTS_IN_GAME ~%src%.spl~ BEGIN
+    COPY_EXISTING ~%src%.spl~ ~override/%dst%.spl~
+      WRITE_SHORT 0x1c 4                        // innate
+      READ_LONG  0x64 ho
+      WRITE_SHORT 0x68 1                        // first header only
+      WRITE_BYTE  (ho + 0x0c) 1                 // one creature
+      WRITE_SHORT (ho + 0x0e) 1000
+      WRITE_SHORT (ho + 0x12) 0                 // no casting time
+      WRITE_SHORT (ho + 0x26) 1                 // no projectile
+  END
+END
 
 CREATE ~ITM~ ~NY#TANW~
   WRITE_LONG  0x08 ny_str_tanw
@@ -79,6 +99,20 @@ CREATE ~ITM~ ~NY#TANW~
                        RET h = header END
   LPF ADD_ITEM_EFFECT INT_VAR type = 99 header = h opcode = 12 target = 2 timing = 1 parameter2 = 0x10000
                               dicenumber = 2 dicesize = 6 END                            // acid
+  // procs: one roll per hit, a 10% window each
+  PATCH_IF FILE_EXISTS_IN_GAME ~NY#TANP.spl~ BEGIN
+    LPF ADD_ITEM_EFFECT INT_VAR type = 99 header = h opcode = 146 target = 2 timing = 1 parameter1 = 20 parameter2 = 1
+                                probability1 = 9 probability2 = 0 STR_VAR resource = ~NY#TANP~ END
+  END
+  PATCH_IF FILE_EXISTS_IN_GAME ~NY#TANI.spl~ BEGIN
+    LPF ADD_ITEM_EFFECT INT_VAR type = 99 header = h opcode = 146 target = 2 timing = 1 parameter1 = 20 parameter2 = 1
+                                probability1 = 19 probability2 = 10 STR_VAR resource = ~NY#TANI~ END
+  END
+  PATCH_IF (IDS_OF_SYMBOL (~spell~ ~WIZARD_NY_ROT_OF_AGES~) >= 0) BEGIN
+    LPF RES_NUM_OF_SPELL_NAME STR_VAR spell_name = ~WIZARD_NY_ROT_OF_AGES~ RET rot = spell_res END
+    LPF ADD_ITEM_EFFECT INT_VAR type = 99 header = h opcode = 146 target = 2 timing = 1 parameter1 = 10 parameter2 = 1
+                                probability1 = 29 probability2 = 20 STR_VAR resource = EVAL ~%rot%~ END
+  END
 
 CREATE ~SPL~ ~NY#TANB~
   LPF NY#SPL_BASE INT_VAR name = ny_str_tanb desc = ny_str_tanb_d type = 4 level = 1 flags = 0x400 STR_VAR icon = ~NY#BDBRC~ END
@@ -86,7 +120,7 @@ CREATE ~SPL~ ~NY#TANB~
   // the spirit is not hit by its own breath (the line starts on it)
   LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = 2 parameter1 = "-1" STR_VAR resource = ~NY#TANB~ END
   LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 STR_VAR resource = ~NY#BDWVH~ END
-  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 0 parameter2 = 0x10000 dicenumber = 6 dicesize = 8 savingthrow = 2 special = 0x100 END
+  LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 12  target = 2 timing = 0 parameter2 = 0x10000 dicenumber = 10 dicesize = 8 savingthrow = 2 special = 0x100 END
 
 COPY_EXISTING ~%ny_planetar%.cre~ ~override/NY#TANC.cre~
   WRITE_LONG  0x08 ny_str_spirit

@@ -386,6 +386,11 @@ Un marais d'acide engloutit la zone pendant 1 tour : un lac, des racines et des 
 
 L'épée à deux mains d'un ancêtre demi-dragon noir, aussi spectrale que son porteur. Sa lame ruisselle d'acide.
 
+Chaque coup a 10 % de chances de provoquer chacun des effets suivants, jamais plus d'un à la fois :
+- Plantes du marais : la cible est immobilisée (déplacement bloqué, -2 CA) pendant 1 round, annulé par un jet de sauvegarde contre les sorts.
+- Nuée d'insectes : la cible ne peut plus lancer de sorts et subit des morsures pendant 3 rounds.
+- Pourriture des âges (si les sorts de Black Dragon Magic sont installés), au niveau 10.
+
 CARACTÉRISTIQUES :
 
 TAC0 : +3
@@ -393,23 +398,23 @@ Dégâts : 1d10 +3 (tranchant) + 2d6 acide
 Facteur de vitesse : 7
 Type de compétence : épée à deux mains
 Type : à deux mains~
+@273 = ~Souffle ancestral~
+@274 = ~Souffle ancestral
+
+Nydra'Nath crache une ligne d'acide : 10d8 dégâts d'acide, jet de sauvegarde contre les souffles pour la moitié. Une fois par invocation.~
 
 
 // ---------------------------------------------------------------------------
 // Capacités de haut niveau
 // ---------------------------------------------------------------------------
 @300 = ~Souffle fatal~
-@273 = ~Souffle ancestral~
-@274 = ~Souffle ancestral
-
-Nydra'Nath crache une ligne d'acide : 6d8 dégâts d'acide, jet de sauvegarde contre les souffles pour la moitié. Une fois par invocation.~
 @301 = ~Souffle fatal
 
 Le Disciple du Dragon Noir libère toute la fureur de son ancêtre : un immense cône d'acide. Version acide de Souffle du dragon, qui n'est plus accessible au Disciple du Dragon Noir.~
 @302 = ~Appel de l'ancêtre draconique~
 @303 = ~Appel de l'ancêtre draconique
 
-Le Disciple du Dragon Noir appelle Nydra'Nath, l'esprit d'un ancêtre demi-dragon noir, qui combat à ses côtés. Il ne craint ni les armes inférieures à +3, ni la plupart des sorts, ni l'acide, les racines et les insectes de son descendant. L'esprit, flou comme un fantôme, combat avec une épée à deux mains ruisselante d'acide (+3, 1d10 tranchant + 2d6 acide) et peut cracher une fois une ligne d'acide (6d8 dégâts d'acide, jet de sauvegarde contre les souffles pour la moitié). Il est immunisé à l'acide, au poison et à la peur.~
+Le Disciple du Dragon Noir appelle Nydra'Nath, l'esprit d'un ancêtre demi-dragon noir, qui combat à ses côtés. Il ne craint ni les armes inférieures à +3, ni la plupart des sorts, ni l'acide, les racines et les insectes de son descendant. L'esprit, flou comme un fantôme, combat avec une épée à deux mains ruisselante d'acide (+3, 1d10 tranchant + 2d6 acide ; chaque coup peut enlacer la cible dans les plantes du marais, la couvrir d'une nuée d'insectes qui l'empêche de lancer des sorts, ou lui transmettre la Pourriture des âges) et peut cracher une fois une ligne d'acide (10d8 dégâts d'acide, jet de sauvegarde contre les souffles pour la moitié). Il est immunisé à l'acide, au poison et à la peur.~
 @304 = ~Fonte-des-Os~
 @305 = ~Fonte-des-Os
 
