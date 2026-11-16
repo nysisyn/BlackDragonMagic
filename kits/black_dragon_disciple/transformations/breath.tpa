@@ -34,7 +34,7 @@
 //               the pool where it explodes (opcode 148, NY#TQ<m><a><i>)
 //   NY#TBPP     pool, then: Stinking Cloud's CLOUD.PRO with acid puddles
 //               NY#TBPD (Pooling Breath's, in the explosion's yellow-green,
-//               three per frame, half speed), 7.5-ft.
+//               seven per frame, half speed), 7.5-ft.
 //               radius, no travelling object
 /////////////////////////////////////////////////////////////////////////////
 
@@ -100,7 +100,7 @@ COPY_EXISTING ~fireball.pro~ ~%ny_workspace%/NY#TBPX.pro~
 ADD_PROJECTILE ~%ny_workspace%/NY#TBPX.pro~
 OUTER_SET ny_pro_tbpoolx = IDS_OF_SYMBOL (~projectl~ ~NY#TBPX~) + 1
 
-// the puddles: Pooling Breath's (NY#PBRD) in SPBDIMSP's yellow-green, three
+// the puddles: Pooling Breath's (NY#PBRD) in SPBDIMSP's yellow-green, seven
 // per frame (each one at another point of its cycle), half speed
 COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#tbpd.bam~ ~override~
 COPY_EXISTING ~cloud.pro~ ~%ny_workspace%/NY#TBPP.pro~
