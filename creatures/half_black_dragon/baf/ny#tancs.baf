@@ -1,3 +1,14 @@
+// Nydra'Nath, a bloodrager: rages as soon as an enemy is in sight (the
+// barbarian's Rage, 5 rounds), again 10 rounds after it began.
+IF
+  GlobalTimerExpired("NY_TAN_RAGE","LOCALS")
+  See(NearestEnemyOf(Myself))
+THEN
+  RESPONSE #100
+    SetGlobalTimer("NY_TAN_RAGE","LOCALS",60)
+    ReallyForceSpellRES("NY#TANR",Myself)
+END
+
 // Nydra'Nath: Wing Buffet when an enemy is close, then every 4 rounds at most
 // (as the black dragon of Suldanessellar: range 10). The buffet hits the
 // spirit's enemies only (projectile INAREANP).

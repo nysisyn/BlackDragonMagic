@@ -23,8 +23,11 @@
 //            Breath for half
 //   NY#TANF  its Wing Buffet: the black dragon's SPIN695 (enemies only:
 //            projectile INAREANP), centred on the spirit; cast by its script
-//   NY#TANCS its script (override slot): Wing Buffet when an enemy is within
-//            range 10, every 4 rounds at most
+//   NY#TANR  its Rage: the barbarian's (SPCL152: 5 rounds, STR and CON +4,
+//            AC -2, immunities to mind effects...), cast by its script
+//   NY#TANCS its script (override slot): Rage as soon as an enemy is in
+//            sight, again 10 rounds after; Wing Buffet when an enemy is
+//            within range 10, every 4 rounds at most
 //   NY#TANW  its Ancestral Greatsword: two-handed sword +3, 1d10 slashing
 //            + 2d6 acid; on a hit, one roll: 10% swamp plants (NY#TANP),
 //            10% insect swarm (NY#TANI), 10% Rot of Ages at level 10 (spells
@@ -136,7 +139,17 @@ ACTION_IF ny_tan_wings BEGIN
       WRITE_BYTE  (ho + h * 0x28 + 0x0c) 5      // target: the spirit itself
       WRITE_SHORT (ho + h * 0x28 + 0x0e) 0
     END
+END
+// Rage, cast by the spirit's own script
+ACTION_IF FILE_EXISTS_IN_GAME ~spcl152.spl~ BEGIN
+  COPY_EXISTING ~spcl152.spl~ ~override/NY#TANR.spl~
+    LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 321 STR_VAR match_resource = ~SPCL152~ resource = ~NY#TANR~ END
+END
+ACTION_IF ny_tan_wings OR FILE_EXISTS_IN_GAME ~NY#TANR.spl~ BEGIN
   COMPILE ~%MOD_FOLDER%/creatures/half_black_dragon/baf/ny#tancs.baf~
+  OUTER_SET ny_tan_script = 1
+END ELSE BEGIN
+  OUTER_SET ny_tan_script = 0
 END
 
 COPY_EXISTING ~%ny_planetar%.cre~ ~override/NY#TANC.cre~
@@ -165,8 +178,8 @@ COPY_EXISTING ~%ny_planetar%.cre~ ~override/NY#TANC.cre~
   WRITE_BYTE  0x23e 16                          // CHA
   WRITE_LONG  0x244 0                           // no kit
   WRITE_ASCII 0x248 ~~ #8                       // no spell script (PLANGOOD)...
-  PATCH_IF ny_tan_wings BEGIN
-    WRITE_ASCII 0x248 ~NY#TANCS~ #8             // ... its Wing Buffet instead
+  PATCH_IF ny_tan_script BEGIN
+    WRITE_ASCII 0x248 ~NY#TANCS~ #8             // ... its Rage and Wing Buffet instead
   END
   WRITE_BYTE  0x272 IDS_OF_SYMBOL (~race~ ~DRAGON~)
   WRITE_BYTE  0x273 IDS_OF_SYMBOL (~class~ ~FIGHTER~)
