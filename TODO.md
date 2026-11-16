@@ -9,7 +9,7 @@ Kit:
 - [ ] Plain sorcerer: d6, one spell slot less per spell level, no claws, no breath, no AC bonus at level 1.
 - [ ] The 18 transformations in the spell list at level-up (levels 1 to 9), names, descriptions and icons in English and French.
 - [x] Learning one at level-up: its effects at once (global script); no spell slot lost.
-- [ ] Ability location 0: still offered at level-up, applied when learned, not offered again, absent from the casting bar; still shown in the spellbook screen (bonus).
+- [x] Ability location 0: still offered at level-up, applied when learned, not offered again, absent from the casting bar.
 - [ ] Another sorcerer learning it: nothing happens.
 - [ ] Level markers at 10 and 15 (global script): Dragon Scale +1 AC at 10 and 15, Resilience +2 CON at 15, Might +2 STR at 15; a transformation taken after these levels gives the steps at once; a character created at a high level (ToB) gets them right away.
 - [ ] Transformations picked at character creation applied as soon as the game starts.
