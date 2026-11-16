@@ -56,7 +56,7 @@ Range: Personal
 Duration: Permanent
 Casting Time: 1
 
-The Black Dragon Disciple gains a new innate ability, Black Dragon Breath: a line of acid dealing 4d4 acid damage, 6d4 from level 7 and 8d4 from level 10 (save vs. Breath for half). The breath ignores magic resistance. Once used, it recharges in 10 rounds.
+The Black Dragon Disciple gains a new innate ability, Black Dragon Breath: a cone of acid dealing 4d4 acid damage, 6d4 from level 7 and 8d4 from level 10 (save vs. Breath for half). The breath ignores magic resistance. Once used, it recharges in 10 rounds.
 
 This draconic transformation takes effect as soon as it is learned: its effects are permanent, persist through death and cannot be dispelled. It then stays in the spellbook as a reminder; it cannot be cast.~
 
@@ -147,7 +147,7 @@ Range: Personal
 Duration: Permanent
 Casting Time: 1
 
-The Black Dragon Disciple learns to shape his breath. Black Dragon Breath now offers three forms: the line, Breath Ball and Breath Pool. All of them share the same charge. Recharge: line 6 rounds, Breath Pool 8 rounds, Breath Ball 10 rounds.
+The Black Dragon Disciple learns to shape his breath. Black Dragon Breath now offers three forms: the cone, Breath Ball and Breath Pool. All of them share the same charge. Recharge: cone 6 rounds, Breath Pool 8 rounds, Breath Ball 10 rounds.
 
 This draconic transformation takes effect as soon as it is learned: its effects are permanent, persist through death and cannot be dispelled. It then stays in the spellbook as a reminder; it cannot be cast.~
 
@@ -281,11 +281,11 @@ The Black Dragon Disciple retracts his claws and frees his hands. They can be ex
 @210 = ~Black Dragon Breath~
 @211 = ~Black Dragon Breath
 
-The Black Dragon Disciple exhales a line of acid. Creatures in the line take acid damage (save vs. Breath for half); the breath ignores magic resistance. Once used, it recharges after a few rounds.~
-@212 = ~Breath Line~
-@213 = ~Breath Line
+The Black Dragon Disciple exhales a cone of acid in front of him. Creatures in the cone take acid damage (save vs. Breath for half); the breath ignores magic resistance. Once used, it recharges after a few rounds.~
+@212 = ~Breath Cone~
+@213 = ~Breath Cone
 
-A line of acid. Creatures in the line take acid damage (save vs. Breath for half); the breath ignores magic resistance.~
+A cone of acid. Creatures in the cone take acid damage (save vs. Breath for half); the breath ignores magic resistance.~
 @214 = ~Breath Ball~
 @215 = ~Breath Ball
 

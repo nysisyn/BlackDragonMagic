@@ -29,32 +29,21 @@
 // ---------------------------------------------------------------------------
 // Projectiles shared by the transformations
 // ---------------------------------------------------------------------------
-// Breath line: a narrow cone (20 degrees) from the disciple's mouth, 15 ft.
-// long, then 30 ft. at level 10: about 5 ft., then 10 ft. wide at its end.
-// Visuals: Breath Ball's and Breath Doom's explosion (the game's black dragon
-// breath GREEHIT.PRO: sound, explosion SPBDIMSP, acid drops SPBDRAE2
-// scattered over the area), as a cone (area flag 0x800, width at 0x224, as
-// CONECOLD.PRO). It hits every creature in the cone, allies included (flag
-// 0x40, enemies only, cleared). Without GREEHIT.PRO (BG:EE without Siege of
-// Dragonspear): the former acid wave (Smashing Wave recoloured), a line.
+// Breath: the Dragon Disciple's own breath (DDBREAT.PRO: a 140-degree cone
+// in front of the disciple, its fire puffs HDFBRER scattered over it),
+// recoloured acid green (NY#BDFBR, ring animation of NY#BDBRT). It hits
+// every creature in the cone. One projectile for every level: the damage
+// grows with the spell headers. Without DDBREAT.PRO: the former acid wave
+// (Smashing Wave recoloured), a line.
 COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdwvh.bam~ ~override~   // hit splash
      ~%MOD_FOLDER%/kits/black_dragon_disciple/wav/ny#bdbre.wav~ ~override~   // breath sound
-ACTION_IF FILE_EXISTS_IN_GAME ~greehit.pro~ BEGIN
-  COPY_EXISTING ~fireball.pro~ ~override~
-    READ_SHORT 0x206 ny_fb_size                 // Fireball: 20 ft.
-  BUT_ONLY
-  ACTION_FOR_EACH pair IN ~NY#BDBRT 15~ ~NY#BDBRU 30~ BEGIN
-    OUTER_PATCH_SAVE res ~%pair%~ BEGIN REPLACE_TEXTUALLY ~ .*~ ~~ END
-    OUTER_PATCH_SAVE len ~%pair%~ BEGIN REPLACE_TEXTUALLY ~.* ~ ~~ END
-    COPY_EXISTING ~greehit.pro~ ~%ny_workspace%/%res%.pro~
-      WRITE_LONG  0x200 ((THIS BOR 0x810) BAND (BNOT 0x40))  // cone (flags of CONECOLD.PRO), everyone
-      WRITE_SHORT 0x204 (len * ny_fb_size / 20)
-      WRITE_SHORT 0x206 (len * ny_fb_size / 20)
-      WRITE_SHORT 0x224 20                        // cone width (degrees)
-    ADD_PROJECTILE ~%ny_workspace%/%res%.pro~
-  END
+ACTION_IF FILE_EXISTS_IN_GAME ~ddbreat.pro~ BEGIN
+  COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdfbr.bam~ ~override~
+  COPY_EXISTING ~ddbreat.pro~ ~%ny_workspace%/NY#BDBRT.pro~
+    WRITE_ASCII 0x230 ~NY#BDFBR~ #8             // acid puffs
+  ADD_PROJECTILE ~%ny_workspace%/NY#BDBRT.pro~
   OUTER_SET ny_pro_breath  = IDS_OF_SYMBOL (~projectl~ ~NY#BDBRT~) + 1
-  OUTER_SET ny_pro_breath2 = IDS_OF_SYMBOL (~projectl~ ~NY#BDBRU~) + 1
+  OUTER_SET ny_pro_breath2 = ny_pro_breath
 END ELSE BEGIN
   COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdwav.bam~ ~override~
        ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdwvt.bam~ ~override~

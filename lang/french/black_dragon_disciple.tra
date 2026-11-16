@@ -55,7 +55,7 @@ Portée : personnelle
 Durée : permanente
 Temps d'incantation : 1
 
-Le Disciple du Dragon Noir obtient une nouvelle capacité innée, Souffle du dragon noir : une ligne d'acide qui inflige 4d4 dégâts d'acide, 6d4 à partir du niveau 7 et 8d4 à partir du niveau 10 (jet de sauvegarde contre les souffles pour la moitié). Le souffle ignore la résistance à la magie. Une fois utilisé, il se recharge en 10 rounds.
+Le Disciple du Dragon Noir obtient une nouvelle capacité innée, Souffle du dragon noir : un cône d'acide qui inflige 4d4 dégâts d'acide, 6d4 à partir du niveau 7 et 8d4 à partir du niveau 10 (jet de sauvegarde contre les souffles pour la moitié). Le souffle ignore la résistance à la magie. Une fois utilisé, il se recharge en 10 rounds.
 
 Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; elle ne peut pas être lancée.~
 
@@ -146,7 +146,7 @@ Portée : personnelle
 Durée : permanente
 Temps d'incantation : 1
 
-Le Disciple du Dragon Noir apprend à façonner son souffle. Le Souffle du dragon noir propose désormais trois formes : la ligne, la Boule de souffle et la Flaque de souffle. Toutes partagent la même charge. Recharge : ligne 6 rounds, Flaque de souffle 8 rounds, Boule de souffle 10 rounds.
+Le Disciple du Dragon Noir apprend à façonner son souffle. Le Souffle du dragon noir propose désormais trois formes : le cône, la Boule de souffle et la Flaque de souffle. Toutes partagent la même charge. Recharge : cône 6 rounds, Flaque de souffle 8 rounds, Boule de souffle 10 rounds.
 
 Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; elle ne peut pas être lancée.~
 
@@ -280,11 +280,11 @@ Le Disciple du Dragon Noir rentre ses griffes et libère ses mains. Il peut les 
 @210 = ~Souffle du dragon noir~
 @211 = ~Souffle du dragon noir
 
-Le Disciple du Dragon Noir exhale une ligne d'acide. Les créatures sur la ligne subissent des dégâts d'acide (jet de sauvegarde contre les souffles pour la moitié) ; le souffle ignore la résistance à la magie. Une fois utilisé, il se recharge au bout de quelques rounds.~
-@212 = ~Ligne de souffle~
-@213 = ~Ligne de souffle
+Le Disciple du Dragon Noir exhale un cône d'acide devant lui. Les créatures dans le cône subissent des dégâts d'acide (jet de sauvegarde contre les souffles pour la moitié) ; le souffle ignore la résistance à la magie. Une fois utilisé, il se recharge au bout de quelques rounds.~
+@212 = ~Cône de souffle~
+@213 = ~Cône de souffle
 
-Une ligne d'acide. Les créatures sur la ligne subissent des dégâts d'acide (jet de sauvegarde contre les souffles pour la moitié) ; le souffle ignore la résistance à la magie.~
+Un cône d'acide. Les créatures dans le cône subissent des dégâts d'acide (jet de sauvegarde contre les souffles pour la moitié) ; le souffle ignore la résistance à la magie.~
 @214 = ~Boule de souffle~
 @215 = ~Boule de souffle
 
