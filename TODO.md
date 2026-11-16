@@ -19,8 +19,8 @@ Kit:
 Transformations:
 - [ ] Claw & Bite: Extend Claws given; claws in the first weapon slot and the shield slot, 2 attacks, no two-weapon penalty, +1 to +5 to hit and damage, bite 20% per hit (1d6 + 1d4 acid, combat log); Retract / Extend; stage of the level (+2 at 10...); a weapon already in the first slot: what happens to it.
 - [ ] Dragon Scale, Draconic Resilience (skull in the helmet slot, critical hits ignored; a helmet already there?), Draconic Might, Apotheosis: values on the record sheet.
-- [ ] Breath Weapon: line, 4d4 / 6d4 / 8d4, ignores magic resistance; gone after use, back 10 rounds later (+ about 8 seconds of choice); after a load during the recharge.
-- [ ] Meta-breath: menu line / ball / pool, shared charge, recharges 6 / 10 / 8; taken without Breath Weapon: the menu anyway.
+- [ ] Breath Weapon: cone (the Dragon Disciple's) with the black dragon breath explosion, allies hit, 4d4 / 6d4 / 8d4, ignores magic resistance; gone after use, back 10 rounds later (+ about 8 seconds of choice); after a load during the recharge.
+- [ ] Meta-breath: menu cone / ball / pool, shared charge, recharges 6 / 10 / 8; taken without Breath Weapon: the menu anyway.
 - [ ] Breath Mastery: dice doubled, recharges 2 rounds shorter; Acid Mastery: AC -2 for 2 rounds on the breath targets, not cumulative.
 - [ ] Draconic Tail: one strike per round, 2d6 + 1 second prone on a failed save vs. Breath.
 - [ ] Swamp Stride: poison, Grease, Entangle, Web, Stinking Cloud, Spike Growth.
@@ -31,7 +31,7 @@ Transformations:
 - [ ] Draconic Majesty: CHA, INT, Lore; Charm Reptile 3 per day, no save, magic resistance ignored, dragons and non-reptiles unaffected.
 - [ ] Frightful Presence: 10 ft., enemies of lower level only, 24 hours of immunity after the test.
 - [ ] Darkness, Corrupt Water (rain once; potions: save vs. Spell, about half of the kinds; pool: poison, Grease surface and slow), Summon Reptile (hydra), Swampy Lake (lake, roots, insects: acid, poison, entangle, Summon Insects).
-- [ ] Breath Ball: green orb travelling, then the explosion. Breath Pool: range 15 ft.
+- [ ] Breath Ball: green orb travelling, then the explosion. Breath Pool: range 15 ft.; on the ground, the explosion scattered and slowed (NY#TBPS). Same visuals on Siege of Dragonspear.
 - [ ] Call Draconic Ancestor: the Half Black Dragon Spirit (animation, sounds, blur, greatsword with acid).
 - [ ] Breath Ball: Breath Doom's explosion. Breath Pool: the explosion first, then the pool where it landed (opcode 148 at the target point: to check the pool does not appear on the disciple).
 - [ ] Messages "Breath weapon ready" and "Wing Buffet ready" when they come back.
@@ -102,8 +102,8 @@ Transformations:
 - [ ] Icons readable at 32 px (placeholder: Fireball in acid yellow).
 
 ### Stunning Black Dragon Breath
-- [ ] Same line, wave, trail, splash and sound as the kit's breath; caster not hit; damage 3d8 to 8d8 by level, save vs. Breath for half.
-- [ ] Visuals identical to the kit's breath: no explosion on the creatures hit.
+- [ ] Line, acid wave, trail, splash and sound (the kit's former breath line); caster not hit; damage 3d8 to 8d8 by level, save vs. Breath for half.
+- [ ] No explosion on the creatures hit.
 - [ ] Failed save: stunned 2 rounds. Check that a creature taking half damage (save made) is never stunned: if it is, the engine rolls the two saves separately and the stun must move to a subspell sharing the damage roll.
 
 ### Black Dragon Pooling Breath

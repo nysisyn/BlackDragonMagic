@@ -11,7 +11,7 @@
 // Resources
 //   SPWIxxx   Stunning Black Dragon Breath (added through ADD_SPELL as
 //             WIZARD_NY_STUNNING_BREATH)
-//   NY#SBBT   line projectile (as the kit's NY#BDBRT)
+//   NY#SBBT   line projectile (the acid wave, Smashing Wave recoloured)
 //   NY#SBBB   spell icon (ability / memorised, on a stone plate), NY#SBBC
 //             spellbook icon: the game's SPCL626 icons (dragon head)
 //             recoloured in the acid yellow of the kit's breath (Nysi's

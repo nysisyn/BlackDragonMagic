@@ -24,7 +24,9 @@
 // lost with the others: see TODO.
 //
 // Projectiles
-//   NY#BDBRT/U  line (black_dragon_disciple.tpa)
+//   NY#BDBRT    cone: the Dragon Disciple's, with the explosion below
+//               (black_dragon_disciple.tpa; NY#BDBRT/U: the former acid wave
+//               lines when the cone cannot be built)
 //   NY#TBBP     ball: Fireball with the explosion of Breath Doom (the
 //               game's black dragon breath GREEHIT.PRO: sound, explosion
 //               animation SPBDIMSP, spread SPBDRAE2, effect, colour, flags);
