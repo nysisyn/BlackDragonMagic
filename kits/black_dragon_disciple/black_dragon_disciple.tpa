@@ -30,17 +30,25 @@
 // Projectiles shared by the transformations
 // ---------------------------------------------------------------------------
 // Breath: the Dragon Disciple's own breath (DDBREAT.PRO: a 140-degree cone
-// in front of the disciple, its fire puffs HDFBRER scattered over it),
-// recoloured acid green (NY#BDFBR, ring animation of NY#BDBRT). It hits
-// every creature in the cone. One projectile for every level: the damage
-// grows with the spell headers. Without DDBREAT.PRO: the former acid wave
-// (Smashing Wave recoloured), a line.
-COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdwvh.bam~ ~override~   // hit splash
-     ~%MOD_FOLDER%/kits/black_dragon_disciple/wav/ny#bdbre.wav~ ~override~   // breath sound
-ACTION_IF FILE_EXISTS_IN_GAME ~ddbreat.pro~ BEGIN
-  COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdfbr.bam~ ~override~
+// in front of the disciple) with the explosion of Breath Ball and Breath
+// Doom instead of its fire puffs: GREEHIT.PRO's explosion fields (0x208 to
+// 0x24f: sound RNG_M03, explosion SPBDIMSP, acid drops SPBDRAE2 scattered,
+// blended), the cone width kept. It hits every creature in the cone. One
+// projectile for every level: the damage grows with the spell headers.
+// Without DDBREAT.PRO or GREEHIT.PRO: the former acid wave (Smashing Wave
+// recoloured), a line.
+ACTION_IF FILE_EXISTS_IN_GAME ~ddbreat.pro~ AND FILE_EXISTS_IN_GAME ~greehit.pro~ BEGIN
+  COPY_EXISTING ~greehit.pro~ ~override~
+    FOR (o = 0x208; o < 0x250; ++o) BEGIN
+      READ_BYTE o $ny_bd_expl(~%o%~)
+    END
+  BUT_ONLY
   COPY_EXISTING ~ddbreat.pro~ ~%ny_workspace%/NY#BDBRT.pro~
-    WRITE_ASCII 0x230 ~NY#BDFBR~ #8             // acid puffs
+    READ_SHORT 0x224 cone
+    FOR (o = 0x208; o < 0x250; ++o) BEGIN
+      WRITE_BYTE o $ny_bd_expl(~%o%~)
+    END
+    WRITE_SHORT 0x224 cone                      // the Dragon Disciple's cone width
   ADD_PROJECTILE ~%ny_workspace%/NY#BDBRT.pro~
   OUTER_SET ny_pro_breath  = IDS_OF_SYMBOL (~projectl~ ~NY#BDBRT~) + 1
   OUTER_SET ny_pro_breath2 = ny_pro_breath
