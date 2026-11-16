@@ -11,6 +11,7 @@ Kit:
 - [x] Learning one at level-up: its effects at once (global script); no spell slot lost.
 - [x] Ability location 0: still offered at level-up, applied when learned, not offered again, absent from the casting bar, still listed in the spellbook screen.
 - [ ] Another sorcerer learning it: nothing happens.
+- [ ] Only the kit is offered the transformations: Black Dragon Disciple at level-up and at creation (also created at a high level) sees them; plain sorcerer, Dragon Disciple (level-up, creation) and a mage at creation do not; game in French and in English.
 - [ ] Level markers at 10 and 15 (global script): Dragon Scale +1 AC at 10 and 15, Resilience +2 CON at 15, Might +2 STR at 15; a transformation taken after these levels gives the steps at once; a character created at a high level (ToB) gets them right away.
 - [ ] Transformations picked at character creation applied as soon as the game starts.
 
@@ -146,7 +147,6 @@ Transformations:
 ## Later
 - [ ] Custom icons (BAM) for the claws, breath, aura, wing buffet and spells.
 - [ ] Trello *Ideas* list: Swamp Lung, Ghostly Tail, Corrosive Spit, Dracosuchus Jaws, Tail Sweep.
-- [ ] Draconic Transformations, own spell list: a G3 library giving the kit its own spell list, so the other sorcerers no longer see the transformations (they already do nothing for them).
 - [ ] Draconic Transformations, icons: the dark placeholders replaced by real icons (one shape per transformation).
 - [ ] Breath recharge lost if the disciple dies while it recharges (the delayed opcode 146 dies with him): give it back at rest or on resurrection.
 - [ ] Acid Mastery: AC reduction only on the breaths; the bite (cast by an item) and the game's acid spells (Melf's Acid Arrow, Vitriolic Sphere...) would need a check of the caster.

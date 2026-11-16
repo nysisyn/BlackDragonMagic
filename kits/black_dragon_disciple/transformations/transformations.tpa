@@ -547,8 +547,11 @@ OUTER_SET ny_kit_ids = IDS_OF_SYMBOL (~kit~ ~NY#BDD~)
 // Black Dragon Disciple: Draconic Transformations applied when learned
 >>>>>>>>
 COPY ~.../ny-inline/ny#tlearn.baf~ ~%ny_workspace%/ny#tlearn.baf~
+OUTER_SPRINT ny_t_lua ~~                 // the transformations, as Lua table entries (below)
 ACTION_FOR_EACH code IN CLB SCL BRW RES TAL SWS ACD BDM MIG MBR BLS AMS WNG MAJ FPR GBD APO BMS BEGIN
   LAF RES_NUM_OF_SPELL_NAME STR_VAR spell_name = EVAL ~WIZARD_NY_T_%code%~ RET res = spell_res END
+  ACTION_TO_UPPER res
+  OUTER_SPRINT ny_t_lua ~%ny_t_lua%['%res%'] = true, ~
   OUTER_FOR (p = 1; p <= 6; ++p) BEGIN
     APPEND_OUTER ~%ny_workspace%/ny#tlearn.baf~ ~IF
   Kit(Player%p%,%ny_kit_ids%)
@@ -582,4 +585,30 @@ ACTION_FOR_EACH ny_script IN ~baldur~ ~bdbaldur~ ~baldur25~ BEGIN
   ACTION_IF FILE_EXISTS_IN_GAME ~%ny_script%.bcs~ BEGIN
     EXTEND_TOP ~%ny_script%.bcs~ ~%ny_workspace%/ny#tlearn.baf~
   END
+END
+
+
+// ---------------------------------------------------------------------------
+// Only the kit is offered the transformations when choosing spells
+// (character creation, level-up): M_NY#BD.LUA (loaded by the game: M_ prefix)
+// removes them from the list for anyone else, called from UI.MENU (menu
+// CHARGEN_CHOOSE_SPELLS, onOpen, before the list is sorted).
+// If UI.MENU has no such line (interface mod), or is replaced later, nothing
+// is hidden: every sorcerer sees the transformations, without effect for
+// them (the script above checks the kit).
+// ---------------------------------------------------------------------------
+COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/lua/m_ny#bd.lua~ ~override~
+  EVALUATE_BUFFER
+
+OUTER_SET ny_ui_hook = 0
+COPY_EXISTING ~ui.menu~ ~override~
+  PATCH_IF (INDEX_BUFFER (~ny_bdd_filterSpells~) < 0) BEGIN
+    REPLACE_TEXTUALLY ~table\.sort(chargen\.choose_spell, sortBySpellName)~
+                      ~if ny_bdd_filterSpells then ny_bdd_filterSpells() end
+		table.sort(chargen.choose_spell, sortBySpellName)~
+  END
+  SET ny_ui_hook = (INDEX_BUFFER (~ny_bdd_filterSpells~) >= 0)
+BUT_ONLY
+ACTION_IF (NOT ny_ui_hook) BEGIN
+  PRINT ~Black Dragon Disciple: UI.MENU has no spell choice list to hook, the Draconic Transformations stay visible to every sorcerer.~
 END
