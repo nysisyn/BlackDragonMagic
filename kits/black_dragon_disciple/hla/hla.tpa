@@ -12,7 +12,7 @@
 //   NY#BDBL  Breath Doom: the game's Dragon's Breath (SPWI922), acid instead
 //            of fire, with the explosion and sound of the black dragon's own
 //            breath (SPIN691: its projectile GREEHIT cloned as NY#BDBLP
-//            with the mod's explosion animation NY#BDBA, sound BLACK04) instead of
+//            with the mod's explosion animation, sound BLACK04) instead of
 //            the red dragon head visual. Icons: the former Black Dragon
 //            Breathball ones (SPWI922 in acid yellow).
 //   NY#THCA  Call Draconic Ancestor: the game's Summon Planetar (SPWI924: duration,
@@ -88,7 +88,7 @@ COPY_EXISTING ~spin691.spl~ ~override~
   END
 BUT_ONLY
 
-// ... its projectile cloned with the mod's explosion animation (NY#BDBA)
+// ... its projectile cloned with the mod's explosion animation (ny_bd_expl_bam)
 OUTER_SPRINT ny_bdbl_pro_res ~~
 ACTION_IF (ny_bdbl_pro > 1) BEGIN
   COPY_EXISTING ~projectl.ids~ ~override~
@@ -98,7 +98,7 @@ END
 ACTION_IF FILE_EXISTS_IN_GAME ~%ny_bdbl_pro_res%.pro~ BEGIN
   COPY_EXISTING ~%ny_bdbl_pro_res%.pro~ ~%ny_workspace%/NY#BDBLP.pro~
     PATCH_IF (SOURCE_SIZE >= 0x224) BEGIN
-      WRITE_ASCII 0x21c ~NY#BDBA~ #8
+      WRITE_ASCIIE 0x21c ~%ny_bd_expl_bam%~ #8
     END
   ADD_PROJECTILE ~%ny_workspace%/NY#BDBLP.pro~
   OUTER_SET ny_bdbl_pro = IDS_OF_SYMBOL (~projectl~ ~NY#BDBLP~) + 1

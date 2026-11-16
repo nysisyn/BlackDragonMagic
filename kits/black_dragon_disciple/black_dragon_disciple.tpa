@@ -32,10 +32,13 @@
 // ---------------------------------------------------------------------------
 // Breath Doom's explosion, the BG2:EE black dragon breath's (GREEHIT.PRO,
 // 0x208 to 0x24f), written as it is there: Siege of Dragonspear's
-// GREEHIT.PRO is another projectile. Sound RNG_M03, explosion NY#BDBA
-// (Nysi's greener version of the game's SPBDIMSP), acid drops SPBDRAE2
-// scattered, blended and glowing. Kept: area flags, size, cone width
-// (0x224).
+// GREEHIT.PRO is another projectile. Sound RNG_M03, explosion animation
+// ny_bd_expl_bam, acid drops SPBDRAE2 scattered, blended and glowing. Kept:
+// area flags, size, cone width (0x224).
+// ny_bd_expl_bam: on trial, Breath Pool's puddles NY#TBPD (copied by
+// transformations/breath.tpa) instead of NY#BDBA, Nysi's greener version of
+// the game's SPBDIMSP.
+OUTER_SPRINT ny_bd_expl_bam ~NY#TBPD~
 DEFINE_PATCH_FUNCTION NY#BD_EXPLOSION BEGIN
   WRITE_ASCII 0x208 ~RNG_M03~ #8                // explosion sound
   WRITE_SHORT 0x210 29                          // explosion frequency
@@ -47,7 +50,7 @@ DEFINE_PATCH_FUNCTION NY#BD_EXPLOSION BEGIN
   WRITE_BYTE  0x218 67
   WRITE_BYTE  0x219 0
   WRITE_SHORT 0x21a 0
-  WRITE_ASCII 0x21c ~NY#BDBA~ #8                // explosion animation
+  WRITE_ASCIIE 0x21c ~%ny_bd_expl_bam%~ #8      // explosion animation
   WRITE_ASCII 0x228 ~SPBDRAE2~ #8               // spread animation
   WRITE_ASCII 0x230 ~~ #8                       // no ring
   WRITE_ASCII 0x238 ~~ #8                       // no area sound

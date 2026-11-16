@@ -142,7 +142,8 @@ BlackDragonMagic/
 | `NY#BDBRT`, `NY#BDBRU` | Acid Breath line projectiles (built like Smashing Wave, IWDEE): 15 ft. × 5 ft., then 30 ft. × 10 ft. at level 10 |
 | `NY#BDBRI` | Acid Breath icon: the game's `SPDD03B` with the dragon recoloured acid yellow (Nysi's artwork version in `works/acid_breath_artwork_icon`, old DragonAscendant icon in `works/acid_breath_old_icon`) |
 | `NY#BDBRT` | Breath projectile: the Dragon Disciple's DDBREAT.PRO (140° cone in front of the disciple, hits everyone in it) with Breath Ball's explosion (NY#BD_EXPLOSION: the BG2:EE GREEHIT.PRO fields 0x208-0x24f written as values, RNG_M03, NY#BDBA, SPBDRAE2; SoD's GREEHIT.PRO is another projectile), its cone width kept; one projectile for every level. Without DDBREAT.PRO or the explosion BAMs: the former acid wave line (NY#BDBRT / NY#BDBRU, 5 ft. / 10 ft. wide) |
-| `NY#BDBA` | explosion animation of every breath (cone, Breath Ball, Breath Pool, Breath Doom): Nysi's greener version of the game's SPBDIMSP.BAM |
+| `NY#BDBA` | Nysi's greener version of the game's SPBDIMSP.BAM: the breaths' explosion animation before the trial below (`ny_bd_expl_bam` in black_dragon_disciple.tpa) |
+| (trial) | explosion animation of every breath (cone, Breath Ball, Breath Pool, Breath Doom): Breath Pool's puddles `NY#TBPD` |
 | `NY#BDBLP` | Breath Doom's projectile: the black dragon breath's (SPIN691's, GREEHIT) with NY#BDBA |
 | `NY#TBPD` | Breath Pool's puddles, built offline from the game's GREASED.BAM: an acid green version and an almost black one (colours then adjusted by hand by Nysi: the file is the reference), assembled (6 dark puddles underneath and around, 7 yellow on top and a small one top left, each shifted in its cycle), half speed |
 | `NY#BDWVH`, `NY#BDBRE.wav` | breath hit splash (Smashing Wave BAM recoloured), breath sound |
