@@ -27,7 +27,7 @@
 //   NY#BDBRT/U  line (black_dragon_disciple.tpa)
 //   NY#TBBP     ball: Fireball with the explosion of Breath Doom (the
 //               game's black dragon breath GREEHIT.PRO: sound, explosion
-//               animation SPBDIMSP, spread SPBDRAE2, effect, colour, flags);
+//               animation NY#BDBA, spread SPBDRAE2, effect, colour, flags);
 //               it travels as a green orb (Pooling Breath's acid blob
 //               NY#PBRT, no smoke)
 //   NY#TBPX     pool, first: the same explosion at the pool's size; it casts

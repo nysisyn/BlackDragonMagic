@@ -11,7 +11,8 @@
 // Dragon Magic Mastery, picked once):
 //   NY#BDBL  Breath Doom: the game's Dragon's Breath (SPWI922), acid instead
 //            of fire, with the explosion and sound of the black dragon's own
-//            breath (SPIN691: projectile GREEHIT, sound BLACK04) instead of
+//            breath (SPIN691: its projectile GREEHIT cloned as NY#BDBLP
+//            with the mod's explosion animation NY#BDBA, sound BLACK04) instead of
 //            the red dragon head visual. Icons: the former Black Dragon
 //            Breathball ones (SPWI922 in acid yellow).
 //   NY#THCA  Call Draconic Ancestor: the game's Summon Planetar (SPWI924: duration,
@@ -87,6 +88,22 @@ COPY_EXISTING ~spin691.spl~ ~override~
   END
 BUT_ONLY
 
+// ... its projectile cloned with the mod's explosion animation (NY#BDBA)
+OUTER_SPRINT ny_bdbl_pro_res ~~
+ACTION_IF (ny_bdbl_pro > 1) BEGIN
+  COPY_EXISTING ~projectl.ids~ ~override~
+    LOOKUP_IDS_SYMBOL_OF_INT ny_bdbl_pro_res ~projectl~ (ny_bdbl_pro - 1)
+  BUT_ONLY
+END
+ACTION_IF FILE_EXISTS_IN_GAME ~%ny_bdbl_pro_res%.pro~ BEGIN
+  COPY_EXISTING ~%ny_bdbl_pro_res%.pro~ ~%ny_workspace%/NY#BDBLP.pro~
+    PATCH_IF (SOURCE_SIZE >= 0x224) BEGIN
+      WRITE_ASCII 0x21c ~NY#BDBA~ #8
+    END
+  ADD_PROJECTILE ~%ny_workspace%/NY#BDBLP.pro~
+  OUTER_SET ny_bdbl_pro = IDS_OF_SYMBOL (~projectl~ ~NY#BDBLP~) + 1
+END
+
 COPY_EXISTING ~spwi922.spl~ ~override/NY#BDBL.spl~
   LPF NY#HLA_INNATE INT_VAR name = ny_str_bdoom desc = ny_str_bdoom_d STR_VAR icon_b = ~NY#BDBLB~ icon_c = ~NY#BDBLC~ END
   LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 12 match_parameter2 = 0x80000 parameter2 = 0x10000 END   // fire -> acid
@@ -95,7 +112,7 @@ COPY_EXISTING ~spwi922.spl~ ~override/NY#BDBL.spl~
   READ_LONG  0x64 ho
   READ_SHORT 0x68 hn
   FOR (h = 0; h < hn; ++h) BEGIN
-    WRITE_SHORT (ho + h * 0x28 + 0x26) ny_bdbl_pro                                  // GREEHIT
+    WRITE_SHORT (ho + h * 0x28 + 0x26) ny_bdbl_pro                                  // GREEHIT's clone
   END
 
 
