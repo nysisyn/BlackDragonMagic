@@ -20,7 +20,8 @@
 //   NY#BDL01     level 1 (CLAB): one spell slot less per spell level
 //   NY#BDM10..25  levels 10, 15, 20, 25 (CLAB): level marker (spell
 //                state) and the level steps of the transformations taken
-//   NY#BDBRT/U   breath line projectiles (15 ft. / 30 ft.)
+//   NY#BDBRT     breath projectile: the Dragon Disciple's cone (NY#BDBRT/U: the
+//                former acid wave lines, 15 ft. / 30 ft., when the cone is missing)
 //   NY#BDFPT     Frightful Presence burst projectile (10 ft.)
 //   NY#MELEE     range-limited projectile (Draconic Tail, Acidosis)
 /////////////////////////////////////////////////////////////////////////////
