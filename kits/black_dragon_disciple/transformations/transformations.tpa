@@ -73,13 +73,11 @@ ACTION_FOR_EACH code IN CLB SCL BRW RES TAL SWS ACD BDM MIG MBR BLS AMS WNG MAJ 
 END
 
 
-// shown when a transformation is cast by hand
-OUTER_SET ny_str_t_known = RESOLVE_STR_REF (@98)
-
 // ---------------------------------------------------------------------------
 // NY#T_BEGIN (action): creates NY#T<code>.SPL, the transformation of the
-// given spell level (the spell learned; cast by hand it does nothing), and
-// NY#T<code>E.SPL with its common effects. The caller adds its own effects
+// given spell level (the spell learned: its ability has no location, so it
+// stays known, not offered again at level-up, but shows in no casting bar),
+// and NY#T<code>E.SPL with its common effects. The caller adds its own effects
 // to NY#T<code>E (header 1), then calls NY#T_END.
 // ---------------------------------------------------------------------------
 DEFINE_ACTION_FUNCTION NY#T_BEGIN
@@ -92,9 +90,7 @@ DEFINE_ACTION_FUNCTION NY#T_BEGIN
 BEGIN
   CREATE ~SPL~ ~NY#T%code%~
     LPF NY#SPL_BASE INT_VAR name desc type = 1 level school = 8 graphics = 10 STR_VAR icon = EVAL ~NY#T%code%C~ END
-    LPF NY#ADD_SPL_HEADER INT_VAR location = 2 target = 5 range = 1 level = 1 casting_time = 0 STR_VAR icon = EVAL ~NY#T%code%B~ RET h = header END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 261 target = 1 timing = 1 parameter1 = level parameter2 = 0 END
-    LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 139 target = 1 timing = 1 parameter1 = ny_str_t_known END
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 0 target = 5 range = 1 level = 1 casting_time = 0 STR_VAR icon = EVAL ~NY#T%code%B~ END
   LAF NY#T_SELF_SPL STR_VAR resref = EVAL ~NY#T%code%E~ END
   COPY_EXISTING ~NY#T%code%E.spl~ ~override~
     // a second time: nothing
