@@ -78,7 +78,7 @@ BlackDragonMagic/
 | `NY#TBA<m><a>` | breath line alone (Breath Weapon), m = N or X (Breath Mastery), a = 0 or 1 (Acid Mastery) |
 | `NY#TBM<m><a>` (+ `.2DA`) | breath menu (Meta-breath, opcode 214): `NY#TBL` line, `NY#TBB` ball, `NY#TBP` pool |
 | `NY#KBRT`, `NY#KB<l>`, `NY#KB<l>2`/`3`, `NY#KB<l>F`, `NY#KBRF` | choice of the breath ability: root (also the recharge), candidates a..h, finals; refresh by the breath transformations (pending recharges cancelled) |
-| `NY#TBBP`, `NY#TBPX`, `NY#TBPP` | breath ball (Fireball area with Breath Doom's explosion: GREEHIT.PRO's sound, SPBDIMSP, SPBDRAE2), pool explosion (the same at the pool's size) and pool (Stinking Cloud's CLOUD.PRO, Pooling Breath's puddles) projectiles; the ball travels as a green orb (Pooling Breath's blob `NY#PBRT`); the pool is spat 15 ft. ahead |
+| `NY#TBBP`, `NY#TBPX`, `NY#TBPP` | breath ball (Fireball area with Breath Doom's explosion: GREEHIT.PRO's sound, SPBDIMSP, SPBDRAE2), pool explosion (the same at the pool's size) and pool (Stinking Cloud's CLOUD.PRO, the explosion SPBDIMSP scattered over it, blended and glowing: on trial instead of Pooling Breath's puddles) projectiles; the ball travels as a green orb (Pooling Breath's blob `NY#PBRT`); the pool is spat 15 ft. ahead |
 | `NY#TQ<m><a><i>` | the pool itself, one per damage tier i, cast where the pool explosion lands (opcode 148) |
 | `NY#TAMR` | Acid Mastery: AC -2 for 2 rounds, not cumulative |
 | `NY#TTLS`, `NY#TTLP` | Draconic Tail strike and its permanent trigger (opcode 232) |
