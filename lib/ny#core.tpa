@@ -310,11 +310,13 @@ DEFINE_ACTION_FUNCTION NY#CREATE_LINE_PRO
     width       = 60
     directions  = 9
     trail_delay = 2
+    trail2_delay = 2
   STR_VAR
     new         = ~~
     bam         = ~~
     sound       = ~~
     trail       = ~~
+    trail2      = ~~
     workspace   = ~weidu_external/workspace/BlackDragonMagic~
   RET
     pro_id
@@ -337,6 +339,10 @@ BEGIN
     PATCH_IF (~%trail%~ STRING_COMPARE ~~) BEGIN
       WRITE_ASCIIE 0x136 ~%trail%~ #8
       WRITE_SHORT  0x14e trail_delay
+    END
+    PATCH_IF (~%trail2%~ STRING_COMPARE ~~) BEGIN
+      WRITE_ASCIIE 0x13e ~%trail2%~ #8
+      WRITE_SHORT  0x150 trail2_delay
     END
   BUT_ONLY
 

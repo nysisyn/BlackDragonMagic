@@ -141,7 +141,9 @@ BlackDragonMagic/
 | `MCHI*.BAM`, `CHIM*.WAV`, `EC33.INI` (or next free id), `ANIMATE.IDS` `NY_CHIMERA` | Icewind Dale II chimera animation and sounds, registered as a monster_icewind animation |
 | `NY#BDBRT`, `NY#BDBRU` | Acid Breath line projectiles (built like Smashing Wave, IWDEE): 15 ft. × 5 ft., then 30 ft. × 10 ft. at level 10 |
 | `NY#BDBRI` | Acid Breath icon: the game's `SPDD03B` with the dragon recoloured acid yellow (Nysi's artwork version in `works/acid_breath_artwork_icon`, old DragonAscendant icon in `works/acid_breath_old_icon`) |
-| `NY#BDWAV`, `NY#BDWVT`, `NY#BDWVH`, `NY#BDBRE.wav` | Acid Breath wave, trail and hit animations (Smashing Wave BAMs recoloured), breath sound |
+| `NY#BDBRT`, `NY#BDBRU` | Breath line projectiles (5 ft. / 10 ft. wide): invisible, leaving a trail of Breath Ball's explosion (SPBDIMSP, acid drops SPBDRAE2, every 4 frames) |
+| `NY#BDWVH`, `NY#BDBRE.wav` | breath hit splash (Smashing Wave BAM recoloured), breath sound |
+| `NY#BDWAV`, `NY#BDWVT`, `NY#TANL` | Nydra'Nath's breath line for now: the former acid wave and its trail (Smashing Wave BAMs recoloured) |
 | `NY#BDFPT`, `NY#VSPH` | cloned projectiles (`NY#BDFPT`: enemies only, area flag 0x40) |
 
 ## Design choices made during implementation

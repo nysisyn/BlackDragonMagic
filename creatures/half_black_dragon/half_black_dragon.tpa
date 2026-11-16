@@ -19,7 +19,7 @@
 //            ghostly look; no experience when killed
 //   NY#TANB  its Ancestral Breath (innate, once per summoning, cast by the
 //            player only: no script uses it): a line of acid, the
-//            disciple's wide breath line NY#BDBRU, 10d8 acid, save vs.
+//            former acid wave line NY#TANL (Smashing Wave recoloured), 10d8 acid, save vs.
 //            Breath for half
 //   NY#TANF  its Wing Buffet: the black dragon's SPIN695 (enemies only:
 //            projectile INAREANP), centred on the spirit; cast by its script
@@ -121,9 +121,14 @@ CREATE ~ITM~ ~NY#TANW~
                                 probability1 = 29 probability2 = 20 STR_VAR resource = EVAL ~%rot%~ END
   END
 
+// its breath line: the former acid wave (Smashing Wave recoloured), 10 ft.
+COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdwav.bam~ ~override~
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdwvt.bam~ ~override~
+LAF NY#CREATE_LINE_PRO INT_VAR speed = 20 width = 80 trail_delay = 2 STR_VAR new = ~NY#TANL~ bam = ~NY#BDWAV~ trail = ~NY#BDWVT~ sound = ~NY#BDBRE~ workspace = EVAL ~%ny_workspace%~ RET ny_pro_tanl = pro_id END
+
 CREATE ~SPL~ ~NY#TANB~
   LPF NY#SPL_BASE INT_VAR name = ny_str_tanb desc = ny_str_tanb_d type = 4 level = 1 flags = 0x400 STR_VAR icon = ~NY#BDBRC~ END
-  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 4 range = 30 level = 1 casting_time = 1 projectile = ny_pro_breath2 STR_VAR icon = ~NY#BDBRI~ RET h = header END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 4 range = 30 level = 1 casting_time = 1 projectile = ny_pro_tanl STR_VAR icon = ~NY#BDBRI~ RET h = header END
   // the spirit is not hit by its own breath (the line starts on it)
   LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = 2 parameter1 = "-1" STR_VAR resource = ~NY#TANB~ END
   LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 2 timing = 0 duration = 1 STR_VAR resource = ~NY#BDWVH~ END
