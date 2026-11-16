@@ -146,7 +146,7 @@ Portée : personnelle
 Durée : permanente
 Temps d'incantation : 1
 
-Le Disciple du Dragon Noir apprend à façonner son souffle. Le Souffle du dragon noir propose désormais trois formes : le cône, la Boule de souffle et la Flaque de souffle. Toutes partagent la même charge. Recharge : cône 6 rounds, Flaque de souffle 8 rounds, Boule de souffle 10 rounds.
+Le Disciple du Dragon Noir apprend à façonner son souffle. Le Souffle du dragon noir propose désormais quatre formes : le cône, la Boule de souffle, la Flaque de souffle et le Souffle animé. Toutes partagent la même charge. Recharge : cône 6 rounds, Flaque de souffle 8 rounds, Boule de souffle 10 rounds, Souffle animé 12 rounds.
 
 Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; elle ne peut pas être lancée.~
 
@@ -327,6 +327,12 @@ Le Disciple du Dragon Noir soumet un reptile à sa volonté : hommes-lézards, v
 // ---------------------------------------------------------------------------
 @252 = ~Souffle prêt~
 @253 = ~Coup d'ailes prêt~
+@254 = ~Souffle animé~
+@255 = ~Souffle animé
+
+Le Disciple du Dragon Noir souffle sur le sol et son souffle d'acide se dresse en souffle animé, qui combat ses ennemis pendant 1 tour.
+
+Souffle animé (vase) : 65 points de vie, classe d'armure 4, TAC0 11, 2 attaques par round infligeant chacune 2d8 dégâts d'acide (compte comme une arme +2). À chaque round, tant qu'aucun ennemi n'est au contact, il lance un Crachat corrosif sur l'ennemi le plus proche. Il est immunisé contre l'acide et contre les effets mentaux.~
 
 @260 = ~Ténèbres~
 @261 = ~Ténèbres

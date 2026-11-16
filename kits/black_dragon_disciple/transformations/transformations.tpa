@@ -63,9 +63,10 @@ END
 // ---------------------------------------------------------------------------
 // Spell states and their SPLPROT rows
 // ---------------------------------------------------------------------------
-// one state per transformation and per level marker; $ny_has(<code>) is
-// the SPLPROT row "has the state"
-ACTION_FOR_EACH code IN CLB SCL BRW RES TAL SWS ACD BDM MIG MBR BLS AMS WNG MAJ FPR GBD APO BMS LV10 LV15 BEGIN
+// one state per transformation and per level marker, two for the breath
+// (BRCD: recharging; BRCH: choice of the breath ability in progress);
+// $ny_has(<code>) is the SPLPROT row "has the state"
+ACTION_FOR_EACH code IN CLB SCL BRW RES TAL SWS ACD BDM MIG MBR BLS AMS WNG MAJ FPR GBD APO BMS LV10 LV15 BRCD BRCH BEGIN
   LAF NY#ADD_SPLSTATE STR_VAR name = EVAL ~NY_BDD_%code%~ RET st = id END
   OUTER_SET $ny_state(~%code%~) = st
   LAF NY#SPLPROT_ROW STR_VAR label = EVAL ~NY#HAS_%code%~ stat = ~0x112~ value = EVAL ~%st%~ relation = ~1~ RET row END
@@ -539,7 +540,7 @@ END
 // ---------------------------------------------------------------------------
 // Global script: a transformation in a disciple's spellbook (party members
 // 1 to 6) is applied at once (NY#T<code>E); level markers at levels 10 and
-// 15 (NY#BDM<lv>). The disciple applies them to himself (ActionOverride). Added at the top of the main
+// 15 (NY#BDM<lv>); the breath given back (NY#KBRT). The disciple applies them to himself (ActionOverride). Added at the top of the main
 // game scripts, with Continue() in each block.
 // ---------------------------------------------------------------------------
 OUTER_SET ny_kit_ids = IDS_OF_SYMBOL (~kit~ ~NY#BDD~)
@@ -580,6 +581,33 @@ THEN
 END
 ~
   END
+END
+// the breath: a disciple with Breath Weapon or Meta-breath whose breath is
+// neither recharging (BRCD) nor being chosen (BRCH), and who has no breath
+// ability left to use, gets the choice NY#KBRT again. This is the recharge
+// itself, and it gives the breath back when its use was cancelled (the
+// ability is spent when clicked, also the menu when no form is picked) or
+// when the disciple died while it recharged.
+OUTER_FOR (p = 1; p <= 6; ++p) BEGIN
+  OUTER_SPRINT ny_no_breath ~~
+  ACTION_FOR_EACH r IN NY#TBAN0 NY#TBAN1 NY#TBAX0 NY#TBAX1 NY#TBMN0 NY#TBMN1 NY#TBMX0 NY#TBMX1 BEGIN
+    OUTER_SPRINT ny_no_breath ~%ny_no_breath%  !TriggerOverride(Player%p%,HaveSpellRES("%r%"))
+~
+  END
+  APPEND_OUTER ~%ny_workspace%/ny#tlearn.baf~ ~IF
+  Kit(Player%p%,%ny_kit_ids%)
+  OR(2)
+    CheckSpellState(Player%p%,NY_BDD_BRW)
+    CheckSpellState(Player%p%,NY_BDD_MBR)
+  !CheckSpellState(Player%p%,NY_BDD_BRCD)
+  !CheckSpellState(Player%p%,NY_BDD_BRCH)
+  !StateCheck(Player%p%,STATE_DEAD)
+%ny_no_breath%THEN
+  RESPONSE #100
+    ActionOverride(Player%p%,ApplySpellRES("NY#KBRT",Myself))
+    Continue()
+END
+~
 END
 ACTION_FOR_EACH ny_script IN ~baldur~ ~bdbaldur~ ~baldur25~ BEGIN
   ACTION_IF FILE_EXISTS_IN_GAME ~%ny_script%.bcs~ BEGIN

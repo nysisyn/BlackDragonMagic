@@ -1,7 +1,9 @@
 /////////////////////////////////////////////////////////////////////////////
 // Corrosive Spit - no longer a learnable spell (not added to the wizard
 // spell list): only the base of the animated breath's spit (NY#ABRX, see
-// spells/animate_breath). Kept as a full spell so its values stay readable.
+// creatures/animated_breath, which includes this file when the spells
+// component is not installed). Kept as a full spell so its values stay
+// readable.
 //
 // Melf's Acid Arrow (SPWI211) with half its range (30 instead of 60), same
 // projectile (ARROWFLG), casting time 2.

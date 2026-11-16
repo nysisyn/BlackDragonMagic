@@ -147,7 +147,7 @@ Range: Personal
 Duration: Permanent
 Casting Time: 1
 
-The Black Dragon Disciple learns to shape his breath. Black Dragon Breath now offers three forms: the cone, Breath Ball and Breath Pool. All of them share the same charge. Recharge: cone 6 rounds, Breath Pool 8 rounds, Breath Ball 10 rounds.
+The Black Dragon Disciple learns to shape his breath. Black Dragon Breath now offers four forms: the cone, Breath Ball, Breath Pool and Animate Breath. All of them share the same charge. Recharge: cone 6 rounds, Breath Pool 8 rounds, Breath Ball 10 rounds, Animate Breath 12 rounds.
 
 This draconic transformation takes effect as soon as it is learned: its effects are permanent, persist through death and cannot be dispelled. It then stays in the spellbook as a reminder; it cannot be cast.~
 
@@ -328,6 +328,12 @@ The Black Dragon Disciple bends a reptile to his will: lizard men, wyverns, basi
 // ---------------------------------------------------------------------------
 @252 = ~Breath weapon ready~
 @253 = ~Wing Buffet ready~
+@254 = ~Animate Breath~
+@255 = ~Animate Breath
+
+The Black Dragon Disciple breathes on the ground and his acid breath rises as an animated breath, which fights his enemies for 1 turn.
+
+Animated breath (ooze): 65 hit points, Armor Class 4, THAC0 11, 2 attacks per round dealing 2d8 acid damage each (counts as a +2 weapon). Each round, as long as no enemy is in melee reach, it spits Corrosive Spit at the nearest enemy. It is immune to acid and to mind-affecting effects.~
 
 @260 = ~Darkness~
 @261 = ~Darkness

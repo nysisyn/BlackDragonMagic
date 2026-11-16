@@ -20,7 +20,7 @@ Transformations:
 - [ ] Claw & Bite: Extend Claws given; claws in the first weapon slot and the shield slot, 2 attacks, no two-weapon penalty, +1 to +5 to hit and damage, bite 20% per hit (1d6 + 1d4 acid, combat log); Retract / Extend; stage of the level (+2 at 10...); a weapon already in the first slot: what happens to it.
 - [ ] Dragon Scale, Draconic Resilience (skull in the helmet slot, critical hits ignored; a helmet already there?), Draconic Might, Apotheosis: values on the record sheet.
 - [ ] Breath Weapon: cone (the Dragon Disciple's) with the black dragon breath explosion, allies hit, 4d4 / 6d4 / 8d4, ignores magic resistance; gone after use, back 10 rounds later (+ about 8 seconds of choice); after a load during the recharge.
-- [ ] Meta-breath: menu cone / ball / pool, shared charge, recharges 6 / 10 / 8; taken without Breath Weapon: the menu anyway.
+- [ ] Meta-breath: menu cone / ball / pool / Animate Breath (animated breath for 1 turn), shared charge, recharges 6 / 10 / 8 / 12; taken without Breath Weapon: the menu anyway.
 - [ ] Breath Mastery: dice doubled, recharges 2 rounds shorter; Acid Mastery: AC -2 for 2 rounds on the breath targets, not cumulative.
 - [ ] Draconic Tail: one strike per round, 2d6 + 1 second prone on a failed save vs. Breath.
 - [ ] Swamp Stride: poison, Grease, Entangle, Web, Stinking Cloud, Spike Growth.
@@ -34,6 +34,7 @@ Transformations:
 - [ ] Breath Ball: green orb travelling, then the explosion. Breath Pool: range 15 ft.; on the ground, the explosion scattered and slowed (NY#TBPS). Same visuals on Siege of Dragonspear.
 - [ ] Call Draconic Ancestor: the Half Black Dragon Spirit (animation, sounds, blur, greatsword with acid).
 - [ ] Breath Ball: Breath Doom's explosion. Breath Pool: the explosion first, then the pool where it landed (opcode 148 at the target point: to check the pool does not appear on the disciple).
+- [ ] Breath given back by the global script: after the recharge (a few seconds after the message); after clicking the breath and cancelling the aim; after opening the Meta-breath menu and picking nothing, or picking a form and cancelling its aim; after dying during the recharge and being raised. Never a second breath while it recharges.
 - [ ] Messages "Breath weapon ready" and "Wing Buffet ready" when they come back.
 - [ ] Swamp Stride: immune to Corrupt Water.
 - [ ] HLA (BG2EE/EET): Breath Doom, Call Draconic Ancestor (no Planetar left; Ancestral Breath castable by hand, once, 10d8; greatsword procs: plants, insects, Rot of Ages, never two on one hit), Bonemelt (skeletons destroyed), Black Dragon Magic Mastery.
@@ -149,6 +150,5 @@ Transformations:
 - [ ] Custom icons (BAM) for the claws, breath, aura, wing buffet and spells.
 - [ ] Trello *Ideas* list: Swamp Lung, Ghostly Tail, Corrosive Spit, Dracosuchus Jaws, Tail Sweep.
 - [ ] Draconic Transformations, icons: the dark placeholders replaced by real icons (one shape per transformation).
-- [ ] Breath recharge lost if the disciple dies while it recharges (the delayed opcode 146 dies with him): give it back at rest or on resurrection.
 - [ ] Acid Mastery: AC reduction only on the breaths; the bite (cast by an item) and the game's acid spells (Melf's Acid Arrow, Vitriolic Sphere...) would need a check of the caster.
 - [ ] Darkness: a darkness visual.
