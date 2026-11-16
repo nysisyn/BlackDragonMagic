@@ -32,15 +32,9 @@
 // ---------------------------------------------------------------------------
 // Breath Doom's explosion, the BG2:EE black dragon breath's (GREEHIT.PRO,
 // 0x208 to 0x24f), written as it is there: Siege of Dragonspear's
-// GREEHIT.PRO is another projectile. Sound RNG_M03, explosion animation
-// ny_bd_expl_bam (played once where the breath lands), spread animation
-// ny_bd_spread_bam (scattered over the area afterwards; not blended nor
-// glowing, unlike GREEHIT: blended, the black puddles are invisible). Kept: area flags, size, cone width (0x224).
-// ny_bd_expl_bam: NY#BDBA, Nysi's greener version of the game's SPBDIMSP.
-// ny_bd_spread_bam: on trial, Breath Pool's puddles NY#TBPD (copied by
-// transformations/breath.tpa) instead of the game's acid drops SPBDRAE2.
-OUTER_SPRINT ny_bd_expl_bam   ~NY#BDBA~
-OUTER_SPRINT ny_bd_spread_bam ~NY#TBPD~
+// GREEHIT.PRO is another projectile. Sound RNG_M03, explosion SPBDIMSP, acid
+// drops SPBDRAE2 scattered, blended and glowing. Kept: area flags, size,
+// cone width (0x224).
 DEFINE_PATCH_FUNCTION NY#BD_EXPLOSION BEGIN
   WRITE_ASCII 0x208 ~RNG_M03~ #8                // explosion sound
   WRITE_SHORT 0x210 29                          // explosion frequency
@@ -52,19 +46,18 @@ DEFINE_PATCH_FUNCTION NY#BD_EXPLOSION BEGIN
   WRITE_BYTE  0x218 67
   WRITE_BYTE  0x219 0
   WRITE_SHORT 0x21a 0
-  WRITE_ASCIIE 0x21c ~%ny_bd_expl_bam%~ #8      // explosion animation
-  WRITE_ASCIIE 0x228 ~%ny_bd_spread_bam%~ #8    // spread animation
+  WRITE_ASCII 0x21c ~SPBDIMSP~ #8               // explosion animation
+  WRITE_ASCII 0x228 ~SPBDRAE2~ #8               // spread animation
   WRITE_ASCII 0x230 ~~ #8                       // no ring
   WRITE_ASCII 0x238 ~~ #8                       // no area sound
-  WRITE_LONG  0x240 0x1214                      // extended flags: GREEHIT's 0x7214 without blend (0x2000) and glow (0x4000)
+  WRITE_LONG  0x240 0x7214                      // extended flags
   WRITE_SHORT 0x244 0
   WRITE_SHORT 0x246 0
   WRITE_SHORT 0x248 5
   WRITE_SHORT 0x24a 7
   WRITE_LONG  0x24c 0
 END
-COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdba.bam~ ~override~
-OUTER_SET ny_bd_expl = FILE_EXISTS_IN_GAME ~spbdrae2.bam~
+OUTER_SET ny_bd_expl = FILE_EXISTS_IN_GAME ~spbdimsp.bam~ AND FILE_EXISTS_IN_GAME ~spbdrae2.bam~
 
 // Breath: the Dragon Disciple's own breath (DDBREAT.PRO: a 140-degree cone
 // in front of the disciple) with the explosion of Breath Ball and Breath

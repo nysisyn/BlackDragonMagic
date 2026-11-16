@@ -27,15 +27,14 @@
 //   NY#BDBRT/U  line (black_dragon_disciple.tpa)
 //   NY#TBBP     ball: Fireball with the explosion of Breath Doom (the
 //               game's black dragon breath GREEHIT.PRO: sound, explosion
-//               animation NY#BDBA, spread SPBDRAE2, effect, colour, flags);
+//               animation SPBDIMSP, spread SPBDRAE2, effect, colour, flags);
 //               it travels as a green orb (Pooling Breath's acid blob
 //               NY#PBRT, no smoke)
 //   NY#TBPX     pool, first: the same explosion at the pool's size; it casts
 //               the pool where it explodes (opcode 148, NY#TQ<m><a><i>)
-//   NY#TBPP     pool, then: Stinking Cloud's CLOUD.PRO with acid puddles
-//               NY#TBPD (the game's Grease puddles GREASED: acid green ones
-//               over almost black ones, half
-//               speed), 7.5-ft. radius, no travelling object
+//   NY#TBPP     pool, then: Stinking Cloud's CLOUD.PRO with the acid puddles
+//               of Pooling Breath (spells/pooling_breath/bam), 7.5-ft.
+//               radius, no travelling object
 /////////////////////////////////////////////////////////////////////////////
 
 OUTER_SET ny_str_breath    = RESOLVE_STR_REF (@210)
@@ -57,6 +56,7 @@ COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdbri.bam~ ~override~
      ~%MOD_FOLDER%/spells/breathball/bam/ny#bdbbc.bam~ ~override~
      ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrb.bam~ ~override~
      ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrc.bam~ ~override~
+     ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrd.bam~ ~override~
      ~%MOD_FOLDER%/spells/pooling_breath/bam/ny#pbrt.bam~ ~override~
 LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDBRI~ c = ~NY#BDBRC~ END   // Remastered Spell Icons
 LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDBBB~ c = ~NY#BDBBC~ END
@@ -100,16 +100,10 @@ COPY_EXISTING ~fireball.pro~ ~%ny_workspace%/NY#TBPX.pro~
 ADD_PROJECTILE ~%ny_workspace%/NY#TBPX.pro~
 OUTER_SET ny_pro_tbpoolx = IDS_OF_SYMBOL (~projectl~ ~NY#TBPX~) + 1
 
-// the puddles: the game's GREASED.BAM in two versions, acid green (colours
-// adjusted by hand by Nysi) and almost black, assembled: 6 dark puddles underneath and
-// around, 7 yellow ones on top and a small one top left (each one at another
-// point of its cycle),
-// half speed
-COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#tbpd.bam~ ~override~
 COPY_EXISTING ~cloud.pro~ ~%ny_workspace%/NY#TBPP.pro~
   WRITE_ASCII 0x104 ~~ #8                       // no travelling object
   WRITE_BYTE  0x218 86                          // gradient 86: acid green
-  WRITE_ASCII 0x228 ~NY#TBPD~ #8                // acid puddles instead of the cloud
+  WRITE_ASCII 0x228 ~NY#PBRD~ #8                // acid puddles instead of the cloud
   WRITE_SHORT 0x204 128                         // half Stinking Cloud's area
   WRITE_SHORT 0x206 128
 ADD_PROJECTILE ~%ny_workspace%/NY#TBPP.pro~

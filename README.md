@@ -78,7 +78,7 @@ BlackDragonMagic/
 | `NY#TBA<m><a>` | breath line alone (Breath Weapon), m = N or X (Breath Mastery), a = 0 or 1 (Acid Mastery) |
 | `NY#TBM<m><a>` (+ `.2DA`) | breath menu (Meta-breath, opcode 214): `NY#TBL` line, `NY#TBB` ball, `NY#TBP` pool |
 | `NY#KBRT`, `NY#KB<l>`, `NY#KB<l>2`/`3`, `NY#KB<l>F`, `NY#KBRF` | choice of the breath ability: root (also the recharge), candidates a..h, finals; refresh by the breath transformations (pending recharges cancelled) |
-| `NY#TBBP`, `NY#TBPX`, `NY#TBPP` | breath ball (Fireball area with Breath Doom's explosion: sound RNG_M03, NY#BDBA, SPBDRAE2), pool explosion (the same at the pool's size) and pool (Stinking Cloud's CLOUD.PRO, Pooling Breath's puddles) projectiles; the ball travels as a green orb (Pooling Breath's blob `NY#PBRT`); the pool is spat 15 ft. ahead |
+| `NY#TBBP`, `NY#TBPX`, `NY#TBPP` | breath ball (Fireball area with Breath Doom's explosion: GREEHIT.PRO's sound, SPBDIMSP, SPBDRAE2), pool explosion (the same at the pool's size) and pool (Stinking Cloud's CLOUD.PRO, Pooling Breath's puddles) projectiles; the ball travels as a green orb (Pooling Breath's blob `NY#PBRT`); the pool is spat 15 ft. ahead |
 | `NY#TQ<m><a><i>` | the pool itself, one per damage tier i, cast where the pool explosion lands (opcode 148) |
 | `NY#TAMR` | Acid Mastery: AC -2 for 2 rounds, not cumulative |
 | `NY#TTLS`, `NY#TTLP` | Draconic Tail strike and its permanent trigger (opcode 232) |
@@ -141,11 +141,7 @@ BlackDragonMagic/
 | `MCHI*.BAM`, `CHIM*.WAV`, `EC33.INI` (or next free id), `ANIMATE.IDS` `NY_CHIMERA` | Icewind Dale II chimera animation and sounds, registered as a monster_icewind animation |
 | `NY#BDBRT`, `NY#BDBRU` | Acid Breath line projectiles (built like Smashing Wave, IWDEE): 15 ft. × 5 ft., then 30 ft. × 10 ft. at level 10 |
 | `NY#BDBRI` | Acid Breath icon: the game's `SPDD03B` with the dragon recoloured acid yellow (Nysi's artwork version in `works/acid_breath_artwork_icon`, old DragonAscendant icon in `works/acid_breath_old_icon`) |
-| `NY#BDBRT` | Breath projectile: the Dragon Disciple's DDBREAT.PRO (140° cone in front of the disciple, hits everyone in it) with Breath Ball's explosion (NY#BD_EXPLOSION: the BG2:EE GREEHIT.PRO fields 0x208-0x24f written as values, RNG_M03, NY#BDBA, SPBDRAE2; SoD's GREEHIT.PRO is another projectile), its cone width kept; one projectile for every level. Without DDBREAT.PRO or the explosion BAMs: the former acid wave line (NY#BDBRT / NY#BDBRU, 5 ft. / 10 ft. wide) |
-| `NY#BDBA` | explosion animation of every breath (cone, Breath Ball, Breath Pool, Breath Doom), played once where the breath lands: Nysi's greener version of the game's SPBDIMSP.BAM (`ny_bd_expl_bam`) |
-| (trial) | spread animation of every breath, scattered over the area afterwards: Breath Pool's puddles `NY#TBPD` instead of the game's acid drops SPBDRAE2 (`ny_bd_spread_bam`) |
-| `NY#BDBLP` | Breath Doom's projectile: the black dragon breath's (SPIN691's, GREEHIT) with NY#BDBA |
-| `NY#TBPD` | Breath Pool's puddles, built offline from the game's GREASED.BAM: an acid green version and an almost black one (colours then adjusted by hand by Nysi: the file is the reference), assembled (6 dark puddles underneath and around, 7 yellow on top and a small one top left, each shifted in its cycle), half speed |
+| `NY#BDBRT` | Breath projectile: the Dragon Disciple's DDBREAT.PRO (140° cone in front of the disciple, hits everyone in it) with Breath Ball's explosion (NY#BD_EXPLOSION: the BG2:EE GREEHIT.PRO fields 0x208-0x24f written as values, RNG_M03, SPBDIMSP, SPBDRAE2; SoD's GREEHIT.PRO is another projectile), its cone width kept; one projectile for every level. Without DDBREAT.PRO or the explosion BAMs: the former acid wave line (NY#BDBRT / NY#BDBRU, 5 ft. / 10 ft. wide) |
 | `NY#BDWVH`, `NY#BDBRE.wav` | breath hit splash (Smashing Wave BAM recoloured), breath sound |
 | `NY#BDWAV`, `NY#BDWVT`, `NY#TANL` | Nydra'Nath's breath line for now (and the disciple's without GREEHIT.PRO): the former acid wave and its trail (Smashing Wave BAMs recoloured) |
 | `NY#BDFPT`, `NY#VSPH` | cloned projectiles (`NY#BDFPT`: enemies only, area flag 0x40) |
