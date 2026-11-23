@@ -429,3 +429,7 @@ Un puissant sort d'acide sur une seule cible. La cible subit 4d4 dégâts d'acid
 @307 = ~Maîtrise de la magie du dragon noir
 
 Le Disciple du Dragon Noir apprend 3 sorts de niveaux 7, 8 et 9, normalement inaccessibles aux ensorceleurs : Fléau rampant, Invocation de reptile et Lac marécageux.~
+@308 = ~Ligne de souffle~
+@309 = ~Ligne de souffle
+
+Une ligne d'explosions d'acide, longue de 9 m. Les créatures sur la ligne subissent des dégâts d'acide (jet de sauvegarde contre les souffles pour la moitié) ; le souffle ignore la résistance à la magie.~

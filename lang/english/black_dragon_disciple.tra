@@ -430,3 +430,7 @@ A powerful single-target acid spell. The target takes 4d4 acid damage per round 
 @307 = ~Black Dragon Magic Mastery
 
 The Black Dragon Disciple learns 3 spells of levels 7, 8 and 9 normally unavailable to sorcerers: Creeping Doom, Summon Reptile and Swampy Lake.~
+@308 = ~Breath Line~
+@309 = ~Breath Line
+
+A line of acid explosions, 30 ft. long. Creatures along the line take acid damage (save vs. Breath for half); the breath ignores magic resistance.~

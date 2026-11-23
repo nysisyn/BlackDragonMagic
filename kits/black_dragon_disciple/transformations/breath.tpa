@@ -18,6 +18,9 @@
 //     Pool (NY#TBP) and Animate Breath (NY#TBS: the animated breath of the
 //     spell Black Dragon Animate Breath, creatures/animated_breath, for 1
 //     turn); recharge 6, 10, 8 and 12 rounds
+//   - test: Breath Line (NY#TBW), a fifth form in the menu: the line of
+//     explosions NY#BDLN played on the disciple, the damage carried by an
+//     invisible line projectile (NY#TBWL); recharge 6 rounds
 //   m = N, or X with Breath Mastery: damage dice doubled, recharges 2 rounds
 //   shorter; a = 1 with Acid Mastery: the acid lowers the targets' AC
 //   (NY#TAMR)
@@ -44,6 +47,23 @@
 //               slower, every other frame shown twice; blended and glowing,
 //               as in the breaths) instead of the cloud, 7.5-ft. radius, no
 //               travelling object
+//   NY#TBWL     line (test): invisible line projectile, 30 ft. at most; the
+//               line of explosions NY#BDLN is a VVC played on the disciple
+//   NY#TBKC     cone, black (test): the cone NY#BDBRT again, with no damage,
+//               sound nor centre explosion, black puffs NY#BDBS (SPBDRAE2 in
+//               black, transparency in the palette) shown without blending;
+//               cast with the cone by the spell NY#TBKC (opcode 148), so the
+//               green and the black puffs mix
+//   NY#TBKB     ball, black (test): the ball NY#TBBP again, invisible while it
+//               travels (same speed: both explode together), no damage, sound
+//               nor centre explosion, black puffs NY#BDBS without blending;
+//               cast with the ball by the spell NY#TBKB (opcode 148)
+//   NY#TBKX     pool, first, black (test): NY#TBPX again with the black puffs
+//               NY#BDBS, no blending, no damage, sound nor centre explosion
+//   NY#TBKP     pool, then, black (test): NY#TBPP again with NY#TBKS (NY#TBPS
+//               in black, transparency in the palette), no blending, no
+//               damage nor sound; both cast with the pool by the spells
+//               NY#TBKX and NY#TBKP (opcode 148)
 /////////////////////////////////////////////////////////////////////////////
 
 OUTER_SET ny_str_breath    = RESOLVE_STR_REF (@210)
@@ -57,6 +77,8 @@ OUTER_SET ny_str_bpool_d   = RESOLVE_STR_REF (@217)
 OUTER_SET ny_str_breath_ready = RESOLVE_STR_REF (@252)
 OUTER_SET ny_str_banim     = RESOLVE_STR_REF (@254)
 OUTER_SET ny_str_banim_d   = RESOLVE_STR_REF (@255)
+OUTER_SET ny_str_bwave     = RESOLVE_STR_REF (@308)
+OUTER_SET ny_str_bwave_d   = RESOLVE_STR_REF (@309)
 
 // Icons: the former Acid Breath icon (the game's Dragon Disciple breath
 // SPDD03, recoloured acid yellow) for the line and the menu; Breathball and
@@ -134,6 +156,110 @@ COPY_EXISTING ~cloud.pro~ ~%ny_workspace%/NY#TBPP.pro~
 ADD_PROJECTILE ~%ny_workspace%/NY#TBPP.pro~
 OUTER_SET ny_pro_tbpool = IDS_OF_SYMBOL (~projectl~ ~NY#TBPP~) + 1
 
+// Breath Line (test): the line of explosions NY#BDLN (ny#tbps.bam in green,
+// black and black with a green core, one after the other from the disciple
+// to the end of the line, 30 ft.; 9 orientations, mirrored for the east) is
+// a VVC played on the disciple, facing the target (Face target, 16
+// orientations). The damage: an invisible line projectile (no BAM, no
+// trail, no smoke), stopped at the targeted point.
+COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdln.bam~ ~override~
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/vvc/ny#bdln.vvc~ ~override~
+// v2 (test), in two layers played together: the black smoke NY#BDLK (normal
+// display) and the acid explosions NY#BDLG (blended VVC: they glow, their
+// dark halo vanishes); slower (12 fps, 3 frames between explosions), a
+// little wider. Back to v1: NY#BDLN in the opcode 215 below.
+COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdlk.bam~ ~override~
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdlg.bam~ ~override~
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/vvc/ny#bdlk.vvc~ ~override~
+     ~%MOD_FOLDER%/kits/black_dragon_disciple/vvc/ny#bdlg.vvc~ ~override~
+LAF NY#CREATE_LINE_PRO INT_VAR speed = 20 width = 40 STR_VAR new = ~NY#TBWL~ bam = ~~ sound = ~NY#BDBRE~ workspace = EVAL ~%ny_workspace%~ RET ny_pro_tbwave = pro_id END
+COPY_EXISTING ~NY#TBWL.pro~ ~override~
+  WRITE_LONG 0x100 0x08                         // not light source only: no smoke left along the line
+BUT_ONLY
+
+// Cone, black (test): a second cone, cast with the green one. Blending and
+// glow (extended flags 0x2000, 0x4000) apply to all the animations of a
+// projectile and make black invisible: the black puffs are a second
+// projectile, displayed normally. Only with the cone (DDBREAT.PRO).
+OUTER_SET ny_cone_black = 0
+ACTION_IF FILE_EXISTS_IN_GAME ~ddbreat.pro~ AND ny_bd_expl BEGIN
+  COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdbs.bam~ ~override~
+  COPY_EXISTING ~NY#BDBRT.pro~ ~%ny_workspace%/NY#TBKC.pro~
+    WRITE_ASCII 0x10  ~~ #8                     // no fire sound
+    WRITE_ASCII 0x18  ~~ #8                     // no impact sound
+    WRITE_ASCII 0x208 ~~ #8                     // no explosion sound
+    WRITE_ASCII 0x21c ~~ #8                     // no centre explosion (the green cone has it)
+    WRITE_ASCII 0x228 ~NY#BDBS~ #8              // the black puffs
+    WRITE_LONG  0x240 (THIS BAND (BNOT 0x6000)) // not blended, not glowing
+  ADD_PROJECTILE ~%ny_workspace%/NY#TBKC.pro~
+  OUTER_SET ny_pro_tbkc = IDS_OF_SYMBOL (~projectl~ ~NY#TBKC~) + 1
+  // the spell: the black cone only, no effect
+  CREATE ~SPL~ ~NY#TBKC~
+    LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 4 range = 40 level = 1 casting_time = 0 projectile = ny_pro_tbkc RET h = header END
+  OUTER_SET ny_cone_black = 1
+END
+
+// Ball, black (test): a second ball, cast with the green one, invisible
+// while it travels; at the same speed, both explode together. Only with the
+// breaths' explosion (SPBDIMSP, SPBDRAE2).
+OUTER_SET ny_ball_black = 0
+ACTION_IF ny_bd_expl BEGIN
+  COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdbs.bam~ ~override~
+  COPY_EXISTING ~NY#TBBP.pro~ ~%ny_workspace%/NY#TBKB.pro~
+    WRITE_ASCII 0x10  ~~ #8                     // no fire sound
+    WRITE_ASCII 0x18  ~~ #8                     // no impact sound
+    WRITE_ASCII 0x104 ~~ #8                     // nothing travels (the green orb is the other ball)
+    WRITE_ASCII 0x10c ~~ #8                     // nor its shadow
+    WRITE_LONG  0x100 (THIS BAND (BNOT 0x40))   // nor its light spot
+    WRITE_ASCII 0x208 ~~ #8                     // no explosion sound
+    WRITE_ASCII 0x21c ~~ #8                     // no centre explosion (the green ball has it)
+    WRITE_ASCII 0x228 ~NY#BDBS~ #8              // the black puffs
+    WRITE_LONG  0x240 (THIS BAND (BNOT 0x6000)) // not blended, not glowing
+  ADD_PROJECTILE ~%ny_workspace%/NY#TBKB.pro~
+  OUTER_SET ny_pro_tbkb = IDS_OF_SYMBOL (~projectl~ ~NY#TBKB~) + 1
+  // the spell: the black ball only, no effect
+  CREATE ~SPL~ ~NY#TBKB~
+    LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 4 range = 40 level = 1 casting_time = 0 projectile = ny_pro_tbkb RET h = header END
+  OUTER_SET ny_ball_black = 1
+END
+
+// Pool, black (test): the first explosion (with the breaths' explosion
+// only) and the pool itself, each doubled by a black one cast with it.
+OUTER_SET ny_poolx_black = 0
+ACTION_IF ny_bd_expl BEGIN
+  COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdbs.bam~ ~override~
+  COPY_EXISTING ~NY#TBPX.pro~ ~%ny_workspace%/NY#TBKX.pro~
+    WRITE_ASCII 0x10  ~~ #8                     // no fire sound
+    WRITE_ASCII 0x18  ~~ #8                     // no impact sound
+    WRITE_LONG  0x100 (THIS BAND (BNOT 0x42))   // no smoke, no light spot while it travels
+    WRITE_ASCII 0x208 ~~ #8                     // no explosion sound
+    WRITE_ASCII 0x21c ~~ #8                     // no centre explosion (the green one has it)
+    WRITE_ASCII 0x228 ~NY#BDBS~ #8              // the black puffs
+    WRITE_LONG  0x240 (THIS BAND (BNOT 0x6000)) // not blended, not glowing
+  ADD_PROJECTILE ~%ny_workspace%/NY#TBKX.pro~
+  OUTER_SET ny_pro_tbkx = IDS_OF_SYMBOL (~projectl~ ~NY#TBKX~) + 1
+  CREATE ~SPL~ ~NY#TBKX~
+    LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+    LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 4 range = 40 level = 1 casting_time = 0 projectile = ny_pro_tbkx RET h = header END
+  OUTER_SET ny_poolx_black = 1
+END
+
+COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#tbks.bam~ ~override~
+COPY_EXISTING ~NY#TBPP.pro~ ~%ny_workspace%/NY#TBKP.pro~
+  WRITE_ASCII 0x10  ~~ #8                       // no fire sound
+  WRITE_ASCII 0x18  ~~ #8                       // no impact sound
+  WRITE_ASCII 0x208 ~~ #8                       // no explosion sound
+  WRITE_ASCII 0x238 ~~ #8                       // no area sound
+  WRITE_ASCII 0x228 ~NY#TBKS~ #8                // the black puffs of the pool
+  WRITE_LONG  0x240 (THIS BAND (BNOT 0x6000))   // not blended, not glowing
+ADD_PROJECTILE ~%ny_workspace%/NY#TBKP.pro~
+OUTER_SET ny_pro_tbkp = IDS_OF_SYMBOL (~projectl~ ~NY#TBKP~) + 1
+CREATE ~SPL~ ~NY#TBKP~
+  LPF NY#SPL_BASE INT_VAR type = 4 level = 1 flags = 0x400 END
+  LPF NY#ADD_SPL_HEADER INT_VAR location = 4 target = 4 range = 40 level = 1 casting_time = 0 projectile = ny_pro_tbkp RET h = header END
+
 
 // ---------------------------------------------------------------------------
 // The breath abilities
@@ -166,7 +292,7 @@ BEGIN
 END
 
 // One breath spell.
-//   form : 0 cone, 1 ball, 2 pool, 3 animated breath
+//   form : 0 cone, 1 ball, 2 pool, 3 animated breath, 4 line (test)
 //   mult : 1, or 2 with Breath Mastery
 //   cd   : recharge in rounds
 //   sub  : the pool's prefix (6 characters): the pool itself is a second
@@ -209,6 +335,9 @@ BEGIN
       END ELSE PATCH_IF (form = 2) BEGIN
         SET pro = ny_pro_tbpoolx
         SET rng = 15                                  // spat just ahead
+      END ELSE PATCH_IF (form = 4) BEGIN
+        SET pro = ny_pro_tbwave
+        SET rng = 30                                  // the length of the line of explosions
       END ELSE BEGIN
         SET pro = 1                                   // no projectile
         SET rng = 30
@@ -230,7 +359,27 @@ BEGIN
         // the pool spell at each new pulse)
         LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = ny_turn parameter1 = "-1" STR_VAR resource = EVAL ~%sub%%i%~ END
         LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 148 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = EVAL ~%sub%%i%~ END
+        // the black ones, cast with them towards the same point
+        PATCH_IF ny_poolx_black BEGIN
+          LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 148 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#TBKX~ END
+        END
+        LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 148 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#TBKP~ END
       END ELSE BEGIN
+        PATCH_IF (form = 4) BEGIN
+          // the line of explosions, on the disciple, facing the target; before
+          // the immunity below, which would block it (same source spell)
+          // v2: the black layer, then the glowing one (v1: NY#BDLN alone)
+          LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 1 timing = 0 duration = 5 parameter2 = 0 STR_VAR resource = ~NY#BDLK~ END
+          LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 215 target = 1 timing = 0 duration = 5 parameter2 = 0 STR_VAR resource = ~NY#BDLG~ END
+        END
+        PATCH_IF (form = 0 AND ny_cone_black) BEGIN
+          // the black cone, cast towards the same point (before the immunity too)
+          LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 148 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#TBKC~ END
+        END
+        PATCH_IF (form = 1 AND ny_ball_black) BEGIN
+          // the black ball, thrown at the same point (before the immunity too)
+          LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 148 target = 1 timing = 1 parameter2 = 1 STR_VAR resource = ~NY#TBKB~ END
+        END
         // the disciple is not hit by his own breath (the line starts on him)
         LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 206 target = 1 timing = 0 duration = 2 parameter1 = "-1" STR_VAR resource = EVAL ~%resref%~ END
         LPF NY#TB_DAMAGE INT_VAR h dice line = (form = 0) acid END
@@ -245,7 +394,7 @@ ACTION_FOR_EACH m IN N X BEGIN
     // Breath Weapon alone: the line
     LAF NY#TB_SPELL INT_VAR form = 0 mult acid = a cd = (10 - less) name = ny_str_breath desc = ny_str_breath_d
                     STR_VAR resref = EVAL ~NY#TBA%m%%a%~ icon_b = ~NY#BDBRI~ icon_c = ~NY#BDBRC~ END
-    // Meta-breath: the four forms...
+    // Meta-breath: the five forms (the line: test)...
     LAF NY#TB_SPELL INT_VAR form = 0 mult acid = a cd = (6 - less)  name = ny_str_bline desc = ny_str_bline_d
                     STR_VAR resref = EVAL ~NY#TBL%m%%a%~ icon_b = ~NY#BDBRI~ icon_c = ~NY#BDBRC~ END
     LAF NY#TB_SPELL INT_VAR form = 1 mult acid = a cd = (10 - less) name = ny_str_bball desc = ny_str_bball_d
@@ -254,6 +403,8 @@ ACTION_FOR_EACH m IN N X BEGIN
                     STR_VAR resref = EVAL ~NY#TBP%m%%a%~ sub = EVAL ~NY#TQ%m%%a%~ icon_b = ~NY#PBRB~ icon_c = ~NY#PBRC~ END
     LAF NY#TB_SPELL INT_VAR form = 3 mult acid = a cd = (12 - less) name = ny_str_banim desc = ny_str_banim_d
                     STR_VAR resref = EVAL ~NY#TBS%m%%a%~ icon_b = ~NY#ABRB~ icon_c = ~NY#ABRC~ END
+    LAF NY#TB_SPELL INT_VAR form = 4 mult acid = a cd = (6 - less)  name = ny_str_bwave desc = ny_str_bwave_d
+                    STR_VAR resref = EVAL ~NY#TBW%m%%a%~ icon_b = ~NY#BDBRI~ icon_c = ~NY#BDBRC~ END
     // ... and their menu (opcode 214; type 3: cast at once, no memorisation)
 <<<<<<<< .../ny-inline/ny#tbm.2da
 2DA V1.0
@@ -263,6 +414,7 @@ LINE        NY#TBL%m%%a%   3
 BALL        NY#TBB%m%%a%   3
 POOL        NY#TBP%m%%a%   3
 ANIM        NY#TBS%m%%a%   3
+WAVE        NY#TBW%m%%a%   3
 >>>>>>>>
     COPY ~.../ny-inline/ny#tbm.2da~ ~override/NY#TBM%m%%a%.2da~ EVALUATE_BUFFER
     CREATE ~SPL~ ~NY#TBM%m%%a%~
@@ -327,7 +479,7 @@ COPY_EXISTING ~NY#KBRT.spl~ ~override~
 // Breath transformations: pending recharges cancelled, choice at once
 LAF NY#T_SELF_SPL STR_VAR resref = ~NY#KBRF~ END
 COPY_EXISTING ~NY#KBRF.spl~ ~override~
-  PATCH_FOR_EACH f IN A L B P S BEGIN
+  PATCH_FOR_EACH f IN A L B P S W BEGIN
     PATCH_FOR_EACH m IN N X BEGIN
       PATCH_FOR_EACH a IN 0 1 BEGIN
         LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 321 target = 1 timing = 1 STR_VAR resource = EVAL ~NY#TB%f%%m%%a%~ END
