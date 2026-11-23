@@ -64,7 +64,7 @@ OUTER_SET ny_bd_expl = FILE_EXISTS_IN_GAME ~spbdimsp.bam~ AND FILE_EXISTS_IN_GAM
 // Doom instead of its fire puffs (NY#BD_EXPLOSION), the cone width kept. It hits every creature in the cone. One
 // projectile for every level: the damage grows with the spell headers.
 // Without DDBREAT.PRO or the explosion's BAMs: the former acid wave (Smashing Wave
-// recoloured), a line.
+// recoloured), a line. Silent: the breath spells play the roar (NY#BDBRE).
 ACTION_IF FILE_EXISTS_IN_GAME ~ddbreat.pro~ AND ny_bd_expl BEGIN
   COPY_EXISTING ~ddbreat.pro~ ~%ny_workspace%/NY#BDBRT.pro~
     LPF NY#BD_EXPLOSION END
@@ -74,8 +74,8 @@ ACTION_IF FILE_EXISTS_IN_GAME ~ddbreat.pro~ AND ny_bd_expl BEGIN
 END ELSE BEGIN
   COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdwav.bam~ ~override~
        ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdwvt.bam~ ~override~
-  LAF NY#CREATE_LINE_PRO INT_VAR speed = 20 width = 40 trail_delay = 2 STR_VAR new = ~NY#BDBRT~ bam = ~NY#BDWAV~ trail = ~NY#BDWVT~ sound = ~NY#BDBRE~ workspace = EVAL ~%ny_workspace%~ RET ny_pro_breath = pro_id END
-  LAF NY#CREATE_LINE_PRO INT_VAR speed = 20 width = 80 trail_delay = 2 STR_VAR new = ~NY#BDBRU~ bam = ~NY#BDWAV~ trail = ~NY#BDWVT~ sound = ~NY#BDBRE~ workspace = EVAL ~%ny_workspace%~ RET ny_pro_breath2 = pro_id END
+  LAF NY#CREATE_LINE_PRO INT_VAR speed = 20 width = 40 trail_delay = 2 STR_VAR new = ~NY#BDBRT~ bam = ~NY#BDWAV~ trail = ~NY#BDWVT~ sound = ~~ workspace = EVAL ~%ny_workspace%~ RET ny_pro_breath = pro_id END
+  LAF NY#CREATE_LINE_PRO INT_VAR speed = 20 width = 80 trail_delay = 2 STR_VAR new = ~NY#BDBRU~ bam = ~NY#BDWAV~ trail = ~NY#BDWVT~ sound = ~~ workspace = EVAL ~%ny_workspace%~ RET ny_pro_breath2 = pro_id END
 END
 
 // Frightful Presence: 10-ft. burst centred on the caster, enemies only (area

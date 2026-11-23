@@ -66,6 +66,9 @@
 //               NY#TBKX and NY#TBKP (opcode 148)
 /////////////////////////////////////////////////////////////////////////////
 
+// how long the disciple holds still while he breathes (seconds)
+OUTER_SET ny_breath_pause  = 1
+
 OUTER_SET ny_str_breath    = RESOLVE_STR_REF (@210)
 OUTER_SET ny_str_breath_d  = RESOLVE_STR_REF (@211)
 OUTER_SET ny_str_bline     = RESOLVE_STR_REF (@212)
@@ -97,6 +100,11 @@ LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDBRI~ c = ~NY#BDBRC~ END   // Remastered S
 LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BDBBB~ c = ~NY#BDBBC~ END
 LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#PBRB~  c = ~NY#PBRC~  END
 LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#ABRB~  c = ~NY#ABRC~  END
+
+// The breath's roar: the game's black dragon breath (BLACK04), played by
+// every form when the disciple breathes (it was referred to but never
+// copied: the line and the animated breath were silent)
+COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/wav/ny#bdbre.wav~ ~override~
 
 // the animated breath (Animate Breath form), shared with the spell Black
 // Dragon Animate Breath
@@ -161,7 +169,8 @@ OUTER_SET ny_pro_tbpool = IDS_OF_SYMBOL (~projectl~ ~NY#TBPP~) + 1
 // to the end of the line, 30 ft.; 9 orientations, mirrored for the east) is
 // a VVC played on the disciple, facing the target (Face target, 16
 // orientations). The damage: an invisible line projectile (no BAM, no
-// trail, no smoke), stopped at the targeted point.
+// trail, no smoke), stopped at the targeted point, ny_line_width px on
+// either side of its path.
 COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdln.bam~ ~override~
      ~%MOD_FOLDER%/kits/black_dragon_disciple/vvc/ny#bdln.vvc~ ~override~
 // v2 (test), in two layers played together: the black smoke NY#BDLK (normal
@@ -172,7 +181,10 @@ COPY ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdlk.bam~ ~override~
      ~%MOD_FOLDER%/kits/black_dragon_disciple/bam/ny#bdlg.bam~ ~override~
      ~%MOD_FOLDER%/kits/black_dragon_disciple/vvc/ny#bdlk.vvc~ ~override~
      ~%MOD_FOLDER%/kits/black_dragon_disciple/vvc/ny#bdlg.vvc~ ~override~
-LAF NY#CREATE_LINE_PRO INT_VAR speed = 20 width = 40 STR_VAR new = ~NY#TBWL~ bam = ~~ sound = ~NY#BDBRE~ workspace = EVAL ~%ny_workspace%~ RET ny_pro_tbwave = pro_id END
+// the line's damage zone: ny_line_width px on either side of its path
+// (16 px = 1 ft.); 80: 5 ft. each side
+OUTER_SET ny_line_width = 80
+LAF NY#CREATE_LINE_PRO INT_VAR speed = 20 width = ny_line_width STR_VAR new = ~NY#TBWL~ bam = ~~ sound = ~~ workspace = EVAL ~%ny_workspace%~ RET ny_pro_tbwave = pro_id END
 COPY_EXISTING ~NY#TBWL.pro~ ~override~
   WRITE_LONG 0x100 0x08                         // not light source only: no smoke left along the line
 BUT_ONLY
@@ -349,9 +361,15 @@ BEGIN
       LPF NY#TB_REMOVE_INNATES INT_VAR h END
       LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 328 target = 1 timing = 0 duration = (cd * ny_round) parameter2 = $ny_state(~BRCD~) special = 1 END
       LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 139 target = 1 timing = 4 duration = (cd * ny_round) parameter1 = ny_str_breath_ready END
+      // the disciple holds still while he breathes (Pause Target: no action,
+      // scripts stopped, not helpless); before any immunity to the spell
+      // itself, which would block it
+      LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 165 target = 1 timing = 0 duration = ny_breath_pause END
+      // the roar, once, for every form (the line's projectile is silent)
+      LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 174 target = 1 timing = 1 STR_VAR resource = ~NY#BDBRE~ END
       PATCH_IF (form = 3) BEGIN
         // the animated breath rises where the disciple breathes, for 1 turn
-        LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 174 target = 1 timing = 1 STR_VAR resource = ~NY#BDBRE~ END
+        // (the roar: above, as for every form)
         LPF ADD_SPELL_EFFECT INT_VAR header = h opcode = 67  target = 1 timing = 0 duration = ny_turn STR_VAR resource = ~NY#ABRM~ END
       END ELSE PATCH_IF (form = 2) BEGIN
         // the pool, where the explosion lands; the disciple is not hit by
