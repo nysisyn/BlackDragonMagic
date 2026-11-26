@@ -1,0 +1,13 @@
+// Souffles du dragon noir
+@1 = ~Souffle du dragon noir : ligne~
+@2 = ~Souffle du dragon noir : ligne
+(Évocation)
+
+Niveau : 2
+Portée : 9 m
+Durée : instantanée
+Temps d'incantation : 0
+Zone d'effet : ligne de 9 m
+Jet de sauvegarde : spécial
+
+Le Disciple du Dragon Noir crache de l'acide tel un dragon noir, une ligne qui frappe toutes les créatures devant lui, alliées comme ennemies. Chaque créature sur la ligne subit 1d4 points de dégâts d'acide par niveau du lanceur (4d4 au moins, 8d4 au plus), sans jet de sauvegarde. Une créature qui rate un jet de sauvegarde contre les souffles subit à nouveau la moitié des dégâts au round suivant : l'acide continue de ronger. Ce souffle ignore la résistance à la magie.~

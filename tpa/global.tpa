@@ -1,0 +1,97 @@
+/////////////////////////////////////////////////////////////////////////////
+// Black Dragon Disciple - global script and spell choice filter
+//
+// Global script (added at the top of BALDUR.BCS, and BDBALDUR.BCS /
+// BALDUR25.BCS where they exist, with Continue() in each block; the
+// disciple applies the spells to himself: ActionOverride + ApplySpellRES):
+//   - a transformation in the spellbook of a disciple (party members 1 to
+//     6) is applied at once (NY#T<code>E). The kit is checked by the script
+//     only: neither the KIT stat (SPLPROT.2DA) nor a spell state set by the
+//     CLAB at level 1 worked for a character created at a high level.
+//   - level markers at levels 10 and 15 (NY#KM10, NY#KM15)
+//
+// Spell choice filter: only the kit is offered its spells (transformations,
+// breaths, reserved spells) when choosing spells (character creation,
+// level-up): M_NY#BD.LUA (loaded by the game: M_ prefix) takes them out of
+// the list for anyone else; called from UI.MENU (menu CHARGEN_CHOOSE_SPELLS,
+// onOpen, before the list is sorted). If UI.MENU has no such line (interface
+// mod), or is replaced later, nothing is hidden: every sorcerer sees them,
+// and the transformations have no effect for him (the script checks the kit).
+/////////////////////////////////////////////////////////////////////////////
+
+OUTER_SET ny_kit_ids = IDS_OF_SYMBOL (~kit~ ~NY#BDD~)
+OUTER_SET ny_kit_lower = RESOLVE_STR_REF (@1)
+OUTER_SET ny_kit_mixed = RESOLVE_STR_REF (@2)
+
+<<<<<<<< .../ny-inline/ny#tlearn.baf
+// Black Dragon Disciple: Draconic Transformations applied when learned
+>>>>>>>>
+COPY ~.../ny-inline/ny#tlearn.baf~ ~weidu_external/ny#tlearn.baf~
+
+// the transformations
+ACTION_FOR_EACH code IN CLB SCL RES SWS BLS WNG APO BEGIN
+  LAF RES_NUM_OF_SPELL_NAME STR_VAR spell_name = EVAL ~WIZARD_NY_T_%code%~ RET res = spell_res END
+  ACTION_TO_UPPER res
+  OUTER_FOR (p = 1; p <= 6; ++p) BEGIN
+    APPEND_OUTER ~weidu_external/ny#tlearn.baf~ ~IF
+  Kit(Player%p%,%ny_kit_ids%)
+  TriggerOverride(Player%p%,HaveKnownSpellRES("%res%"))
+  !CheckSpellState(Player%p%,NY_BDD_%code%)
+THEN
+  RESPONSE #100
+    ActionOverride(Player%p%,ApplySpellRES("NY#T%code%E",Myself))
+    Continue()
+END
+~
+  END
+END
+// the level markers, once the level is reached
+ACTION_FOR_EACH lv IN 10 15 BEGIN
+  OUTER_SET lgt = lv - 1
+  OUTER_FOR (p = 1; p <= 6; ++p) BEGIN
+    APPEND_OUTER ~weidu_external/ny#tlearn.baf~ ~IF
+  Kit(Player%p%,%ny_kit_ids%)
+  LevelGT(Player%p%,%lgt%)
+  !CheckSpellState(Player%p%,NY_BDD_LV%lv%)
+THEN
+  RESPONSE #100
+    ActionOverride(Player%p%,ApplySpellRES("NY#KM%lv%",Myself))
+    Continue()
+END
+~
+  END
+END
+ACTION_FOR_EACH ny_script IN ~baldur~ ~bdbaldur~ ~baldur25~ BEGIN
+  ACTION_IF FILE_EXISTS_IN_GAME ~%ny_script%.bcs~ BEGIN
+    EXTEND_TOP ~%ny_script%.bcs~ ~weidu_external/ny#tlearn.baf~
+  END
+END
+
+
+// ---------------------------------------------------------------------------
+// Spell choice filter
+// ---------------------------------------------------------------------------
+OUTER_SPRINT ny_kit_spells ~~                   // Lua table entries
+ACTION_FOR_EACH ids IN WIZARD_NY_T_CLB WIZARD_NY_T_SCL WIZARD_NY_T_RES WIZARD_NY_T_SWS
+                       WIZARD_NY_T_BLS WIZARD_NY_T_WNG WIZARD_NY_T_APO
+                       WIZARD_NY_BREATH_LINE WIZARD_NY_DARKNESS BEGIN
+  LAF RES_NUM_OF_SPELL_NAME STR_VAR spell_name = EVAL ~%ids%~ RET res = spell_res END
+  ACTION_TO_UPPER res
+  OUTER_SPRINT ny_kit_spells ~%ny_kit_spells%['%res%'] = true, ~
+END
+
+COPY ~%MOD_FOLDER%/lua/m_ny#bd.lua~ ~override~
+  EVALUATE_BUFFER
+
+OUTER_SET ny_ui_hook = 0
+COPY_EXISTING ~ui.menu~ ~override~
+  PATCH_IF (INDEX_BUFFER (~ny_bdd_filterSpells~) < 0) BEGIN
+    REPLACE_TEXTUALLY ~table\.sort(chargen\.choose_spell, sortBySpellName)~
+                      ~if ny_bdd_filterSpells then ny_bdd_filterSpells() end
+		table.sort(chargen.choose_spell, sortBySpellName)~
+  END
+  SET ny_ui_hook = (INDEX_BUFFER (~ny_bdd_filterSpells~) >= 0)
+BUT_ONLY
+ACTION_IF (NOT ny_ui_hook) BEGIN
+  PRINT ~Black Dragon Disciple: UI.MENU has no spell choice list to hook, the kit's spells stay visible to every sorcerer.~
+END

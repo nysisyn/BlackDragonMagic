@@ -1,0 +1,15 @@
+// Sorts réservés au Disciple du Dragon Noir
+
+// Darkness
+@1 = ~Ténèbres~
+@2 = ~Ténèbres
+(Altération)
+
+Niveau : 2
+Portée : 0
+Durée : 3 rounds
+Temps d'incantation : 2
+Zone d'effet : rayon de 4,5 m
+Jet de sauvegarde : aucun
+
+Le lanceur s'entoure d'un nuage de ténèbres magiques. Toutes les créatures dans la zone, alliées comme ennemies, deviennent invisibles et aveugles pendant 3 rounds.~

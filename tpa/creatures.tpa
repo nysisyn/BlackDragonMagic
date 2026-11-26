@@ -1,0 +1,66 @@
+/////////////////////////////////////////////////////////////////////////////
+// Nydra'Nath, the Half Black Dragon Spirit, called by Call Draconic
+// Ancestor (tpa/hla.tpa). Games with high-level abilities only.
+//
+// Built once from the game's Summon Planetar creature (as strong as the
+// planetar: its allegiance, summon AI BDSUM00, immunities, regeneration, see
+// invisible, magic resistance, resistances, its ring of protection from
+// weapons below +3 IMMUNE3), without its spells nor its voice; now stored.
+//   NY#CNYD   the spirit: level 25 fighter, 150 HP, AC -7, THAC0 3, 3 attacks
+//             per round, STR 22, immune to acid; Blur for its ghostly look;
+//             no experience when killed. Animation: written at install.
+//   NY#CNYDW  its Ancestral Greatsword: +3, 1d10 slashing + 2d6 acid; on a
+//             hit, one roll: 10% swamp plants (NY#CNYDP), 10% insect swarm
+//             (NY#CNYDI); carries Blur, the immunities to poison and fear,
+//             and to its descendant's breath and Darkness
+//   NY#CNYDB  its Ancestral Breath (innate, once per summoning, cast by the
+//             player): a line of acid (projectile NY#CNYDL, the former acid
+//             wave, BAMs NY#CWAV / NY#CWVT / NY#CWVH), 10d8 acid, save vs.
+//             Breath for half
+//   NY#CNYDF  its Wing Buffet (the black dragon's, enemies only)
+//   NY#CNYDR  its Rage (the barbarian's)
+//   NY#CNYDS  its script (override slot): Rage as soon as an enemy is in
+//             sight, again 10 rounds after; Wing Buffet when an enemy is
+//             within range 10, every 4 rounds at most
+//
+// Animation NYHD: the half black dragon of Icewind Dale II (MDH1), converted
+// for the Enhanced Edition by Nysi, monster_icewind type (ini/). Sounds
+// HDRAG*.WAV: the half-dragon's of Siege of Dragonspear, copied only when the
+// game lacks them.
+/////////////////////////////////////////////////////////////////////////////
+
+ACTION_BASH_FOR ~%MOD_FOLDER%/bam~ ~^nyhd.*\.bam$~ BEGIN
+  COPY ~%BASH_FOR_FILESPEC%~ ~override~
+END
+ACTION_BASH_FOR ~%MOD_FOLDER%/wav~ ~^hdrag.*\.wav$~ BEGIN
+  ACTION_IF NOT FILE_EXISTS_IN_GAME ~%BASH_FOR_FILE%~ BEGIN
+    COPY ~%BASH_FOR_FILESPEC%~ ~override~
+  END
+END
+LAF NY#NEW_ANIMATION STR_VAR ini = EVAL ~%MOD_FOLDER%/ini/half_black_dragon.ini~
+                             symbol = ~NY_HALF_BLACK_DRAGON~ RET ny_hbd_anim = id ny_hbd_hex = hex END
+PRINT ~Half black dragon animation id: 0x%ny_hbd_hex%~
+
+COMPILE ~%MOD_FOLDER%/baf/ny#cnyds.baf~
+
+COPY ~%MOD_FOLDER%/cre/ny#cnyd.cre~ ~override~
+  SAY 0x08 @1
+  SAY 0x0c @1
+  WRITE_LONG 0x28 ny_hbd_anim
+  PATCH_IF (IDS_OF_SYMBOL (~race~ ~DRAGON~) >= 0) BEGIN
+    WRITE_BYTE 0x272 IDS_OF_SYMBOL (~race~ ~DRAGON~)
+  END
+
+COPY_EXISTING ~ny#cnydw.itm~ ~override~
+  SAY 0x08 @2  SAY 0x0c @2
+  SAY 0x50 @3  SAY 0x54 @3
+COPY_EXISTING ~ny#cnydb.spl~ ~override~
+  SAY 0x08 @4  SAY 0x50 @5
+COPY_EXISTING ~ny#cnydf.spl~ ~override~
+  SAY 0x08 @6
+COPY_EXISTING ~ny#cnydr.spl~ ~override~
+  SAY 0x08 @7
+COPY_EXISTING ~ny#cnydp.spl~ ~override~
+  SAY 0x08 @8
+COPY_EXISTING ~ny#cnydi.spl~ ~override~
+  SAY 0x08 @9

@@ -1,0 +1,16 @@
+// Black Dragon Disciple: the kit
+@1 = ~black dragon disciple~
+@2 = ~Black Dragon Disciple~
+@3 = ~BLACK DRAGON DISCIPLE: The blood of a black dragon runs in the veins of these sorcerers. Unlike other Dragon Disciples, they are not born with their ancestor's gifts: claws, scales and wings lie dormant in their blood. Each one must be awakened by choice, and every awakening costs a part of the sorcerer's magic, forever. Their breath, however, they learn to shape like a spell.
+
+Advantages:
+- Hit Die: d6 instead of d4.
+- May select unique Draconic Transformations when gaining a level, at the cost of learning a new spell.
+- May learn the Black Dragon Breaths and other spells reserved to the kit.
+
+DRACONIC TRANSFORMATIONS: The transformations appear among the spells the Black Dragon Disciple can learn. A transformation takes effect as soon as it is learned; it changes him permanently, through death, and cannot be dispelled. It then stays in the spellbook as a reminder: it cannot be cast. Effects that grow with level keep growing after the transformation, and a transformation taken late grants at once the steps already reached.
+
+BLACK DRAGON BREATHS: spells reserved to the Black Dragon Disciple, his acid breath in various shapes. They ignore magic resistance. The acid keeps eating: a creature that fails its save vs. Breath suffers half the damage again the next round.
+
+Disadvantages:
+- One spell slot less per spell level.~

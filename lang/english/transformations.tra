@@ -1,0 +1,124 @@
+// Black Dragon Disciple: the Draconic Transformations
+
+// Transformations (name, description)
+@1 = ~Claw & Bite~
+@2 = ~Claw & Bite
+(Draconic Transformation)
+
+Level: 1
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+Black claws grow on both hands of the Black Dragon Disciple. He gains two claw attacks dealing 1d4 slashing damage each, with no two-weapon penalty. The claws are +1 magical weapons (to hit and damage), +2 at level 10, +3 at level 15, +4 at level 20 and +5 at level 25.
+
+Each successful attack has a 20% chance to provoke a bite, dealing 1d6 piercing and 1d4 acid damage.
+
+He gains the innate abilities Extend Claws and Retract Claws to summon or dismiss them at will. The claws take the magical weapon slot and the shield slot; after a level-up, extend them again to get the claws of the new level.
+
+This draconic transformation takes effect as soon as it is learned: its effects are permanent, persist through death and cannot be dispelled. It then stays in the spellbook as a reminder; it cannot be cast.~
+@3 = ~Dragon Scale~
+@4 = ~Dragon Scale
+(Draconic Transformation)
+
+Level: 1
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+Black scales cover the skin of the Black Dragon Disciple. He gains a permanent +3 bonus to Armor Class, +4 at level 10 and +5 at level 15.
+
+This draconic transformation takes effect as soon as it is learned: its effects are permanent, persist through death and cannot be dispelled. It then stays in the spellbook as a reminder; it cannot be cast.~
+@5 = ~Draconic Resilience~
+@6 = ~Draconic Resilience
+(Draconic Transformation)
+
+Level: 2
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+The body of the Black Dragon Disciple hardens like a dragon's. He gains +2 Constitution, +4 from level 15, and immunity to critical hits. The resilient skull takes the helmet slot.
+
+This draconic transformation takes effect as soon as it is learned: its effects are permanent, persist through death and cannot be dispelled. It then stays in the spellbook as a reminder; it cannot be cast.~
+@7 = ~Swamp Stride~
+@8 = ~Swamp Stride
+(Draconic Transformation)
+
+Level: 3
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+The Black Dragon Disciple moves through swamps and their poisons like a black dragon. He becomes immune to poison, and to Grease, Entangle, Web, Stinking Cloud and Spike Growth.
+
+This draconic transformation takes effect as soon as it is learned: its effects are permanent, persist through death and cannot be dispelled. It then stays in the spellbook as a reminder; it cannot be cast.~
+@9 = ~Blindsense~
+@10 = ~Blindsense
+(Draconic Transformation)
+
+Level: 6
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+The Black Dragon Disciple perceives his surroundings without relying on sight. He becomes immune to blindness, can see and attack invisible enemies, and his vision range slightly increases.
+
+This draconic transformation takes effect as soon as it is learned: its effects are permanent, persist through death and cannot be dispelled. It then stays in the spellbook as a reminder; it cannot be cast.~
+@11 = ~Dragon Wings~
+@12 = ~Dragon Wings
+(Draconic Transformation)
+
+Level: 7
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+Leathery wings tear through the back of the Black Dragon Disciple. He gains +4 movement speed and the innate ability Wing Buffet, usable at will and recharging in 4 rounds.
+
+This draconic transformation takes effect as soon as it is learned: its effects are permanent, persist through death and cannot be dispelled. It then stays in the spellbook as a reminder; it cannot be cast.~
+@13 = ~Dragon Apotheosis~
+@14 = ~Dragon Apotheosis
+(Draconic Transformation)
+
+Level: 9
+Range: Personal
+Duration: Permanent
+Casting Time: 1
+
+The Black Dragon Disciple becomes one with the dragon within. He gains +2 Constitution, +2 Strength, +2 Charisma and +4 Armor Class.
+
+This draconic transformation takes effect as soon as it is learned: its effects are permanent, persist through death and cannot be dispelled. It then stays in the spellbook as a reminder; it cannot be cast.~
+
+// Claw & Bite: claws, Extend / Retract Claws, bite
+@20 = ~Draconic Claws~
+@21 = ~Draconic Claws
+
+The black claws of the Black Dragon Disciple. Each successful attack has a 20% chance to provoke a bite, dealing 1d6 piercing and 1d4 acid damage.
+
+STATISTICS:
+
+Damage: 1d4 (slashing)
+No two-weapon penalty~
+@22 = ~Extend Claws~
+@23 = ~Extend Claws
+
+The Black Dragon Disciple extends his claws: they take the magical weapon slot and the shield slot, with the strength of his current level. They can be retracted at will.~
+@24 = ~Retract Claws~
+@25 = ~Retract Claws
+
+The Black Dragon Disciple retracts his claws and frees his hands. They can be extended again at will.~
+@26 = ~Draconic Bite~
+
+// Draconic Resilience: the skull
+@30 = ~Draconic Skull~
+@31 = ~Draconic Skull
+
+The hardened skull of the Black Dragon Disciple protects him from critical hits.~
+
+// Dragon Wings: Wing Buffet
+@40 = ~Wing Buffet~
+@41 = ~Wing Buffet
+
+The Black Dragon Disciple beats his wings, knocking down and pushing back the creatures around him. Once used, it recharges in 4 rounds.~
+@42 = ~Wing Buffet ready~

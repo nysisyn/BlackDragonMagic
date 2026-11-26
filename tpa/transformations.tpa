@@ -1,0 +1,92 @@
+/////////////////////////////////////////////////////////////////////////////
+// Draconic Transformations
+//
+// Wizard spells of levels 1 to 9 (ADD_SPELL, WIZARD_NY_T_<CODE>) the Black
+// Dragon Disciple learns instead of a spell; its cost is the spell he did not
+// learn. It stays in the spellbook: its description can be read, and it is
+// not offered again at level-up. Its ability has no location: it shows in no
+// casting bar. As soon as it is in the spellbook of a party member of the
+// kit, the global script (tpa/global.tpa) makes him apply its effects
+// NY#T<code>E to himself. Each NY#T<code>E
+//   - does nothing a second time (opcode 324, spell state of the
+//     transformation already set)
+//   - sets the spell state NY_BDD_<CODE> (opcode 328, permanent): the
+//     transformation is known to the level markers
+//   - gives its own effects, all permanent (timing 9: they persist through
+//     death and cannot be dispelled), and the level steps already reached
+//
+// Codes (spell NY#T<code>, effects NY#T<code>E, icons NY#T<code>B / C):
+//   1 CLB Claw & Bite         SCL Dragon Scale
+//   2 RES Draconic Resilience
+//   3 SWS Swamp Stride
+//   6 BLS Blindsense
+//   7 WNG Dragon Wings
+//   9 APO Dragon Apotheosis
+//
+// Other resources
+//   NY#TCW<s> / NY#TCO<s>   main / off-hand claw, stage s (1-5: +1 to +5)
+//   NY#TCBT                 the bite (20% of the claw hits)
+//   NY#TCLE / NY#TCLR       Extend / Retract Claws (innate, swap themselves)
+//   NY#TCLI                 claws icon
+//   NY#TRSI                 Draconic Resilience: the skull (helmet slot,
+//                           immunity to critical hits)
+//   NY#TWBF                 Dragon Wings: Wing Buffet (the black dragon's,
+//                           save vs. Spell at -4, at will, back 4 rounds later)
+/////////////////////////////////////////////////////////////////////////////
+
+// Remastered Spell Icons: icons B (stone plate) replaced by C
+ACTION_FOR_EACH code IN clb scl res sws bls wng apo BEGIN
+  LAF NY#ICON_B_FROM_C STR_VAR b = EVAL ~NY#T%code%B~ c = EVAL ~NY#T%code%C~ END
+END
+
+// Claws, Extend / Retract Claws, the bite
+COPY_EXISTING ~ny#tcw1.itm~ ~override~ ~ny#tcw2.itm~ ~override~ ~ny#tcw3.itm~ ~override~ ~ny#tcw4.itm~ ~override~ ~ny#tcw5.itm~ ~override~
+              ~ny#tco1.itm~ ~override~ ~ny#tco2.itm~ ~override~ ~ny#tco3.itm~ ~override~ ~ny#tco4.itm~ ~override~ ~ny#tco5.itm~ ~override~
+  SAY 0x08 @20  SAY 0x0c @20
+  SAY 0x50 @21  SAY 0x54 @21
+COPY_EXISTING ~ny#tcle.spl~ ~override~
+  SAY 0x08 @22  SAY 0x50 @23
+COPY_EXISTING ~ny#tclr.spl~ ~override~
+  SAY 0x08 @24  SAY 0x50 @25
+COPY_EXISTING ~ny#tcbt.spl~ ~override~
+  LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 139 parameter1 = RESOLVE_STR_REF (@26) END   // combat log
+
+// Draconic Resilience: the skull
+COPY_EXISTING ~ny#trsi.itm~ ~override~
+  SAY 0x08 @30  SAY 0x0c @30
+  SAY 0x50 @31  SAY 0x54 @31
+
+// Dragon Wings: Wing Buffet
+COPY_EXISTING ~ny#twbf.spl~ ~override~
+  SAY 0x08 @40  SAY 0x0c @40
+  SAY 0x50 @41  SAY 0x54 @41
+  LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 139 parameter1 = RESOLVE_STR_REF (@42) END   // "Wing Buffet ready"
+
+// Swamp Stride: immunity to the game's swamp spells (those present in the
+// game, found by their SPELL.IDS names)
+COPY_EXISTING ~ny#tswse.spl~ ~override~
+  PATCH_FOR_EACH ids IN WIZARD_GREASE CLERIC_ENTANGLE WIZARD_WEB WIZARD_STINKING_CLOUD CLERIC_SPIKE_GROWTH BEGIN
+    PATCH_IF (IDS_OF_SYMBOL (~spell~ ~%ids%~) >= 0) BEGIN
+      LPF RES_NUM_OF_SPELL_NAME STR_VAR spell_name = EVAL ~%ids%~ RET r = spell_res END
+      LPF ADD_SPELL_EFFECT INT_VAR header = 1 opcode = 206 target = 1 timing = 9 parameter1 = "-1" STR_VAR resource = EVAL ~%r%~ END
+    END
+  END
+
+// The transformations: name, description, added to the wizard spells
+ACTION_DEFINE_ASSOCIATIVE_ARRAY ny_t_level BEGIN
+  CLB => 1  SCL => 1  RES => 2  SWS => 3  BLS => 6  WNG => 7  APO => 9
+END
+OUTER_SET tra = 1
+ACTION_FOR_EACH code IN CLB SCL RES SWS BLS WNG APO BEGIN
+  OUTER_SET name = RESOLVE_STR_REF ((AT ~tra~))
+  OUTER_SET tra += 1
+  OUTER_SET desc = RESOLVE_STR_REF ((AT ~tra~))
+  OUTER_SET tra += 1
+  OUTER_SET lv = $ny_t_level(~%code%~)
+  OUTER_SPRINT res ~ny#t%code%~
+  ACTION_TO_LOWER res
+  COPY_EXISTING ~%res%.spl~ ~override~
+    WRITE_LONG 0x08 name
+    WRITE_LONG 0x50 desc
+  ADD_SPELL ~override/%res%.spl~ 2 lv ~WIZARD_NY_T_%code%~
+END

@@ -1,0 +1,28 @@
+// Créatures
+
+// Nydra'Nath, the Half Black Dragon Spirit
+@1 = ~Nydra'Nath~
+@2 = ~Épée ancestrale~
+@3 = ~Épée ancestrale
+
+L'épée à deux mains d'un ancêtre demi-dragon noir, aussi spectrale que son porteur. Sa lame ruisselle d'acide.
+
+Chaque coup a 10 % de chances de provoquer chacun des effets suivants, jamais les deux à la fois :
+- Plantes du marais : la cible est immobilisée (déplacement bloqué, -2 CA) pendant 1 round, annulé par un jet de sauvegarde contre les sorts.
+- Nuée d'insectes : la cible ne peut plus lancer de sorts et subit des morsures pendant 3 rounds.
+
+CARACTÉRISTIQUES :
+
+TAC0 : +3
+Dégâts : 1d10 +3 (tranchant) + 2d6 acide
+Facteur de vitesse : 7
+Type de compétence : épée à deux mains
+Type : à deux mains~
+@4 = ~Souffle ancestral~
+@5 = ~Souffle ancestral
+
+Nydra'Nath crache une ligne d'acide : 10d8 dégâts d'acide, jet de sauvegarde contre les souffles pour la moitié. Une fois par invocation.~
+@6 = ~Coup d'ailes~
+@7 = ~Rage~
+@8 = ~Plantes du marais~
+@9 = ~Nuée d'insectes~

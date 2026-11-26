@@ -1,0 +1,124 @@
+// Disciple du Dragon Noir : les transformations draconiques
+
+// Transformations (name, description)
+@1 = ~Griffes et morsure~
+@2 = ~Griffes et morsure
+(Transformation draconique)
+
+Niveau : 1
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
+
+Des griffes noires poussent aux deux mains du Disciple du Dragon Noir. Il obtient deux attaques de griffes infligeant chacune 1d4 dégâts tranchants, sans malus de combat à deux armes. Les griffes sont des armes magiques +1 (au toucher et aux dégâts), +2 au niveau 10, +3 au niveau 15, +4 au niveau 20 et +5 au niveau 25.
+
+Chaque attaque réussie a 20 % de chances de provoquer une morsure, qui inflige 1d6 dégâts perforants et 1d4 dégâts d'acide.
+
+Il obtient les capacités innées Sortir les griffes et Rentrer les griffes pour les faire apparaître ou les ranger à volonté. Les griffes occupent l'emplacement d'arme magique et celui du bouclier ; après une montée de niveau, il suffit de les sortir à nouveau pour obtenir celles du nouveau niveau.
+
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; elle ne peut pas être lancée.~
+@3 = ~Écailles de dragon~
+@4 = ~Écailles de dragon
+(Transformation draconique)
+
+Niveau : 1
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
+
+Des écailles noires recouvrent la peau du Disciple du Dragon Noir. Il obtient un bonus permanent de +3 à la classe d'armure, +4 au niveau 10 et +5 au niveau 15.
+
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; elle ne peut pas être lancée.~
+@5 = ~Résilience draconique~
+@6 = ~Résilience draconique
+(Transformation draconique)
+
+Niveau : 2
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
+
+Le corps du Disciple du Dragon Noir se durcit comme celui d'un dragon. Il obtient +2 en Constitution, +4 à partir du niveau 15, et l'immunité aux coups critiques. Son crâne endurci occupe l'emplacement du casque.
+
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; elle ne peut pas être lancée.~
+@7 = ~Foulée des marais~
+@8 = ~Foulée des marais
+(Transformation draconique)
+
+Niveau : 3
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
+
+Le Disciple du Dragon Noir traverse les marais et leurs poisons comme un dragon noir. Il devient immunisé au poison, ainsi qu'à Graisse, Enchevêtrement, Toile d'araignée, Nuage puant et Croissance d'épines.
+
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; elle ne peut pas être lancée.~
+@9 = ~Perception aveugle~
+@10 = ~Perception aveugle
+(Transformation draconique)
+
+Niveau : 6
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
+
+Le Disciple du Dragon Noir perçoit ce qui l'entoure sans avoir besoin de ses yeux. Il devient immunisé à la cécité, peut voir et attaquer les ennemis invisibles, et sa portée de vision augmente légèrement.
+
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; elle ne peut pas être lancée.~
+@11 = ~Ailes de dragon~
+@12 = ~Ailes de dragon
+(Transformation draconique)
+
+Niveau : 7
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
+
+Des ailes membraneuses déchirent le dos du Disciple du Dragon Noir. Il obtient +4 en vitesse de déplacement et la capacité innée Coup d'ailes, utilisable à volonté et qui se recharge en 4 rounds.
+
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; elle ne peut pas être lancée.~
+@13 = ~Apothéose draconique~
+@14 = ~Apothéose draconique
+(Transformation draconique)
+
+Niveau : 9
+Portée : personnelle
+Durée : permanente
+Temps d'incantation : 1
+
+Le Disciple du Dragon Noir ne fait plus qu'un avec le dragon qui l'habite. Il obtient +2 en Constitution, +2 en Force, +2 en Charisme et +4 à la classe d'armure.
+
+Cette transformation draconique prend effet dès qu'elle est apprise : ses effets sont permanents, survivent à la mort et ne peuvent pas être dissipés. Elle reste ensuite dans le grimoire pour mémoire ; elle ne peut pas être lancée.~
+
+// Claw & Bite: claws, Extend / Retract Claws, bite
+@20 = ~Griffes draconiques~
+@21 = ~Griffes draconiques
+
+Les griffes noires du Disciple du Dragon Noir. Chaque attaque réussie a 20 % de chances de provoquer une morsure, qui inflige 1d6 dégâts perforants et 1d4 dégâts d'acide.
+
+CARACTÉRISTIQUES :
+
+Dégâts : 1d4 (tranchant)
+Aucun malus de combat à deux armes~
+@22 = ~Sortir les griffes~
+@23 = ~Sortir les griffes
+
+Le Disciple du Dragon Noir sort ses griffes : elles occupent l'emplacement d'arme magique et celui du bouclier, avec la puissance de son niveau actuel. Il peut les rentrer à volonté.~
+@24 = ~Rentrer les griffes~
+@25 = ~Rentrer les griffes
+
+Le Disciple du Dragon Noir rentre ses griffes et libère ses mains. Il peut les sortir à nouveau à volonté.~
+@26 = ~Morsure draconique~
+
+// Draconic Resilience: the skull
+@30 = ~Crâne draconique~
+@31 = ~Crâne draconique
+
+Le crâne endurci du Disciple du Dragon Noir le protège des coups critiques.~
+
+// Dragon Wings: Wing Buffet
+@40 = ~Coup d'ailes~
+@41 = ~Coup d'ailes
+
+Le Disciple du Dragon Noir bat des ailes, renversant et repoussant les créatures qui l'entourent. Une fois utilisé, il se recharge en 4 rounds.~
+@42 = ~Coup d'ailes prêt~

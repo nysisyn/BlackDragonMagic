@@ -1,0 +1,17 @@
+/////////////////////////////////////////////////////////////////////////////
+// Spells reserved to the Black Dragon Disciple (only the kit is offered
+// them: tpa/global.tpa)
+//
+// NY#SDRK   Darkness, level 2 (WIZARD_NY_DARKNESS): every creature within
+//           15 ft. of the caster, ally or enemy, becomes invisible and
+//           blinded for 3 rounds (the disciple with Blindsense is immune to
+//           the blindness). Projectile NY#SDRKP: 15-ft. burst, no visuals.
+//           Icons NY#SDRKB / NY#SDRKC: placeholders, Rot of Ages' icons.
+/////////////////////////////////////////////////////////////////////////////
+
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#SDRKB~ c = ~NY#SDRKC~ END   // Remastered Spell Icons
+
+COPY_EXISTING ~ny#sdrk.spl~ ~override~
+  SAY 0x08 @1
+  SAY 0x50 @2
+ADD_SPELL ~override/ny#sdrk.spl~ 2 2 ~WIZARD_NY_DARKNESS~

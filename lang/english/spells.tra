@@ -1,0 +1,15 @@
+// Spells reserved to the Black Dragon Disciple
+
+// Darkness
+@1 = ~Darkness~
+@2 = ~Darkness
+(Alteration)
+
+Level: 2
+Range: 0
+Duration: 3 rounds
+Casting Time: 2
+Area of Effect: 15-ft. radius
+Saving Throw: None
+
+The caster surrounds himself with a cloud of magical darkness. Every creature in the area, ally or enemy, becomes invisible and blinded for 3 rounds.~

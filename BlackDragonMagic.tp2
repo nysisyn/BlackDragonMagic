@@ -1,25 +1,23 @@
 BACKUP ~weidu_external/backup/BlackDragonMagic~
 AUTHOR ~Nysi - https://github.com/nysisyn/BlackDragonMagic~
-VERSION ~v0.1.0~
+VERSION ~v0.2.0~
 
 ALWAYS
   INCLUDE ~%MOD_FOLDER%/lib/ny#core.tpa~
   INCLUDE ~%MOD_FOLDER%/lib/a7#add_kit_ex.tpa~   // ADD_KIT_EX by Argent77 (public domain)
 
-  // Temporary files (cloned projectiles) stay outside the mod folder
-  OUTER_SPRINT ny_workspace ~weidu_external/workspace/BlackDragonMagic~
-  MKDIR ~weidu_external~ ~weidu_external/workspace~ ~%ny_workspace%~
-
-  // Game time: 1 round = 6 s, 1 turn = 60 s, 1 hour = 300 s, 1 day = 7200 s
+  // Game time: 1 round = 6 s, 1 turn = 60 s
   OUTER_SET ny_round = 6
   OUTER_SET ny_turn  = 60
-  OUTER_SET ny_hour  = 300
-  OUTER_SET ny_day   = 7200
+
+  // Games with high-level abilities (Throne of Bhaal tables): the HLA and
+  // the creature they call are only installed there
+  OUTER_SET ny_hla = GAME_IS ~bg2ee eet iwdee~
 
   // Remastered Spell Icons (Renegade0): its spell icons have no stone plate.
   // When it is installed before this mod, our ability / memorised icons (B,
   // on a stone plate) are replaced by our spellbook icons (C, no plate) so
-  // they match (see NY#ICON_B_FROM_C in lib/ny#core.tpa).
+  // they match (NY#ICON_B_FROM_C in lib/ny#core.tpa).
   ACTION_IF (MOD_IS_INSTALLED ~remastered_spell_icons.tp2~ ~0~) BEGIN
     OUTER_SET ny_rsi = 1
   END ELSE BEGIN
@@ -37,107 +35,41 @@ LANGUAGE ~Francais~
          ~%MOD_FOLDER%/lang/french/setup.tra~
 
 
-// Black Dragon Disciple sorcerer kit
+// The Black Dragon Disciple: the kit, its Draconic Transformations, its
+// breath spells, its other spells, its high-level abilities and the
+// creature they call. One component: every file of the mod belongs to it.
 BEGIN @1 DESIGNATED 0
 LABEL ~BlackDragonMagic-BlackDragonDisciple~
-REQUIRE_PREDICATE GAME_IS ~bgee bg2ee eet~ @10
-WITH_TRA ~%MOD_FOLDER%/lang/english/black_dragon_disciple.tra~
-         ~%MOD_FOLDER%/lang/%LANGUAGE%/black_dragon_disciple.tra~ BEGIN
-  INCLUDE ~%MOD_FOLDER%/kits/black_dragon_disciple/black_dragon_disciple.tpa~
-END
-
-
-// New Sorcerer spells: Acidosis, Rot of Ages and Ghostly Tail (level 1), Mantidrake Spike (level 2),
-// Wyvern Barbed Tail Strike and Black Dragon Breathball (level 3),
-// Stunning Black Dragon Breath (level 4), Bonemelt and Summon Chimera (level 8)
-// Bonemelt and Summon Chimera are only installed on BG2:EE and EET.
-BEGIN @2 DESIGNATED 10
-LABEL ~BlackDragonMagic-Spells~
-REQUIRE_PREDICATE GAME_IS ~bgee bg2ee eet~ @10
-WITH_TRA ~%MOD_FOLDER%/lang/english/acidosis.tra~
-         ~%MOD_FOLDER%/lang/%LANGUAGE%/acidosis.tra~ BEGIN
-  INCLUDE ~%MOD_FOLDER%/spells/acidosis/acidosis.tpa~
-END
-WITH_TRA ~%MOD_FOLDER%/lang/english/rot_of_ages.tra~
-         ~%MOD_FOLDER%/lang/%LANGUAGE%/rot_of_ages.tra~ BEGIN
-  INCLUDE ~%MOD_FOLDER%/spells/rot_of_ages/rot_of_ages.tpa~
-END
-WITH_TRA ~%MOD_FOLDER%/lang/english/ghostly_tail.tra~
-         ~%MOD_FOLDER%/lang/%LANGUAGE%/ghostly_tail.tra~ BEGIN
-  INCLUDE ~%MOD_FOLDER%/spells/ghostly_tail/ghostly_tail.tpa~
-END
-WITH_TRA ~%MOD_FOLDER%/lang/english/mantidrake_spike.tra~
-         ~%MOD_FOLDER%/lang/%LANGUAGE%/mantidrake_spike.tra~ BEGIN
-  INCLUDE ~%MOD_FOLDER%/spells/mantidrake_spike/mantidrake_spike.tpa~
-END
-WITH_TRA ~%MOD_FOLDER%/lang/english/corrosive_spit.tra~
-         ~%MOD_FOLDER%/lang/%LANGUAGE%/corrosive_spit.tra~ BEGIN
-  INCLUDE ~%MOD_FOLDER%/spells/corrosive_spit/corrosive_spit.tpa~
-END
-WITH_TRA ~%MOD_FOLDER%/lang/english/wyvern_tail.tra~
-         ~%MOD_FOLDER%/lang/%LANGUAGE%/wyvern_tail.tra~ BEGIN
-  INCLUDE ~%MOD_FOLDER%/spells/wyvern_tail/wyvern_tail.tpa~
-END
-WITH_TRA ~%MOD_FOLDER%/lang/english/pooling_breath.tra~
-         ~%MOD_FOLDER%/lang/%LANGUAGE%/pooling_breath.tra~ BEGIN
-  INCLUDE ~%MOD_FOLDER%/spells/pooling_breath/pooling_breath.tpa~
-END
-WITH_TRA ~%MOD_FOLDER%/lang/english/breathball.tra~
-         ~%MOD_FOLDER%/lang/%LANGUAGE%/breathball.tra~ BEGIN
-  INCLUDE ~%MOD_FOLDER%/spells/breathball/breathball.tpa~
-END
-WITH_TRA ~%MOD_FOLDER%/lang/english/stunning_breath.tra~
-         ~%MOD_FOLDER%/lang/%LANGUAGE%/stunning_breath.tra~ BEGIN
-  INCLUDE ~%MOD_FOLDER%/spells/stunning_breath/stunning_breath.tpa~
-END
-WITH_TRA ~%MOD_FOLDER%/lang/english/animate_breath.tra~
-         ~%MOD_FOLDER%/lang/%LANGUAGE%/animate_breath.tra~ BEGIN
-  INCLUDE ~%MOD_FOLDER%/spells/animate_breath/animate_breath.tpa~
-END
-WITH_TRA ~%MOD_FOLDER%/lang/english/summon_mantidrake.tra~
-         ~%MOD_FOLDER%/lang/%LANGUAGE%/summon_mantidrake.tra~ BEGIN
-  INCLUDE ~%MOD_FOLDER%/spells/summon_mantidrake/summon_mantidrake.tpa~
-END
-WITH_TRA ~%MOD_FOLDER%/lang/english/summon_gorgon.tra~
-         ~%MOD_FOLDER%/lang/%LANGUAGE%/summon_gorgon.tra~ BEGIN
-  INCLUDE ~%MOD_FOLDER%/spells/summon_gorgon/summon_gorgon.tpa~
-END
-WITH_TRA ~%MOD_FOLDER%/lang/english/summon_dracockatrix.tra~
-         ~%MOD_FOLDER%/lang/%LANGUAGE%/summon_dracockatrix.tra~ BEGIN
-  INCLUDE ~%MOD_FOLDER%/spells/summon_dracockatrix/summon_dracockatrix.tpa~
-END
-ACTION_IF GAME_IS ~bg2ee eet~ BEGIN
-  WITH_TRA ~%MOD_FOLDER%/lang/english/bonemelt.tra~
-           ~%MOD_FOLDER%/lang/%LANGUAGE%/bonemelt.tra~ BEGIN
-    INCLUDE ~%MOD_FOLDER%/spells/bonemelt/bonemelt.tpa~
-  END
-  WITH_TRA ~%MOD_FOLDER%/lang/english/summon_chimera.tra~
-           ~%MOD_FOLDER%/lang/%LANGUAGE%/summon_chimera.tra~ BEGIN
-    INCLUDE ~%MOD_FOLDER%/spells/summon_chimera/summon_chimera.tpa~
-  END
-END ELSE BEGIN
-  PRINT @11
-END
-
-
-// Tweak: Vitriolic Sphere, 5th edition style (modifies the existing spell)
-// Install after IWDification and SCS.
-BEGIN @3 DESIGNATED 20
-LABEL ~BlackDragonMagic-Tweak-VitriolicSphere~
 REQUIRE_PREDICATE GAME_IS ~bgee bg2ee eet iwdee~ @10
-REQUIRE_PREDICATE (IDS_OF_SYMBOL (~spell~ ~WIZARD_VITRIOLIC_SPHERE~) > 0) @12
-WITH_TRA ~%MOD_FOLDER%/lang/english/vitriolic_sphere.tra~
-         ~%MOD_FOLDER%/lang/%LANGUAGE%/vitriolic_sphere.tra~ BEGIN
-  INCLUDE ~%MOD_FOLDER%/tweaks/vitriolic_sphere/vitriolic_sphere.tpa~
+
+WITH_TRA ~%MOD_FOLDER%/lang/english/kit.tra~
+         ~%MOD_FOLDER%/lang/%LANGUAGE%/kit.tra~ BEGIN
+  INCLUDE ~%MOD_FOLDER%/tpa/kit.tpa~
 END
-
-
-// Test: hydra animation (hydra of Might and Magic VII), test
-// creature NY#HYDR to create with the console
-BEGIN @4 DESIGNATED 900
-LABEL ~BlackDragonMagic-Test-Hydra~
-REQUIRE_PREDICATE GAME_IS ~bg2ee eet~ @13
-WITH_TRA ~%MOD_FOLDER%/lang/english/hydra.tra~
-         ~%MOD_FOLDER%/lang/%LANGUAGE%/hydra.tra~ BEGIN
-  INCLUDE ~%MOD_FOLDER%/creatures/hydra/hydra.tpa~
+WITH_TRA ~%MOD_FOLDER%/lang/english/transformations.tra~
+         ~%MOD_FOLDER%/lang/%LANGUAGE%/transformations.tra~ BEGIN
+  INCLUDE ~%MOD_FOLDER%/tpa/transformations.tpa~
+END
+WITH_TRA ~%MOD_FOLDER%/lang/english/breath.tra~
+         ~%MOD_FOLDER%/lang/%LANGUAGE%/breath.tra~ BEGIN
+  INCLUDE ~%MOD_FOLDER%/tpa/breath.tpa~
+END
+WITH_TRA ~%MOD_FOLDER%/lang/english/spells.tra~
+         ~%MOD_FOLDER%/lang/%LANGUAGE%/spells.tra~ BEGIN
+  INCLUDE ~%MOD_FOLDER%/tpa/spells.tpa~
+END
+ACTION_IF ny_hla BEGIN
+  WITH_TRA ~%MOD_FOLDER%/lang/english/creatures.tra~
+           ~%MOD_FOLDER%/lang/%LANGUAGE%/creatures.tra~ BEGIN
+    INCLUDE ~%MOD_FOLDER%/tpa/creatures.tpa~
+  END
+  WITH_TRA ~%MOD_FOLDER%/lang/english/hla.tra~
+           ~%MOD_FOLDER%/lang/%LANGUAGE%/hla.tra~ BEGIN
+    INCLUDE ~%MOD_FOLDER%/tpa/hla.tpa~
+  END
+END
+// last: the global script and the spell list filter need every spell above
+WITH_TRA ~%MOD_FOLDER%/lang/english/kit.tra~
+         ~%MOD_FOLDER%/lang/%LANGUAGE%/kit.tra~ BEGIN
+  INCLUDE ~%MOD_FOLDER%/tpa/global.tpa~
 END

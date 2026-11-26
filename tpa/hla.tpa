@@ -1,0 +1,20 @@
+/////////////////////////////////////////////////////////////////////////////
+// Black Dragon Disciple - high-level abilities (games with HLA tables)
+//
+// The kit's own table LUNYB.2DA (abbreviation NYB in LUABBR.2DA, given by
+// tpa/kit.tpa). Kept from the sorcerer: the extra spells of levels 6, 7 and
+// 8 (AP_SPCL928-930).
+//   NY#HANC   Call Draconic Ancestor (innate, once per day, each pick one
+//             more use): the game's Summon Planetar (durations, casting)
+//             calling Nydra'Nath (tpa/creatures.tpa) through the EFF
+//             NY#HANCE (opcode 177 -> opcode 67 NY#CNYD).
+//             Icons NY#HANCB / NY#HANCC: Summon Planetar's, acid yellow.
+/////////////////////////////////////////////////////////////////////////////
+
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#HANCB~ c = ~NY#HANCC~ END   // Remastered Spell Icons
+
+COPY_EXISTING ~ny#hanc.spl~ ~override~
+  SAY 0x08 @1  SAY 0x0c @1
+  SAY 0x50 @2  SAY 0x54 @2
+
+COPY ~%MOD_FOLDER%/2da/lunyb.2da~ ~override~

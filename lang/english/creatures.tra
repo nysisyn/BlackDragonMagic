@@ -1,0 +1,28 @@
+// Creatures
+
+// Nydra'Nath, the Half Black Dragon Spirit
+@1 = ~Nydra'Nath~
+@2 = ~Ancestral Greatsword~
+@3 = ~Ancestral Greatsword
+
+The two-handed sword of a half black dragon ancestor, as ghostly as its bearer. Its blade drips with acid.
+
+Each hit has a 10% chance of each of the following, never both at a time:
+- Swamp plants: the target is held fast (movement stopped, -2 AC) for 1 round, save vs. Spell negates.
+- Insect swarm: the target cannot cast spells and is bitten for 3 rounds.
+
+STATISTICS:
+
+THAC0: +3
+Damage: 1d10 +3 (slashing) + 2d6 acid
+Speed Factor: 7
+Proficiency Type: Two-Handed Sword
+Type: Two-handed~
+@4 = ~Ancestral Breath~
+@5 = ~Ancestral Breath
+
+Nydra'Nath breathes a line of acid: 10d8 acid damage, save vs. Breath for half. Once per summoning.~
+@6 = ~Wing Buffet~
+@7 = ~Rage~
+@8 = ~Swamp Plants~
+@9 = ~Insect Swarm~

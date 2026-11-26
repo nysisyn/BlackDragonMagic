@@ -1,0 +1,13 @@
+// Black Dragon Breaths
+@1 = ~Black Dragon Breath: Line~
+@2 = ~Black Dragon Breath: Line
+(Evocation)
+
+Level: 2
+Range: 30 ft.
+Duration: Instantaneous
+Casting Time: 0
+Area of Effect: 30-ft. line
+Saving Throw: Special
+
+The Black Dragon Disciple spits acid like a black dragon, a line that hits every creature in front of him, ally or enemy. Each creature in the line suffers 1d4 points of acid damage per level of the caster (4d4 at least, 8d4 at most), with no saving throw. A creature that fails a save vs. Breath suffers half the damage again the next round, as the acid keeps eating. This breath ignores magic resistance.~

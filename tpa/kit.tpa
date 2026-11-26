@@ -1,0 +1,119 @@
+/////////////////////////////////////////////////////////////////////////////
+// Black Dragon Disciple - the kit, and what every other part needs first
+//
+// A plain sorcerer with the Dragon Disciple's d6 hit die and one spell slot
+// less per spell level. Everything draconic comes from the Draconic
+// Transformations (tpa/transformations.tpa), the breath spells
+// (tpa/breath.tpa) and the spells reserved to the kit (tpa/spells.tpa).
+//
+// This file
+//   1. sets the values the stored files leave open (placeholders, see
+//      NY#PLACEHOLDERS in lib/ny#core.tpa): spell states, SPLPROT rows,
+//      projectiles;
+//   2. copies the stored files: spl/, itm/, eff/, pro/, vvc/, the mod's BAM
+//      and WAV (NY#*); the creature's own files are copied by
+//      tpa/creatures.tpa;
+//   3. registers the kit.
+//
+// Resources of the kit (prefix NY#K)
+//   NY#KL01            level 1 (CLAB 2da/clny#bdd.2da): one spell slot less
+//                      per spell level (bitmask 0x1FF), never below 0
+//   NY#KM10, NY#KM15   level markers, applied by the global script at levels
+//                      10 and 15 (tpa/global.tpa): spell state LV10 / LV15,
+//                      then the level steps of the transformations taken
+//   NY#KSC10, NY#KSC15 Dragon Scale: AC +1 at levels 10 and 15
+//   NY#KRE15           Draconic Resilience: CON +2 at level 15
+//   Each level step removes itself first (opcode 321): it never counts twice.
+/////////////////////////////////////////////////////////////////////////////
+
+
+// ---------------------------------------------------------------------------
+// 1. Placeholders
+// ---------------------------------------------------------------------------
+// Spell states n (opcode 328, parameter 2 = 1000 + n in the stored files)
+// and their SPLPROT rows "has the state" (opcodes 318/324/326, parameter 2
+// = 2000 + n). One per transformation, two for the level markers.
+OUTER_SET n = 0
+ACTION_FOR_EACH code IN CLB SCL RES SWS BLS WNG APO LV10 LV15 BEGIN
+  LAF NY#ADD_SPLSTATE STR_VAR name = EVAL ~NY_BDD_%code%~ RET st = id END
+  LAF NY#SPLPROT_ROW STR_VAR label = EVAL ~NY#HAS_%code%~ stat = ~0x112~ value = EVAL ~%st%~ relation = ~1~ RET row END
+  OUTER_SET $ny_ph_state(~%n%~) = st
+  OUTER_SET $ny_ph_has(~%n%~)   = row
+  OUTER_SET n += 1
+END
+
+// Projectiles n (extended header projectile = 3000 + n in the stored files):
+// the mod's, then the game's
+//   0 NY#SDRKP   Darkness: 15-ft. burst on the caster, no visuals
+//   1 NY#BLIL    Black Dragon Breath: Line: invisible line, 30 ft. at most,
+//                80 px on either side of its path (the line of explosions is
+//                a VVC played on the caster)
+//   2 NY#CNYDL   Nydra'Nath's breath: the former acid wave line
+//   3 INAREANP   the game's: burst on the caster, enemies only (Wing Buffet)
+OUTER_SET n = 0
+ACTION_FOR_EACH pro IN NY#SDRKP NY#BLIL NY#CNYDL BEGIN
+  ACTION_TO_LOWER pro
+  ADD_PROJECTILE ~%MOD_FOLDER%/pro/%pro%.pro~
+  OUTER_SET $ny_ph_pro(~%n%~) = IDS_OF_SYMBOL (~projectl~ ~%pro%~) + 1
+  OUTER_SET n += 1
+END
+OUTER_SET $ny_ph_pro(~3~) = IDS_OF_SYMBOL (~projectl~ ~INAREANP~) + 1
+ACTION_IF ($ny_ph_pro(~3~) < 1) BEGIN
+  FAIL ~BlackDragonMagic: projectile INAREANP not found in PROJECTL.IDS~
+END
+
+
+// ---------------------------------------------------------------------------
+// 2. The stored files
+// ---------------------------------------------------------------------------
+COPY ~%MOD_FOLDER%/spl~ ~override~
+  LPF NY#PLACEHOLDERS END
+COPY ~%MOD_FOLDER%/itm~ ~override~
+  LPF NY#PLACEHOLDERS END
+COPY ~%MOD_FOLDER%/eff~ ~override~
+     ~%MOD_FOLDER%/vvc~ ~override~
+ACTION_BASH_FOR ~%MOD_FOLDER%/bam~ ~^ny#.*\.bam$~ BEGIN
+  COPY ~%BASH_FOR_FILESPEC%~ ~override~
+END
+ACTION_BASH_FOR ~%MOD_FOLDER%/wav~ ~^ny#.*\.wav$~ BEGIN
+  COPY ~%BASH_FOR_FILESPEC%~ ~override~
+END
+
+
+// ---------------------------------------------------------------------------
+// 3. The kit
+// ---------------------------------------------------------------------------
+// Registered with ADD_KIT_EX (lib/a7#add_kit_ex.tpa, by Argent77), cloned
+// from the Dragon Disciple: every table that is not given here (weapon
+// proficiencies, alignments, race tables, CLASTEXT/SODCLTXT, CLSRCREQ,
+// HPCLASS: d6, NUMWSLOT, starting equipment...) copies its row.
+// High-level abilities: own table LUNYB.2DA (tpa/hla.tpa) where the game has
+// them; elsewhere the Dragon Disciple's LUABBR row is copied.
+ACTION_IF ny_hla BEGIN
+  OUTER_SPRINT ny_luabbr ~NYB~
+END ELSE BEGIN
+  OUTER_SPRINT ny_luabbr ~~
+END
+
+OUTER_SET ny_kit_lower = RESOLVE_STR_REF (@1)
+OUTER_SET ny_kit_mixed = RESOLVE_STR_REF (@2)
+OUTER_SET ny_kit_help  = RESOLVE_STR_REF (@3)
+
+LAF ADD_KIT_EX
+  INT_VAR
+    kit_class = 19                          // sorcerer
+    visible   = 1                           // selectable at character creation
+    lower     = ny_kit_lower
+    mixed     = ny_kit_mixed
+    help      = ny_kit_help
+  STR_VAR
+    kit_name   = ~NY#BDD~
+    source_kit = ~DRAGON_DISCIPLE~
+    clab_path  = EVAL ~%MOD_FOLDER%/2da/clny#bdd.2da~
+    //            STR DEX CON INT WIS CHA
+    abclasrq   = ~0   0   0   9   0   9~     // sorcerer requirements
+    abclsmod   = ~0   0   0   0   0   0~     // no ability modifier
+    luabbr     = EVAL ~%ny_luabbr%~
+  RET
+    ny_kit_id = kit_id
+END

@@ -1,0 +1,28 @@
+/////////////////////////////////////////////////////////////////////////////
+// Black Dragon Breaths: wizard spells reserved to the kit (only the Black
+// Dragon Disciple is offered them: tpa/global.tpa), his acid breath in
+// various shapes. Common rules:
+//   - they ignore magic resistance (effects "natural", resist/dispel 0)
+//   - impact: 1d4 acid damage per caster level, capped by the spell level,
+//     no save
+//   - the acid keeps eating: half the impact again the next round (opcode
+//     12, timing 4, 6 seconds), save vs. Breath negates
+//   - the disciple roars (NY#BROAR) and holds still 1 second while he
+//     breathes (opcode 165); he is not hit by his own breath (opcode 206 on
+//     himself, 2 seconds)
+//
+// NY#BLIN   Black Dragon Breath: Line, level 2 (WIZARD_NY_BREATH_LINE): the
+//           basic breath, no casting time. 1d4 per level, 4d4 at least, 8d4
+//           at most (headers 1, 5, 6, 7, 8). Projectile NY#BLIL (invisible
+//           line, 30 ft.); the line of explosions is played on the disciple,
+//           facing the target, in two layers: black smoke NY#BLIK and glowing
+//           acid NY#BLIG (VVC, 9 orientations mirrored to 16).
+//           Icons NY#BLINB / NY#BLINC.
+/////////////////////////////////////////////////////////////////////////////
+
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BLINB~ c = ~NY#BLINC~ END   // Remastered Spell Icons
+
+COPY_EXISTING ~ny#blin.spl~ ~override~
+  SAY 0x08 @1
+  SAY 0x50 @2
+ADD_SPELL ~override/ny#blin.spl~ 2 2 ~WIZARD_NY_BREATH_LINE~
