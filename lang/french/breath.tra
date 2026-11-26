@@ -88,13 +88,13 @@ Le Disciple du Dragon Noir crache son souffle dans ses mains et le façonne en u
 (Évocation)
 
 Niveau : 7
-Portée : 12 m
-Durée : 3 rounds
+Portée : champ de vision du lanceur
+Durée : 1 round par niveau (14 rounds au moins)
 Temps d'incantation : 7
-Zone d'effet : rayon de 6 m
-Jet de sauvegarde : spécial
+Zone d'effet : rayon de 4,5 m
+Jet de sauvegarde : 1/2
 
-Le Disciple du Dragon Noir lance une orbe de souffle vers le ciel ; elle éclate et retombe en pluie d'acide pendant 3 rounds. À chaque round, chaque créature dans la zone, alliée comme ennemie, subit 1d4 points de dégâts d'acide par tranche de 2 niveaux du lanceur (10d4 au plus) ; un jet de sauvegarde réussi contre les souffles les réduit de moitié. Ce souffle ignore la résistance à la magie.~
+Le Disciple du Dragon Noir souffle vers le ciel un nuage d'acide qui retombe en averse sur la zone. Les créatures présentes au moment où le sort est lancé, alliées comme ennemies, subissent 1d4 points de dégâts d'acide par round pendant les trois premiers rounds, 1d6 points pendant les trois suivants, puis 1d8 points par round jusqu'à la fin du sort. Quitter la zone n'arrête pas les dégâts : l'acide colle à la peau. À chaque round, un jet de sauvegarde réussi contre les sorts réduit les dégâts de moitié pour ce round. Ce souffle ignore la résistance à la magie.~
 
 // Eruption
 @15 = ~Souffle du dragon noir : éruption~

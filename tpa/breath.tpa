@@ -34,9 +34,11 @@
 //           pause, the disciple not hit.
 // NY#BCLD   Cloud, level 6: Cloudkill's green cloud (NY#BCLD), 6 pulses about
 //           one per round: 4d4, save vs. Breath for half.
-// NY#BRAI   Rain, level 7: acid rain (NY#BRAI: IWD:EE Acid Storm's rain in
-//           acid green, NY#BRAIA), 20 ft., 3 pulses: 1d4 per 2 levels (10d4),
-//           save vs. Breath for half.
+// NY#BRAI   Rain, level 7: IWD:EE's Acid Storm as it is (projectile NY#BRAI,
+//           rain NY#BRAIA, splash NY#BRAIX, sound NY#BRAIS, icons NY#BRAIB/C):
+//           1d4 x3, 1d6 x3, then 1d8 every round, 14 rounds, one more per
+//           level from 15; save vs. Spell for half each; ignores magic
+//           resistance.
 // NY#BERU   Eruption, level 8: the explosion 20 ft. around the disciple
 //           (NY#BERU); 1d4 per level, 20d4; allies hit, not the disciple.
 // NY#BBOL   Bolt, level 9: one creature (Melf's Acid Arrow's projectile);

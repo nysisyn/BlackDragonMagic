@@ -24,7 +24,7 @@ Spells:
 - [ ] Ball: the orb travels slowly, explosion and black puffs at the point.
 - [ ] Cone: cone, explosion, black puffs, pause, the disciple not hit.
 - [ ] Cloud: the orb, then Cloudkill's green cloud for about 6 rounds, 4d4 per round (half on save).
-- [ ] Rain: acid green rain (visual to improve: orb rising, burst in the air), 3 pulses.
+- [ ] Rain: IWD:EE's Acid Storm as it is (rain, splash, sound; 1d4/1d6/1d8 each round for 14+ rounds, save vs. Spell for half); only creatures there at the casting are hit.
 - [ ] Eruption: explosion around the disciple, allies hit, not him; extra effect still to choose.
 - [ ] Bolt: 20d4; failed save: 10d4 the next round, curses 15% each (poison, disease, insects, plants, fear, blindness), never on a successful save.
 - [ ] Damage of every header (levels) and the casting times.
@@ -39,7 +39,7 @@ IWD:EE:
 - [ ] The whole list above once in IWD:EE (kit, global script, spell choice filter, HLA table, Nydra'Nath).
 
 ## Next steps (see the Google Sheets workbook)
-- Black Dragon Breaths: real icons; Eruption's extra effect; Rain's visual; Final Breath's name. Orb: true bounces if a way is found.
+- Black Dragon Breaths: real icons; Eruption's extra effect; Final Breath's name. Orb: true bounces if a way is found.
 - Transformations: 7 kept for 9 places; level 1 has two, levels 4, 5 and 8 are empty; no acid resistance left.
 - Reserved spells: Darkness to improve (visuals, balance); Corrupt Water to review; Swampy Lake to make an HLA; Summon Reptile (hydra) to bring back.
 - The former spells of the spells component: decide which become reserved to the kit (Solvent of Corrosion: restore from the archive if kept).

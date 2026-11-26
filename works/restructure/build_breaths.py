@@ -65,9 +65,7 @@ pro_from(f'{OLD}/ny#tbkc.pro', 'NY#BCONK')
 # Cloud: Cloudkill's green cloud for 6 pulses, about one per round; the orb
 # travels to the point
 pro_from(f'{GAME}/cloudkil.pro', 'NY#BCLD', bam='NY#BORBT', rep=6, freq=90)
-# Rain: the acid rain (IWD:EE Acid Storm's rain, acid green, NY#BRAIA),
-# 20-ft. radius, 3 pulses, one per round
-pro_from(f'{OLD}/ny#tgcx.pro', 'NY#BRAI', spread='NY#BRAIA', rep=3, freq=90, size=int(20 * FT))
+# Rain: IWD:EE's Acid Storm, copied as it is by rain_from_iwd.py
 # Eruption: the breaths' explosion, 20 ft. around the caster
 pro_from(f'{OLD}/ny#tbpx.pro', 'NY#BERU', size=int(20 * FT), bam='', snd1='', snd2='', speed=40)
 # Bolt: Melf's Acid Arrow's projectile
@@ -93,12 +91,11 @@ def bam_palette_recolour(src, dst, fn):
 def acid(r, g, b):            # grey -> acid green, by luminance
     L = (r + g + b) / 3
     return int(min(255, L * 0.75)), int(min(255, L * 1.05)), int(min(255, L * 0.2))
-bam_palette_recolour(f'{OLD}/ny#tgcr.bam', f'{MOD}/bam/ny#braia.bam', acid)
 shutil.copy(f'{OLD}/ny#pbrt.bam', f'{MOD}/bam/ny#borbt.bam')
 shutil.copy(f'{OLD}/ny#bdbs.bam', f'{MOD}/bam/ny#bdbs.bam')
 # icons: placeholders, the former breath icons
 for new, old in {'NY#BORB': 'ny#bdbb', 'NY#BTRP': 'ny#pbr', 'NY#BBAL': 'ny#bdbl', 'NY#BCON': 'ny#tbrw',
-                 'NY#BCLD': 'ny#tmbr', 'NY#BRAI': 'ny#tgbd', 'NY#BERU': 'ny#tbms', 'NY#BBOL': 'ny#sbb',
+                 'NY#BCLD': 'ny#tmbr', 'NY#BERU': 'ny#tbms', 'NY#BBOL': 'ny#sbb',
                  'NY#HFIN': 'ny#bdbl'}.items():
     for s in 'bc':
         shutil.copy(f'{OLD}/{old}{s}.bam', f'{MOD}/bam/{new.lower()}{s}.bam')
@@ -159,9 +156,7 @@ spl('NY#BCON', level=5, icon='NY#BCON', heads=[(l, 4, 30, 5, ph('NY#BCON'), [
 # Cloud, level 6: 4d4 per round for 6 rounds, save vs. Breath for half
 spl('NY#BCLD', level=6, icon='NY#BCLD', heads=[(1, 4, 40, 6, ph('NY#BCLD'), [
     eff(12, tg=2, p2=ACID, dn=4, ds=4, sv=2, sp=0x100)])])
-# Rain, level 7: 1d4 per 2 levels each round for 3 rounds (10d4), save vs. Breath for half
-spl('NY#BRAI', level=7, icon='NY#BRAI', heads=[(l, 4, 40, 7, ph('NY#BRAI'), [
-    roar(), eff(12, tg=2, p2=ACID, dn=min(10, l // 2), ds=4, sv=2, sp=0x100)]) for l in range(2, 21, 2)])
+# Rain, level 7: IWD:EE's Acid Storm, see rain_from_iwd.py (run after this script)
 # Eruption, level 8: 1d4 per level, 20d4, around the disciple, allies hit, not himself
 spl('NY#BERU', level=8, icon='NY#BERU', heads=[(l, 5, 0, 8, ph('NY#BERU'), [
     pause(), roar(), self_immune('NY#BERU'), impact(n), later(n)]) for l, n in leveled(1, 20)])
