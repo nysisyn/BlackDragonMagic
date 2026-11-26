@@ -5,3 +5,12 @@
 @2 = ~Appel de l'ancêtre draconique
 
 Le Disciple du Dragon Noir appelle Nydra'Nath, l'esprit d'un ancêtre demi-dragon noir, qui combat à ses côtés. Enragé de sang, il entre en rage dès qu'il voit un ennemi. Il ne craint ni les armes inférieures à +3, ni la plupart des sorts, ni le souffle de son descendant. L'esprit, flou comme un fantôme, combat avec une épée à deux mains ruisselante d'acide (+3, 1d10 tranchant + 2d6 acide ; chaque coup peut enlacer la cible dans les plantes du marais ou la couvrir d'une nuée d'insectes qui l'empêche de lancer des sorts), frappe de ses ailes les ennemis qui l'approchent de trop près, et peut cracher une fois une ligne d'acide (10d8 dégâts d'acide, jet de sauvegarde contre les souffles pour la moitié). Il est immunisé à l'acide, au poison et à la peur.~
+
+// Final Breath (name provisional)
+@3 = ~Souffle final~
+@4 = ~Souffle final
+
+L'aboutissement du souffle du Disciple du Dragon Noir : une ligne d'acide deux fois plus large que son souffle de base, qui ne frappe que ses ennemis. Chaque ennemi sur la ligne subit 30d4 points de dégâts d'acide, sans jet de sauvegarde. Un ennemi qui rate un jet de sauvegarde contre les souffles subit 15d4 points de dégâts d'acide supplémentaires au round suivant, et chacune des malédictions de Souffle du dragon noir : trait (poison, maladie, insectes, enchevêtrement, peur, aveuglement) a 5 % de chances de le frapper. Ce souffle ignore la résistance à la magie.
+
+Utilisable à volonté ; une fois utilisé, il se recharge en 6 rounds.~
+@5 = ~Souffle final prêt~

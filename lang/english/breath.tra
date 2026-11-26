@@ -11,3 +11,124 @@ Area of Effect: 30-ft. line
 Saving Throw: Special
 
 The Black Dragon Disciple spits acid like a black dragon, a line that hits every creature in front of him, ally or enemy. Each creature in the line suffers 1d4 points of acid damage per level of the caster (4d4 at least, 8d4 at most), with no saving throw. A creature that fails a save vs. Breath suffers half the damage again the next round, as the acid keeps eating. This breath ignores magic resistance.~
+
+// Orb
+@3 = ~Black Dragon Breath: Orb~
+@4 = ~Black Dragon Breath: Orb
+(Evocation)
+
+Level: 1
+Range: 30 ft.
+Duration: Instantaneous
+Casting Time: 1
+Area of Effect: 1 creature, then the enemies within 10 ft. of it
+Saving Throw: Special
+
+The Black Dragon Disciple spits his breath into his hand, shapes it into an orb and hurls it at a creature. The orb deals 2d4 points of acid damage, +1d4 at levels 3, 5 and 7 (5d4 at most), with no saving throw, then bursts into acid shards that hit every enemy within 10 ft. of the target for 1d4 less; allies and neutral creatures are spared. A creature that fails a save vs. Breath suffers half the damage again the next round, as the acid keeps eating. This breath ignores magic resistance.~
+
+// Trap
+@5 = ~Black Dragon Breath: Trap~
+@6 = ~Black Dragon Breath: Trap
+(Evocation)
+
+Level: 3
+Range: 30 ft.
+Duration: Until triggered
+Casting Time: 3
+Area of Effect: 20-ft. radius
+Saving Throw: Special
+
+The Black Dragon Disciple spits his breath into his hand, shapes it into an orb and throws it at a spot, where it hovers until a creature comes close. Then it explodes: every creature within 20 ft., ally or enemy, suffers 1d4 points of acid damage per level of the caster (10d4 at most), with no saving throw. A creature that fails a save vs. Breath suffers half the damage again the next round, as the acid keeps eating. This breath ignores magic resistance.~
+
+// Ball
+@7 = ~Black Dragon Breath: Ball~
+@8 = ~Black Dragon Breath: Ball
+(Evocation)
+
+Level: 4
+Range: 40 ft.
+Duration: Instantaneous
+Casting Time: 4
+Area of Effect: 20-ft. radius
+Saving Throw: Special
+
+The Black Dragon Disciple spits his breath into his hands and shapes it into an orb that drifts slowly to the targeted point, then explodes: every creature within 20 ft., ally or enemy, suffers 1d4 points of acid damage per level of the caster (12d4 at most), with no saving throw. A creature that fails a save vs. Breath suffers half the damage again the next round, as the acid keeps eating. This breath ignores magic resistance.~
+
+// Cone
+@9 = ~Black Dragon Breath: Cone~
+@10 = ~Black Dragon Breath: Cone
+(Evocation)
+
+Level: 5
+Range: 30 ft.
+Duration: Instantaneous
+Casting Time: 5
+Area of Effect: 30-ft. cone
+Saving Throw: Special
+
+The Black Dragon Disciple breathes his acid in a wide cone, holding still for a second. Every creature in the cone, ally or enemy, suffers 1d4 points of acid damage per level of the caster (15d4 at most), with no saving throw; the disciple is not hit by his own breath. A creature that fails a save vs. Breath suffers half the damage again the next round, as the acid keeps eating. This breath ignores magic resistance.~
+
+// Cloud
+@11 = ~Black Dragon Breath: Cloud~
+@12 = ~Black Dragon Breath: Cloud
+(Evocation)
+
+Level: 6
+Range: 40 ft.
+Duration: 6 rounds
+Casting Time: 6
+Area of Effect: 20-ft. radius
+Saving Throw: Special
+
+The Black Dragon Disciple spits his breath into his hands and shapes it into an orb that drifts to the targeted point and bursts into a corrosive cloud lasting 6 rounds. Each round, every creature in the cloud, ally or enemy, suffers 4d4 points of acid damage; a successful save vs. Breath halves it. This breath ignores magic resistance.~
+
+// Rain
+@13 = ~Black Dragon Breath: Rain~
+@14 = ~Black Dragon Breath: Rain
+(Evocation)
+
+Level: 7
+Range: 40 ft.
+Duration: 3 rounds
+Casting Time: 7
+Area of Effect: 20-ft. radius
+Saving Throw: Special
+
+The Black Dragon Disciple hurls an orb of breath into the sky; it bursts and falls back as acid rain for 3 rounds. Each round, every creature in the area, ally or enemy, suffers 1d4 points of acid damage per 2 levels of the caster (10d4 at most); a successful save vs. Breath halves it. This breath ignores magic resistance.~
+
+// Eruption
+@15 = ~Black Dragon Breath: Eruption~
+@16 = ~Black Dragon Breath: Eruption
+(Evocation)
+
+Level: 8
+Range: 0
+Duration: Instantaneous
+Casting Time: 8
+Area of Effect: 20-ft. radius around the caster
+Saving Throw: Special
+
+The Black Dragon Disciple spits acid all around him, holding still for a second. Every creature within 20 ft., ally or enemy, suffers 1d4 points of acid damage per level of the caster (20d4 at most), with no saving throw; the disciple is not hit by his own breath. A creature that fails a save vs. Breath suffers half the damage again the next round, as the acid keeps eating. This breath ignores magic resistance.~
+
+// Bolt
+@17 = ~Black Dragon Breath: Bolt~
+@18 = ~Black Dragon Breath: Bolt
+(Evocation)
+
+Level: 9
+Range: 40 ft.
+Duration: Special
+Casting Time: 9
+Area of Effect: 1 creature
+Saving Throw: Special
+
+The Black Dragon Disciple spits a bolt of concentrated acid, the spit of an ancient wyrm, at a single creature. The target suffers 20d4 points of acid damage, with no saving throw.
+
+If the target fails a save vs. Breath, the acid keeps eating: it suffers 10d4 more points of acid damage the next round. Moreover, each of the following curses has a 15% chance to strike it, independently of the others:
+- Poison: poisoned for 4 rounds.
+- Disease: diseased (-2 Strength and Dexterity) for 4 rounds.
+- Insects: harassed by a swarm of insects for 2 rounds.
+- Entanglement: held by swamp plants for 2 rounds.
+- Fear: panicked for 2 rounds.
+- Blindness: blinded for 2 rounds.
+A target that succeeds at its save only suffers the initial damage. This breath ignores magic resistance.~

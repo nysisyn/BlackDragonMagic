@@ -11,3 +11,124 @@ Zone d'effet : ligne de 9 m
 Jet de sauvegarde : spécial
 
 Le Disciple du Dragon Noir crache de l'acide tel un dragon noir, une ligne qui frappe toutes les créatures devant lui, alliées comme ennemies. Chaque créature sur la ligne subit 1d4 points de dégâts d'acide par niveau du lanceur (4d4 au moins, 8d4 au plus), sans jet de sauvegarde. Une créature qui rate un jet de sauvegarde contre les souffles subit à nouveau la moitié des dégâts au round suivant : l'acide continue de ronger. Ce souffle ignore la résistance à la magie.~
+
+// Orb
+@3 = ~Souffle du dragon noir : orbe~
+@4 = ~Souffle du dragon noir : orbe
+(Évocation)
+
+Niveau : 1
+Portée : 9 m
+Durée : instantanée
+Temps d'incantation : 1
+Zone d'effet : 1 créature, puis les ennemis à moins de 3 m d'elle
+Jet de sauvegarde : spécial
+
+Le Disciple du Dragon Noir crache son souffle dans sa main, le façonne en orbe et la lance sur une créature. L'orbe inflige 2d4 points de dégâts d'acide, +1d4 aux niveaux 3, 5 et 7 (5d4 au plus), sans jet de sauvegarde, puis éclate en éclats d'acide qui frappent chaque ennemi à moins de 3 m de la cible pour 1d4 de moins ; les alliés et les créatures neutres sont épargnés. Une créature qui rate un jet de sauvegarde contre les souffles subit à nouveau la moitié des dégâts au round suivant : l'acide continue de ronger. Ce souffle ignore la résistance à la magie.~
+
+// Trap
+@5 = ~Souffle du dragon noir : piège~
+@6 = ~Souffle du dragon noir : piège
+(Évocation)
+
+Niveau : 3
+Portée : 9 m
+Durée : jusqu'au déclenchement
+Temps d'incantation : 3
+Zone d'effet : rayon de 6 m
+Jet de sauvegarde : spécial
+
+Le Disciple du Dragon Noir crache son souffle dans sa main, le façonne en orbe et la lance sur un emplacement, où elle lévite jusqu'à ce qu'une créature approche. Elle explose alors : chaque créature à moins de 6 m, alliée comme ennemie, subit 1d4 points de dégâts d'acide par niveau du lanceur (10d4 au plus), sans jet de sauvegarde. Une créature qui rate un jet de sauvegarde contre les souffles subit à nouveau la moitié des dégâts au round suivant : l'acide continue de ronger. Ce souffle ignore la résistance à la magie.~
+
+// Ball
+@7 = ~Souffle du dragon noir : boule~
+@8 = ~Souffle du dragon noir : boule
+(Évocation)
+
+Niveau : 4
+Portée : 12 m
+Durée : instantanée
+Temps d'incantation : 4
+Zone d'effet : rayon de 6 m
+Jet de sauvegarde : spécial
+
+Le Disciple du Dragon Noir crache son souffle dans ses mains et le façonne en une orbe qui avance lentement vers le point visé, puis explose : chaque créature à moins de 6 m, alliée comme ennemie, subit 1d4 points de dégâts d'acide par niveau du lanceur (12d4 au plus), sans jet de sauvegarde. Une créature qui rate un jet de sauvegarde contre les souffles subit à nouveau la moitié des dégâts au round suivant : l'acide continue de ronger. Ce souffle ignore la résistance à la magie.~
+
+// Cone
+@9 = ~Souffle du dragon noir : cône~
+@10 = ~Souffle du dragon noir : cône
+(Évocation)
+
+Niveau : 5
+Portée : 9 m
+Durée : instantanée
+Temps d'incantation : 5
+Zone d'effet : cône de 9 m
+Jet de sauvegarde : spécial
+
+Le Disciple du Dragon Noir souffle son acide en un large cône et reste immobile une seconde. Chaque créature dans le cône, alliée comme ennemie, subit 1d4 points de dégâts d'acide par niveau du lanceur (15d4 au plus), sans jet de sauvegarde ; le disciple n'est pas touché par son propre souffle. Une créature qui rate un jet de sauvegarde contre les souffles subit à nouveau la moitié des dégâts au round suivant : l'acide continue de ronger. Ce souffle ignore la résistance à la magie.~
+
+// Cloud
+@11 = ~Souffle du dragon noir : nuage~
+@12 = ~Souffle du dragon noir : nuage
+(Évocation)
+
+Niveau : 6
+Portée : 12 m
+Durée : 6 rounds
+Temps d'incantation : 6
+Zone d'effet : rayon de 6 m
+Jet de sauvegarde : spécial
+
+Le Disciple du Dragon Noir crache son souffle dans ses mains et le façonne en une orbe qui avance vers le point visé et éclate en un nuage corrosif qui dure 6 rounds. À chaque round, chaque créature dans le nuage, alliée comme ennemie, subit 4d4 points de dégâts d'acide ; un jet de sauvegarde réussi contre les souffles les réduit de moitié. Ce souffle ignore la résistance à la magie.~
+
+// Rain
+@13 = ~Souffle du dragon noir : pluie~
+@14 = ~Souffle du dragon noir : pluie
+(Évocation)
+
+Niveau : 7
+Portée : 12 m
+Durée : 3 rounds
+Temps d'incantation : 7
+Zone d'effet : rayon de 6 m
+Jet de sauvegarde : spécial
+
+Le Disciple du Dragon Noir lance une orbe de souffle vers le ciel ; elle éclate et retombe en pluie d'acide pendant 3 rounds. À chaque round, chaque créature dans la zone, alliée comme ennemie, subit 1d4 points de dégâts d'acide par tranche de 2 niveaux du lanceur (10d4 au plus) ; un jet de sauvegarde réussi contre les souffles les réduit de moitié. Ce souffle ignore la résistance à la magie.~
+
+// Eruption
+@15 = ~Souffle du dragon noir : éruption~
+@16 = ~Souffle du dragon noir : éruption
+(Évocation)
+
+Niveau : 8
+Portée : 0
+Durée : instantanée
+Temps d'incantation : 8
+Zone d'effet : rayon de 6 m autour du lanceur
+Jet de sauvegarde : spécial
+
+Le Disciple du Dragon Noir crache de l'acide tout autour de lui et reste immobile une seconde. Chaque créature à moins de 6 m, alliée comme ennemie, subit 1d4 points de dégâts d'acide par niveau du lanceur (20d4 au plus), sans jet de sauvegarde ; le disciple n'est pas touché par son propre souffle. Une créature qui rate un jet de sauvegarde contre les souffles subit à nouveau la moitié des dégâts au round suivant : l'acide continue de ronger. Ce souffle ignore la résistance à la magie.~
+
+// Bolt
+@17 = ~Souffle du dragon noir : trait~
+@18 = ~Souffle du dragon noir : trait
+(Évocation)
+
+Niveau : 9
+Portée : 12 m
+Durée : spéciale
+Temps d'incantation : 9
+Zone d'effet : 1 créature
+Jet de sauvegarde : spécial
+
+Le Disciple du Dragon Noir crache sur une seule créature un trait d'acide concentré, le crachat d'un ver antique. La cible subit 20d4 points de dégâts d'acide, sans jet de sauvegarde.
+
+Si la cible rate un jet de sauvegarde contre les souffles, l'acide continue de la ronger : elle subit 10d4 points de dégâts d'acide supplémentaires au round suivant. De plus, chacune des malédictions suivantes a 15 % de chances de la frapper, indépendamment des autres :
+- Poison : empoisonnée pendant 4 rounds.
+- Maladie : malade (-2 en Force et en Dextérité) pendant 4 rounds.
+- Insectes : harcelée par une nuée d'insectes pendant 2 rounds.
+- Enchevêtrement : retenue par les plantes du marais pendant 2 rounds.
+- Peur : prise de panique pendant 2 rounds.
+- Aveuglement : aveuglée pendant 2 rounds.
+Une cible qui réussit son jet de sauvegarde ne subit que les dégâts initiaux. Ce souffle ignore la résistance à la magie.~

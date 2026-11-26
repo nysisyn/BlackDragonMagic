@@ -9,6 +9,14 @@
 //             calling Nydra'Nath (tpa/creatures.tpa) through the EFF
 //             NY#HANCE (opcode 177 -> opcode 67 NY#CNYD).
 //             Icons NY#HANCB / NY#HANCC: Summon Planetar's, acid yellow.
+//   NY#HFINA  Final Breath (name provisional), picked once (AP_): spell state
+//             FIN and the innate ability NY#HFIN. NY#HFIN: the Line's line
+//             twice as wide (projectile NY#HFIN), enemies only (SPLPROT row
+//             EA < 200), 30d4; failed save vs. Breath: NY#HFINX (15d4 the next
+//             round, curse rolls NY#HFIR1-6 at 5%, the Bolt's curses). At
+//             will: removed when used, recharging 6 rounds (state FINCD), then
+//             given back by the global script (NY#HFING) to a disciple who has
+//             it no more and is not recharging: also after a cancelled aim.
 /////////////////////////////////////////////////////////////////////////////
 
 LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#HANCB~ c = ~NY#HANCC~ END   // Remastered Spell Icons
@@ -16,5 +24,11 @@ LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#HANCB~ c = ~NY#HANCC~ END   // Remastered S
 COPY_EXISTING ~ny#hanc.spl~ ~override~
   SAY 0x08 @1  SAY 0x0c @1
   SAY 0x50 @2  SAY 0x54 @2
+
+LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#HFINB~ c = ~NY#HFINC~ END
+COPY_EXISTING ~ny#hfin.spl~ ~override~
+  SAY 0x08 @3  SAY 0x0c @3
+  SAY 0x50 @4  SAY 0x54 @4
+  LPF ALTER_SPELL_EFFECT INT_VAR match_opcode = 139 parameter1 = RESOLVE_STR_REF (@5) END   // "Final Breath ready"
 
 COPY ~%MOD_FOLDER%/2da/lunyb.2da~ ~override~

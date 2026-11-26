@@ -32,15 +32,21 @@
 // ---------------------------------------------------------------------------
 // Spell states n (opcode 328, parameter 2 = 1000 + n in the stored files)
 // and their SPLPROT rows "has the state" (opcodes 318/324/326, parameter 2
-// = 2000 + n). One per transformation, two for the level markers.
+// = 2000 + n). One per transformation, two for the level markers, two for
+// the HLA Final Breath (FIN: taken, FINCD: recharging).
 OUTER_SET n = 0
-ACTION_FOR_EACH code IN CLB SCL RES SWS BLS WNG APO LV10 LV15 BEGIN
+ACTION_FOR_EACH code IN CLB SCL RES SWS BLS WNG APO LV10 LV15 FIN FINCD BEGIN
   LAF NY#ADD_SPLSTATE STR_VAR name = EVAL ~NY_BDD_%code%~ RET st = id END
   LAF NY#SPLPROT_ROW STR_VAR label = EVAL ~NY#HAS_%code%~ stat = ~0x112~ value = EVAL ~%st%~ relation = ~1~ RET row END
   OUTER_SET $ny_ph_state(~%n%~) = st
   OUTER_SET $ny_ph_has(~%n%~)   = row
   OUTER_SET n += 1
 END
+// Other SPLPROT rows (parameter 2 = 2000 + n, from n = 20)
+//   20  not an enemy of the party (EA < 200): breaths that spare allies and
+//       neutral creatures (opcode 324: they are immune)
+LAF NY#SPLPROT_ROW STR_VAR label = ~NY#EA<200~ stat = ~0x10a~ value = ~200~ relation = ~2~ RET row END
+OUTER_SET $ny_ph_has(~20~) = row
 
 // Projectiles n (extended header projectile = 3000 + n in the stored files):
 // the mod's, then the game's
@@ -50,16 +56,33 @@ END
 //                a VVC played on the caster)
 //   2 NY#CNYDL   Nydra'Nath's breath: the former acid wave line
 //   3 INAREANP   the game's: burst on the caster, enemies only (Wing Buffet)
+//   Black Dragon Breaths (tpa/breath.tpa):
+//   4 NY#BORB    Orb: the green orb, one creature
+//   5 NY#BORBS   Orb: its shards, 10-ft. burst
+//   6 NY#BTRP    Trap: the hovering orb, then the explosion, 20 ft.
+//   7 NY#BBAL    Ball: the slow orb, then the explosion, 20 ft.
+//   8 NY#BBALK   Ball: its black puffs
+//   9 NY#BCON    Cone: the Dragon Disciple's cone with the explosion
+//  10 NY#BCONK   Cone: its black puffs
+//  11 NY#BCLD    Cloud: Cloudkill's cloud, 6 pulses
+//  12 NY#BRAI    Rain: the acid rain, 20 ft., 3 pulses
+//  13 NY#BERU    Eruption: the explosion, 20 ft. around the caster
+//  14 NY#BBOL    Bolt: Melf's Acid Arrow's projectile
+//  15 NY#HFIN    Final Breath: the Line's line, twice as wide
 OUTER_SET n = 0
-ACTION_FOR_EACH pro IN NY#SDRKP NY#BLIL NY#CNYDL BEGIN
-  ACTION_TO_LOWER pro
-  ADD_PROJECTILE ~%MOD_FOLDER%/pro/%pro%.pro~
+ACTION_FOR_EACH pro IN NY#SDRKP NY#BLIL NY#CNYDL INAREANP NY#BORB NY#BORBS NY#BTRP NY#BBAL NY#BBALK
+                       NY#BCON NY#BCONK NY#BCLD NY#BRAI NY#BERU NY#BBOL NY#HFIN BEGIN
+  ACTION_IF (~%pro%~ STRING_COMPARE ~INAREANP~) BEGIN    // the mod's
+    ACTION_TO_LOWER pro
+    ADD_PROJECTILE ~%MOD_FOLDER%/pro/%pro%.pro~
+  END
   OUTER_SET $ny_ph_pro(~%n%~) = IDS_OF_SYMBOL (~projectl~ ~%pro%~) + 1
   OUTER_SET n += 1
 END
-OUTER_SET $ny_ph_pro(~3~) = IDS_OF_SYMBOL (~projectl~ ~INAREANP~) + 1
-ACTION_IF ($ny_ph_pro(~3~) < 1) BEGIN
-  FAIL ~BlackDragonMagic: projectile INAREANP not found in PROJECTL.IDS~
+OUTER_FOR (i = 0; i < n; ++i) BEGIN
+  ACTION_IF ($ny_ph_pro(~%i%~) < 1) BEGIN
+    FAIL ~BlackDragonMagic: projectile %i% not found in PROJECTL.IDS~
+  END
 END
 
 

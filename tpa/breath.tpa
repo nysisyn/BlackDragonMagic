@@ -18,11 +18,50 @@
 //           facing the target, in two layers: black smoke NY#BLIK and glowing
 //           acid NY#BLIG (VVC, 9 orientations mirrored to 16).
 //           Icons NY#BLINB / NY#BLINC.
+// NY#BORB   Orb, level 1: one creature (projectile NY#BORB, the green orb
+//           NY#BORBT); 2d4, +1d4 at levels 3, 5, 7 (headers 1, 3, 5, 7). The
+//           creature hit casts at its own feet the shards NY#BORS<n> (opcode
+//           148; projectile NY#BORBS, 10 ft.): 1d4 less on the enemies around
+//           it (allies and neutrals immune: SPLPROT row EA < 200; the creature
+//           hit immune for 1 second).
+// NY#BTRP   Trap, level 3: Skull Trap's trap with the orb, then the breaths'
+//           explosion (projectile NY#BTRP, 20 ft.); 1d4 per level, 10d4.
+// NY#BBAL   Ball, level 4: the slow orb, then the explosion (NY#BBAL, 20 ft.)
+//           and its black puffs (NY#BBALK, cast at the same point); 1d4 per
+//           level, 12d4.
+// NY#BCON   Cone, level 5: the Dragon Disciple's cone with the explosion
+//           (NY#BCON) and its black puffs (NY#BCONK); 1d4 per level, 15d4;
+//           pause, the disciple not hit.
+// NY#BCLD   Cloud, level 6: Cloudkill's green cloud (NY#BCLD), 6 pulses about
+//           one per round: 4d4, save vs. Breath for half.
+// NY#BRAI   Rain, level 7: acid rain (NY#BRAI: IWD:EE Acid Storm's rain in
+//           acid green, NY#BRAIA), 20 ft., 3 pulses: 1d4 per 2 levels (10d4),
+//           save vs. Breath for half.
+// NY#BERU   Eruption, level 8: the explosion 20 ft. around the disciple
+//           (NY#BERU); 1d4 per level, 20d4; allies hit, not the disciple.
+// NY#BBOL   Bolt, level 9: one creature (Melf's Acid Arrow's projectile);
+//           20d4; failed save vs. Breath: NY#BBOLX (10d4 the next round, and
+//           the curse rolls NY#BBOR1-6: each casts its curse NY#BCUR1-6 with
+//           a 15% chance, its own roll). Curses: 1 poison, 2 disease (4
+//           rounds), 3 insects, 4 swamp plants, 5 fear, 6 blindness (2 rounds).
+// Icons NY#B<code>B / C: placeholders, the former breath icons.
 /////////////////////////////////////////////////////////////////////////////
 
-LAF NY#ICON_B_FROM_C STR_VAR b = ~NY#BLINB~ c = ~NY#BLINC~ END   // Remastered Spell Icons
-
-COPY_EXISTING ~ny#blin.spl~ ~override~
-  SAY 0x08 @1
-  SAY 0x50 @2
-ADD_SPELL ~override/ny#blin.spl~ 2 2 ~WIZARD_NY_BREATH_LINE~
+// spell, wizard level, SPELL.IDS name; names and descriptions: @1, @2 for
+// the first, then two by two
+OUTER_SET tra = 1
+ACTION_FOR_EACH entry IN ~blin 2 LINE~ ~borb 1 ORB~ ~btrp 3 TRAP~ ~bbal 4 BALL~ ~bcon 5 CONE~
+                         ~bcld 6 CLOUD~ ~brai 7 RAIN~ ~beru 8 ERUPTION~ ~bbol 9 BOLT~ BEGIN
+  OUTER_PATCH_SAVE res  ~%entry%~ BEGIN REPLACE_TEXTUALLY ~ .*~ ~~ END
+  OUTER_PATCH_SAVE lv   ~%entry%~ BEGIN REPLACE_TEXTUALLY ~^[^ ]+ \([0-9]\) .*~ ~\1~ END
+  OUTER_PATCH_SAVE form ~%entry%~ BEGIN REPLACE_TEXTUALLY ~.* ~ ~~ END
+  LAF NY#ICON_B_FROM_C STR_VAR b = EVAL ~NY#%res%B~ c = EVAL ~NY#%res%C~ END   // Remastered Spell Icons
+  OUTER_SET name = RESOLVE_STR_REF ((AT ~tra~))
+  OUTER_SET tra += 1
+  OUTER_SET desc = RESOLVE_STR_REF ((AT ~tra~))
+  OUTER_SET tra += 1
+  COPY_EXISTING ~ny#%res%.spl~ ~override~
+    WRITE_LONG 0x08 name
+    WRITE_LONG 0x50 desc
+  ADD_SPELL ~override/ny#%res%.spl~ 2 lv ~WIZARD_NY_BREATH_%form%~
+END
