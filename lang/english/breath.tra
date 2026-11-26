@@ -94,7 +94,7 @@ Casting Time: 7
 Area of Effect: 15-ft. radius
 Saving Throw: 1/2
 
-The Black Dragon Disciple breathes a cloud of acid into the sky that pours down on the area. Creatures in the area when the spell is cast, ally or enemy, suffer 1d4 points of acid damage each round for the first three rounds, 1d6 points for the next three rounds, and 1d8 points each round thereafter until the spell ends. Moving out of the area does not stop the damage: the acid adheres to the skin. Each round, a successful save vs. Spell halves the damage for that round. This breath ignores magic resistance.~
+The Black Dragon Disciple breathes a cloud of acid into the sky that pours down on the area. Creatures in the area when the spell is cast, ally or enemy, suffer 1d4 points of acid damage each round until the spell ends. Moving out of the area does not stop the damage: the acid adheres to the skin. Each round, a successful save vs. Breath halves the damage for that round. This breath ignores magic resistance.~
 
 // Eruption
 @15 = ~Black Dragon Breath: Eruption~

@@ -2,9 +2,12 @@
 into the mod, under the mod's names:
   - IDPRO211.PRO -> pro/ny#brai.pro (the rain ASTORMA -> NY#BRAIA, the
     splash ASTORMX -> NY#BRAIX, the sound ARE_M04 -> NY#BRAIS);
-  - SPWI724.SPL  -> spl/ny#brai.spl: same headers and damage (1d4 x3,
-    1d6 x3, then 1d8 every 6 s, one more per level from 15; save vs. Spell
-    for half each), with these changes only:
+  - SPWI724.SPL  -> spl/ny#brai.spl: same headers (damage every 6 s, 14
+    times, one more per level from 15; save for half each), with these
+    changes only:
+      * 1d4 every round (Acid Storm: 1d4 x3, 1d6 x3, then 1d8);
+      * save vs. Breath (Acid Storm: vs. Spell);
+      * the roar (NY#BROAR) first, as the other breaths;
       * its self-protection (op 324 'SPWI724') points to NY#BRAI;
       * the damage ignores magic resistance (resist/dispel 0), as every
         breath;
@@ -37,4 +40,9 @@ for hb, el in s.heads:
     for e in el:
         if eop(e) == 324: set_res(e, 'NY#BRAI')
         e[0x0d] = 0
+        if eop(e) == 12:
+            struct.pack_into('<I', e, 0x20, 4)                       # 1d4 every round
+            sv = struct.unpack_from('<I', e, 0x24)[0]
+            struct.pack_into('<I', e, 0x24, (sv & ~0x1f) | 2)        # save vs. Breath
+    el.insert(0, mk_eff(174, tg=1, tm=1, res='NY#BROAR'))           # the roar
 s.save(f'{MOD}/spl/ny#brai.spl')

@@ -24,7 +24,7 @@ Spells:
 - [ ] Ball: the orb travels slowly, explosion and black puffs at the point.
 - [ ] Cone: cone, explosion, black puffs, pause, the disciple not hit.
 - [ ] Cloud: the orb, then Cloudkill's green cloud for about 6 rounds, 4d4 per round (half on save).
-- [ ] Rain: IWD:EE's Acid Storm as it is (rain, splash, sound; 1d4/1d6/1d8 each round for 14+ rounds, save vs. Spell for half); only creatures there at the casting are hit.
+- [ ] Rain: IWD:EE's Acid Storm as it is (rain, splash, sound), 1d4 each round for 14+ rounds, save vs. Breath for half, roar; only creatures there at the casting are hit.
 - [ ] Eruption: explosion around the disciple, allies hit, not him; extra effect still to choose.
 - [ ] Bolt: 20d4; failed save: 10d4 the next round, curses 15% each (poison, disease, insects, plants, fear, blindness), never on a successful save.
 - [ ] Damage of every header (levels) and the casting times.
