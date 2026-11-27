@@ -5,7 +5,7 @@ import sys,struct,zlib,os
 import numpy as np
 from PIL import Image
 SHEET=sys.argv[1]; OUT=sys.argv[2]
-SCALE=0.75; CELL=256; AX,AY=128,178         # anchor (ground): the middle of the body, a flat creature lies on its circle
+SCALE=1.125; CELL=256; AX,AY=128,178         # anchor (ground): the middle of the body, a flat creature lies on its circle
 A=np.array(Image.open(SHEET).convert('RGB')).astype(np.int32)
 def cell(r,c): return A[r*CELL:(r+1)*CELL,c*CELL:(c+1)*CELL]
 def fgmask(x): return ~(((x[...,1]-x[...,0])>70)&((x[...,2]-x[...,0])>70)&(x[...,1]>150))   # cyan and its blends
