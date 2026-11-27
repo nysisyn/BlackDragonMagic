@@ -45,3 +45,9 @@ IWD:EE:
 - The former spells of the spells component: decide which become reserved to the kit (Solvent of Corrosion: restore from the archive if kept).
 - Real icons for Darkness (placeholder: Rot of Ages' icons) and for the transformations.
 - Test on EET (no install yet).
+
+## Manifest Heritage (series of summoned spirits)
+
+- [ ] Dracolisk (level 7): animation stored (bam/nydlg1, g1e, g2, g2e + ini/dracolisk.ini),
+      built from the basilisk (MBAS) x1.5, almost black, acid-green outline
+      (works/dracolisk). Spell and creature to make.
