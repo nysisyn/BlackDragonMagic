@@ -168,7 +168,8 @@ def build_scripts():
         + ability_block('NY#CDTUT', 'NY#CDTUB', '  Range(NearestEnemyOf(Myself),35)\n') + MELEE)
 
 
-# placeholder icons: the creature's first standing frame on a dark disc ----
+# icons: works/icons/<spell>.png when drawn, otherwise a placeholder (the
+# creature's first standing frame on a dark disc) ----
 def load_bam(path):
     d = open(path, 'rb').read()
     if d[:4] == b'BAMC':
@@ -204,7 +205,31 @@ def write_icon(path, im):
     open(path, 'wb').write(out)
 
 
+def icon_from_art(path, size=32):
+    """a drawn icon (works/icons/<spell>.png): fitted into the square, a 1-pixel
+    black outline so it stands out on the spellbook"""
+    from PIL import ImageFilter
+    art = Image.open(path).convert('RGBA')
+    art.putalpha(art.split()[3].point(lambda v: 255 if v >= 128 else 0))
+    art = art.crop(art.split()[3].getbbox())
+    art.thumbnail((size - 2, size - 2), Image.LANCZOS)
+    art.putalpha(art.split()[3].point(lambda v: 255 if v >= 128 else 0))
+    im = Image.new('RGBA', (size, size), (0, 0, 0, 0))
+    im.alpha_composite(art, ((size - art.width) // 2, (size - art.height) // 2))
+    ring = im.split()[3].filter(ImageFilter.MaxFilter(3))
+    out = Image.new('RGBA', (size, size), (0, 0, 0, 0))
+    out.paste((8, 12, 8, 255), (0, 0), ring)
+    out.alpha_composite(im)
+    return out
+
+
 def build_icons(s, frame_bam):
+    art = P('works', 'icons', f"ny#m{s['code'].lower()}.png")
+    if os.path.exists(art):
+        im = icon_from_art(art)
+        for kind in ('c', 'b'):
+            write_icon(P('bam', f"ny#m{s['code'].lower()}{kind}.bam"), im)
+        return
     crea = load_bam(P('bam', frame_bam))
     crea = crea.crop(crea.split()[3].getbbox())
     for kind, size in (('C', 32), ('B', 32)):
