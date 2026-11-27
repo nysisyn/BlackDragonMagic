@@ -58,12 +58,12 @@ def frame(r,c,mirror,breath=0):
 DIRS=[(0,False),(1,True),(2,True),(3,True),(4,False),(3,False),(2,False),(1,False)]
 def rep(seq,n): return [c for c in seq for _ in range(n)]
 IDLE=rep([25,26,27,28,29,28,27,26],3)                   # slow flipper sway
-WALK=[9,10,11,12,13,12,11,10]                           # swimming strokes
+WALK=rep([9,10,11,12,13,12,11,10],2)                    # swimming strokes, each image shown twice (slower)
 BITE=rep([0,1,2,2,1,0],2)
 SLAM=rep([14,15,16,17,18,0],2)                          # rears up and crashes down
-LUNGE=rep([19,20,21,22,23,24,0],2)                      # pulls the head back, lunges (breath)
+BREATH=[3,4,4,3,0,1,2,2,2,2,2,2,1,0]                    # head pulled back, then thrust forward, mouth open, held (breath)
 SEQS={'SD':IDLE,'SC':IDLE,'WK':WALK,'A1':BITE,'A2':SLAM,'A3':BITE,'A4':SLAM,
-      'CA':LUNGE,'SP':LUNGE,'GH':rep([20,21,22,21,20],2),'DE':rep([6,7,8],3),'TW':[8,8],'SL':[8],'GU':rep([8,7,6],3)}
+      'CA':BREATH,'SP':BREATH,'GH':[3,4,5,4,3],'DE':rep([6,7,8],3),'TW':[8,8],'SL':[8],'GU':rep([8,7,6],3)}
 GROUND.update({6,7,8})
 def cycle(s,d):
     r,mir=DIRS[d]
