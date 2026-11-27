@@ -1,0 +1,22 @@
+// The forced cast (ReallyForceSpellRES) ignores the creature's state, so it
+// is only tried while the creature can act.
+// Draco-Hydra: acid cone at the nearest enemy, every 3 rounds at most;
+// otherwise it bites.
+IF
+  See(NearestEnemyOf(Myself))
+  Range(NearestEnemyOf(Myself),25)
+  !StateCheck(Myself,CD_STATE_NOTVALID)
+  !CheckStatGT(Myself,0,HELD)
+  !GlobalTimerNotExpired("NY#CHYDT","LOCALS")
+THEN
+  RESPONSE #100
+    SetGlobalTimer("NY#CHYDT","LOCALS",18)
+    ReallyForceSpellRES("NY#CHYDB",NearestEnemyOf(Myself))
+END
+
+IF
+  See(NearestEnemyOf(Myself))
+THEN
+  RESPONSE #100
+    AttackReevaluate(NearestEnemyOf(Myself),15)
+END

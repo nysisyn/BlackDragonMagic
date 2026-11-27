@@ -1,0 +1,22 @@
+// The forced cast (ReallyForceSpellRES) ignores the creature's state, so it
+// is only tried while the creature can act.
+// Dracolisk: stunning gaze on the nearest enemy within 20 ft., every 3
+// rounds at most; otherwise it attacks in melee.
+IF
+  See(NearestEnemyOf(Myself))
+  Range(NearestEnemyOf(Myself),20)
+  !StateCheck(Myself,CD_STATE_NOTVALID)
+  !CheckStatGT(Myself,0,HELD)
+  !GlobalTimerNotExpired("NY#CDRLT","LOCALS")
+THEN
+  RESPONSE #100
+    SetGlobalTimer("NY#CDRLT","LOCALS",18)
+    ReallyForceSpellRES("NY#CDRLG",NearestEnemyOf(Myself))
+END
+
+IF
+  See(NearestEnemyOf(Myself))
+THEN
+  RESPONSE #100
+    AttackReevaluate(NearestEnemyOf(Myself),15)
+END

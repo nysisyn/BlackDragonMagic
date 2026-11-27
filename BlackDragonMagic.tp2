@@ -58,6 +58,10 @@ WITH_TRA ~%MOD_FOLDER%/lang/english/spells.tra~
          ~%MOD_FOLDER%/lang/%LANGUAGE%/spells.tra~ BEGIN
   INCLUDE ~%MOD_FOLDER%/tpa/spells.tpa~
 END
+WITH_TRA ~%MOD_FOLDER%/lang/english/heritage.tra~
+         ~%MOD_FOLDER%/lang/%LANGUAGE%/heritage.tra~ BEGIN
+  INCLUDE ~%MOD_FOLDER%/tpa/heritage.tpa~
+END
 ACTION_IF ny_hla BEGIN
   WITH_TRA ~%MOD_FOLDER%/lang/english/creatures.tra~
            ~%MOD_FOLDER%/lang/%LANGUAGE%/creatures.tra~ BEGIN

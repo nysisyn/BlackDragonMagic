@@ -48,6 +48,16 @@ IWD:EE:
 
 ## Manifest Heritage (series of summoned spirits)
 
-- [ ] Dracolisk (level 7): animation stored (bam/nydlg1, g1e, g2, g2e + ini/dracolisk.ini),
-      built from the basilisk (MBAS) x1.5, almost black, acid-green outline
-      (works/dracolisk). Spell and creature to make.
+Fixed: the breaths' / Rain's protection of their caster pointed at NY#<file>
+instead of the SPWIxyy name ADD_SPELL gives (tpa/global.tpa).
+
+- [ ] In game: Summon Dracolisk (5), Summon Draco-Hydra (8), Summon Dragon Turtle (9)
+      (tpa/heritage.tpa): the creatures appear at the point, fight, use their
+      gaze / breath every 3 rounds, vanish at the end; the spell cannot be cast
+      again while its creature is there (message).
+- [ ] Spirits' names (the user's), and the other levels: Black Pseudo-Dragon
+      (familiar, replaces Find Familiar), Kobold, Lizardfolk, Half-Dragon
+      (Nydra'Nath, from the HLA), Black Wyvern (Wyvern Call, replaces it), Chimera.
+- [ ] Hydra animation (Might and Magic VII) to improve; dracolisk: maybe a
+      redrawn one (ChatGPT test, works/dracolisk).
+- [ ] Real icons (placeholders: the creature's first frame).

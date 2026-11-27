@@ -1,0 +1,22 @@
+// The forced cast (ReallyForceSpellRES) ignores the creature's state, so it
+// is only tried while the creature can act.
+// Dragon Turtle: acid steam at the nearest enemy, every 3 rounds at most;
+// otherwise it bites.
+IF
+  See(NearestEnemyOf(Myself))
+  Range(NearestEnemyOf(Myself),35)
+  !StateCheck(Myself,CD_STATE_NOTVALID)
+  !CheckStatGT(Myself,0,HELD)
+  !GlobalTimerNotExpired("NY#CDTUT","LOCALS")
+THEN
+  RESPONSE #100
+    SetGlobalTimer("NY#CDTUT","LOCALS",18)
+    ReallyForceSpellRES("NY#CDTUB",NearestEnemyOf(Myself))
+END
+
+IF
+  See(NearestEnemyOf(Myself))
+THEN
+  RESPONSE #100
+    AttackReevaluate(NearestEnemyOf(Myself),15)
+END

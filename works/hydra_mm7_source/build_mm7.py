@@ -1,4 +1,4 @@
-"""Builds the IWD-style (monster_icewind, E000) hydra animation MHYD from the
+"""Builds the IWD-style (monster_icewind, E000) hydra animation NYHY (first named MHYD) from the
 Might and Magic VII hydra sheet (Hydra_MM7.png): 5 facings (rows), slate grey
 variant obtained by the exact palette swap read from the standing frames."""
 import sys,struct,zlib,os
@@ -96,6 +96,6 @@ def write_bam(path,cycles):
     out+=b''.join(struct.pack('<HH',n,s) for n,s in cyc)+pal+b''.join(struct.pack('<H',i) for i in lut)+blob
     open(path,'wb').write(b'BAMCV1  '+struct.pack('<I',len(out))+zlib.compress(bytes(out),9))
 for s in SEQS:
-    write_bam(f'{OUT}/mhyd{s.lower()}.bam',[cycle(s,d) for d in range(5)])
-    write_bam(f'{OUT}/mhyd{s.lower()}e.bam',[[],[],[],[],[]]+[cycle(s,d) for d in (5,6,7)])
+    write_bam(f'{OUT}/nyhy{s.lower()}.bam',[cycle(s,d) for d in range(5)])
+    write_bam(f'{OUT}/nyhy{s.lower()}e.bam',[[],[],[],[],[]]+[cycle(s,d) for d in (5,6,7)])
 print('frames',len(cache))

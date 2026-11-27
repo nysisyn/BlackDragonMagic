@@ -1,0 +1,68 @@
+// Manifest Heritage
+
+// Summon Dracolisk
+@1 = ~Invocation de dracolisque~
+@2 = ~Invocation de dracolisque
+(Conjuration)
+
+Niveau : 5
+Portée : 9 m
+Durée : 1 tour + 1 round/niveau
+Temps d'incantation : 5
+Zone d'effet : spéciale
+Jet de sauvegarde : aucun
+
+Le Disciple du Dragon Noir appelle l'esprit d'un dracolisque, rejeton d'un dragon noir et d'un basilic, qui combat à ses côtés jusqu'à la fin du sort. Un seul dracolisque peut répondre à l'appel à la fois : le sort ne peut pas être relancé tant que le précédent n'a pas pris fin.
+
+Dracolisque : 60 points de vie, classe d'armure 2, TAC0 11, 2 attaques par round (morsure : 2d6+2, arme +2) ; immunisé à l'acide, à la peur et au poison.
+Regard étourdissant : au plus une fois tous les 3 rounds, le dracolisque fixe un ennemi à moins de 6 m ; la cible doit réussir un jet de sauvegarde contre la pétrification ou être étourdie pendant 1 round.~
+
+// Summon Draco-Hydra
+@3 = ~Invocation de dracohydre~
+@4 = ~Invocation de dracohydre
+(Conjuration)
+
+Niveau : 8
+Portée : 9 m
+Durée : 1 tour + 1 round/niveau
+Temps d'incantation : 8
+Zone d'effet : spéciale
+Jet de sauvegarde : aucun
+
+Le Disciple du Dragon Noir appelle l'esprit d'une dracohydre, bête à plusieurs têtes au sang draconique, qui combat à ses côtés jusqu'à la fin du sort. Une seule dracohydre peut répondre à l'appel à la fois : le sort ne peut pas être relancé tant que la précédente n'a pas pris fin.
+
+Dracohydre : 100 points de vie, classe d'armure 2, TAC0 8, 5 attaques par round (morsures : 1d10+2, arme +3) ; immunisée à l'acide, à la peur et au poison.
+Souffle acide : au plus une fois tous les 3 rounds, la dracohydre crache un cône d'acide sur ses ennemis, 6d8 points de dégâts d'acide, jet de sauvegarde contre les souffles pour la moitié.~
+
+// Summon Dragon Turtle
+@5 = ~Invocation de tortue-dragon~
+@6 = ~Invocation de tortue-dragon
+(Conjuration)
+
+Niveau : 9
+Portée : 9 m
+Durée : 1 tour + 1 round/niveau
+Temps d'incantation : 9
+Zone d'effet : spéciale
+Jet de sauvegarde : aucun
+
+Le Disciple du Dragon Noir appelle l'esprit d'une tortue-dragon noire, énorme bête cuirassée des marais, qui combat à ses côtés jusqu'à la fin du sort. Une seule tortue-dragon peut répondre à l'appel à la fois : le sort ne peut pas être relancé tant que la précédente n'a pas pris fin.
+
+Tortue-dragon noire : 130 points de vie, classe d'armure -2, TAC0 6, 2 attaques par round (morsure : 4d6+4, arme +4) ; immunisée à l'acide, à la peur et au poison.
+Vapeur acide : au plus une fois tous les 3 rounds, la tortue-dragon souffle une vague de vapeur acide, 8d8 points de dégâts d'acide, jet de sauvegarde contre les souffles pour la moitié.~
+
+// creatures
+@7 = ~Dracolisque~
+@8 = ~Dracohydre~
+@9 = ~Tortue-dragon noire~
+// abilities
+@10 = ~Regard étourdissant~
+@11 = ~Étourdi par le regard du dracolisque~
+@12 = ~Souffle acide~
+@13 = ~Vapeur acide~
+// weapons
+@14 = ~Morsure de dracolisque~
+@15 = ~Morsures de dracohydre~
+@16 = ~Morsure de tortue-dragon~
+// one at a time
+@17 = ~Cette créature répond déjà à votre appel : attendez la fin du sort.~

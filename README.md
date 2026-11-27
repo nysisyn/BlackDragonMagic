@@ -34,6 +34,7 @@ BlackDragonMagic/
 │   ├── transformations.tpa   names, Swamp Stride immunities, ADD_SPELL
 │   ├── breath.tpa            breath spells
 │   ├── spells.tpa            reserved spells
+│   ├── heritage.tpa          Manifest Heritage: Summon Dracolisk, Draco-Hydra, Dragon Turtle
 │   ├── creatures.tpa         Nydra'Nath (animation, script, names)
 │   ├── hla.tpa               high-level abilities, LUNYB.2DA
 │   └── global.tpa            global script, spell choice filter (Lua)

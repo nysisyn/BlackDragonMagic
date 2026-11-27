@@ -1,0 +1,68 @@
+// Manifest Heritage
+
+// Summon Dracolisk
+@1 = ~Summon Dracolisk~
+@2 = ~Summon Dracolisk
+(Conjuration)
+
+Level: 5
+Range: 30 ft.
+Duration: 1 turn + 1 round/level
+Casting Time: 5
+Area of Effect: Special
+Saving Throw: None
+
+The Black Dragon Disciple calls forth the spirit of a dracolisk, the offspring of a black dragon and a basilisk, which fights at his side until the spell ends. Only one dracolisk can answer the call at a time: the spell cannot be cast again until the current one runs out.
+
+Dracolisk: 60 hit points, Armor Class 2, THAC0 11, 2 attacks per round (bite: 2d6+2, +2 weapon); immune to acid, fear and poison.
+Stunning Gaze: every 3 rounds at most, the dracolisk stares at an enemy within 20 ft.; the target must save vs. Petrification or be stunned for 1 round.~
+
+// Summon Draco-Hydra
+@3 = ~Summon Draco-Hydra~
+@4 = ~Summon Draco-Hydra
+(Conjuration)
+
+Level: 8
+Range: 30 ft.
+Duration: 1 turn + 1 round/level
+Casting Time: 8
+Area of Effect: Special
+Saving Throw: None
+
+The Black Dragon Disciple calls forth the spirit of a draco-hydra, a many-headed beast of draconic blood, which fights at his side until the spell ends. Only one draco-hydra can answer the call at a time: the spell cannot be cast again until the current one runs out.
+
+Draco-Hydra: 100 hit points, Armor Class 2, THAC0 8, 5 attacks per round (bites: 1d10+2, +3 weapon); immune to acid, fear and poison.
+Acid Breath: every 3 rounds at most, the draco-hydra breathes a cone of acid at its enemies, 6d8 acid damage, save vs. Breath for half.~
+
+// Summon Dragon Turtle
+@5 = ~Summon Dragon Turtle~
+@6 = ~Summon Dragon Turtle
+(Conjuration)
+
+Level: 9
+Range: 30 ft.
+Duration: 1 turn + 1 round/level
+Casting Time: 9
+Area of Effect: Special
+Saving Throw: None
+
+The Black Dragon Disciple calls forth the spirit of a black dragon turtle, a huge armoured beast of the swamps, which fights at his side until the spell ends. Only one dragon turtle can answer the call at a time: the spell cannot be cast again until the current one runs out.
+
+Black Dragon Turtle: 130 hit points, Armor Class -2, THAC0 6, 2 attacks per round (bite: 4d6+4, +4 weapon); immune to acid, fear and poison.
+Acid Steam: every 3 rounds at most, the dragon turtle breathes a wave of acid steam, 8d8 acid damage, save vs. Breath for half.~
+
+// creatures
+@7 = ~Dracolisk~
+@8 = ~Draco-Hydra~
+@9 = ~Black Dragon Turtle~
+// abilities
+@10 = ~Stunning Gaze~
+@11 = ~Stunned by the dracolisk's gaze~
+@12 = ~Acid Breath~
+@13 = ~Acid Steam~
+// weapons
+@14 = ~Dracolisk Bite~
+@15 = ~Draco-Hydra Bites~
+@16 = ~Dragon Turtle Bite~
+// one at a time
+@17 = ~This creature already answers your call: wait until the spell runs out.~

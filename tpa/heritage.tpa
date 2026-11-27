@@ -1,0 +1,115 @@
+/////////////////////////////////////////////////////////////////////////////
+// Manifest Heritage: the disciple calls the spirit of a creature of the
+// black dragon's blood (only the kit is offered these spells: tpa/global.tpa).
+// Built by works/restructure/build_heritage.py from the game's summoned
+// wyvern (WYVERNSU, BG2:EE), now stored.
+//
+// Each spell: a point within 30 ft., 1 turn + 1 round per level, one spirit
+// of each kind at a time (the caster is protected from the spell for its
+// duration, opcode 206, with a message; as the game's Elemental Summoning).
+//
+//   NY#MDRL  Summon Dracolisk, level 5 (WIZARD_NY_SUMMON_DRACOLISK)
+//     NY#CDRL   the dracolisk: 60 HP, AC 2, THAC0 11, 2 attacks, level 8
+//     NY#CDRLW  its bite: 2d6+2 piercing, +2 weapon
+//     NY#CDRLG  its stunning gaze: one enemy within 20 ft., save vs.
+//               Petrification or stunned 1 round; every 3 rounds at most
+//               (script NY#CDRLS)
+//     animation NYDL: the basilisk (MBAS) x1.5, almost black, acid-green
+//               outline (works/dracolisk)
+//   NY#MHYD  Summon Draco-Hydra, level 8 (WIZARD_NY_SUMMON_DRACO_HYDRA)
+//     NY#CHYD   the draco-hydra: 100 HP, AC 2, THAC0 8, 5 attacks (its
+//               heads), level 12
+//     NY#CHYDW  its bites: 1d10+2 piercing, +3 weapon
+//     NY#CHYDB  its acid cone (projectile NY#BCON): 6d8 acid, save vs.
+//               Breath for half; every 3 rounds at most (script NY#CHYDS)
+//     animation NYHY: the hydra of Might and Magic VII, slate grey
+//               (works/hydra_mm7_source)
+//   NY#MDTU  Summon Dragon Turtle, level 9 (WIZARD_NY_SUMMON_DRAGON_TURTLE)
+//     NY#CDTU   the black dragon turtle: 130 HP, AC -2, THAC0 6, 2 attacks,
+//               level 14
+//     NY#CDTUW  its bite: 4d6+4 piercing, +4 weapon
+//     NY#CDTUB  its acid steam (projectile NY#CNYDL, Nydra'Nath's wave):
+//               8d8 acid, save vs. Breath for half; every 3 rounds at most
+//               (script NY#CDTUS)
+//     animation NYDT: the dragon turtle of Might and Magic VIII, blackened,
+//               x1.125 of the sheet (works/dragon_turtle_mm8_source)
+//
+// Every creature: immune to acid, no experience when killed, no voice; its
+// weapon makes it immune to fear and poison, and to the disciple's Line and
+// Darkness; the wyvern's ring of immunities (RING97: hold, slow, level
+// drain...) is kept.
+// Icons NY#M<code>B / C: placeholders, the creature's first frame.
+/////////////////////////////////////////////////////////////////////////////
+
+// animations
+ACTION_BASH_FOR ~%MOD_FOLDER%/bam~ ~^\(nydl\|nyhy\|nydt\).*\.bam$~ BEGIN
+  COPY ~%BASH_FOR_FILESPEC%~ ~override~
+END
+LAF NY#NEW_ANIMATION STR_VAR ini = EVAL ~%MOD_FOLDER%/ini/dracolisk.ini~
+                             symbol = ~NY_DRACOLISK~ RET ny_drl_anim = id ny_drl_hex = hex END
+LAF NY#NEW_ANIMATION STR_VAR ini = EVAL ~%MOD_FOLDER%/ini/hydra.ini~
+                             symbol = ~NY_DRACO_HYDRA~ RET ny_hyd_anim = id ny_hyd_hex = hex END
+LAF NY#NEW_ANIMATION STR_VAR ini = EVAL ~%MOD_FOLDER%/ini/dragon_turtle.ini~
+                             symbol = ~NY_DRAGON_TURTLE~ RET ny_dtu_anim = id ny_dtu_hex = hex END
+PRINT ~Dracolisk, draco-hydra, dragon turtle animation ids: 0x%ny_drl_hex%, 0x%ny_hyd_hex%, 0x%ny_dtu_hex%~
+
+OUTER_SET ny_str_once = RESOLVE_STR_REF (@17)
+
+// code, spell level, animation, SPELL.IDS name; strings: spell @1-@6
+// (two by two), creature @7-@9, its ability @10/@12/@13, its weapon @14-@16
+OUTER_SET tra = 1
+OUTER_SET ctra = 7
+OUTER_SET wtra = 14
+ACTION_FOR_EACH entry IN ~drl 5 ny_drl_anim DRACOLISK 10~ ~hyd 8 ny_hyd_anim DRACO_HYDRA 12~
+                         ~dtu 9 ny_dtu_anim DRAGON_TURTLE 13~ BEGIN
+  OUTER_PATCH_SAVE code ~%entry%~ BEGIN REPLACE_TEXTUALLY ~ .*~ ~~ END
+  OUTER_PATCH_SAVE lv   ~%entry%~ BEGIN REPLACE_TEXTUALLY ~^[^ ]+ \([0-9]\) .*~ ~\1~ END
+  OUTER_PATCH_SAVE ids  ~%entry%~ BEGIN REPLACE_TEXTUALLY ~^[^ ]+ [^ ]+ [^ ]+ \([^ ]+\) .*~ ~\1~ END
+  OUTER_PATCH_SAVE atra ~%entry%~ BEGIN REPLACE_TEXTUALLY ~.* ~ ~~ END
+  ACTION_MATCH ~%code%~ WITH
+    drl BEGIN OUTER_SET anim_id = ny_drl_anim END
+    hyd BEGIN OUTER_SET anim_id = ny_hyd_anim END
+    DEFAULT OUTER_SET anim_id = ny_dtu_anim
+  END
+
+  OUTER_SET name = RESOLVE_STR_REF ((AT ~tra~))
+  OUTER_SET tra += 1
+  OUTER_SET desc = RESOLVE_STR_REF ((AT ~tra~))
+  OUTER_SET tra += 1
+  OUTER_SET cname = RESOLVE_STR_REF ((AT ~ctra~))
+  OUTER_SET ctra += 1
+  OUTER_SET wname = RESOLVE_STR_REF ((AT ~wtra~))
+  OUTER_SET wtra += 1
+  OUTER_SET aname = RESOLVE_STR_REF ((AT ~atra~))
+
+  // the creature's ability and weapon
+  ACTION_IF ~%code%~ STR_EQ ~drl~ BEGIN
+    OUTER_SET log = RESOLVE_STR_REF (@11)
+    COPY_EXISTING ~ny#cdrlg.spl~ ~override~
+      WRITE_LONG 0x08 aname
+      LPF ALTER_EFFECT INT_VAR silent = 1 match_opcode = 139 parameter1 = log END
+  END ELSE BEGIN
+    COPY_EXISTING ~ny#c%code%b.spl~ ~override~
+      WRITE_LONG 0x08 aname
+  END
+  COPY_EXISTING ~ny#c%code%w.itm~ ~override~
+    WRITE_LONG 0x08 wname  WRITE_LONG 0x0c wname
+  COMPILE ~%MOD_FOLDER%/baf/ny#c%code%s.baf~
+
+  // the creature
+  COPY ~%MOD_FOLDER%/cre/ny#c%code%.cre~ ~override~
+    WRITE_LONG 0x08 cname
+    WRITE_LONG 0x0c cname
+    WRITE_LONG 0x28 anim_id
+    REMOVE_CRE_ITEMS
+    ADD_CRE_ITEM ~NY#C%code%W~ #0 #0 #0 ~NONE~ ~WEAPON1~ EQUIP
+    ADD_CRE_ITEM ~RING97~ #0 #0 #0 ~NONE~ ~RRING~
+
+  // the spell
+  LAF NY#ICON_B_FROM_C STR_VAR b = EVAL ~NY#M%code%B~ c = EVAL ~NY#M%code%C~ END   // Remastered Spell Icons
+  COPY_EXISTING ~ny#m%code%.spl~ ~override~
+    WRITE_LONG 0x08 name
+    WRITE_LONG 0x50 desc
+    LPF ALTER_EFFECT INT_VAR silent = 1 match_opcode = 206 parameter1 = ny_str_once END
+  ADD_SPELL ~override/ny#m%code%.spl~ 2 lv ~WIZARD_NY_SUMMON_%ids%~
+END

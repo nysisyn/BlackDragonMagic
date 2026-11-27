@@ -1,5 +1,5 @@
 """Builds the IWD-style (monster_icewind, E000) black dragon turtle animation
-MDTU from the Might and Magic VIII dragon turtle sheet: 5 facings (rows),
+NYDT (first named MDTU) from the Might and Magic VIII dragon turtle sheet: 5 facings (rows),
 recoloured black (green shell scales desaturated and darkened)."""
 import sys,struct,zlib,os
 import numpy as np
@@ -95,6 +95,6 @@ def write_bam(path,cycles):
     out+=b''.join(struct.pack('<HH',n,s) for n,s in cyc)+pal+b''.join(struct.pack('<H',i) for i in lut)+blob
     open(path,'wb').write(b'BAMCV1  '+struct.pack('<I',len(out))+zlib.compress(bytes(out),9))
 for s in SEQS:
-    write_bam(f'{OUT}/mdtu{s.lower()}.bam',[cycle(s,d) for d in range(5)])
-    write_bam(f'{OUT}/mdtu{s.lower()}e.bam',[[],[],[],[],[]]+[cycle(s,d) for d in (5,6,7)])
+    write_bam(f'{OUT}/nydt{s.lower()}.bam',[cycle(s,d) for d in range(5)])
+    write_bam(f'{OUT}/nydt{s.lower()}e.bam',[[],[],[],[],[]]+[cycle(s,d) for d in (5,6,7)])
 print('frames',len(cache))

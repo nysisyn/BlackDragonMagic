@@ -98,10 +98,35 @@ ACTION_FOR_EACH ids IN WIZARD_NY_T_CLB WIZARD_NY_T_SCL WIZARD_NY_T_RES WIZARD_NY
                        WIZARD_NY_BREATH_LINE WIZARD_NY_BREATH_ORB WIZARD_NY_BREATH_TRAP
                        WIZARD_NY_BREATH_BALL WIZARD_NY_BREATH_CONE WIZARD_NY_BREATH_CLOUD
                        WIZARD_NY_BREATH_RAIN WIZARD_NY_BREATH_ERUPTION WIZARD_NY_BREATH_BOLT
-                       WIZARD_NY_DARKNESS BEGIN
+                       WIZARD_NY_DARKNESS
+                       WIZARD_NY_SUMMON_DRACOLISK WIZARD_NY_SUMMON_DRACO_HYDRA
+                       WIZARD_NY_SUMMON_DRAGON_TURTLE BEGIN
   LAF RES_NUM_OF_SPELL_NAME STR_VAR spell_name = EVAL ~%ids%~ RET res = spell_res END
   ACTION_TO_UPPER res
   OUTER_SPRINT ny_kit_spells ~%ny_kit_spells%['%res%'] = true, ~
+END
+
+
+// ---------------------------------------------------------------------------
+// Own resource names: ADD_SPELL gives each spell a SPWIxyy resource name, so
+// the mod's references to NY#<file> (a breath's protection of its caster,
+// the Rain's and the summonings' one-at-a-time protection, the immunities
+// of the creatures' weapons to Line and Darkness) are pointed at that name.
+// ---------------------------------------------------------------------------
+ACTION_FOR_EACH pair IN ~WIZARD_NY_BREATH_LINE BLIN~ ~WIZARD_NY_BREATH_ORB BORB~ ~WIZARD_NY_BREATH_TRAP BTRP~
+                        ~WIZARD_NY_BREATH_BALL BBAL~ ~WIZARD_NY_BREATH_CONE BCON~ ~WIZARD_NY_BREATH_CLOUD BCLD~
+                        ~WIZARD_NY_BREATH_RAIN BRAI~ ~WIZARD_NY_BREATH_ERUPTION BERU~ ~WIZARD_NY_BREATH_BOLT BBOL~
+                        ~WIZARD_NY_DARKNESS SDRK~ ~WIZARD_NY_SUMMON_DRACOLISK MDRL~
+                        ~WIZARD_NY_SUMMON_DRACO_HYDRA MHYD~ ~WIZARD_NY_SUMMON_DRAGON_TURTLE MDTU~ BEGIN
+  OUTER_PATCH_SAVE ids  ~%pair%~ BEGIN REPLACE_TEXTUALLY ~ .*~ ~~ END
+  OUTER_PATCH_SAVE file ~%pair%~ BEGIN REPLACE_TEXTUALLY ~.* ~ ~~ END
+  LAF RES_NUM_OF_SPELL_NAME STR_VAR spell_name = EVAL ~%ids%~ RET res = spell_res END
+  ACTION_TO_UPPER res
+  COPY_EXISTING_REGEXP GLOB ~^ny#.*\.spl$~ ~override~
+                            ~^ny#.*\.itm$~ ~override~
+                            ~^%res%\.spl$~ ~override~
+    LPF ALTER_EFFECT INT_VAR silent = 1 STR_VAR match_resource = EVAL ~NY#%file%~ resource = EVAL ~%res%~ END
+  BUT_ONLY
 END
 
 COPY ~%MOD_FOLDER%/lua/m_ny#bd.lua~ ~override~
