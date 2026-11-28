@@ -165,12 +165,18 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 // NY#NEW_ANIMATION (action)
-// Gives a creature animation its id: the first free one from 0xEC40 to
-// 0xECFF (no INI file, no ANIMATE.IDS entry), copies its INI file as
-// <id>.INI and adds <symbol> to ANIMATE.IDS. Returns the id and its 4
-// hexadecimal digits.
+// Gives a creature animation its id: the first free one from <from> to <to>
+// (no INI file, no ANIMATE.IDS entry), copies its INI file as <id>.INI and
+// adds <symbol> to ANIMATE.IDS. Returns the id and its 4 hexadecimal digits.
+// The id's first digit must match the INI's animation_type: 0xEC40-0xECFF
+// for monster_icewind (E000), 0x7FD0-0x7FFF for monster_old (7000) - an
+// id of another range gives the creature another animation (seen in game:
+// a myconid).
 /////////////////////////////////////////////////////////////////////////////
 DEFINE_ACTION_FUNCTION NY#NEW_ANIMATION
+  INT_VAR
+    from = 0xec40
+    to   = 0xecff
   STR_VAR
     ini    = ~~
     symbol = ~~
@@ -180,7 +186,7 @@ DEFINE_ACTION_FUNCTION NY#NEW_ANIMATION
 BEGIN
   OUTER_SET id = "-1"
   OUTER_SPRINT hex ~~
-  OUTER_FOR (a = 0xec40; (a <= 0xecff) AND (id < 0); ++a) BEGIN
+  OUTER_FOR (a = from; (a <= to) AND (id < 0); ++a) BEGIN
     LAF NY#HEX4 INT_VAR value = a RET h = hex END
     OUTER_SET used = FILE_EXISTS_IN_GAME ~%h%.ini~
     ACTION_IF (NOT used) BEGIN
@@ -196,7 +202,9 @@ BEGIN
     END
   END
   ACTION_IF (id < 0) BEGIN
-    FAIL ~BlackDragonMagic: no free animation id between 0xEC40 and 0xECFF~
+    LAF NY#HEX4 INT_VAR value = from RET hf = hex END
+    LAF NY#HEX4 INT_VAR value = to RET ht = hex END
+    FAIL ~BlackDragonMagic: no free animation id between 0x%hf% and 0x%ht%~
   END
   COPY ~%ini%~ ~override/%hex%.ini~
   ACTION_IF (IDS_OF_SYMBOL (~animate~ ~%symbol%~) < 0) BEGIN

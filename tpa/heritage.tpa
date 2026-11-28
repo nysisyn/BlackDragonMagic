@@ -32,7 +32,8 @@
 //               8d8 acid, save vs. Breath for half; every 3 rounds at most
 //               (script NY#CDTUS)
 //     animation NYDT: the dragon turtle of Might and Magic VIII, blackened,
-//               x1.125 of the sheet (works/dragon_turtle_mm8_source)
+//               x1.02 of the sheet, frames at most 256 pixels wide
+//               (works/dragon_turtle_mm8_source)
 //
 // Every creature: immune to acid, no experience when killed, no voice; its
 // weapon makes it immune to fear and poison, and to the disciple's Line and
@@ -45,7 +46,8 @@
 ACTION_BASH_FOR ~%MOD_FOLDER%/bam~ ~^\(nydl\|nyhy\|nydt\).*\.bam$~ BEGIN
   COPY ~%BASH_FOR_FILESPEC%~ ~override~
 END
-LAF NY#NEW_ANIMATION STR_VAR ini = EVAL ~%MOD_FOLDER%/ini/dracolisk.ini~
+LAF NY#NEW_ANIMATION INT_VAR from = 0x7fd0 to = 0x7fff   // monster_old: a 0x7xxx id
+                     STR_VAR ini = EVAL ~%MOD_FOLDER%/ini/dracolisk.ini~
                              symbol = ~NY_DRACOLISK~ RET ny_drl_anim = id ny_drl_hex = hex END
 LAF NY#NEW_ANIMATION STR_VAR ini = EVAL ~%MOD_FOLDER%/ini/hydra.ini~
                              symbol = ~NY_DRACO_HYDRA~ RET ny_hyd_anim = id ny_hyd_hex = hex END
