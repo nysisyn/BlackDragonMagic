@@ -61,3 +61,8 @@ instead of the SPWIxyy name ADD_SPELL gives (tpa/global.tpa).
 - [ ] Hydra animation (Might and Magic VII) to improve; dracolisk: maybe a
       redrawn one (ChatGPT test, works/dracolisk).
 - [ ] Real icons (placeholders: the creature's first frame).
+
+## Rain and Cloud: black layers (test)
+
+- [ ] In game: the Rain's black rain (NY#BRAIK) and the Cloud's black cloud (NY#BCLDK),
+      cast at the same point, with the yellow acid (works/restructure/black_layers.py).
