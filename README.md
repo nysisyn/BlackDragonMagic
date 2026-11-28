@@ -66,7 +66,7 @@ Only what depends on the game and on the mods installed before is written at ins
 |---|---|---|
 | opcode 328, parameter 2 = `1000 + n` | spell state n | 0 CLB, 1 SCL, 2 RES, 3 SWS, 4 BLS, 5 WNG, 6 APO, 7 LV10, 8 LV15, 9 FIN, 10 FINCD |
 | opcodes 318 / 324 / 326, parameter 2 = `2000 + n` | SPLPROT row "has spell state n"; from 20, other rows | same list; 20 = not an enemy of the party (EA < 200) |
-| extended header projectile = `3000 + n` | projectile n | 0 `NY#SDRKP`, 1 `NY#BLIL`, 2 `NY#CNYDL`, 3 `INAREANP` (game), 4 `NY#BORB`, 5 `NY#BORBS`, 6 `NY#BTRP`, 7 `NY#BBAL`, 8 `NY#BBALK`, 9 `NY#BCON`, 10 `NY#BCONK`, 11 `NY#BCLD`, 12 `NY#BRAI`, 13 `NY#BERU`, 14 `NY#BBOL`, 15 `NY#HFIN`, 16 `NY#BRAIK`, 17 `NY#BCLDK` |
+| extended header projectile = `3000 + n` | projectile n | 0 `NY#SDRKP`, 1 `NY#BLIL`, 2 `NY#CNYDL`, 3 `INAREANP` (game), 4 `NY#BORB`, 5 `NY#BORBS`, 6 `NY#BTRP`, 7 `NY#BBAL`, 8 `NY#BBALK`, 9 `NY#BCON`, 10 `NY#BCONK`, 11 `NY#BCLD`, 12 `NY#BRAI`, 13 `NY#BERU`, 14 `NY#BBOL`, 15 `NY#HFIN`, 16 `NY#BRAIK`, 17 `NY#BCLDK`, 18 `NY#BERUK` |
 
 To add a dynamic value, add it to these lists and use its placeholder in Near Infinity.
 

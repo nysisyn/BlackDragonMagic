@@ -71,10 +71,11 @@ OUTER_SET $ny_ph_has(~20~) = row
 //  15 NY#HFIN    Final Breath: the Line's line, twice as wide
 //  16 NY#BRAIK   Rain: its black rain (works/restructure/black_layers.py)
 //  17 NY#BCLDK   Cloud: its black cloud
+//  18 NY#BERUK   Eruption: its black puffs
 OUTER_SET n = 0
 ACTION_FOR_EACH pro IN NY#SDRKP NY#BLIL NY#CNYDL INAREANP NY#BORB NY#BORBS NY#BTRP NY#BBAL NY#BBALK
                        NY#BCON NY#BCONK NY#BCLD NY#BRAI NY#BERU NY#BBOL NY#HFIN
-                       NY#BRAIK NY#BCLDK BEGIN
+                       NY#BRAIK NY#BCLDK NY#BERUK BEGIN
   ACTION_IF (~%pro%~ STRING_COMPARE ~INAREANP~) BEGIN    // the mod's
     ACTION_TO_LOWER pro
     ADD_PROJECTILE ~%MOD_FOLDER%/pro/%pro%.pro~

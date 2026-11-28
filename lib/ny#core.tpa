@@ -168,10 +168,13 @@ END
 // Gives a creature animation its id: the first free one from <from> to <to>
 // (no INI file, no ANIMATE.IDS entry), copies its INI file as <id>.INI and
 // adds <symbol> to ANIMATE.IDS. Returns the id and its 4 hexadecimal digits.
-// The id's first digit must match the INI's animation_type: 0xEC40-0xECFF
-// for monster_icewind (E000), 0x7FD0-0x7FFF for monster_old (7000) - an
-// id of another range gives the creature another animation (seen in game:
-// a myconid).
+// The engine reads an animation's layout from its id, not from the INI: an
+// IWD-style monster (monster_icewind) needs an 0xExxx id (0xEC40-0xECFF),
+// a BG1-style monster (monster_old, as the basilisk 0x7100) an id of the
+// game's monster_old ones, 0x7000-0x7Exx but not 0x73xx (0x7E20-0x7EFF);
+// 0x7Fxx are BG2-style monsters. With a wrong range the creature shows
+// another animation (seen in game: a myconid with 0xEC40, a rabbit with
+// 0x7FD0).
 /////////////////////////////////////////////////////////////////////////////
 DEFINE_ACTION_FUNCTION NY#NEW_ANIMATION
   INT_VAR

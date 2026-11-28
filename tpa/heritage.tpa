@@ -46,7 +46,7 @@
 ACTION_BASH_FOR ~%MOD_FOLDER%/bam~ ~^\(nydl\|nyhy\|nydt\).*\.bam$~ BEGIN
   COPY ~%BASH_FOR_FILESPEC%~ ~override~
 END
-LAF NY#NEW_ANIMATION INT_VAR from = 0x7fd0 to = 0x7fff   // monster_old: a 0x7xxx id
+LAF NY#NEW_ANIMATION INT_VAR from = 0x7e20 to = 0x7eff   // monster_old: a 0x7Exx id (as 0x7E00)
                      STR_VAR ini = EVAL ~%MOD_FOLDER%/ini/dracolisk.ini~
                              symbol = ~NY_DRACOLISK~ RET ny_drl_anim = id ny_drl_hex = hex END
 LAF NY#NEW_ANIMATION STR_VAR ini = EVAL ~%MOD_FOLDER%/ini/hydra.ini~

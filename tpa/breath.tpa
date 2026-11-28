@@ -42,7 +42,8 @@
 //           vs. Breath for half each; roar; ignores magic resistance. Its
 //           black rain NY#BRAIK (opcode 148, as the Cone's black puffs).
 // NY#BERU   Eruption, level 8: the explosion 20 ft. around the disciple
-//           (NY#BERU); 1d4 per level, 20d4; allies hit, not the disciple.
+//           (NY#BERU) and its black puffs (NY#BERUK); 1d4 per level, 20d4;
+//           allies hit, not the disciple.
 // NY#BBOL   Bolt, level 9: one creature (Melf's Acid Arrow's projectile);
 //           20d4; failed save vs. Breath: NY#BBOLX (10d4 the next round, and
 //           the curse rolls NY#BBOR1-6: each casts its curse NY#BCUR1-6 with

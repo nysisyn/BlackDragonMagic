@@ -8,8 +8,13 @@
   NY#BCLDK  black cloud: the Cloud's cloud (the game's SPCLOUDK) flipped
             left-right, its lighter wisps in black. PRO NY#BCLDK: the Cloud's projectile (NY#BCLD) without the
             orb, the sounds, the brightening. SPL NY#BCLDK.
-Both are cast at the same point by the breath (opcode 148, as NY#BCONK for
-the Cone). Projectiles: placeholders 16 and 17 (tpa/kit.tpa).
+  NY#BERUK  black puffs of the Eruption: the Ball's and Cone's black puffs
+            (NY#BDBS) around the caster. PRO NY#BERUK: the Eruption's
+            projectile (NY#BERU), these puffs as spread, no explosion, no
+            sound, not brightened. SPL NY#BERUK (on the caster).
+All are cast at the same point by the breath (opcode 148, as NY#BCONK for
+the Cone, before the breath's protection of its caster). Projectiles:
+placeholders 16, 17 and 18 (tpa/kit.tpa).
 Usage: black_layers.py <the game's SPCLOUDK.BAM> [mod]
 """
 import os, struct, sys
@@ -63,9 +68,10 @@ def pro_black(src, dst, spread, keep_missile=False):
     open(dst, 'wb').write(b)
 
 
-def spl_black(name, rng, ph):
+def spl_black(name, rng, ph, target=4):
     r = Res(P('spl', 'ny#bconk.spl'))
     hb, _ = r.heads[0]
+    hb[0x0c] = target
     struct.pack_into('<H', hb, 0x0e, rng); struct.pack_into('<H', hb, 0x26, ph)
     r.heads = [[hb, []]]
     r.save(P('spl', name.lower() + '.spl'))
@@ -88,4 +94,7 @@ if __name__ == '__main__':
     spl_black('NY#BCLDK', 40, 3017)
     add_cast('ny#brai', 'NY#BRAIK')
     add_cast('ny#bcld', 'NY#BCLDK')
+    pro_black(P('pro', 'ny#beru.pro'), P('pro', 'ny#beruk.pro'), 'NY#BDBS')
+    spl_black('NY#BERUK', 0, 3018, target=5)
+    add_cast('ny#beru', 'NY#BERUK')
     print('ok')
