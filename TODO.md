@@ -61,3 +61,11 @@ instead of the SPWIxyy name ADD_SPELL gives (tpa/global.tpa).
 - [ ] Hydra animation (Might and Magic VII) to improve; dracolisk: maybe a
       redrawn one (ChatGPT test, works/dracolisk).
 - [ ] Real icons (placeholders: the creature's first frame).
+
+## Acid colour (test)
+
+- [ ] In game: fluorescent green acid instead of yellow (works/restructure/acid_fluo.py):
+      Line, Orb, Ball, Cone, Eruption, Trap, Cloud, Rain. The yellow BAMs are kept
+      in works/acid_yellow (and the game's SPBDIMSP / SPBDRAE2 / SPCLOUDK); to go
+      back: copy them back into bam/ and point the PROs at the game's BAMs again.
+      Running build_breaths.py again would also bring the yellow back.
