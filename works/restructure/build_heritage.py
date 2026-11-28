@@ -17,6 +17,7 @@ WYV = sys.argv[1]
 MOD = sys.argv[2] if len(sys.argv) > 2 else os.path.join(os.path.dirname(__file__), '..', '..')
 P = lambda *a: os.path.join(MOD, *a)
 ROUND = 6
+ONE_AT_A_TIME = False      # test: no limit for now (the Dragon Turtle did not appear)
 PRO_LINE_WAVE = 3002          # NY#CNYDL, Nydra'Nath's acid wave
 PRO_CONE = 3009               # NY#BCON, the breath cone
 
@@ -129,10 +130,10 @@ def build_spell(s):
         du = (10 + L) * ROUND                               # 1 turn + 1 round per level
         # the summoning first: the protection, applied to the caster, would
         # block the spell's later effects on him (as Elemental Summoning)
-        heads.append([hb, [
-            mk_eff(67, tg=1, tm=0, du=du, res=f'NY#C{code}'),
-            mk_eff(206, tg=1, tm=0, du=du, p1=-1, res=res),   # one at a time; message at install
-        ]])
+        effects = [mk_eff(67, tg=1, tm=0, du=du, res=f'NY#C{code}')]
+        if ONE_AT_A_TIME:
+            effects.append(mk_eff(206, tg=1, tm=0, du=du, p1=-1, res=res))   # message at install
+        heads.append([hb, effects])
     r.heads = heads
     r.save(P('spl', res.lower() + '.spl'))
 

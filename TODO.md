@@ -66,3 +66,9 @@ instead of the SPWIxyy name ADD_SPELL gives (tpa/global.tpa).
 
 - [ ] In game: the Rain's black rain (NY#BRAIK) and the Cloud's black cloud (NY#BCLDK),
       cast at the same point, with the yellow acid (works/restructure/black_layers.py).
+
+## Manifest Heritage: one at a time (removed for a test)
+
+- [ ] The one-at-a-time protection (opcode 206) is off (build_heritage.py ONE_AT_A_TIME)
+      while the Dragon Turtle does not appear from its spell (it does from the console);
+      the descriptions still say one at a time.
