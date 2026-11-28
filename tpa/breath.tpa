@@ -32,8 +32,9 @@
 // NY#BCON   Cone, level 5: the Dragon Disciple's cone with the explosion
 //           (NY#BCON) and its black puffs (NY#BCONK); 1d4 per level, 15d4;
 //           pause, the disciple not hit.
-// NY#BCLD   Cloud, level 6: Cloudkill's cloud in yellow (NY#BCLOK, works/
-//           restructure/cloud_yellow.py; projectile NY#BCLD), 6 pulses about
+// NY#BCLD   Cloud, level 6: test - the other breaths' explosion and black
+//           puffs, 6 pulses (works/restructure/cloud_as_breaths.py; before:
+//           Cloudkill's cloud in yellow NY#BCLOK, cloud_yellow.py), about
 //           one per round: 4d4, save vs. Breath for half. Its black cloud
 //           NY#BCLDK (opcode 148, as the Cone's black puffs).
 // NY#BRAI   Rain, level 7: IWD:EE's Acid Storm (projectile NY#BRAI; rain,
