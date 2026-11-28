@@ -36,7 +36,9 @@
 //           restructure/cloud_yellow.py; projectile NY#BCLD), 6 pulses about
 //           one per round: 4d4, save vs. Breath for half. Its black cloud
 //           NY#BCLDK (opcode 148, as the Cone's black puffs).
-// NY#BRAI   Rain, level 7: IWD:EE's Acid Storm as it is (projectile NY#BRAI,
+// NY#BRAI   Rain, level 7: IWD:EE's Acid Storm (projectile NY#BRAI; rain,
+//           splash and icons in the breaths' yellow, works/restructure/
+//           rain_yellow.py;
 //           rain NY#BRAIA, splash NY#BRAIX, sound NY#BRAIS, icons NY#BRAIB/C):
 //           1d4 every round, 14 rounds, one more per level from 15; save
 //           vs. Breath for half each; roar; ignores magic resistance. Its
