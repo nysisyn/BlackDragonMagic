@@ -127,9 +127,11 @@ def build_spell(s):
         struct.pack_into('<H', hb, 0x12, s['lvl'])          # casting time
         struct.pack_into('<H', hb, 0x26, 1)                 # no projectile
         du = (10 + L) * ROUND                               # 1 turn + 1 round per level
+        # the summoning first: the protection, applied to the caster, would
+        # block the spell's later effects on him (as Elemental Summoning)
         heads.append([hb, [
-            mk_eff(206, tg=1, tm=0, du=du, p1=-1, res=res),   # one at a time; message at install
             mk_eff(67, tg=1, tm=0, du=du, res=f'NY#C{code}'),
+            mk_eff(206, tg=1, tm=0, du=du, p1=-1, res=res),   # one at a time; message at install
         ]])
     r.heads = heads
     r.save(P('spl', res.lower() + '.spl'))
