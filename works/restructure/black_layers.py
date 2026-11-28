@@ -88,9 +88,9 @@ def add_cast(spell, res):
 if __name__ == '__main__':
     rain = P('works', 'rain_iwd', 'ny#braia.bam')        # IWD's, before rain_yellow.py
     blacken(rain if os.path.exists(rain) else P('bam', 'ny#braia.bam'), P('bam', 'ny#braik.bam'), thr=100, mirror=True)
-    blacken(CLOUD, P('bam', 'ny#bcldk.bam'), thr=110, dark=(14, 46), mirror=True)
+    blacken(CLOUD, P('bam', 'ny#bcldk.bam'), thr=165, dark=(14, 46), mirror=True)
     pro_black(P('pro', 'ny#brai.pro'), P('pro', 'ny#braik.pro'), 'NY#BRAIK')
-    pro_black(P('pro', 'ny#bcld.pro'), P('pro', 'ny#bcldk.pro'), 'NY#BCLDK')
+    pro_black(P('pro', 'ny#bcld.pro'), P('pro', 'ny#bcldk.pro'), 'NY#BCLDK')   # before cloud_yellow.py's flags
     spl_black('NY#BRAIK', 40, 3016)
     spl_black('NY#BCLDK', 40, 3017)
     add_cast('ny#brai', 'NY#BRAIK')
