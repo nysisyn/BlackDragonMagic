@@ -3,3 +3,4 @@ backup/
 *.debug
 work/
 weidu_external/
+__pycache__/
